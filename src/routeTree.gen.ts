@@ -11,12 +11,19 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProfileImport } from './routes/profile'
 import { Route as ProdukImport } from './routes/produk'
 import { Route as PesananImport } from './routes/pesanan'
 import { Route as PengaturanImport } from './routes/pengaturan'
+import { Route as DetailOrderImport } from './routes/detail-order'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const ProfileRoute = ProfileImport.update({
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProdukRoute = ProdukImport.update({
   path: '/produk',
@@ -30,6 +37,11 @@ const PesananRoute = PesananImport.update({
 
 const PengaturanRoute = PengaturanImport.update({
   path: '/pengaturan',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DetailOrderRoute = DetailOrderImport.update({
+  path: '/detail-order',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -47,6 +59,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/detail-order': {
+      id: '/detail-order'
+      path: '/detail-order'
+      fullPath: '/detail-order'
+      preLoaderRoute: typeof DetailOrderImport
       parentRoute: typeof rootRoute
     }
     '/pengaturan': {
@@ -70,6 +89,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdukImport
       parentRoute: typeof rootRoute
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -77,9 +103,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  DetailOrderRoute,
   PengaturanRoute,
   PesananRoute,
   ProdukRoute,
+  ProfileRoute,
 })
 
 /* prettier-ignore-end */
@@ -91,13 +119,18 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/detail-order",
         "/pengaturan",
         "/pesanan",
-        "/produk"
+        "/produk",
+        "/profile"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/detail-order": {
+      "filePath": "detail-order.tsx"
     },
     "/pengaturan": {
       "filePath": "pengaturan.tsx"
@@ -107,6 +140,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/produk": {
       "filePath": "produk.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     }
   }
 }

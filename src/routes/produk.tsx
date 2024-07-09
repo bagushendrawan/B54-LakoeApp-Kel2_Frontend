@@ -6,7 +6,7 @@ export const Route = createFileRoute('/produk')({
 
 function Produk() {
   return (
-    <div className="p-2">
+    <div>
       <h3>This is Produk!</h3>
     </div>
   )

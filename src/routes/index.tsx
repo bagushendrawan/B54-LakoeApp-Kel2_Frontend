@@ -1,4 +1,6 @@
+
 import { DashboardPage } from "@/pages/dashboard-page";
+import { FormProdukPages } from "@/pages/form-produk-baru";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -7,8 +9,9 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="p-2">
+    <div className="p-2 flex">
       <DashboardPage />
+      <FormProdukPages />
     </div>
   );
 }

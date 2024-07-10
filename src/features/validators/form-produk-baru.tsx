@@ -116,7 +116,7 @@ export function ProductForm() {
       )
   }
 
-  export function PilihKategori(){
+  export function PilihKategori(formSubmit : any){
     return (
       <div className="mt-2">
         <Accordion type="single" className="border-none" collapsible>
@@ -126,20 +126,20 @@ export function ProductForm() {
 
               <Accordion type="single" className="border-none" collapsible>
               <AccordionItem value="item-1">
-              <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan</AccordionTrigger>
+              <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan2</AccordionTrigger>
               <AccordionContent className="mt-2 p-0 ms-7">
 
                 <Accordion type="single" className="border-none" collapsible>
                 <AccordionItem value="item-1">
-                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan</AccordionTrigger>
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
                 <AccordionContent className="mt-2 p-0 ms-7">
-                <h1>Test2</h1>
+                <Button type="button" variant={"link"} className="h-6" {...formSubmit} name="produk_kategori" value={"test1"}>Test1</Button>
                 </AccordionContent>
                 <AccordionContent className="m-0 p-0 ms-7">
-                <h1>Test2</h1>
+                <Button type="button" variant={"link"} className="h-6" name="produk_kategori" value={"test2"}>Test2</Button>
                 </AccordionContent>
                 <AccordionContent className="m-0 p-0 ms-7">
-                <h1>Test2</h1>
+                <Button type="button" variant={"link"} className="h-6" name="produk_kategori" value={"test3"}>Test3</Button>
                 </AccordionContent>
                 </AccordionItem>
                 </Accordion>
@@ -149,7 +149,7 @@ export function ProductForm() {
               
                 <Accordion type="single" className="border-none" collapsible>
                 <AccordionItem value="item-1">
-                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan</AccordionTrigger>
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
                 <AccordionContent className="mt-2 p-0 ms-7">
                 <h1>Test</h1>
                 </AccordionContent>
@@ -167,7 +167,7 @@ export function ProductForm() {
               
                 <Accordion type="single" className="border-none" collapsible>
                 <AccordionItem value="item-1">
-                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan</AccordionTrigger>
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
                 <AccordionContent className="mt-2 p-0 ms-7">
                 <h1>Test</h1>
                 </AccordionContent>
@@ -184,12 +184,125 @@ export function ProductForm() {
               </AccordionItem>
               </Accordion>
 
-            </AccordionContent>
-            <AccordionContent className="m-0 p-0 ms-7">
-            <h1>Test</h1>
-            </AccordionContent>
-            <AccordionContent className="m-0 p-0 ms-7">
-            <h1>Test</h1>
+              <Accordion type="single" className="border-none" collapsible>
+              <AccordionItem value="item-1">
+              <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan2</AccordionTrigger>
+              <AccordionContent className="mt-2 p-0 ms-7">
+
+                <Accordion type="single" className="border-none" collapsible>
+                <AccordionItem value="item-1">
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
+                <AccordionContent className="mt-2 p-0 ms-7">
+                <h1>Test2</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test2</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test2</h1>
+                </AccordionContent>
+                </AccordionItem>
+                </Accordion>
+
+              </AccordionContent>
+              <AccordionContent className="m-0 p-0 ms-7">
+              
+                <Accordion type="single" className="border-none" collapsible>
+                <AccordionItem value="item-1">
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
+                <AccordionContent className="mt-2 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                </AccordionItem>
+                </Accordion>
+
+              </AccordionContent>
+              <AccordionContent className="m-0 p-0 ms-7">
+              
+                <Accordion type="single" className="border-none" collapsible>
+                <AccordionItem value="item-1">
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
+                <AccordionContent className="mt-2 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                </AccordionItem>
+                </Accordion>
+
+              </AccordionContent>
+              </AccordionItem>
+              </Accordion>
+
+              <Accordion type="single" className="border-none" collapsible>
+              <AccordionItem value="item-1">
+              <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan2</AccordionTrigger>
+              <AccordionContent className="mt-2 p-0 ms-7">
+
+                <Accordion type="single" className="border-none" collapsible>
+                <AccordionItem value="item-1">
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
+                <AccordionContent className="mt-2 p-0 ms-7">
+                <h1>Test2</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test2</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test2</h1>
+                </AccordionContent>
+                </AccordionItem>
+                </Accordion>
+
+              </AccordionContent>
+              <AccordionContent className="m-0 p-0 ms-7">
+              
+                <Accordion type="single" className="border-none" collapsible>
+                <AccordionItem value="item-1">
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
+                <AccordionContent className="mt-2 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                </AccordionItem>
+                </Accordion>
+
+              </AccordionContent>
+              <AccordionContent className="m-0 p-0 ms-7">
+              
+                <Accordion type="single" className="border-none" collapsible>
+                <AccordionItem value="item-1">
+                <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan3</AccordionTrigger>
+                <AccordionContent className="mt-2 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                <AccordionContent className="m-0 p-0 ms-7">
+                <h1>Test</h1>
+                </AccordionContent>
+                </AccordionItem>
+                </Accordion>
+
+              </AccordionContent>
+              </AccordionItem>
+              </Accordion>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

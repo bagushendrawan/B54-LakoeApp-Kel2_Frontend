@@ -17,7 +17,7 @@ import {
 import { Input } from "../components/input"
 
 const registerSchema = z.object({
-    username: z.string({message:"username tidak boleh kosong"}).max(50),
+    name: z.string({message:"username tidak boleh kosong"}).max(50),
     email: z.string({message:"email harus diisi"}).min(2).max(50),
     phone: z.string({message:"no telp harus diisi"}).max(16),
     password: z.string({message:"password harus diisi"}).max(32),
@@ -29,11 +29,11 @@ export function RegisterForm() {
     const form = useForm<z.infer<typeof registerSchema>>({
       resolver: zodResolver(registerSchema),
       defaultValues: {
-        username: "",
+        name: "",
         email: "",
         phone: "",
         password: "",
-        role_id: 0,
+        role_id: 1,
       },
     })
    
@@ -43,7 +43,7 @@ export function RegisterForm() {
       // ✅ This will be type-safe and validated.
     try {
     const data = {
-        username: values.username,
+        name: values.name,
         email: values.email,
         password: values.password,
         phone: values.phone,
@@ -66,7 +66,7 @@ export function RegisterForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem className="mt-4">
                   <FormLabel className="font-normal mt-2">Username</FormLabel>

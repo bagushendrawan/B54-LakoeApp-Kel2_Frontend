@@ -13,8 +13,8 @@ function Index() {
   return (
     <div className="p-2 flex">
         <SideBar />
-        <DashboardPage />
-        {/* <FormProdukPages /> */}
+        {/* <DashboardPage /> */}
+        <FormProdukPages />
         {/* <Register/> */}
     </div>
   );

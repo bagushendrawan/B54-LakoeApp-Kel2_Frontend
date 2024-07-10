@@ -5,5 +5,5 @@ export const Route = createFileRoute('/pengaturan')({
 })
 
 function Pengaturan() {
-  return <div className="p-2">Hello from Pengaturan!</div>
+  return <div>Hello from Pengaturan!</div>
 }

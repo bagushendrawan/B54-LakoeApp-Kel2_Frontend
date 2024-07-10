@@ -1,4 +1,4 @@
-import { FormProdukBaru } from "@/features/form-produk-baru";
+import { FormProdukBaru } from "../../src/features/form-produk-baru";
 
 export function FormProdukPages() {
     return (

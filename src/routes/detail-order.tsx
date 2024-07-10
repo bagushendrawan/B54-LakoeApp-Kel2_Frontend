@@ -1,4 +1,4 @@
-import { DetailOrderPage } from '@/pages/detail-order-page'
+import { DetailOrderPage } from '../pages/detail-order-page'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/detail-order')({

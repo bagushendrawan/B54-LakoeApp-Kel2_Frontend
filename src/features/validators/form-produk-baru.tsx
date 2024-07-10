@@ -28,12 +28,11 @@ import { Textarea } from "../../components/textarea"
 
 
 const formSchema = z.object({
-  nama_produk: z.string().min(2).max(50),
+  nama_produk: z.string({message:"Nama produk tidak boleh kosong"}).max(50),
+  url_halaman_form: z.string({message:"Url harus diisi"}).min(2).max(50),
+  deskripsi_produk: z.string({message:"Deskripsi harus diisi"}).max(3000),
 })
 
-const urlHalamanForm = z.object({
-  url_halaman_form: z.string().min(2).max(50),
-})
 
 export function ProductForm() {
     // 1. Define your form.
@@ -58,10 +57,10 @@ export function ProductForm() {
               control={form.control}
               name="nama_produk"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nama Produk</FormLabel>
+                <FormItem className="mt-4">
+                  <FormLabel className="font-normal mt-2">Nama Produk</FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan nama produk" {...field} />
+                    <Input placeholder="Masukan nama produk" {...field} required/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,15 +73,15 @@ export function ProductForm() {
 
   export function URLHalamanCheckoutForm() {
     // 1. Define your form.
-    const form = useForm<z.infer<typeof urlHalamanForm>>({
-      resolver: zodResolver(urlHalamanForm),
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
       defaultValues: {
         url_halaman_form: "",
       },
     })
    
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof urlHalamanForm>) {
+    function onSubmit(values: z.infer<typeof formSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
       console.log(values)
@@ -95,10 +94,10 @@ export function ProductForm() {
               control={form.control}
               name="url_halaman_form"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL Halaman Checkout</FormLabel>
+                <FormItem className="mt-4">
+                  <FormLabel className="font-normal">URL Halaman Checkout</FormLabel>
                   <FormControl>
-                    <Input placeholder="nama-produk" {...field} />
+                    <Input placeholder="nama-produk" {...field} required/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,8 +112,8 @@ export function ProductForm() {
     return (
       <div className="mt-2">
       <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="Pilih Kategori Produk" />
+        <SelectTrigger className="font-light text-gray-150">
+          <SelectValue placeholder="Pilih Kategori Produk"/>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="light">Light</SelectItem>
@@ -131,7 +130,7 @@ export function ProductForm() {
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        nama_produk: "",
+        deskripsi_produk: "",
       },
     })
    
@@ -144,7 +143,7 @@ export function ProductForm() {
 
     return (
         <>
-        <Textarea />
+        <Textarea {...form} name="deskripsi_produk" className="h-32" required/>
         </>
       )
   }

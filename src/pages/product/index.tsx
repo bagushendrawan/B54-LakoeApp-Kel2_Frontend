@@ -1,113 +1,63 @@
-import MapComponent from '@/components/location';
-import React, { useState } from 'react';
-import { FaSearch, FaChevronDown, FaEllipsisH } from 'react-icons/fa';
+import { ChangeEvent, useState } from "react";
+import IconInput from "./components/iconInput";
+import Dropdown from "./components/dropDown";
+import ProductItem from "./components/productItem";
+import { Button } from "@/components/ui/button";
+import { CiCirclePlus } from "react-icons/ci";
 
-const IconInput = ({ icon: Icon, placeholder, value, onChange }) => {
-    return (
-        <div className="relative flex items-center w-full">
-            <span className="absolute left-3 text-gray-500">
-                <Icon />
-            </span>
-            <input
-                type="text"
-                className="pl-10 pr-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-            />
-        </div>
-    );
-};
+const Product = () => {
+    const categories = ["Semua Kategori", "Audio, Kamera & Elektronik", "Buku", "Dapur", "Fashion Anak & Bayi", "Fashion Muslim", "Fashion Pria", "Fashion Wanita"];
 
-const Dropdown = ({ label, options, selectedOption, onSelect }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const sortingOptions = ["Terakhir Diubah", "Terlaris", "Kurang Diminati", "Harga Tertinggi", "Harga Terendah", "Stok Terbanyak", "Stok Tersedikit"];
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleOptionClick = (option) => {
-        onSelect(option);
-        setIsOpen(false);
-    };
-
-    return (
-        <div className="relative inline-block w-full">
-            <div className="flex items-center border rounded px-3 py-2 cursor-pointer" onClick={toggleDropdown}>
-                <span>{selectedOption}</span>
-                <FaChevronDown className="ml-auto text-gray-500" />
-            </div>
-            {isOpen && (
-                <div className="absolute mt-1 w-full bg-white border rounded shadow-lg z-10">
-                    {options.map((option) => (
-                        <div
-                            key={option}
-                            className={`flex items-center p-2 hover:bg-gray-100 cursor-pointer ${selectedOption === option ? 'bg-blue-50' : ''
-                                }`}
-                            onClick={() => handleOptionClick(option)}
-                        >
-                            <span className="flex-1">{option}</span>
-                            {selectedOption === option && <span className="text-blue-500 ml-2">•</span>}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
-};
-
-const ProductItem = ({ product, onToggle }) => {
-    return (
-        <div className="flex items-center justify-between border-b py-4">
-            <div className="flex items-center">
-                <img src={product.image} alt={product.name} className="w-16 h-16 mr-4" />
-                <div>
-                    <div className="font-bold">{product.name}</div>
-                    <div className="text-gray-500">{product.price}</div>
-                    <div className="text-gray-500">{product.stock}</div>
-                    <div className="text-gray-500">{product.sku}</div>
-                </div>
-            </div>
-            <div className="flex items-center space-x-2">
-                <button className="px-3 py-1 border rounded">Ubah Harga</button>
-                <button className="px-3 py-1 border rounded">Ubah Stok</button>
-                <button className="px-3 py-1 border rounded">Lihat Halaman</button>
-                <button className="px-3 py-1 border rounded">
-                    <FaEllipsisH />
-                </button>
-                <label className="switch">
-                    <input type="checkbox" checked={product.active} onChange={() => onToggle(product.id)} />
-                    <span className="slider round"></span>
-                </label>
-            </div>
-        </div>
-    );
-};
-
-const App = () => {
-    const categories = ['Semua Kategori', 'Audio, Kamera & Elektronik', 'Buku', 'Dapur', 'Fashion Anak & Bayi', 'Fashion Muslim', 'Fashion Pria', 'Fashion Wanita'];
-    const sortingOptions = ['Terakhir Diubah', 'Terlaris', 'Kurang Diminati', 'Harga Tertinggi', 'Harga Terendah', 'Stok Terbanyak', 'Stok Tersedikit'];
     const [products, setProducts] = useState([
         {
             id: 1,
-            image: 'https://via.placeholder.com/150',
-            name: 'KAOS BASIC COTTON KENARI',
-            price: 'Rp55.000',
-            stock: 'Stok: 20',
-            sku: 'SKU: 0219AKD192',
+            image: "https://via.placeholder.com/150",
+            name: "Kaos",
+            price: 55000,
+            stock: 200,
+            sku: "0219AKD192",
             active: true,
         },
-        // Add more product objects here
+        {
+            id: 2,
+            image: "https://via.placeholder.com/150",
+            name: "Celana",
+            price: 100000,
+            stock: 80,
+            sku: "0219AKD192",
+            active: true,
+        },
+        {
+            id: 3,
+            image: "https://via.placeholder.com/150",
+            name: "Sepatu",
+            price: 180000,
+            stock: 90,
+            sku: "0219AKD192",
+            active: true,
+        },
+        {
+            id: 4,
+            image: "https://via.placeholder.com/150",
+            name: "Kemeja",
+            price: 80000,
+            stock: 120,
+            sku: "0219AKD192",
+            active: true,
+        },
     ]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
-    const [selectedSort, setSelectedSort] = useState('Terlaris');
 
-    const handleSearchChange = (e) => {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
+    const [selectedSort, setSelectedSort] = useState("Terlaris");
+
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
-    const handleToggle = (id) => {
+    const handleToggle = (id: number) => {
         setProducts((prevProducts) =>
             prevProducts.map((product) =>
                 product.id === id ? { ...product, active: !product.active } : product
@@ -123,27 +73,42 @@ const App = () => {
         <div className="p-4">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Daftar Produk</h1>
-                <button className="px-4 py-2 bg-blue-500 text-white rounded">Tambah Produk</button>
+                <Button className="gap-2 rounded-full bg-[#0086B4]">
+                    <CiCirclePlus size={"1.3rem"} />
+                    Tambah Produk
+                </Button>
             </div>
-            <div className="flex space-x-4 mb-4">
+            <div className="flex space-x-4 mb-4 border-b">
                 <button className="text-blue-500 border-b-2 border-blue-500 pb-2">Semua</button>
                 <button className="text-gray-500">Aktif</button>
                 <button className="text-gray-500">Nonaktif</button>
             </div>
             <div className="flex space-x-4 mb-4">
-                <IconInput icon={FaSearch} placeholder="Cari produk" value={searchTerm} onChange={handleSearchChange} />
-                <Dropdown label="Semua Kategori" options={categories} selectedOption={selectedCategory} onSelect={setSelectedCategory} />
-                <Dropdown label="Urutkan" options={sortingOptions} selectedOption={selectedSort} onSelect={setSelectedSort} />
+                <IconInput value={searchTerm} onChange={handleSearchChange} />
+                <Dropdown options={categories} selectedOption={selectedCategory} onSelect={setSelectedCategory} />
+                <Dropdown options={sortingOptions} selectedOption={selectedSort} onSelect={setSelectedSort} />
             </div>
-            <div className="flex flex-col space-y-4">
+
+            <div className="flex items-center mb-2">
+                <p className="flex flex-1 text-xl font-bold">{filteredProducts.length} Produk</p>
+                <div className="flex items-center gap-2">
+                    <p>Pilih Semua</p>
+                    <input
+                        type="checkbox"
+                        style={{
+                            transform: "scale(1.3)"
+                        }}
+                    />
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
                 {filteredProducts.map((product) => (
                     <ProductItem key={product.id} product={product} onToggle={handleToggle} />
                 ))}
             </div>
-
-            <MapComponent />
         </div>
     );
 };
 
-export default App;
+export default Product;

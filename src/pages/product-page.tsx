@@ -70,7 +70,7 @@ const Product = () => {
 
             <div className="flex space-x-4 p-4">
                 {/* search field */}
-                <div className="relative flex items-center">
+                <div className="w-full relative flex items-center">
                     <span className="absolute left-3 text-gray-500">
                         <LuPackageSearch size={'1.5rem'} />
                     </span>
@@ -82,7 +82,7 @@ const Product = () => {
                 </div>
 
                 {/* dropdown 1 */}
-                <div className="relative inline-block w-full">
+                <div className="w-full relative inline-block">
                     <div className="flex items-center border rounded px-3 py-2 cursor-pointer" onClick={toggleDropdown}>
                         <span>{selectedOption}</span>
                         <FaChevronDown className="ml-auto text-gray-500" />
@@ -104,7 +104,7 @@ const Product = () => {
                 </div>
 
                 {/* dropdown 2 */}
-                <div className="relative inline-block w-full">
+                <div className="w-full relative inline-block">
                     <div className="flex items-center border rounded px-3 py-2 cursor-pointer" onClick={toggleSortDropdown}>
                         <span>{selectedSortOption}</span>
                         <FaChevronDown className="ml-auto text-gray-500" />

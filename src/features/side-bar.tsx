@@ -1,9 +1,19 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import { Link } from "@tanstack/react-router";
 import { CgProfile } from "react-icons/cg";
 import { FiBox } from "react-icons/fi";
 import { GoHome } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineShoppingBag } from "react-icons/md";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../components/accordion"
+
+import { BsPersonBadge } from "react-icons/bs";
 
 export function SideBar() {
   return (
@@ -37,12 +47,38 @@ export function SideBar() {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/pengaturan"
-                  className="[&.active]:font-bold flex gap-2 items-center pb-3"
-                >
-                  <IoSettingsOutline /> Pengaturan
-                </Link>
+              <Accordion type="single" className="border-none" collapsible>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="p-0">
+                      <IoSettingsOutline/>Pengaturan</AccordionTrigger>
+                    <AccordionContent className="mt-2 p-0 ms-7">
+                    <Link
+                      to="/atur-toko"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                      Atur Toko
+                    </Link>
+                    </AccordionContent>
+                    <AccordionContent className="m-0 p-0 ms-7">
+                    <Link
+                      to="/pengiriman"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                      Pengiriman
+                    </Link>
+                    </AccordionContent>
+                    <AccordionContent className="m-0 p-0 ms-7">
+                    <Link
+                      to="/metode"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                      Metode Pembayaran
+                    </Link>
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                </Accordion>
+                
               </li>
             </div>
 
@@ -52,7 +88,7 @@ export function SideBar() {
                   to="/profile"
                   className="[&.active]:font-bold flex gap-2 items-center"
                 >
-                  <CgProfile /> Profile
+                 <BsPersonBadge/> Profile
                 </Link>
               </li>
             </div>

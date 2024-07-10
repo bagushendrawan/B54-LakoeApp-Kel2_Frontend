@@ -12,10 +12,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="p-2 flex">
-        {/* <SideBar /> */}
-        {/* <DashboardPage /> */}
+        <SideBar />
+        <DashboardPage />
         {/* <FormProdukPages /> */}
-        <Register/>
+        {/* <Register/> */}
     </div>
   );
 }

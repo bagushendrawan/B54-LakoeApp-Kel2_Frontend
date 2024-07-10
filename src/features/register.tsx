@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
+import Axios from "axios";
 import { Button } from "../components/ui/button"
 import {
   Form,
@@ -38,74 +38,27 @@ export function RegisterForm() {
     })
    
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof registerSchema>) {
+    async function onSubmit(values: z.infer<typeof registerSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
-      const formData = new FormData();
-    formData.append('full_name', values.username);
-    formData.append('email', values.email);
-    formData.append('phone', values.phone);
-    formData.append('password', values.password);
-    formData.append('role_id', values.role_id);
+    try {
+    const data = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+        role_id: values.role_id
+    }
     const response = await Axios({
         method: "post",
-        url: `${api}/register`,
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+        url: `http://localhost:3000/users`,
+        data: data,
+        headers: { "Content-Type": "application/json" },
         })
-    if(response.status === 201)
-      {
-          toast({
-              title: "Register success!, Please check your email to verify",
-              status: "success",
-              duration: 5000,
-              isClosable: true,
-            });
-          navigate("/");
-      }
-    } catch (error : any) {
-      toast({
-        title: error.response.data,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    console.log(error);
-    }
-      console.log(values)
-    }
-
-    const onSubmit: SubmitHandler<registerForm> = async(data) => {
-        try {
-          const formData = new FormData();
-          formData.append('full_name', data.full_name);
-          formData.append('email', data.email);
-          formData.append('password', data.password);
-            const response = await Axios({
-                method: "post",
-                url: `${api}/register`,
-                data: formData,
-                headers: { "Content-Type": "multipart/form-data" },
-                })
-            if(response.status === 201)
-              {
-                  toast({
-                      title: "Register success!, Please check your email to verify",
-                      status: "success",
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  navigate("/");
-              }
-            } catch (error : any) {
-              toast({
-                title: error.response.data,
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-              });
-            console.log(error);
-            }
+        console.log(response)
+        } catch (error : any) {
+        console.log(error);
+        }
     }
 
     return (

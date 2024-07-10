@@ -14,8 +14,11 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as ProdukImport } from './routes/produk'
 import { Route as PesananImport } from './routes/pesanan'
+import { Route as PengirimanImport } from './routes/pengiriman'
 import { Route as PengaturanImport } from './routes/pengaturan'
+import { Route as MetodeImport } from './routes/metode'
 import { Route as DetailOrderImport } from './routes/detail-order'
+import { Route as AturTokoImport } from './routes/atur-toko'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -35,13 +38,28 @@ const PesananRoute = PesananImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const PengirimanRoute = PengirimanImport.update({
+  path: '/pengiriman',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PengaturanRoute = PengaturanImport.update({
   path: '/pengaturan',
   getParentRoute: () => rootRoute,
 } as any)
 
+const MetodeRoute = MetodeImport.update({
+  path: '/metode',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DetailOrderRoute = DetailOrderImport.update({
   path: '/detail-order',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AturTokoRoute = AturTokoImport.update({
+  path: '/atur-toko',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -61,6 +79,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/atur-toko': {
+      id: '/atur-toko'
+      path: '/atur-toko'
+      fullPath: '/atur-toko'
+      preLoaderRoute: typeof AturTokoImport
+      parentRoute: typeof rootRoute
+    }
     '/detail-order': {
       id: '/detail-order'
       path: '/detail-order'
@@ -68,11 +93,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DetailOrderImport
       parentRoute: typeof rootRoute
     }
+    '/metode': {
+      id: '/metode'
+      path: '/metode'
+      fullPath: '/metode'
+      preLoaderRoute: typeof MetodeImport
+      parentRoute: typeof rootRoute
+    }
     '/pengaturan': {
       id: '/pengaturan'
       path: '/pengaturan'
       fullPath: '/pengaturan'
       preLoaderRoute: typeof PengaturanImport
+      parentRoute: typeof rootRoute
+    }
+    '/pengiriman': {
+      id: '/pengiriman'
+      path: '/pengiriman'
+      fullPath: '/pengiriman'
+      preLoaderRoute: typeof PengirimanImport
       parentRoute: typeof rootRoute
     }
     '/pesanan': {
@@ -103,8 +142,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  AturTokoRoute,
   DetailOrderRoute,
+  MetodeRoute,
   PengaturanRoute,
+  PengirimanRoute,
   PesananRoute,
   ProdukRoute,
   ProfileRoute,
@@ -119,8 +161,11 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/atur-toko",
         "/detail-order",
+        "/metode",
         "/pengaturan",
+        "/pengiriman",
         "/pesanan",
         "/produk",
         "/profile"
@@ -129,11 +174,20 @@ export const routeTree = rootRoute.addChildren({
     "/": {
       "filePath": "index.tsx"
     },
+    "/atur-toko": {
+      "filePath": "atur-toko.tsx"
+    },
     "/detail-order": {
       "filePath": "detail-order.tsx"
     },
+    "/metode": {
+      "filePath": "metode.tsx"
+    },
     "/pengaturan": {
       "filePath": "pengaturan.tsx"
+    },
+    "/pengiriman": {
+      "filePath": "pengiriman.tsx"
     },
     "/pesanan": {
       "filePath": "pesanan.tsx"

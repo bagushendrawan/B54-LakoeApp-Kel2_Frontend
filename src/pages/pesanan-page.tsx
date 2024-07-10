@@ -6,9 +6,6 @@ export function PesananPage() {
   return (
     <>
       <div className="flex">
-        <div>
-          <SideBar />
-        </div>
         <div className="m-4 bg-white rounded-lg">
           <DaftarPesanan />
         </div>

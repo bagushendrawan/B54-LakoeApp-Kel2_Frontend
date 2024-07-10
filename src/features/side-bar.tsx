@@ -49,18 +49,11 @@ export function SideBar() {
               <li>
               <Accordion type="single" className="border-none" collapsible>
                   <AccordionItem value="item-1">
-                    <AccordionTrigger className="p-0"><IoSettingsOutline/>Pengaturan</AccordionTrigger>
+                    <AccordionTrigger className="p-0">
+                      <IoSettingsOutline/>Pengaturan</AccordionTrigger>
                     <AccordionContent className="mt-2 p-0 ms-7">
                     <Link
-                      to="/pengaturan"
-                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
-                    >
-                      Pengaturan
-                    </Link>
-                    </AccordionContent>
-                    <AccordionContent className="m-0 p-0 ms-7">
-                    <Link
-                      to="/pengaturan"
+                      to="/atur-toko"
                       className="[&.active]:font-bold flex gap-2 items-center pb-3"
                     >
                       Atur Toko
@@ -68,7 +61,15 @@ export function SideBar() {
                     </AccordionContent>
                     <AccordionContent className="m-0 p-0 ms-7">
                     <Link
-                      to="/pengaturan"
+                      to="/pengiriman"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                      Pengiriman
+                    </Link>
+                    </AccordionContent>
+                    <AccordionContent className="m-0 p-0 ms-7">
+                    <Link
+                      to="/metode"
                       className="[&.active]:font-bold flex gap-2 items-center pb-3"
                     >
                       Metode Pembayaran

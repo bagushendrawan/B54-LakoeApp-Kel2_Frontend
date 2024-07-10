@@ -3,6 +3,7 @@ import { HeaderInformasiToko } from "./headerPengaturan";
 import { FormInformasiToko } from "./informasi";
 import { LokasiToko } from "./lokasi";
 import { TemplatePesan } from "./templatePesan";
+import { createFileRoute } from "@tanstack/react-router";
 
 export function MainSetting() {
   return (

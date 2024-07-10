@@ -70,7 +70,7 @@ const Product = () => {
     );
 
     return (
-        <div className="p-4">
+        <div className="p-4 bg-white">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Daftar Produk</h1>
                 <Button className="gap-2 rounded-full bg-[#0086B4]">

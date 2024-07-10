@@ -6,7 +6,7 @@ import { BsCash, BsGift, BsInfoCircle, BsPlus, BsQuestionDiamond, BsReceipt } fr
 export function DashboardPage() {
     return (
         <>
-        <div className="bg-slate-200 w-11/12 flex flex-col gap-4 ms-4 p-4">
+        <div className="bg-slate-200 w-full flex flex-col gap-4 ms-4 p-4">
             <h1 className="text-2xl font-bold">Credit Dashboard</h1>
             <div className="flex gap-4">
                 <div className="w-5/12 bg-slate-50 p-4">

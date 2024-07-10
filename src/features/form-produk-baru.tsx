@@ -2,11 +2,13 @@ import { Button } from "../components/button";
 import { DeskripsiProduk, PilihKategori, ProductForm, URLHalamanCheckoutForm } from "./validators/form-produk-baru";
 import { Input } from "../components/input";
 import { BsImage, BsPlusCircle } from "react-icons/bs";
+import { useState } from "react";
 
 export function FormProdukBaru() {
+    const [isVariant, setVariant] = useState<Boolean>(false);
     return (
         <>
-        <div className="flex flex-col ms-3 bg-slate-200 w-1/2 p-3">
+        <div className="flex flex-col ms-3 bg-slate-200 w-7/12 p-3">
             <div id="informasi-produk" className=" bg-slate-50 p-4">
             <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
             <ProductForm/>
@@ -49,12 +51,24 @@ export function FormProdukBaru() {
             </div>
             </div>
 
-            <div id="arian-produk" className="mt-4 bg-slate-50 p-4">
+            <div id="varian-produk" className="mt-4 bg-slate-50 p-4">
                 <h1 className="font-bold text-xl mb-2">Varian Produk</h1>
                 <p className="text-gray-400 text-sm mb-2">Tambah varian agar pembeli dapat memilih produk yang sesuai, yuk!</p>
-                <div className="w-full flex flex-row-reverse">
+                {isVariant ?  
+                <div className="w-full flex flex-col">
+                <Button variant={"outline"} className="rounded-2xl self-end" onClick={()=> {setVariant(false);}}><BsPlusCircle className="me-2"/>Hapus Varian</Button>
+                <div className="">
+                <Button variant={"outline"} className="rounded-2xl">Warna</Button>
+                <Button variant={"outline"} className="rounded-2xl">Ukuran</Button>
+                <Button variant={"outline"} className="rounded-2xl">Ukuran Kemasan</Button>
                 <Button variant={"outline"} className="rounded-2xl"><BsPlusCircle className="me-2"/>Tambah Varian</Button>
                 </div>
+                </div>
+                    :  
+                <div className="w-full flex flex-row-reverse">
+                    <Button variant={"outline"} className="rounded-2xl" onClick={()=> {setVariant(true)}}><BsPlusCircle className="me-2"/>Tambah Varian</Button>
+                </div>
+                }
             </div>
             
             <div id="harga" className="mt-4 bg-slate-50 p-4">

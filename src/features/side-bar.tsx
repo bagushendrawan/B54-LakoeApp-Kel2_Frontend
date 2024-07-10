@@ -1,6 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import { Link } from "@tanstack/react-router";
-import { CgProfile } from "react-icons/cg";
 import { FiBox } from "react-icons/fi";
 import { GoHome } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -11,7 +9,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../components/accordion"
+} from "../components/accordion";
 
 import { BsPersonBadge } from "react-icons/bs";
 

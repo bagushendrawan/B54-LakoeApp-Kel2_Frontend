@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
+import Axios from "axios";
 import { Button } from "../components/ui/button"
 import {
   Form,
@@ -38,10 +38,27 @@ export function RegisterForm() {
     })
    
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof registerSchema>) {
+    async function onSubmit(values: z.infer<typeof registerSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
-      console.log(values)
+    try {
+    const data = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+        role_id: values.role_id
+    }
+    const response = await Axios({
+        method: "post",
+        url: `http://localhost:3000/users`,
+        data: data,
+        headers: { "Content-Type": "application/json" },
+        })
+        console.log(response)
+        } catch (error : any) {
+        console.log(error);
+        }
     }
 
     return (

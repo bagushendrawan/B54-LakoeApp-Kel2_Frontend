@@ -12,9 +12,9 @@ export function DetailOrderPage() {
   return (
     <>
       <div className="flex">
-        <div>
+        {/* <div>
           <SideBar />
-        </div>
+        </div> */}
 
         <div>
           <div className="flex items-center">

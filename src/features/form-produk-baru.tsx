@@ -519,12 +519,11 @@ export function FormProdukBaru() {
 
                 <Button variant={"outline"} className="rounded-3xl self-start">Preview Halaman Checkout</Button>
                 <div>
-                <Button variant={"outline"} className="rounded-3xl">Batal</Button>
-
+                <Button variant={"outline"} className="rounded-3xl me-2">Batal</Button>
+                <Button variant={"outline"} type="submit" className="bg-blue-600 text-white rounded-3xl">Simpan</Button>
                 </div>
             </div>
             </div>
-            <Button variant={"outline"} type="submit" className="bg-blue-600 text-white rounded-3xl">Simpan</Button>
             </form>
             </Form>
         </>

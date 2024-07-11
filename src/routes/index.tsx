@@ -1,4 +1,3 @@
-
 import { SideBar } from "@/features/side-bar";
 import { DashboardPage } from "../pages/dashboard-page";
 import { FormProdukPages } from "../pages/form-produk-baru";
@@ -12,10 +11,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="p-2 flex">
-        <SideBar />
-        <DashboardPage />
-        {/* <FormProdukPages /> */}
-        {/* <Register/> */}
+      <SideBar />
+      <DashboardPage />
+      {/* <FormProdukPages /> */}
+      {/* <Register/> */}
     </div>
   );
 }

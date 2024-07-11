@@ -54,7 +54,7 @@ export function DetailOrderPage() {
           </div>
 
           <div className="m-4 bg-white rounded-lg">
-              <SubmitOrder />
+            <SubmitOrder />
           </div>
         </div>
 

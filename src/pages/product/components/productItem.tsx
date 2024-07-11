@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { FC } from "react";
-import { FaEllipsisH } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { LuLink } from "react-icons/lu";
+import UpdatePriceDialog from "./updatePriceDialog";
+import UpdateStockDialog from "./updateStockDialog";
+import DropDownMenu from "./dropDownMenu";
 
 interface IProduct {
     id: number;
@@ -11,15 +13,25 @@ interface IProduct {
     price: number;
     stock: number;
     sku: string;
-    active: boolean;
+    is_active: boolean;
 }
 
 interface IProductItemProps {
     product: IProduct;
     onToggle: (id: number) => void;
+    onUpdatePrice: (id: number, newPrice: number) => void;
+    onUpdateStock: (id: number, newStock: number) => void;
 }
 
-const ProductItem: FC<IProductItemProps> = ({ product, onToggle }) => {
+const ProductItem: FC<IProductItemProps> = ({ product, onToggle, onUpdatePrice, onUpdateStock }) => {
+    const handleUpdatePrice = (newPrice: number) => {
+        onUpdatePrice(product.id, newPrice);
+    };
+
+    const handleUpdateStock = (newStock: number) => {
+        onUpdateStock(product.id, newStock);
+    };
+
     return (
         <div className="w-full border p-4 rounded shadow-md">
             <div className="w-full flex items-center gap-4">
@@ -34,9 +46,7 @@ const ProductItem: FC<IProductItemProps> = ({ product, onToggle }) => {
                         <p className="flex flex-1 text-xl font-bold">{product.name}</p>
                         <input
                             type="checkbox"
-                            style={{
-                                transform: 'scale(1.3)'
-                            }}
+                            className="w-4 h-4"
                         />
                     </div>
 
@@ -51,20 +61,18 @@ const ProductItem: FC<IProductItemProps> = ({ product, onToggle }) => {
 
                         <div className="flex items-center">
                             <div className="flex flex-1 items-center gap-2">
-                                <Button variant={'outline'} className="rounded-full">Ubah Harga</Button>
-                                <Button variant={'outline'} className="rounded-full">Ubah Stok</Button>
+                                <UpdatePriceDialog product={product} updatePrice={handleUpdatePrice} />
+                                <UpdateStockDialog product={product} updatePrice={handleUpdateStock} />
                                 <Button variant={'outline'} className="gap-2 rounded-full">
                                     <LuLink />
                                     Lihat Halaman
                                 </Button>
-                                <Button variant={'outline'} className="rounded-full">
-                                    <FaEllipsisH />
-                                </Button>
+                                <DropDownMenu product={product} />
                             </div>
 
                             <div>
                                 <label className="switch">
-                                    <input type="checkbox" checked={product.active} onChange={() => onToggle(product.id)} />
+                                    <input type="checkbox" checked={product.is_active} onChange={() => onToggle(product.id)} />
                                     <span className="slider round"></span>
                                 </label>
                             </div>

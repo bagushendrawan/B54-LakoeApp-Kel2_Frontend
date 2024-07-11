@@ -1,14 +1,15 @@
 import { Button } from "@/components/button";
-import { DialogHeader, DialogFooter } from "@/components/dialog";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/dialog";
+import { Input } from "@/components/input";
+import { Label } from "@/components/label";
 import {
   Select,
   SelectContent,
@@ -18,52 +19,91 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+import React, { useState } from "react";
 
-export function HeaderPengaturan() {
-  return (
-    <>
-      <div className="w-screen">
-        <div className="mt-3">
-          <Label className="text-2xl pl-5">Pengaturan</Label>
-        </div>
-      </div>
-    </>
-  );
+interface Location {
+  id: number;
+  namaLokasi: string;
+  alamat: string;
+  kota: string;
+  kodePos: string;
+  pinpoint: string;
 }
 
-export function HeaderInformasiToko() {
-  return (
-    <>
-      <div className="w-screen">
-        <div className="mt-3">
-          <Label className="font-bold text-xl">Informasi Toko</Label>
-        </div>
-      </div>
-    </>
-  );
-}
+export const Toko: React.FC = () => {
+  const [locations, setLocations] = useState<Location[]>([
+    {
+      id: 1,
+      namaLokasi: " 1",
+      alamat: "Alamat 1",
+      kota: "Kota 1",
+      kodePos: "11111",
+      pinpoint: "Pinpoint 1",
+    },
+    {
+      id: 2,
+      namaLokasi: "Lokasi 2",
+      alamat: "Alamat 2",
+      kota: "Kota 2",
+      kodePos: "22222",
+      pinpoint: "Pinpoint 2",
+    },
+    {
+      id: 3,
+      namaLokasi: "Lokasi 3",
+      alamat: "Alamat 3",
+      kota: "Kota 3",
+      kodePos: "33333",
+      pinpoint: "Pinpoint 3",
+    },
+  ]);
 
-export function HeaderLogoToko() {
+  const [editId, setEditId] = useState<number | null>(null);
+  const [formData, setFormData] = useState<Location>({
+    id: 0,
+    namaLokasi: "",
+    alamat: "",
+    kota: "",
+    kodePos: "",
+    pinpoint: "",
+  });
+
+  const handleEdit = (location: Location) => {
+    setEditId(location.id);
+    setFormData(location);
+  };
+
+  const handleDelete = (id: number) => {
+    setLocations(locations.filter((location) => location.id !== id));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editId !== null) {
+      setLocations(
+        locations.map((location) =>
+          location.id === editId ? formData : location
+        )
+      );
+      setEditId(null);
+      setFormData({
+        id: 0,
+        namaLokasi: "",
+        alamat: "",
+        kota: "",
+        kodePos: "",
+        pinpoint: "",
+      });
+    }
+  };
+
   return (
     <>
-      <div className="w-screen">
-        <div className="mt-3 mb-5">
-          <Label className="font-bold text-xl">Logo Toko</Label>
-        </div>
-      </div>
-    </>
-  );
-}
-export function LokasiTokoHeader() {
-  return (
-    <>
-      <div className="w-screen inline-flex ">
-        <div className="mt-3 mb-5 w-screen flex flex-col">
-          <Label className="font-bold text-xl">Lokasi Toko</Label>
-          <Label className="mt-3 font-medium text-gray-400">
-            Alamat akan digunakan sebagai alamat pengirimanmu
-          </Label>
-        </div>
+      <form onSubmit={handleSubmit}>
         <div className="mt-5 mr-10 ">
           <Dialog>
             <DialogTrigger>
@@ -157,24 +197,9 @@ export function LokasiTokoHeader() {
             </DialogContent>
           </Dialog>
         </div>
-      </div>
+      </form>
     </>
   );
-}
+};
 
-export function TemplatePesanHeader() {
-  return (
-    <>
-      <div className="w-screen inline-flex justify-between">
-        <div className="mt-3 mb-5 w-screen flex flex-col">
-          <Label className="font-bold text-xl mt-3">
-            Daftar Template Pesan
-          </Label>
-        </div>
-        <div className="mr-10 mt-3">
-          <Button variant="outline">Buat Template</Button>
-        </div>
-      </div>
-    </>
-  );
-}
+export {};

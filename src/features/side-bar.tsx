@@ -11,15 +11,18 @@ import {
   AccordionTrigger,
 } from "../components/accordion";
 
-import { BsPersonBadge } from "react-icons/bs";
+import { BsPerson, BsPersonBadge } from "react-icons/bs";
 
 export function SideBar() {
   return (
     <>
-      <div className="bg-white w-60 h-screen">
+      <div className="bg-stone-100 w-60 h-screen">
         <ul>
           <div className="text-xl pl-5 h-screen flex flex-col justify-between">
-            <div className="mt-5">
+          <div>
+            {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
+            <img src="/Lakoe.png" className="w-32 mt-2"/>
+            <div className="mt-2">
               <li>
                 <Link
                   to="/"
@@ -45,7 +48,13 @@ export function SideBar() {
                 </Link>
               </li>
               <li>
-              <Accordion type="single" className="border-none" collapsible>
+              <Link
+                      to="/atur-toko"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                      <IoSettingsOutline/> Pengaturan
+              </Link>
+              {/* <Accordion type="single" className="border-none" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="p-0">
                       <IoSettingsOutline/>Pengaturan</AccordionTrigger>
@@ -75,18 +84,18 @@ export function SideBar() {
                     </AccordionContent>
                   </AccordionItem>
                   
-                </Accordion>
+                </Accordion> */}
                 
               </li>
             </div>
-
+          </div>
             <div className="mb-5">
               <li>
                 <Link
-                  to="/profile"
+                  to="/login"
                   className="[&.active]:font-bold flex gap-2 items-center"
                 >
-                 <BsPersonBadge/> Profile
+                 <BsPerson/> Logout
                 </Link>
               </li>
             </div>

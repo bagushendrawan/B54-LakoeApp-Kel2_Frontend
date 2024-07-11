@@ -25,7 +25,7 @@ const registerSchema = z.object({
     role_id: z.number({message:"role_id harus diisi"}).max(1),
   })
 
-export function RegisterForm() {
+export function LoginForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof registerSchema>>({
       resolver: zodResolver(registerSchema),
@@ -64,22 +64,9 @@ export function RegisterForm() {
 
     return (
       <div className="w-full h-screen bg-slate-200 p-8 flex flex-col justify-center items-center m-auto">
-        <h1 className="font-bold text-3xl">Register</h1>
+        <h1 className="font-bold text-3xl">Login</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-4/6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Masukan username" {...field} required/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}
@@ -89,20 +76,6 @@ export function RegisterForm() {
                   <FormLabel className="font-normal mt-2">Email</FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan email" {...field} required/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Phone</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Masukan phone" {...field} required/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,21 +96,8 @@ export function RegisterForm() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="role_id"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Role_id</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Masukan Role_id" {...field} required/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="flex gap-4 items-center">
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Login</Button>
             <h1>Are You A Buyer?</h1>
             <Link className="">Click Here</Link>
             </div>

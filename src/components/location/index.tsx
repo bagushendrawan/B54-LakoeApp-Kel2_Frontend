@@ -26,7 +26,7 @@ const MapComponent = () => {
     return (
         <div className="w-full">
             <MapContainer
-                className="w-full h-96"
+                className="w-full h-48"
                 center={markerPosition}
                 zoom={13}
                 scrollWheelZoom={false}

@@ -19,6 +19,7 @@ import { Route as PengaturanImport } from './routes/pengaturan'
 import { Route as MetodeImport } from './routes/metode'
 import { Route as DetailOrderImport } from './routes/detail-order'
 import { Route as CheckoutImport } from './routes/checkout'
+import { Route as BuyerDashboardImport } from './routes/buyer-dashboard'
 import { Route as BuyerImport } from './routes/buyer'
 import { Route as AturTokoImport } from './routes/atur-toko'
 import { Route as IndexImport } from './routes/index'
@@ -65,6 +66,11 @@ const CheckoutRoute = CheckoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const BuyerDashboardRoute = BuyerDashboardImport.update({
+  path: '/buyer-dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const BuyerRoute = BuyerImport.update({
   path: '/buyer',
   getParentRoute: () => rootRoute,
@@ -103,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/buyer'
       fullPath: '/buyer'
       preLoaderRoute: typeof BuyerImport
+      parentRoute: typeof rootRoute
+    }
+    '/buyer-dashboard': {
+      id: '/buyer-dashboard'
+      path: '/buyer-dashboard'
+      fullPath: '/buyer-dashboard'
+      preLoaderRoute: typeof BuyerDashboardImport
       parentRoute: typeof rootRoute
     }
     '/checkout': {
@@ -170,6 +183,7 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AturTokoRoute,
   BuyerRoute,
+  BuyerDashboardRoute,
   CheckoutRoute,
   DetailOrderRoute,
   MetodeRoute,
@@ -191,6 +205,7 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/atur-toko",
         "/buyer",
+        "/buyer-dashboard",
         "/checkout",
         "/detail-order",
         "/metode",
@@ -209,6 +224,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/buyer": {
       "filePath": "buyer.tsx"
+    },
+    "/buyer-dashboard": {
+      "filePath": "buyer-dashboard.tsx"
     },
     "/checkout": {
       "filePath": "checkout.tsx"

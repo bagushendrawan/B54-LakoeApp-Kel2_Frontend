@@ -6,6 +6,7 @@ import {
 } from "@/components/accordion";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
+import MapComponent from "@/components/location/index";
 import { Textarea } from "@/components/textarea";
 import { Toggle } from "@/components/toggle";
 import { Button } from "@/components/ui/button";
@@ -18,20 +19,52 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { IoIosArrowForward, IoIosPin } from "react-icons/io";
 import { IoWarning } from "react-icons/io5";
+import { z } from "zod";
+
+const checkoutSchema = z.object({
+  nama_kontak: z.string({ message: "nama harus diisi!" }),
+  whatsapp: z.string({ message: "nomor whatsapp harus diisi!" }),
+  nama: z.string({ message: "nama harus diisi!" }),
+  telepon: z.string({ message: "nomor telepon harus diisi!" }),
+  kecamatan: z.string({ message: "harus diisi" }),
+  kelurahan: z.string({ message: "harus diisi" }),
+  detail_alamat: z.string({ message: "harus diisi" }),
+  metode_pengiriman: z.string({ message: "harus diisi" }),
+  metode_pembayaran: z.string({ message: "harus diisi" }),
+});
+
+export function CheckoutForm() {
+  const form = useForm<z.infer<typeof checkoutSchema>>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      nama_kontak: "",
+      whatsapp: "",
+      nama: "",
+      telepon: "",
+      kecamatan: "",
+      kelurahan: "",
+      detail_alamat: "",
+      metode_pengiriman: "",
+      metode_pembayaran: "",
+    },
+  });
+}
 
 export function CheckoutPage() {
-  const [selectTab, setSelectTab] = useState<number>(0)
-  const tabCount = 2
+  const [selectTab, setSelectTab] = useState<number>(0);
+  const tabCount = 2;
 
   function next() {
-    setSelectTab((selectTab + 1) % tabCount)
-    console.log(selectTab);
-    
+    setSelectTab((selectTab + 1) % tabCount);
   }
-
+  function back() {
+    setSelectTab((selectTab - 1) % tabCount);
+  }
 
   return (
     <>
@@ -40,12 +73,12 @@ export function CheckoutPage() {
 
         <div className="mt-4">
           <div>
-            <Tabs defaultValue={selectTab.toString()}>
+            <Tabs value={selectTab.toString()}>
               <TabsList className="grid w-3/5 grid-cols-2 cursor-not-allowed">
                 <TabsTrigger value="0" className="cursor-not-allowed">
                   <p>Langkah 1 | Info Pengiriman</p>
                 </TabsTrigger>
-                <TabsTrigger value="1">
+                <TabsTrigger value="1" className="cursor-not-allowed">
                   <p>Langkah 2 | Metode Pembayaran</p>
                 </TabsTrigger>
               </TabsList>
@@ -120,7 +153,7 @@ export function CheckoutPage() {
                               </div>
 
                               <div>
-                                <p>INI NANTI ISI MAPS</p>
+                                <MapComponent />
                               </div>
 
                               <div className="flex gap-3 items-center text-blue-500">
@@ -190,42 +223,6 @@ export function CheckoutPage() {
                   </div>
 
                   <div className="flex flex-col basis-2/5 items-center">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <div className="border border-black w-5/6 rounded-lg py-3 flex justify-center mb-4 cursor-pointer">
-                          <p className="flex gap-2 items-center font-bold">
-                            Gunakan / Masukkan Voucher <IoIosArrowForward />
-                          </p>
-                        </div>
-                      </DialogTrigger>
-                      <DialogContent className="text-sm">
-                        <DialogHeader className="border-b-2 py-3">
-                          <DialogTitle>Pilih Diskon Voucher</DialogTitle>
-
-                          <div className="flex gap-3 pt-3">
-                            <Input placeholder="Masukkan kode voucher" />
-                            <Button>Terapkan</Button>
-                          </div>
-                        </DialogHeader>
-
-                        <div>
-                          <Accordion type="single" collapsible>
-                            <AccordionItem value="item-1">
-                              <AccordionTrigger>
-                                Pilih voucher yang tersedia
-                              </AccordionTrigger>
-                              <AccordionContent>
-                                -
-                              </AccordionContent>
-                              <AccordionContent>
-                                -
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-
                     <div className="border border-blue-900 bg-blue-300 w-5/6 rounded-lg p-3 mb-4">
                       <p>Ringkasan Pesanan</p>
 
@@ -265,7 +262,9 @@ export function CheckoutPage() {
                       />
                     </div>
 
-                    <Button className="w-5/6" onClick={next}>Pilih Pembayaran</Button>
+                    <Button className="w-5/6" onClick={() => next()}>
+                      Pilih Pembayaran
+                    </Button>
                   </div>
                 </div>
               </TabsContent>
@@ -335,11 +334,37 @@ export function CheckoutPage() {
                   </div>
 
                   <div className="flex flex-col basis-2/5 items-center">
-                    <div className="border border-black w-5/6 rounded-lg py-3 flex justify-center mb-4">
-                      <p className="flex gap-2 items-center font-bold">
-                        Gunakan / Masukkan Voucher <IoIosArrowForward />
-                      </p>
-                    </div>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <div className="border border-black w-5/6 rounded-lg py-3 flex justify-center mb-4 cursor-pointer">
+                            <p className="flex gap-2 items-center font-bold">
+                              Gunakan / Masukkan Voucher <IoIosArrowForward />
+                            </p>
+                          </div>
+                        </DialogTrigger>
+                        <DialogContent className="text-sm">
+                          <DialogHeader className="border-b-2 py-3">
+                            <DialogTitle>Pilih Diskon Voucher</DialogTitle>
+
+                            <div className="flex gap-3 pt-3">
+                              <Input placeholder="Masukkan kode voucher" />
+                              <Button>Terapkan</Button>
+                            </div>
+                          </DialogHeader>
+
+                          <div>
+                            <Accordion type="single" collapsible>
+                              <AccordionItem value="item-1">
+                                <AccordionTrigger>
+                                  Pilih voucher yang tersedia
+                                </AccordionTrigger>
+                                <AccordionContent>-</AccordionContent>
+                                <AccordionContent>-</AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
 
                     <div className="border border-blue-900 bg-blue-300 w-5/6 rounded-lg p-3 mb-4">
                       <p>Ringkasan Pesanan</p>
@@ -374,7 +399,12 @@ export function CheckoutPage() {
 
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button className="w-5/6">Bayar</Button>
+                        <div className="flex gap-3 w-3/4">
+                          <Button className="w-full" onClick={() => back()}>
+                            Kembali
+                          </Button>
+                          <Button className="w-full">Bayar</Button>
+                        </div>
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader className="border-b-2 py-3">

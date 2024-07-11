@@ -1,6 +1,4 @@
 import { DaftarPesanan } from "@/features/pesanan/components/status-order/daftar-pesanan";
-import { RightBar } from "@/features/right-bar";
-import { SideBar } from "@/features/side-bar";
 
 export function PesananPage() {
   return (
@@ -9,9 +7,12 @@ export function PesananPage() {
         <div className="m-4 bg-white rounded-lg w-10/12">
           <DaftarPesanan />
         </div>
+<<<<<<< HEAD
         <div className="w-2/12">
           <RightBar />
         </div>
+=======
+>>>>>>> origin/buyer
       </div>
     </>
   );

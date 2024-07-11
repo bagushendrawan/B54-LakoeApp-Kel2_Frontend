@@ -4,18 +4,19 @@ import { DetailProduk } from "@/features/pesanan/components/detail-order/detail-
 import { InfoOrder } from "@/features/pesanan/components/detail-order/info-order";
 import { StatusOrder } from "@/features/pesanan/components/detail-order/status-order";
 import { SubmitOrder } from "@/features/pesanan/components/detail-order/submit-order";
-import { RightBar } from "@/features/right-bar";
-import { SideBar } from "@/features/side-bar";
 import { IoIosArrowForward } from "react-icons/io";
 
 export function DetailOrderPage() {
   return (
     <>
       <div className="flex">
+<<<<<<< HEAD
         {/* <div>
           <SideBar />
         </div> */}
 
+=======
+>>>>>>> origin/buyer
         <div>
           <div className="flex items-center">
             <h1 className="font-bold text-blue-500 text-l p-3 pr-0">
@@ -56,10 +57,6 @@ export function DetailOrderPage() {
           <div className="m-4 bg-white rounded-lg">
               <SubmitOrder />
           </div>
-        </div>
-
-        <div>
-          <RightBar />
         </div>
       </div>
     </>

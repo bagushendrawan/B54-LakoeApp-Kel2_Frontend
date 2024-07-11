@@ -18,6 +18,8 @@ import { Route as PengirimanImport } from './routes/pengiriman'
 import { Route as PengaturanImport } from './routes/pengaturan'
 import { Route as MetodeImport } from './routes/metode'
 import { Route as DetailOrderImport } from './routes/detail-order'
+import { Route as CheckoutImport } from './routes/checkout'
+import { Route as BuyerImport } from './routes/buyer'
 import { Route as AturTokoImport } from './routes/atur-toko'
 import { Route as IndexImport } from './routes/index'
 
@@ -58,6 +60,16 @@ const DetailOrderRoute = DetailOrderImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CheckoutRoute = CheckoutImport.update({
+  path: '/checkout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BuyerRoute = BuyerImport.update({
+  path: '/buyer',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AturTokoRoute = AturTokoImport.update({
   path: '/atur-toko',
   getParentRoute: () => rootRoute,
@@ -84,6 +96,20 @@ declare module '@tanstack/react-router' {
       path: '/atur-toko'
       fullPath: '/atur-toko'
       preLoaderRoute: typeof AturTokoImport
+      parentRoute: typeof rootRoute
+    }
+    '/buyer': {
+      id: '/buyer'
+      path: '/buyer'
+      fullPath: '/buyer'
+      preLoaderRoute: typeof BuyerImport
+      parentRoute: typeof rootRoute
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutImport
       parentRoute: typeof rootRoute
     }
     '/detail-order': {
@@ -143,6 +169,8 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AturTokoRoute,
+  BuyerRoute,
+  CheckoutRoute,
   DetailOrderRoute,
   MetodeRoute,
   PengaturanRoute,
@@ -162,6 +190,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/atur-toko",
+        "/buyer",
+        "/checkout",
         "/detail-order",
         "/metode",
         "/pengaturan",
@@ -176,6 +206,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/atur-toko": {
       "filePath": "atur-toko.tsx"
+    },
+    "/buyer": {
+      "filePath": "buyer.tsx"
+    },
+    "/checkout": {
+      "filePath": "checkout.tsx"
     },
     "/detail-order": {
       "filePath": "detail-order.tsx"

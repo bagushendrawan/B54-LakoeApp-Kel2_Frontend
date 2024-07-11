@@ -1,4 +1,3 @@
-
 import { SideBar } from "@/features/side-bar";
 import { DashboardPage } from "../pages/dashboard/dashboard-page";
 import { FormProdukPages } from "../pages/addProduct/form-produk-baru";
@@ -12,7 +11,11 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="p-2 flex">
+<<<<<<< HEAD
       {/* <SideBar /> */}
+=======
+      <SideBar />
+>>>>>>> origin/crud-setting
       <DashboardPage />
       {/* <FormProdukPages /> */}
       {/* <Register/> */}

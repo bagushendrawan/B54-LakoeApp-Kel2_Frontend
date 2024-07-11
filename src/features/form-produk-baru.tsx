@@ -397,6 +397,7 @@ export function FormProdukBaru() {
                       e.preventDefault();
                       variantHandle(0, "Ukuran");
                       setCurrentVariant("0");
+                      // {register("produk_variant")}
                     }}
                   >
                     Ukuran
@@ -657,7 +658,7 @@ export function FormProdukBaru() {
               <Input
                 placeholder="Harga"
                 className="rounded-s-none rounded-e-xl"
-                {...register("produk_harga")}
+                {...register("produk_harga", {valueAsNumber: true})}
               />
             </div>
 
@@ -666,7 +667,7 @@ export function FormProdukBaru() {
               <Input
                 placeholder="Produk"
                 className="rounded-e-none rounded-s-xl"
-                {...register("produk_min_beli")}
+                {...register("produk_min_beli", {valueAsNumber: true})}
               />
               <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
                 Produk
@@ -680,7 +681,7 @@ export function FormProdukBaru() {
               <div>
                 <p>Stok Produk</p>
                 <Input 
-                {...register("produk_stok")}></Input>
+                {...register("produk_stok", {valueAsNumber: true})}></Input>
               </div>
               <div>
                 <p>SKU(Stok Keeping Unit)</p>
@@ -698,7 +699,7 @@ export function FormProdukBaru() {
               <Input
                 placeholder="Berat Produk"
                 className="rounded-e-none rounded-s-xl"
-                {...register("produk_berat")}
+                {...register("produk_berat", {valueAsNumber: true})}
               />
               <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
                 Kg
@@ -711,7 +712,7 @@ export function FormProdukBaru() {
                 <Input
                   placeholder="Panjang"
                   className="rounded-e-none rounded-s-xl"
-                  {...register("produk_panjang")}
+                  {...register("produk_panjang", {valueAsNumber: true})}
                 />
                 <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
                   cm
@@ -721,7 +722,7 @@ export function FormProdukBaru() {
                 <Input
                   placeholder="Lebar"
                   className="rounded-e-none rounded-s-xl"
-                  {...register("produk_lebar")}
+                  {...register("produk_lebar", {valueAsNumber: true})}
                 />
                 <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
                   cm

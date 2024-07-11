@@ -7,12 +7,6 @@ export function PesananPage() {
         <div className="m-4 bg-white rounded-lg w-10/12">
           <DaftarPesanan />
         </div>
-<<<<<<< HEAD
-        <div className="w-2/12">
-          <RightBar />
-        </div>
-=======
->>>>>>> origin/buyer
       </div>
     </>
   );

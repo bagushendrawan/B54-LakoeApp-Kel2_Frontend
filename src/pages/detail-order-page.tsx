@@ -10,13 +10,6 @@ export function DetailOrderPage() {
   return (
     <>
       <div className="flex">
-<<<<<<< HEAD
-        {/* <div>
-          <SideBar />
-        </div> */}
-
-=======
->>>>>>> origin/buyer
         <div>
           <div className="flex items-center">
             <h1 className="font-bold text-blue-500 text-l p-3 pr-0">

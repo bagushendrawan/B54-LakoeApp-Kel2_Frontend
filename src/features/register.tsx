@@ -63,7 +63,7 @@ export function RegisterForm() {
     }
 
     return (
-      <div className="w-full h-screen bg-slate-200 p-8 flex flex-col justify-center items-center m-auto">
+      <div className="w-8/12 h-10/12 rounded-sm mt-8 bg-white p-8 flex flex-col justify-center items-center m-auto">
         <h1 className="font-bold text-3xl">Register</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-4/6">
@@ -136,10 +136,19 @@ export function RegisterForm() {
                 </FormItem>
               )}
             />
-            <div className="flex gap-4 items-center">
-            <Button type="submit">Submit</Button>
-            <h1>Are You A Buyer?</h1>
-            <Link to="/buyer" className="text-blue-500">Click Here</Link>
+            <div className="flex gap-4 items-center text-sm">
+            <Button type="submit">Register</Button>
+            <div className="flex flex-col">
+              <div className="flex">  
+              <h1 className="me-1">Are You A Buyer?</h1>
+              <Link to="/buyer" className="text-blue-500">Click Here</Link>
+              </div>
+
+              <div className="flex">
+              <h1 className="me-1">Do you have an account?</h1>
+              <Link to="/login" className="text-blue-500">Login</Link>
+              </div>
+            </div>
             </div>
           </form>
         </Form>

@@ -63,7 +63,7 @@ export function LoginForm() {
     }
 
     return (
-      <div className="w-full h-screen bg-slate-200 p-8 flex flex-col justify-center items-center m-auto">
+      <div className="w-8/12 h-10/12 rounded-sm mt-8 bg-white p-8 flex flex-col justify-center items-center m-auto">
         <h1 className="font-bold text-3xl">Login</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-4/6">
@@ -96,16 +96,18 @@ export function LoginForm() {
               )}
             />
 
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center text-sm">
             <Button type="submit">Login</Button>
-            <div className="flex gap-2">  
-            <h1>Are You A Buyer?</h1>
-            <Link to="/buyer" className="text-blue-500">Click Here</Link>
-            </div>
+            <div className="flex flex-col">
+              <div className="flex">  
+              <h1 className="me-1">Are You A Buyer?</h1>
+              <Link to="/buyer" className="text-blue-500">Click Here</Link>
+              </div>
 
-            <div className="flex gap-2">
-            <h1>Do you have an account?</h1>
-            <Link to="/register" className="text-blue-500">Register</Link>
+              <div className="flex">
+              <h1 className="me-1">Do you have an account?</h1>
+              <Link to="/register" className="text-blue-500">Register</Link>
+              </div>
             </div>
             </div>
           </form>

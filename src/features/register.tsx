@@ -139,7 +139,7 @@ export function RegisterForm() {
             <div className="flex gap-4 items-center">
             <Button type="submit">Submit</Button>
             <h1>Are You A Buyer?</h1>
-            <Link className="">Click Here</Link>
+            <Link to="/buyer" className="text-blue-500">Click Here</Link>
             </div>
           </form>
         </Form>

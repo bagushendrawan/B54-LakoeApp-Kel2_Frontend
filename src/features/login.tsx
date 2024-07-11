@@ -98,8 +98,15 @@ export function LoginForm() {
 
             <div className="flex gap-4 items-center">
             <Button type="submit">Login</Button>
+            <div className="flex gap-2">  
             <h1>Are You A Buyer?</h1>
-            <Link className="">Click Here</Link>
+            <Link to="/buyer" className="text-blue-500">Click Here</Link>
+            </div>
+
+            <div className="flex gap-2">
+            <h1>Do you have an account?</h1>
+            <Link to="/register" className="text-blue-500">Register</Link>
+            </div>
             </div>
           </form>
         </Form>

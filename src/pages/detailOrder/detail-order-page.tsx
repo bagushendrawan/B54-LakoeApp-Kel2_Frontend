@@ -9,7 +9,7 @@ import { IoIosArrowForward } from "react-icons/io";
 export function DetailOrderPage() {
   return (
     <>
-      <div className="flex">
+      <div className="flex w-full">
         <div>
           <div className="flex items-center">
             <h1 className="font-bold text-blue-500 text-l p-3 pr-0">

@@ -97,9 +97,15 @@ export function LoginForm() {
               </div>
 
               <div className="flex">
+              <h1 className="me-1">Are You An Admin?</h1>
+              <Link to="/admin" className="text-blue-500">Admin</Link>
+              </div>
+
+              <div className="flex">
               <h1 className="me-1">Do you have an account?</h1>
               <Link to="/register" className="text-blue-500">Register</Link>
               </div>
+              
             </div>
             </div>
           </form>

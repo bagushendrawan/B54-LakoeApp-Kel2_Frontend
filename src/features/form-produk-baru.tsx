@@ -1,32 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/select";
 import { Button } from "../components/button";
 import { Input } from "../components/input";
 import {
-    DeskripsiProduk,
-    PilihKategori,
-    ProductForm,
-    URLHalamanCheckoutForm,
+  DeskripsiProduk,
+  PilihKategori,
+  ProductForm,
+  URLHalamanCheckoutForm,
 } from "./validators/form-produk-baru";
 import { ChangeEvent, useEffect, useState } from "react";
 import { BsCircleFill, BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
 
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "../components/form";
 import { SubmitHandler, useFieldArray, useForm, UseFormSetValue } from "react-hook-form";
 import { Switch } from "@/components/switch";
@@ -57,16 +57,16 @@ import {
 } from "../components/dialog";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
-    const dataTransfer = new DataTransfer();
+  const dataTransfer = new DataTransfer();
 
-    Array.from(event.target.files!).forEach((image) =>
-        dataTransfer.items.add(image)
-    );
+  Array.from(event.target.files!).forEach((image) =>
+    dataTransfer.items.add(image)
+  );
 
-    const files = dataTransfer.files;
-    const displayUrl = URL.createObjectURL(event.target.files![0]);
+  const files = dataTransfer.files;
+  const displayUrl = URL.createObjectURL(event.target.files![0]);
 
-    return { files, displayUrl };
+  return { files, displayUrl };
 }
 
 export const menuItemsData = [
@@ -151,7 +151,7 @@ export function FormProdukBaru() {
     setPanjangValue(price);
     // register("produk_ukuran_option_panjang", { value: price });
     setValue("produk_ukuran_option_panjang", price);
-    console.log("panjang",price)
+    console.log("panjang", price);
   };
 
   const handleLebar = (index: number, event: any) => {
@@ -189,12 +189,12 @@ export function FormProdukBaru() {
     variantOptionHandle(0, data["options"]);
   }
 
-    function imageHandle(index: number, url: string) {
-        const newUrl = [...preview];
-        newUrl[index] = url;
-        setPreview(newUrl);
-        console.log(newUrl);
-    }
+  function imageHandle(index: number, url: string) {
+    const newUrl = [...preview];
+    newUrl[index] = url;
+    setPreview(newUrl);
+    console.log(newUrl);
+  }
 
   function imageOptionHandle(index: number, url: string) {
     const newUrl = [...previewOptions];
@@ -215,20 +215,20 @@ export function FormProdukBaru() {
     }
   }
 
-    function deleteVariantOptionHandle(x: number, y: number) {
-        const vary = [...variantOptions];
-        vary[x].splice(y, 1);
-        setVariantOptions(vary);
+  function deleteVariantOptionHandle(x: number, y: number) {
+    const vary = [...variantOptions];
+    vary[x].splice(y, 1);
+    setVariantOptions(vary);
 
-        console.log(variantOptions);
-    }
+    console.log(variantOptions);
+  }
 
-    function variantHandle(index: number, vary: string) {
-        const variants = [...variant];
-        variants[index] = vary;
-        setVariantValue(variants);
-        console.log(variants);
-    }
+  function variantHandle(index: number, vary: string) {
+    const variants = [...variant];
+    variants[index] = vary;
+    setVariantValue(variants);
+    console.log(variants);
+  }
 
   function handleVariantSwitch(index: number, bool: boolean) {
     if (!isVariantOption[index]) isVariantOption[index] = false;
@@ -258,17 +258,18 @@ export function FormProdukBaru() {
     console.log("variantopt", variantOptions);
   }, [variantOptions]);
 
-    return (
-        <>
-            <form onSubmit={handleSubmit(onSubmitForm)} className="w-full space-y-6">
-                <div className="flex flex-col ms-3 bg-slate-200 w-7/12 p-3">
-                    <div id="informasi-produk" className=" bg-slate-50 p-4">
-                        <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
-                        <h1 className=" text-md mb-2 mt-4">Nama Produk</h1>
-                        <Input
-                            placeholder="Masukan nama produk"
-                            {...register("produk_nama")}
-                        />
+  return (
+    <>
+      <form onSubmit={handleSubmit(onSubmitForm)} className="w-full">
+        <div className="flex flex-col gap-2">
+          {/* informasi produk */}
+          <div id="informasi-produk" className=" bg-white p-4 rounded">
+            <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
+            <h1 className=" text-md mb-2 mt-4">Nama Produk</h1>
+            <Input
+              placeholder="Masukan nama produk"
+              {...register("produk_nama")}
+            />
 
             <h1 className=" text-md mb-2 mt-4">URL Halaman Checkout</h1>
             <div className="flex justify-center items-center">
@@ -310,9 +311,9 @@ export function FormProdukBaru() {
               </SelectContent>
             </Select>
           </div>
-          {/* <DetailProduk/> */}
 
-          <div id="detail-produk" className="mt-4 bg-slate-50 p-4">
+          {/* <DetailProduk/> */}
+          <div id="detail-produk" className="bg-white p-4 rounded">
             <h1 className="font-bold text-xl mb-4">Detail Produk</h1>
             <p className="mb-2">Deskripsi</p>
             <Textarea {...register("produk_deskripsi")} className="h-32" />
@@ -485,7 +486,8 @@ export function FormProdukBaru() {
             </div>
           </div>
 
-          <div id="varian-produk" className="mt-4 bg-slate-50 p-4">
+          {/* variant */}
+          <div id="varian-produk" className="bg-white p-4 rounded">
             {isVariant ? (
               <div className="w-full flex flex-col">
                 <div className="flex justify-between">
@@ -615,23 +617,23 @@ export function FormProdukBaru() {
                   <Switch onClick={()=> handleVariantSwitch(x,!isVariantOption[x])}/>
                 </div>
               )} */}
-                            {variantOptions[0] && (
-                                <div className="flex justify-between mt-8">
-                                    <div className="flex flex-col">
-                                        <h1 className="font-bold">Atur Sekaligus</h1>
-                                        <p className="text-gray-500">
-                                            Kamu dapat mengatur harga, stok dan SKU sekaligus
-                                        </p>
-                                    </div>
-                                    <Button
-                                        variant={"outline"}
-                                        className="rounded-2xl bg-blue-500 text-white"
-                                    >
-                                        <BsPlusCircle className="me-2" />
-                                        Atur Sekaligus
-                                    </Button>
-                                </div>
-                            )}
+              {variantOptions[0] && (
+                <div className="flex justify-between mt-8">
+                  <div className="flex flex-col">
+                    <h1 className="font-bold">Atur Sekaligus</h1>
+                    <p className="text-gray-500">
+                      Kamu dapat mengatur harga, stok dan SKU sekaligus
+                    </p>
+                  </div>
+                  <Button
+                    variant={"outline"}
+                    className="rounded-2xl bg-blue-500 text-white"
+                  >
+                    <BsPlusCircle className="me-2" />
+                    Atur Sekaligus
+                  </Button>
+                </div>
+              )}
 
               <div className="flex flex-col gap-4 mt-4">
                 {variantOptions[parseInt(currentVariant)] &&
@@ -788,21 +790,26 @@ export function FormProdukBaru() {
             </div>
           </div>
 
-          <p className="mt-4">Minimal Pembelian</p>
-                <div className="flex justify-center items-center mt-2">
-                  <Input
-                    placeholder="Produk"
-                    className="rounded-e-none rounded-s-xl"
-                    {...register("produk_min_beli", { valueAsNumber: true })}
-                  />
-                  <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
-                    Produk
-                  </p>
-                </div>
+          {/* minimal pembelian */}
+          <div className="bg-white p-4 rounded">
+            <p className="mt-4">Minimal Pembelian</p>
+            <div className="flex justify-center items-center mt-2">
+              <Input
+                placeholder="Produk"
+                className="rounded-e-none rounded-s-xl"
+                {...register("produk_min_beli", { valueAsNumber: true })}
+              />
+              <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
+                Produk
+              </p>
+            </div>
+          </div>
 
+          {/*  */}
           {!isVariant && (
-            <div>
-              <div id="harga" className="mt-4 bg-slate-50 p-4">
+            <div className="flex flex-col gap-2">
+              {/* harga */}
+              <div id="harga" className="bg-white p-4 rounded">
                 <h1 className="font-bold text-xl mb-4">Harga</h1>
                 <p>Harga</p>
                 <div className="flex justify-center items-center mt-2">
@@ -817,7 +824,8 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              <div id="pengelolaan-produk" className="mt-4 bg-slate-50 p-4">
+              {/* stok */}
+              <div id="pengelolaan-produk" className="bg-white p-4 rounded">
                 <h1 className="font-bold text-xl mb-4">Pengelolaan Produk</h1>
                 <div className="flex gap-4">
                   <div>
@@ -833,7 +841,8 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              <div id="ukuran" className="mt-4 bg-slate-50 p-4">
+              {/* ukuran */}
+              <div id="ukuran" className="bg-white p-4 rounded">
                 <h1 className="font-bold text-xl mb-4">Ukuran Produk</h1>
 
                 <p>Berat Produk</p>
@@ -885,25 +894,26 @@ export function FormProdukBaru() {
             </div>
           )}
 
-                    <div className="flex justify-between gap-4 mt-4 bg-slate-50 p-4 w-full">
-                        <Button variant={"outline"} className="rounded-3xl self-start">
-                            Preview Halaman Checkout
-                        </Button>
-                        <div>
-                            <Button variant={"outline"} className="rounded-3xl me-2">
-                                Batal
-                            </Button>
-                            <Button
-                                variant={"outline"}
-                                type="submit"
-                                className="bg-blue-600 text-white rounded-3xl"
-                            >
-                                Simpan
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </>
-    );
+          {/*  */}
+          <div className="flex justify-between gap-4 mt-4 bg-white p-4 w-full rounded">
+            <Button variant={"outline"} className="rounded-3xl self-start">
+              Preview Halaman Checkout
+            </Button>
+            <div>
+              <Button variant={"outline"} className="rounded-3xl me-2">
+                Batal
+              </Button>
+              <Button
+                variant={"outline"}
+                type="submit"
+                className="bg-blue-600 text-white rounded-3xl"
+              >
+                Simpan
+              </Button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </>
+  );
 }

@@ -24,6 +24,8 @@ import { Route as DetailOrderImport } from './routes/detail-order'
 import { Route as CheckoutImport } from './routes/checkout'
 import { Route as BuyerImport } from './routes/buyer'
 import { Route as AturTokoImport } from './routes/atur-toko'
+import { Route as AdminImport } from './routes/admin'
+import { Route as AddProductImport } from './routes/add-product'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -93,6 +95,16 @@ const AturTokoRoute = AturTokoImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdminRoute = AdminImport.update({
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AddProductRoute = AddProductImport.update({
+  path: '/add-product',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
@@ -107,6 +119,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/add-product': {
+      id: '/add-product'
+      path: '/add-product'
+      fullPath: '/add-product'
+      preLoaderRoute: typeof AddProductImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
     '/atur-toko': {
@@ -207,6 +233,8 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  AddProductRoute,
+  AdminRoute,
   AturTokoRoute,
   BuyerRoute,
   CheckoutRoute,
@@ -231,6 +259,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/add-product",
+        "/admin",
         "/atur-toko",
         "/buyer",
         "/checkout",
@@ -248,6 +278,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/add-product": {
+      "filePath": "add-product.tsx"
+    },
+    "/admin": {
+      "filePath": "admin.tsx"
     },
     "/atur-toko": {
       "filePath": "atur-toko.tsx"

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+// import { FC } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
 import { Button } from '@/components/button';
 import { MdOutlineDelete } from 'react-icons/md';

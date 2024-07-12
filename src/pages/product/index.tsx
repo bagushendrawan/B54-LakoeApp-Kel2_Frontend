@@ -129,8 +129,48 @@ const Product = () => {
         ));
     };
 
+    const [selectedProduct, setSelectedProduct] = useState<[number, boolean][]>([]);
+
+    const handleSelectedProduct = (id: number, isChecked: boolean) => {
+        setSelectedProduct(prevSelected => {
+            const existingProductIndex = prevSelected.findIndex(product => product[0] === id);
+
+            if (isChecked) {
+                if (existingProductIndex !== -1) {
+                    // Update the existing product
+                    const updatedSelected = [...prevSelected];
+                    updatedSelected[existingProductIndex] = [id, isChecked];
+                    return updatedSelected;
+                } else {
+                    // Add new product
+                    return [...prevSelected, [id, isChecked]];
+                }
+            } else {
+                // Remove the product if isChecked is false
+                return prevSelected.filter(product => product[0] !== id);
+            }
+        });
+    };
+
+    const [selectAll, setSelectAll] = useState(false)
+
+    const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
+        const isChecked = e.target.checked;
+
+        if(isChecked) {
+            setSelectedProduct(products.map(product => [product.id, true]));
+            setSelectAll(!selectAll)
+        } else {
+            setSelectedProduct([])
+            setSelectAll(false)
+        }
+    };
+
+    console.log(selectedProduct);
+
     return (
         <div className="min-h-screen p-4 bg-white rounded">
+            {/* header */}
             <div className="flex justify-between items-center mb-4">
                 <p className="text-2xl font-bold">Daftar Produk</p>
                 <Link
@@ -143,11 +183,15 @@ const Product = () => {
                     </Button>
                 </Link>
             </div>
+
+            {/* sort status */}
             <div className="flex space-x-4 mb-4 border-b">
                 <button onClick={() => handleSortIsActive(null)} className={`pb-2 ${isActive === null ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Semua</button>
                 <button onClick={() => handleSortIsActive(true)} className={`pb-2 ${isActive === true ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Aktif</button>
                 <button onClick={() => handleSortIsActive(false)} className={`pb-2 ${isActive === false ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Nonaktif</button>
             </div>
+
+            {/* sort comp */}
             <div className="flex gap-2 mb-4">
                 {/* search sort */}
                 <IconInput value={searchTerm} onChange={handleSearchChange} />
@@ -159,12 +203,17 @@ const Product = () => {
                 <Dropdown options={action} selectedOption={selectedAction} onSelect={handleSortAction} />
             </div>
 
+            {/* header and action */}
             <div className="flex items-center mb-2">
                 <p className="flex flex-1 text-xl font-bold">{sortedAndFilteredProducts.length} Produk</p>
 
                 <div className="flex items-center gap-2">
-                    <BulkDeleteProductDialog />
-                    <BulkNonactivateProductDialog />
+                    {selectedProduct.length !== 0 && (
+                        <>
+                            <BulkDeleteProductDialog selectedProduct={selectedProduct} />
+                            <BulkNonactivateProductDialog selectedProduct={selectedProduct} />
+                        </>
+                    )}
 
                     <div className={sortedAndFilteredProducts.length === 0 ? 'hidden' : 'block'}>
                         {sortedAndFilteredProducts.length > 0 && (
@@ -173,6 +222,8 @@ const Product = () => {
                                 <input
                                     type="checkbox"
                                     className="w-4 h-4"
+                                    checked={selectAll}
+                                    onChange={handleSelectAll}
                                 />
                             </div>
                         )}
@@ -180,7 +231,9 @@ const Product = () => {
                 </div>
             </div>
 
+            {/* result */}
             {sortedAndFilteredProducts.length === 0 ? (
+                // if result 0
                 <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
                     <LuPackageX size={'4rem'} color="#909090" />
                     <div>
@@ -189,9 +242,10 @@ const Product = () => {
                     </div>
                 </div>
             ) : (
+                // if result !0
                 <div className="flex flex-col gap-2">
                     {sortedAndFilteredProducts.map((product) => (
-                        <ProductItem key={product.id} product={product} onToggle={handleToggle} onUpdatePrice={handleUpdatePrice} onUpdateStock={handleUpdateStock} />
+                        <ProductItem key={product.id} product={product} onToggle={handleToggle} onUpdatePrice={handleUpdatePrice} onUpdateStock={handleUpdateStock} onChecked={handleSelectedProduct} selectedAll={selectAll} />
                     ))}
                 </div>
             )}

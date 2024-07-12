@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { AddTemplatePesan } from "@/components/AddTemplatePesan";
-import EditLocationDialog from "@/components/EditLocationDialog";
-import LocationCard from "@/components/LocationCard";
+import { EditTemplateDialog } from "@/components/EditTemplateDialog";
+import { TemplateCard } from "@/components/TemplateCard";
 
 interface TamplatePesan {
   id: number;
   judulPesan: string;
-  daftarIsiPesan: Text;
+  daftarIsiPesan: string[];
   namaPembeli: string;
   namaToko: string;
   namaProduk: string;
@@ -20,18 +20,18 @@ export const CardTemplatePesan: React.FC = () => {
     setPesans([...templatePesans, templatePesan]);
   };
 
-  const handleEditLocation = (updatedLocation: TamplatePesan) => {
+  const handleEditTemplate = (updatedTemplate: TamplatePesan) => {
     setPesans(
       templatePesans.map((templatePesan) =>
-        templatePesan.id === updatedLocation.id
-          ? updatedLocation
+        templatePesan.id === updatedTemplate.id
+          ? updatedTemplate
           : templatePesan
       )
     );
     setEditingPesan(null);
   };
 
-  const handleDeleteLocation = (id: number) => {
+  const handleDeleteTemplate = (id: number) => {
     setPesans(
       templatePesans.filter((templatePesan) => templatePesan.id !== id)
     );
@@ -41,17 +41,17 @@ export const CardTemplatePesan: React.FC = () => {
     <>
       <AddTemplatePesan onSave={handleAddLocation} />
       {templatePesans.map((templatePesan) => (
-        <LocationCard
+        <TemplateCard
           key={templatePesan.id}
-          templatePesan={templatePesan}
-          onDelete={handleDeleteLocation}
+          template={templatePesan}
+          onDelete={handleDeleteTemplate}
           onEdit={setEditingPesan}
         />
       ))}
       {editingPesan && (
-        <EditLocationDialog
-          templatePesan={editingPesan}
-          onSave={handleEditLocation}
+        <EditTemplateDialog
+          template={editingPesan}
+          onSave={handleEditTemplate}
         />
       )}
     </>

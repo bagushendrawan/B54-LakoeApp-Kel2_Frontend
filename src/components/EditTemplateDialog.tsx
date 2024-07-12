@@ -13,30 +13,30 @@ import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 
 interface DialogProps {
-  location: Location | null;
-  onSave: (data: Location) => void;
+  template: TemplatePesan | null;
+  onSave: (data: TemplatePesan) => void;
   children?: React.ReactNode;
 }
 
-interface Location {
+interface TemplatePesan {
   id: number;
-  namaLokasi: string;
-  alamat: string;
-  kota: string;
-  kodePos: string;
-  pinpoint: string;
+  judulPesan: string;
+  daftarIsiPesan: string[];
+  namaPembeli: string;
+  namaToko: string;
+  namaProduk: string;
 }
 
-const EditLocationDialog: React.FC<DialogProps> = ({
-  location,
+export const EditTemplateDialog: React.FC<DialogProps> = ({
+  template,
   onSave,
   children,
 }) => {
-  const [formData, setFormData] = useState<Location | null>(location);
+  const [formData, setFormData] = useState<TemplatePesan | null>(template);
 
   useEffect(() => {
-    setFormData(location);
-  }, [location]);
+    setFormData(template);
+  }, [template]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (formData) {
@@ -58,66 +58,66 @@ const EditLocationDialog: React.FC<DialogProps> = ({
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit Lokasi</DialogTitle>
-            <DialogDescription>Edit Lokasi Toko.</DialogDescription>
+            <DialogTitle>Edit Pesan</DialogTitle>
+            <DialogDescription>Edit Template Pesan.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="namaLokasi" className="text-right">
-                Nama Lokasi
+              <Label htmlFor="judulPesan" className="text-right">
+                Judul Pesan
               </Label>
               <Input
-                id="namaLokasi"
-                name="namaLokasi"
-                value={formData?.namaLokasi}
+                id="judulPesan"
+                name="judulPesan"
+                value={formData?.judulPesan}
                 onChange={handleChange}
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="alamat" className="text-right">
-                Alamat
+              <Label htmlFor="alamdaftarIsiPesan" className="text-right">
+                Daftar Isi Pesanan
               </Label>
               <Input
-                id="alamat"
-                name="alamat"
-                value={formData?.alamat}
+                id="daftarIsiPesan"
+                name="daftarIsiPesan"
+                value={formData?.daftarIsiPesan}
                 onChange={handleChange}
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="kota" className="text-right">
-                Kota/Kecamatan
+              <Label htmlFor="namaPembeli" className="text-right">
+                Nama Pembeli
               </Label>
               <Input
-                id="kota"
-                name="kota"
-                value={formData?.kota}
+                id="namaPembeli"
+                name="namaPembeli"
+                value={formData?.namaPembeli}
                 onChange={handleChange}
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="kodePos" className="text-right">
-                Kode Pos
+              <Label htmlFor="namaToko" className="text-right">
+                Nama Toko
               </Label>
               <Input
-                id="kodePos"
-                name="kodePos"
-                value={formData?.kodePos}
+                id="namaToko"
+                name="namaToko"
+                value={formData?.namaToko}
                 onChange={handleChange}
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="pinpoint" className="text-right">
-                Pinpoint Lokasi
+              <Label htmlFor="namaProduk" className="text-right">
+                Nama Produk
               </Label>
               <Input
-                id="pinpoint"
-                name="pinpoint"
-                value={formData?.pinpoint}
+                id="namaProduk"
+                name="namaProduk"
+                value={formData?.namaProduk}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -131,5 +131,3 @@ const EditLocationDialog: React.FC<DialogProps> = ({
     </div>
   );
 };
-
-export default EditLocationDialog;

@@ -61,10 +61,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
       <Dialog>
         <div className="w-screen inline-flex justify-between">
           <div className="mt-3 mb-5 w-screen flex flex-col">
-            <Label className="font-bold text-xl">Lokasi Toko</Label>
-            <Label className="text-xl">
-              Alamat toko ini akan digunakan sebagai alamat pengirimanmu
-            </Label>
+            <Label className="font-bold text-xl">Daftar Template Pesan</Label>
           </div>
           <div className="mr-40 mt-3">
             <DialogTrigger asChild>

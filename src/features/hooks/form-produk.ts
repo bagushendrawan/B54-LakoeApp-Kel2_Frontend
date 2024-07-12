@@ -19,7 +19,7 @@ export type formDTO = {
     produk_harga: number,
     produk_min_beli: number,
     produk_stok: number,
-    produk_sku: number,
+    produk_sku: string,
     produk_berat: number,
     produk_panjang: number,
     produk_lebar: number,

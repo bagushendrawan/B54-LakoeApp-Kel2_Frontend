@@ -184,7 +184,7 @@ export function FormProdukBaru() {
     const vary = [...variantOptions];
     vary[x].splice(y, 1);
     setVariantOptions(vary);
-
+    setValue("produk_ukuran_option", vary[x])
     console.log(variantOptions);
   }
 
@@ -222,6 +222,14 @@ export function FormProdukBaru() {
     variants[index] = event;
     setKategoriArray(variants);
     console.log(event);
+  }
+
+  function varianDeleteHandle(){
+
+  }
+
+  function varianOptionDeleteHandle(){
+
   }
 
   useEffect(() => {
@@ -539,6 +547,7 @@ export function FormProdukBaru() {
                       setVariant(false);
                       setVariantValue([]);
                       setVariantOptions([]);
+                      unregister("produk_ukuran_option");
                     }}
                   >
                     <BsTrash className="me-2" />
@@ -598,6 +607,14 @@ export function FormProdukBaru() {
                   className="rounded-2xl self-end"
                   onClick={() => {
                     setVariant(true);
+                    setValue("produk_berat", NaN);
+                    setValue("produk_panjang",NaN);
+                    setValue("produk_harga",NaN);
+                    setValue("produk_lebar",NaN);
+                    setValue("produk_tinggi",NaN);
+                    setValue("produk_berat",NaN);
+                    setValue("produk_sku","");
+                    setValue("produk_stok",NaN);
                   }}
                 >
                   <BsPlusCircle className="me-2" />

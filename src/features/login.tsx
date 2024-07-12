@@ -15,7 +15,9 @@ import {
   FormMessage,
 } from "../components/form"
 import { Input } from "../components/input"
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useToast } from "@/components/use-toast";
+import { Label } from "@/components/label";
 
 const loginSchema = z.object({
     email: z.string({message:"email harus diisi"}).min(2).max(50),
@@ -23,6 +25,8 @@ const loginSchema = z.object({
   })
 
 export function LoginForm() {
+  const {toast} = useToast()
+  const navigate = useNavigate({from: "/login"})
     // 1. Define your form.
     const form = useForm<z.infer<typeof loginSchema>>({
       resolver: zodResolver(loginSchema),
@@ -49,7 +53,18 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
         })
         console.log(response)
+        if(response.status === 201)
+        navigate({to:"/"});
+        toast({
+          variant: "success",
+          title: `Welcome ${response.data.name}!`,
+        })
         } catch (error : any) {
+          toast({
+            variant: "destructive",
+            title: `Error!`,
+            description: `${error.response.data}`,
+          })
         console.log(error);
         }
     }
@@ -65,7 +80,7 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Email</FormLabel>
+                  <FormLabel className="font-normal mt-2">Email <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan email" {...field} required/>
                   </FormControl>
@@ -79,7 +94,7 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Password</FormLabel>
+                  <FormLabel className="font-normal mt-2">Password <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan password" {...field} required/>
                   </FormControl>

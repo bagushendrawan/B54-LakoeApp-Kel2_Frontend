@@ -26,7 +26,7 @@ export type formDTO = {
     produk_tinggi: number,
     produk_ukuran_option: string[]
     produk_ukuran_option_weight: number[]
-    produk_ukuran_option_img: string[]
+    produk_ukuran_option_img: (File | null)[]
     produk_ukuran_option_sku: string[]
     produk_ukuran_option_stock: number[]
     produk_ukuran_option_price: number[]
@@ -130,7 +130,7 @@ export const useProdukForm = () => {
         console.log(response);
         toast({
             title: "Add Product Success",
-            description: response.data,
+            description: JSON.stringify(response.data),
           })
     } catch (error) {
       console.log("test",error)

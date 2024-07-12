@@ -1,6 +1,7 @@
+import { Toaster } from '@/components/toaster';
 import { SideBar } from '@/features/side-bar';
-import { createRootRoute, Outlet } from "@tanstack/react-router";
-// import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { createRootRoute, ErrorComponent, Outlet } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 export const Route = createRootRoute({
   component: () => (
@@ -9,9 +10,10 @@ export const Route = createRootRoute({
         <SideBar />
         <div className='w-full bg-stone-200 h-screen overflow-y-auto'>
           <Outlet />
+          <Toaster/>
         </div>
       </div>
-      {/* <TanStackRouterDevtools /> */}
+      <TanStackRouterDevtools />
     </>
-  ),
+  ), errorComponent: ErrorComponent
 });

@@ -20,6 +20,7 @@ import {
   Form
 } from "../components/form";
 import { useProdukForm } from "./hooks/form-produk";
+import { Label } from "@/components/label";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   const dataTransfer = new DataTransfer();
@@ -78,6 +79,7 @@ export function FormProdukBaru() {
   const [lebarValue, setLebarValue] = useState<number[]>([]);
   const [tinggiValue, setTinggiValue] = useState<number[]>([]);
   const [kategoriArray, setKategoriArray] = useState<string[]>([]);
+  const [imageVarian, setImageVarian] = useState<(File | null)[]>([]);
 
   // const handleChangeVariant = (value :  string, index: number, event: React.ChangeEvent<HTMLInputElement>) => {
   //   const price = { ...hargaValue };
@@ -161,11 +163,14 @@ export function FormProdukBaru() {
     console.log(newUrl);
   }
 
-  function imageOptionHandle(index: number, url: string) {
+  function imageOptionHandle(index: number, url: string, img : File | null) {
+    const newImg = [...imageVarian]
+    newImg[index] = img;
+    setImageVarian(newImg);
     const newUrl = [...previewOptions];
     newUrl[index] = url;
     setPreviewOptions(newUrl);
-    setValue("produk_ukuran_option_img", newUrl);
+    setValue("produk_ukuran_option_img", newImg);
     console.log(newUrl);
   }
 
@@ -224,14 +229,6 @@ export function FormProdukBaru() {
     console.log(event);
   }
 
-  function varianDeleteHandle(){
-
-  }
-
-  function varianOptionDeleteHandle(){
-
-  }
-
   useEffect(() => {
     console.log("variantopt", variantOptions);
   }, [variantOptions]);
@@ -243,13 +240,14 @@ export function FormProdukBaru() {
           {/* informasi produk */}
           <div id="informasi-produk" className=" bg-white p-4 rounded">
             <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
-            <h1 className=" text-md mb-2 mt-4">Nama Produk</h1>
+            <h1 className=" text-md mb-2 mt-4">Nama Produk <Label className="text-red-600">*</Label></h1>
             <Input
               placeholder="Masukan nama produk"
               {...register("produk_nama")}
+              required
             />
 
-            <h1 className=" text-md mb-2 mt-4">URL Halaman Checkout</h1>
+            <h1 className=" text-md mb-2 mt-4">URL Halaman Checkout <Label className="text-red-600">*</Label></h1>
             <div className="flex justify-center items-center">
               <p className="bg-slate-100 p-3 rounded-s-lg border-2 text-xs">
                 lakoe.store/
@@ -258,10 +256,11 @@ export function FormProdukBaru() {
                 placeholder="nama-produk"
                 className="rounded-s-none rounded-e-xl"
                 {...register("produk_url_checkout")}
+                required
               />
             </div>
             <div className="flex gap-2">
-              <p className="font-normal mt-4">Kategori</p>
+              <p className="font-normal mt-4">Kategori <Label className="text-red-600">*</Label></p>
               <p className="font-normal mt-4">
                 {kategori && kategori}
               </p>
@@ -273,6 +272,7 @@ export function FormProdukBaru() {
                 kategoriHandle(e);
                 kategoriArrayHandle(0,e);
               }}
+              required
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select a fruit" />
@@ -646,9 +646,8 @@ export function FormProdukBaru() {
                   <div className="flex gap-4 mt-4">
                     {variantOptions[i] &&
                       variantOptions[i].map((item, x) => (
-                        <div>
+                        <div key={x}>
                           <Button
-                            key={x}
                             onClick={() => {
                               deleteVariantOptionHandle(i, x);
                             }}
@@ -711,7 +710,7 @@ export function FormProdukBaru() {
                               onChange={(event) => {
                                 const { files, displayUrl } =
                                   getImageData(event);
-                                imageOptionHandle(x, displayUrl);
+                                imageOptionHandle(x, displayUrl,files[0]);
                               }}
                             ></Input>
                             {previewOptions[x] && (
@@ -723,7 +722,7 @@ export function FormProdukBaru() {
                                 <BsTrash
                                   className="absolute z-1 inset-0 text-xl text-red-600 font-bold m-2"
                                   onClick={() => {
-                                    imageOptionHandle(x, "");
+                                    imageOptionHandle(x, "", null);
                                   }}
                                 />
                               </div>
@@ -843,13 +842,14 @@ export function FormProdukBaru() {
 
           {/* minimal pembelian */}
           <div className="bg-white p-4 rounded">
-            <p className="mt-4">Minimal Pembelian</p>
+            <p className="mt-4">Minimal Pembelian <Label className="text-red-600">*</Label></p>
             <div className="flex justify-center items-center mt-2">
               <Input
                 placeholder="Produk"
                 className="rounded-e-none rounded-s-xl"
                 {...register("produk_min_beli", { valueAsNumber: true })}
-              />
+                required
+              /> 
               <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
                 Produk
               </p>

@@ -15,19 +15,24 @@ import {
   FormMessage,
 } from "../components/form"
 import { Input } from "../components/input"
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useToast } from "@/components/use-toast";
+import { Label } from "@/components/label";
 
 const registerSchema = z.object({
     name: z.string({message:"username tidak boleh kosong"}).max(50),
     email: z.string({message:"email harus diisi"}).min(2).max(50),
     phone: z.string({message:"no telp harus diisi"}).max(16),
-    password: z.string({message:"password harus diisi"}).max(32),
+    password: z.string({message:"password harus diisi"}).min(8).max(32),
     role_id: z.number({message:"role_id harus diisi"}).max(1),
   })
 
 export function RegisterForm() {
+  const {toast} = useToast()
+  const navigate = useNavigate({from:"/register"});
     // 1. Define your form.
     const form = useForm<z.infer<typeof registerSchema>>({
+      mode: "onChange",
       resolver: zodResolver(registerSchema),
       defaultValues: {
         name: "",
@@ -43,21 +48,32 @@ export function RegisterForm() {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
     try {
-    const data = {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-        phone: values.phone,
-        role_id: values.role_id
-    }
-    const response = await Axios({
-        method: "post",
-        url: `http://localhost:3000/users`,
-        data: data,
-        headers: { "Content-Type": "application/json" },
-        })
-        console.log(response)
+      const data = {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+          phone: values.phone,
+          role_id: values.role_id
+      }
+      const response = await Axios({
+          method: "post",
+          url: `http://localhost:3000/users`,
+          data: data,
+          headers: { "Content-Type": "application/json" },
+          })
+          if(response.status === 201)
+          navigate({to: "/login"});
+          toast({
+            variant: "success",
+            title: `User Created! ${response.data.name}`,
+            description: `Please Login to use our services`,
+          })
         } catch (error : any) {
+          toast({
+            variant: "destructive",
+            title: `Error!`,
+            description: `${error.message}`,
+          })
         console.log(error);
         }
     }
@@ -72,7 +88,7 @@ export function RegisterForm() {
               name="name"
               render={({ field }) => (
                 <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Username</FormLabel>
+                  <FormLabel className="font-normal mt-2">Username <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan username" {...field} required/>
                   </FormControl>
@@ -86,7 +102,7 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Email</FormLabel>
+                  <FormLabel className="font-normal mt-2">Email <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan email" {...field} required/>
                   </FormControl>
@@ -100,7 +116,7 @@ export function RegisterForm() {
               name="phone"
               render={({ field }) => (
                 <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Phone</FormLabel>
+                  <FormLabel className="font-normal mt-2">Phone <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan phone" {...field} required/>
                   </FormControl>
@@ -114,7 +130,7 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Password</FormLabel>
+                  <FormLabel className="font-normal mt-2">Password <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
                     <Input placeholder="Masukan password" {...field} required/>
                   </FormControl>
@@ -130,7 +146,7 @@ export function RegisterForm() {
                 <FormItem className="mt-4">
                   <FormLabel className="font-normal mt-2">Role_id</FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan Role_id" {...field} required/>
+                    <Input placeholder="Masukan Role_id" {...field} disabled/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

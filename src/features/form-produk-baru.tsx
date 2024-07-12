@@ -8,53 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+import { ChangeEvent, useEffect, useState } from "react";
+import { BsChatRight, BsChevronBarRight, BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Button } from "../components/button";
 import { Input } from "../components/input";
-import {
-  DeskripsiProduk,
-  PilihKategori,
-  ProductForm,
-  URLHalamanCheckoutForm,
-} from "./validators/form-produk-baru";
-import { ChangeEvent, useEffect, useState } from "react";
-import { BsCircleFill, BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
 
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../components/form";
-import { SubmitHandler, useFieldArray, useForm, UseFormSetValue } from "react-hook-form";
 import { Switch } from "@/components/switch";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/textarea";
-import { formDTO, useProdukForm } from "./hooks/form-produk";
+import { useForm } from "react-hook-form";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/dropdown-menu";
-import { DetailProduk } from "./informasi-produk";
-import Axios from "axios";
-import { useToast } from "@/components/use-toast";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/dialog";
+  Form
+} from "../components/form";
+import { useProdukForm } from "./hooks/form-produk";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   const dataTransfer = new DataTransfer();
@@ -104,7 +69,7 @@ export function FormProdukBaru() {
   const [currentVariant, setCurrentVariant] = useState<string>("");
   const [isVariantOption, setIsVariantOption] = useState<boolean[]>([]);
   const [isVariantGambar, setIsVariantGambar] = useState<boolean[]>([]);
-  const [kategori, setKategori] = useState<string[]>([]);
+  const [kategori, setKategori] = useState<string>("");
   const [hargaValue, sethargaValue] = useState<number[]>([]);
   const [stokValue, setstokValue] = useState<number[]>([]);
   const [skuValue, setskuValue] = useState<string[]>([]);
@@ -112,7 +77,7 @@ export function FormProdukBaru() {
   const [panjangValue, setPanjangValue] = useState<number[]>([]);
   const [lebarValue, setLebarValue] = useState<number[]>([]);
   const [tinggiValue, setTinggiValue] = useState<number[]>([]);
-  const [varianImage, setVarianImage] = useState<string[]>([]);
+  const [kategoriArray, setKategoriArray] = useState<string[]>([]);
 
   // const handleChangeVariant = (value :  string, index: number, event: React.ChangeEvent<HTMLInputElement>) => {
   //   const price = { ...hargaValue };
@@ -246,12 +211,17 @@ export function FormProdukBaru() {
     console.log(variants);
   }
 
-  function kategoriHandle(index: number, kategoriAdd: string) {
-    console.log("HITSZ");
-    const kateg = [...kategori];
-    kateg[index] = kategoriAdd;
-    setKategori(kateg);
-    console.log(kategoriAdd);
+  function kategoriHandle(event : any) {
+    // console.log("kategori", event)
+    setKategori(event);
+    setValue("produk_kategori", event);
+  }
+
+  function kategoriArrayHandle(index : number,event : any) {
+    const variants = [...kategoriArray];
+    variants[index] = event;
+    setKategoriArray(variants);
+    console.log(event);
   }
 
   useEffect(() => {
@@ -285,15 +255,15 @@ export function FormProdukBaru() {
             <div className="flex gap-2">
               <p className="font-normal mt-4">Kategori</p>
               <p className="font-normal mt-4">
-                {kategori[0] && kategori[0]} {kategori[1] && kategori[1]}{" "}
-                {kategori[2] && kategori[2]}
+                {kategori && kategori}
               </p>
             </div>
 
             <Select
               onValueChange={(e) => {
                 unregister("produk_kategori");
-                register("produk_kategori", { value: e });
+                kategoriHandle(e);
+                kategoriArrayHandle(0,e);
               }}
             >
               <SelectTrigger className="w-[180px]">
@@ -302,11 +272,75 @@ export function FormProdukBaru() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                  
+                    {/* <Select
+                      onValueChange={(e) => {
+                        unregister("produk_kategori");
+                        kategoriHandle(e);
+                      }}
+                    >
+                    <SelectTrigger className="w-[180px]" onClick={(e) => {kategoriArrayHandle(0,e)}}>
+                      <SelectValue placeholder="Apple" defaultValue="Apple"/>
+                    </SelectTrigger>
+                    <SelectContent side="right">
+                      <SelectGroup>
+                        <SelectLabel>{kategoriArray[0]}</SelectLabel>
+                        <SelectItem value="apple" onChange={(e) => {kategoriArrayHandle(0,e)}}>Apple</SelectItem>
+                        <SelectItem value="banana">Banana</SelectItem>
+                        <SelectItem value="blueberry">Blueberry</SelectItem>
+                        <SelectItem value="grapes">Grapes</SelectItem>
+                        <SelectItem value="pineapple">Pineapple</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+
+                  <Select
+                      onValueChange={(e) => {
+                        unregister("produk_kategori");
+                        kategoriHandle(e);
+                        kategoriArrayHandle(1,e);
+                      }}
+                    >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Apple" />
+                    </SelectTrigger>
+                    <SelectContent side="right" position="item-aligned" className="absolute left-52">
+                      <SelectGroup>
+                        <SelectLabel>{kategoriArray[0]}</SelectLabel>
+                        <SelectItem value="apple">Apple</SelectItem>
+                        <SelectItem value="banana">Banana</SelectItem>
+                        <SelectItem value="blueberry">Blueberry</SelectItem>
+                        <SelectItem value="grapes">Grapes</SelectItem>
+                        <SelectItem value="pineapple">Pineapple</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+
+                  <Select
+                      onValueChange={(e) => {
+                        unregister("produk_kategori");
+                        kategoriArrayHandle(1,e);
+                      }}
+                    >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Apple" />
+                    </SelectTrigger>
+                    <SelectContent side="right" position="item-aligned" className="absolute left-52">
+                      <SelectGroup>
+                        <SelectLabel>{kategoriArray[0]}</SelectLabel>
+                        <SelectItem value="apple">Apple</SelectItem>
+                        <SelectItem value="banana">Banana</SelectItem>
+                        <SelectItem value="blueberry">Blueberry</SelectItem>
+                        <SelectItem value="grapes">Grapes</SelectItem>
+                        <SelectItem value="pineapple">Pineapple</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select> */}
+                        <SelectItem value="Elektronik">Elektronik</SelectItem>
+                        <SelectItem value="Makanan">Makanan</SelectItem>
+                        <SelectItem value="Kesehatan">Kesehatan</SelectItem>
+                        <SelectItem value="Pakaian">Pakaian</SelectItem>
+                        <SelectItem value="Furnitur">Furnitur</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

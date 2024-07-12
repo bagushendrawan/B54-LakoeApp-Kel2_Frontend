@@ -106,19 +106,24 @@ export const useProdukForm = () => {
   const onSubmitForm: SubmitHandler<formDTO> = async (data) => {
     try {
       console.log(data);
-    const response = await Axios({
-        method: "post",
-        url: `http://localhost:3000/form-produk`,
-        data: {
-          ...data,
+      let dataSubmit = data;
+      if(data.produk_ukuran_option) {
+        dataSubmit = {
+          ...dataSubmit,
           produk_ukuran_option_price : Object.values(data.produk_ukuran_option_price).map(item => Number(item)),
           produk_ukuran_option_weight : Object.values(data.produk_ukuran_option_weight).map(item => Number(item)),
           produk_ukuran_option_stock : Object.values(data.produk_ukuran_option_stock).map(item => Number(item)),
           produk_ukuran_option_panjang : Object.values(data.produk_ukuran_option_lebar).map(item => Number(item)),
           produk_ukuran_option_lebar : Object.values(data.produk_ukuran_option_lebar).map(item => Number(item)),
           produk_ukuran_option_tinggi : Object.values(data.produk_ukuran_option_tinggi).map(item => Number(item)),
-          produk_ukuran_option_sku : Object.values(data.produk_ukuran_option_sku).map(item => Number(item))
-        },
+          produk_ukuran_option_sku : Object.values(data.produk_ukuran_option_sku).map(item => String(item))
+        }
+      }
+
+    const response = await Axios({
+        method: "post",
+        url: `http://localhost:3000/form-produk`,
+        data: dataSubmit,
         headers: { "Content-Type": "application/json" },
         })
 

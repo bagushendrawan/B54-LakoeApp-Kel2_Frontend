@@ -7,7 +7,7 @@ export const Route = createRootRoute({
     <>
       <div className="w-full h-screen flex">
         <SideBar />
-        <div className='w-full h-screen overflow-y-auto'>
+        <div className='w-full bg-stone-200 h-screen overflow-y-auto'>
           <Outlet />
         </div>
       </div>

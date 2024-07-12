@@ -8,8 +8,7 @@ export const Route = createFileRoute('/add-product')({
 function AddProduct() {
   return (
     <div className="w-full p-2">
-      {/* <FormProdukBaru /> */}
-      addproduk
+      <FormProdukBaru />
     </div>
   )
 }

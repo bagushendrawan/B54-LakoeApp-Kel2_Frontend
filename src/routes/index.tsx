@@ -1,9 +1,8 @@
-
+import { SideBar } from "@/features/side-bar";
+import { DashboardPage } from "../pages/dashboard/dashboard-page";
+import { FormProdukPages } from "../pages/addProduct/form-produk-baru";
 import { createFileRoute } from "@tanstack/react-router";
-// import { DashboardPage } from "../pages/dashboard-page";
-// import { Register } from "@/pages/register";
-// import { Login } from "@/pages/login";
-// import { FormProdukPages } from "@/pages/addProduct/form-produk-baru";
+import { Register } from "@/pages/register/register";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -12,10 +11,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="p-2 flex">
-        {/* <DashboardPage /> */}
-        {/* <FormProdukPages /> */}
-        {/* <Register/> */}
-        {/* <Login/> */}
+      {/* <SideBar /> */}
+      <DashboardPage />
+      {/* <FormProdukPages /> */}
+      {/* <Register/> */}
     </div>
   );
 }

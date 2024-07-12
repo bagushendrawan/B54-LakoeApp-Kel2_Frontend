@@ -1,5 +1,16 @@
 import { FaRegCopy } from "react-icons/fa6";
 import { TbTruckDelivery } from "react-icons/tb";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { RiwayatPesanan } from "./riwayat-pesanan";
+import { ListRiwayatPesanan } from "./list-riwayat-pesanan";
 
 export function DetailPengiriman() {
   return (
@@ -9,7 +20,60 @@ export function DetailPengiriman() {
       </div>
 
       <div className="w-full">
-        <p className="font-bold mt-4">Detail Pengiriman</p>
+        <div className="flex justify-between items-center mr-5">
+          <p className="font-bold mt-4">Detail Pengiriman</p>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <h2 className="font-bold text-blue-500 text-l flex items-center gap-2 cursor-pointer">
+                Lacak Pengiriman
+              </h2>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Lacak Pengiriman</DialogTitle>
+                <DialogDescription>
+                  <div className="flex justify-between mx-2">
+                    <div className="text-xs text-black">
+                      <div className="mb-2">
+                        <p>Kurir</p>
+                        <p className="font-bold">JNE</p>
+                      </div>
+
+                      <div className="mb-2">
+                        <p className="flex gap-2 items-center">
+                          No. Resi <FaRegCopy />
+                        </p>
+                        <p className="font-bold">-</p>
+                      </div>
+
+                      <div>
+                        <p>Pengirim</p>
+                        <p className="font-bold">Agik Gigih</p>
+                      </div>
+                    </div>
+
+                    <div className="text-xs text-black">
+                      <p>Penerima</p>
+                      <p className="font-bold">Agik Gigih</p>
+                      <p>Karang Semut, Trimulya, Jetis, Bantul, Yogyakarta</p>
+                      <p>085798324931</p>
+                    </div>  
+                  </div>
+
+                  <div className="text-xs text-black my-3">
+                    <p>Status: <span className="font-bold">Dalam Proses Pengiriman</span></p>
+
+                    <div className="w-full">
+                      <ListRiwayatPesanan />
+                    </div>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter></DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
 
         <div className="pb-3">
           <div className="flex">

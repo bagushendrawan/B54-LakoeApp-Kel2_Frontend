@@ -1,9 +1,7 @@
-// import { FormProdukBaru } from "../../features/form-produk-baru";
+import { FormProdukBaru } from "../../features/form-produk-baru";
 
-// export function FormProdukPages() {
-//     return (
-//         <>
-//             <FormProdukBaru />
-//         </>
-//     );
-// }
+export function FormProdukPages() {
+    return (
+        <FormProdukBaru />
+    );
+}

@@ -5,6 +5,7 @@ import Dropdown from './components/dropDownSort';
 import IconInput from './components/iconInput';
 import CardItem from './components/cardItem';
 import { FaFileInvoiceDollar } from 'react-icons/fa';
+import { CarouselSize } from '@/components/location/test';
 
 const tabs = [
     { name: 'Semua', id: 'all' },
@@ -138,6 +139,8 @@ const AdminPage = () => {
                     ))}
                 </div>
             )}
+
+            <CarouselSize />
         </div>
     );
 };

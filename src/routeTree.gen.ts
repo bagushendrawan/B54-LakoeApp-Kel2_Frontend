@@ -11,19 +11,28 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as RegisterImport } from './routes/register'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as ProdukImport } from './routes/produk'
 import { Route as PesananImport } from './routes/pesanan'
 import { Route as PengirimanImport } from './routes/pengiriman'
 import { Route as PengaturanImport } from './routes/pengaturan'
 import { Route as MetodeImport } from './routes/metode'
+import { Route as LoginImport } from './routes/login'
 import { Route as DetailOrderImport } from './routes/detail-order'
+import { Route as CheckoutImport } from './routes/checkout'
+import { Route as BuyerImport } from './routes/buyer'
 import { Route as AturTokoImport } from './routes/atur-toko'
 import { Route as AdminImport } from './routes/admin'
 import { Route as AddProductImport } from './routes/add-product'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const RegisterRoute = RegisterImport.update({
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProfileRoute = ProfileImport.update({
   path: '/profile',
@@ -55,8 +64,23 @@ const MetodeRoute = MetodeImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const LoginRoute = LoginImport.update({
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DetailOrderRoute = DetailOrderImport.update({
   path: '/detail-order',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CheckoutRoute = CheckoutImport.update({
+  path: '/checkout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BuyerRoute = BuyerImport.update({
+  path: '/buyer',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -112,11 +136,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AturTokoImport
       parentRoute: typeof rootRoute
     }
+    '/buyer': {
+      id: '/buyer'
+      path: '/buyer'
+      fullPath: '/buyer'
+      preLoaderRoute: typeof BuyerImport
+      parentRoute: typeof rootRoute
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutImport
+      parentRoute: typeof rootRoute
+    }
     '/detail-order': {
       id: '/detail-order'
       path: '/detail-order'
       fullPath: '/detail-order'
       preLoaderRoute: typeof DetailOrderImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/metode': {
@@ -161,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -171,13 +223,17 @@ export const routeTree = rootRoute.addChildren({
   AddProductRoute,
   AdminRoute,
   AturTokoRoute,
+  BuyerRoute,
+  CheckoutRoute,
   DetailOrderRoute,
+  LoginRoute,
   MetodeRoute,
   PengaturanRoute,
   PengirimanRoute,
   PesananRoute,
   ProdukRoute,
   ProfileRoute,
+  RegisterRoute,
 })
 
 /* prettier-ignore-end */
@@ -192,13 +248,17 @@ export const routeTree = rootRoute.addChildren({
         "/add-product",
         "/admin",
         "/atur-toko",
+        "/buyer",
+        "/checkout",
         "/detail-order",
+        "/login",
         "/metode",
         "/pengaturan",
         "/pengiriman",
         "/pesanan",
         "/produk",
-        "/profile"
+        "/profile",
+        "/register"
       ]
     },
     "/": {
@@ -213,8 +273,17 @@ export const routeTree = rootRoute.addChildren({
     "/atur-toko": {
       "filePath": "atur-toko.tsx"
     },
+    "/buyer": {
+      "filePath": "buyer.tsx"
+    },
+    "/checkout": {
+      "filePath": "checkout.tsx"
+    },
     "/detail-order": {
       "filePath": "detail-order.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/metode": {
       "filePath": "metode.tsx"
@@ -233,6 +302,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/register": {
+      "filePath": "register.tsx"
     }
   }
 }

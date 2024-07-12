@@ -5,15 +5,9 @@ import { SideBar } from "@/features/side-bar";
 export function PesananPage() {
   return (
     <>
-      <div className="flex">
-        <div>
-          <SideBar />
-        </div>
-        <div className="m-4 bg-white rounded-lg">
+      <div className="flex w-full">
+        <div className="m-4 bg-white rounded-lg w-full">
           <DaftarPesanan />
-        </div>
-        <div>
-          <RightBar />
         </div>
       </div>
     </>

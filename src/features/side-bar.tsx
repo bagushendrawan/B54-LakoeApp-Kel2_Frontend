@@ -54,6 +54,12 @@ export function SideBar() {
                     >
                       <IoSettingsOutline/> Pengaturan
               </Link>
+              <Link
+                      to="/form-produk"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                       Form-varian
+              </Link>
               {/* <Accordion type="single" className="border-none" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="p-0">

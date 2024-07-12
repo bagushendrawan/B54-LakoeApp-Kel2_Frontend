@@ -17,42 +17,34 @@ import {
 import { Input } from "../components/input"
 import { Link } from "@tanstack/react-router";
 
-const registerSchema = z.object({
-    name: z.string({message:"username tidak boleh kosong"}).max(50),
+const loginSchema = z.object({
     email: z.string({message:"email harus diisi"}).min(2).max(50),
-    phone: z.string({message:"no telp harus diisi"}).max(16),
     password: z.string({message:"password harus diisi"}).max(32),
-    role_id: z.number({message:"role_id harus diisi"}).max(1),
   })
 
 export function LoginForm() {
     // 1. Define your form.
-    const form = useForm<z.infer<typeof registerSchema>>({
-      resolver: zodResolver(registerSchema),
+    const form = useForm<z.infer<typeof loginSchema>>({
+      resolver: zodResolver(loginSchema),
       defaultValues: {
-        name: "",
         email: "",
-        phone: "",
         password: "",
-        role_id: 1,
       },
     })
    
     // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof registerSchema>) {
+    async function onSubmit(values: z.infer<typeof loginSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
     try {
     const data = {
-        name: values.name,
         email: values.email,
         password: values.password,
-        phone: values.phone,
-        role_id: values.role_id
     }
+    console.log(data);
     const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/users`,
+        url: `http://localhost:3000/login`,
         data: data,
         headers: { "Content-Type": "application/json" },
         })

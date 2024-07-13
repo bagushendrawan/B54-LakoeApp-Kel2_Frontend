@@ -72,13 +72,26 @@ export function LoginForm() {
       }
 
       localStorage.setItem("token", token);
-
       setUser(response.data)
       toast({
         variant: "success",
         title: `Welcome ${user.name}!`,
       });
-      navigate({ to: "/seller/dashboard" });
+
+      switch(response.data.user.role_id){
+        case 1:
+          navigate({ to: "/buyer/dashboard" });
+          break;
+        case 2:
+          navigate({ to: "/seller/dashboard" });
+          break;
+        case 3:
+          navigate({ to: "/admin/dashboard" });
+          break;
+        default :
+          break;
+      }
+      
       
     } catch (error: any) {
       console.log("error",error);

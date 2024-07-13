@@ -25,7 +25,7 @@ const registerSchema = z.object({
     email: z.string({message:"email harus diisi"}).min(2).max(50),
     phone: z.string({message:"no telp harus diisi"}).max(16),
     password: z.string({message:"password harus diisi"}).min(8).max(32),
-    role_id: z.number({message:"role_id harus diisi"}).max(1),
+    role_id: z.any(),
   })
 
 export function RegisterForm() {
@@ -35,13 +35,13 @@ export function RegisterForm() {
     const form = useForm<z.infer<typeof registerSchema>>({
       mode: "onChange",
       resolver: zodResolver(registerSchema),
-      defaultValues: {
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        role_id: 1,
-      },
+      // defaultValues: {
+      //   name: "",
+      //   email: "",
+      //   phone: "",
+      //   password: "",
+      //   role_id: NaN,
+      // },
     })
    
     // 2. Define a submit handler.
@@ -140,21 +140,23 @@ export function RegisterForm() {
               )}
             />
 
-              <Select defaultValue="0">
+              <Select defaultValue="0" onValueChange={(e) => {
+                form.setValue("role_id",parseInt(e))
+              }}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Role" />
+                  <SelectValue placeholder="Role">Role</SelectValue>
                 </SelectTrigger>
-                <SelectContent side="right" position="item-aligned" className="absolute left-52">
+                <SelectContent side="top">
                   <SelectGroup>
                     <SelectLabel className="border-b-4">Role List</SelectLabel>
-                    <SelectItem value="0">Buyer</SelectItem>
-                    <SelectItem value="1">Seller</SelectItem>
-                    <SelectItem value="2">Admin</SelectItem>
+                    <SelectItem value="1">Buyer</SelectItem>
+                    <SelectItem value="2">Seller</SelectItem>
+                    <SelectItem value="3">Admin</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             <div className="flex gap-4 items-center text-sm">
-            {!form.formState.isSubmitting ? <Button type="submit">Register</Button> : <Button type="submit">Register</Button>}
+            {!form.formState.isSubmitting ? <Button type="submit">Register</Button> : <Button type="submit" disabled>Register</Button>}
             <div className="flex flex-col">
               <div className="flex">  
               <h1 className="me-1">Are You A Buyer?</h1>

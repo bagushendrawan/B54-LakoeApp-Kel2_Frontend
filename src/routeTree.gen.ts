@@ -11,10 +11,10 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SellerIndexImport } from './routes/seller/index'
 import { Route as SellerProdukImport } from './routes/seller/produk'
 import { Route as SellerPesananImport } from './routes/seller/pesanan'
 import { Route as SellerPengaturanImport } from './routes/seller/pengaturan'
+import { Route as SellerDashboardImport } from './routes/seller/dashboard'
 import { Route as SellerAturTokoImport } from './routes/seller/atur-toko'
 import { Route as SellerAddProductImport } from './routes/seller/add-product'
 import { Route as BuyerDetailOrderImport } from './routes/buyer/detail-order'
@@ -25,11 +25,6 @@ import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AdminDashboardImport } from './routes/admin/dashboard'
 
 // Create/Update Routes
-
-const SellerIndexRoute = SellerIndexImport.update({
-  path: '/seller/',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const SellerProdukRoute = SellerProdukImport.update({
   path: '/seller/produk',
@@ -43,6 +38,11 @@ const SellerPesananRoute = SellerPesananImport.update({
 
 const SellerPengaturanRoute = SellerPengaturanImport.update({
   path: '/seller/pengaturan',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SellerDashboardRoute = SellerDashboardImport.update({
+  path: '/seller/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -146,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerAturTokoImport
       parentRoute: typeof rootRoute
     }
+    '/seller/dashboard': {
+      id: '/seller/dashboard'
+      path: '/seller/dashboard'
+      fullPath: '/seller/dashboard'
+      preLoaderRoute: typeof SellerDashboardImport
+      parentRoute: typeof rootRoute
+    }
     '/seller/pengaturan': {
       id: '/seller/pengaturan'
       path: '/seller/pengaturan'
@@ -167,13 +174,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerProdukImport
       parentRoute: typeof rootRoute
     }
-    '/seller/': {
-      id: '/seller/'
-      path: '/seller'
-      fullPath: '/seller'
-      preLoaderRoute: typeof SellerIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -188,10 +188,10 @@ export const routeTree = rootRoute.addChildren({
   BuyerDetailOrderRoute,
   SellerAddProductRoute,
   SellerAturTokoRoute,
+  SellerDashboardRoute,
   SellerPengaturanRoute,
   SellerPesananRoute,
   SellerProdukRoute,
-  SellerIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -210,10 +210,10 @@ export const routeTree = rootRoute.addChildren({
         "/buyer/detail-order",
         "/seller/add-product",
         "/seller/atur-toko",
+        "/seller/dashboard",
         "/seller/pengaturan",
         "/seller/pesanan",
-        "/seller/produk",
-        "/seller/"
+        "/seller/produk"
       ]
     },
     "/admin/dashboard": {
@@ -240,6 +240,9 @@ export const routeTree = rootRoute.addChildren({
     "/seller/atur-toko": {
       "filePath": "seller/atur-toko.tsx"
     },
+    "/seller/dashboard": {
+      "filePath": "seller/dashboard.tsx"
+    },
     "/seller/pengaturan": {
       "filePath": "seller/pengaturan.tsx"
     },
@@ -248,9 +251,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/seller/produk": {
       "filePath": "seller/produk.tsx"
-    },
-    "/seller/": {
-      "filePath": "seller/index.tsx"
     }
   }
 }

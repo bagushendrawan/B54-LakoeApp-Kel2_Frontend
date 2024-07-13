@@ -1,13 +1,14 @@
 import { CheckoutPage } from "@/buyer/pages/checkout-page";
 import { Login } from "@/pages/auth/login";
+import { ThrowLogin } from "@/pages/auth/throw-login";
 import { createFileRoute } from "@tanstack/react-router";
-import { isAuthenticated } from "../__root";
 
 export const Route = createFileRoute("/buyer/checkout")({
   component: () => {
-    if(!isAuthenticated())
+    const user = localStorage.getItem("token")
+    if(!user)
     {
-      return <Login />
+      return <ThrowLogin />
     }
 
     return <Checkout/>

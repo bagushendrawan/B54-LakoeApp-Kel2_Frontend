@@ -20,6 +20,7 @@ import { useToast } from "@/components/use-toast";
 import { Label } from "@/components/label";
 import useStore from "../z-context"
 import { useEffect } from "react";
+import { ToastAction } from "@/components/toast";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -29,7 +30,7 @@ const loginSchema = z.object({
 export function LoginForm() {
   const { toast } = useToast();
   const setUser = useStore((state) => state.SET_USER);
-  const userState = useStore((state) => state.user);
+  const token = localStorage.getItem("token")
   const navigate = useNavigate({ from: "/auth/login" });
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -39,16 +40,6 @@ export function LoginForm() {
       password: "",
     },
   });
-
-  useEffect(()=> {
-    if(!userState) {
-      toast({
-        variant: "destructive",
-        title: `Error!`,
-        description: `Please Login First`,
-      });
-    }
-  }, [userState])
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginSchema>) {
@@ -64,33 +55,51 @@ export function LoginForm() {
         method: "post",
         url: `http://localhost:3000/login`,
         data: data,
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json"
+         },
       });
-
-      if (response.status === 201) navigate({ to: "/seller" });
+      
       const user = response.data.user;
       const token = response.data.token;
 
-      if(token){
-        localStorage.setItem("token", token);
-        setUser(true);
-        console.log("set user",userState);
-        if(user){
-          toast({
-            variant: "success",
-            title: `Welcome ${user.name}!`,
-          });
-        }
+      if(!token){
+        throw new Error("Token Not Found");
       }
+
+      if(!user){
+        throw new Error("User Not Found");
+      }
+
+      localStorage.setItem("token", token);
+
+      setUser(response.data)
+      toast({
+        variant: "success",
+        title: `Welcome ${user.name}!`,
+      });
+      navigate({ to: "/seller/dashboard" });
+      
     } catch (error: any) {
+      console.log("error",error);
+      toast({
+        variant: "destructive",
+        title: `Error! ${error.response.status}`,
+        description: `${error.message}`,
+      })
+    }
+  }
+
+  useEffect(()=>{
+    if(!token){
       toast({
         variant: "destructive",
         title: `Error!`,
-        description: `${error.response.data}`,
-      });
-      console.log(error);
+        description: `Please login to continue`,
+        action: <ToastAction altText="Try again">Try again</ToastAction>
+      })
     }
-  }
+  },[])
 
   return (
     <div className="w-8/12 h-10/12 rounded-sm mt-8 bg-white p-8 flex flex-col justify-center items-center m-auto">
@@ -133,7 +142,7 @@ export function LoginForm() {
           />
 
           <div className="flex gap-4 items-center text-sm">
-            <Button type="submit">Login</Button>
+            {!form.formState.isSubmitting ? <Button type="submit">Login</Button> : <Button type="submit" disabled>Login</Button>}
             <div className="flex flex-col">
               <div className="flex">
                 <h1 className="me-1">Are You A Buyer?</h1>

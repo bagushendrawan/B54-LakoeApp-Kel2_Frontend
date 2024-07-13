@@ -1,14 +1,15 @@
 import { FormProdukBaru } from '@/features/form-produk-baru';
 import { SideBar } from '@/features/side-bar';
 import { Login } from '@/pages/auth/login';
-import { createFileRoute } from '@tanstack/react-router'
-import { isAuthenticated } from '../__root';
+import { ThrowLogin } from '@/pages/auth/throw-login';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/seller/add-product')({
   component: () => {
-    if(!isAuthenticated())
+    const user = localStorage.getItem("token")
+    if(!user)
     {
-      return <Login />
+      return <ThrowLogin />
     }
 
     return <AddProduct/>

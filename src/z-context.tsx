@@ -1,14 +1,14 @@
 import { create } from 'zustand'
 
 type Store = {
-    user: boolean
-    SET_USER: (newUser : boolean) => void
+    user: string
+    SET_USER: (newUser : string) => void
     logout: () => void
   }
 const useStore = create<Store>() ((set) => ({
-    user: false,
-    SET_USER: (newUser : boolean) => set(({ user: newUser })),
-    logout: () => set({ user: false }),
+    user: "",
+    SET_USER: (newUser : string) => set(({ user: newUser })),
+    logout: () => set({ user: "" }),
 }))
 
 export default useStore;

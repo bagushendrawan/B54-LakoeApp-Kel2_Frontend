@@ -140,13 +140,13 @@ export function RegisterForm() {
               )}
             />
 
-              <Select>
+              <Select defaultValue="0">
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue defaultValue={"1"} placeholder="Apple" />
+                  <SelectValue placeholder="Role" />
                 </SelectTrigger>
                 <SelectContent side="right" position="item-aligned" className="absolute left-52">
                   <SelectGroup>
-                    <SelectLabel>Role List</SelectLabel>
+                    <SelectLabel className="border-b-4">Role List</SelectLabel>
                     <SelectItem value="0">Buyer</SelectItem>
                     <SelectItem value="1">Seller</SelectItem>
                     <SelectItem value="2">Admin</SelectItem>
@@ -154,7 +154,7 @@ export function RegisterForm() {
                 </SelectContent>
               </Select>
             <div className="flex gap-4 items-center text-sm">
-            <Button type="submit">Register</Button>
+            {!form.formState.isSubmitting ? <Button type="submit">Register</Button> : <Button type="submit">Register</Button>}
             <div className="flex flex-col">
               <div className="flex">  
               <h1 className="me-1">Are You A Buyer?</h1>

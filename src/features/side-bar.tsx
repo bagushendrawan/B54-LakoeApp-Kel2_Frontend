@@ -29,7 +29,7 @@ export function SideBar() {
             <div className="mt-2">
               <li>
                 <Link
-                  to="/seller"
+                  to="/seller/dashboard"
                   className="[&.active]:font-bold flex gap-2 items-center py-3"
                 >
                   <GoHome /> Dashboard

@@ -1,14 +1,15 @@
 import { SideBar } from '@/features/side-bar'
-import { PesananPage } from '../../pages/order/pesanan-page'
-import { createFileRoute } from '@tanstack/react-router'
 import { Login } from '@/pages/auth/login'
-import { isAuthenticated } from '../__root'
+import { createFileRoute } from '@tanstack/react-router'
+import { PesananPage } from '../../pages/order/pesanan-page'
+import { ThrowLogin } from '@/pages/auth/throw-login'
 
 export const Route = createFileRoute('/seller/pesanan')({
   component: () => {
-    if(!isAuthenticated())
+    const user = localStorage.getItem("token")
+    if(!user)
     {
-      return <Login />
+      return <ThrowLogin />
     }
 
   return <Pesanan/>

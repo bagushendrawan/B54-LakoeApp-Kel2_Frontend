@@ -1,15 +1,13 @@
 import AdminPage from '@/pages/admin';
-import { createFileRoute } from '@tanstack/react-router'
-import { isAuthenticated } from '../__root';
-import { Login } from '@/pages/auth/login';
-import { useToast } from '@/components/use-toast';
 import { ThrowLogin } from '@/pages/auth/throw-login';
+import { createFileRoute } from '@tanstack/react-router';
 
 
 
 export const Route = createFileRoute('/admin/dashboard')({
   component: () => {
-    if(!isAuthenticated())
+    const user = localStorage.getItem("token")
+    if(!user)
     {
       return <ThrowLogin />
     }

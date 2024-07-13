@@ -95,7 +95,7 @@ export const useProdukForm = () => {
     handleSubmit,
     unregister,
     setValue,
-    formState: { errors,  },
+    formState: { errors,  isSubmitting},
     control,
     getValues
   } = useForm<formDTO>({
@@ -145,6 +145,7 @@ export const useProdukForm = () => {
     errors,
     control, 
     setValue,
-    getValues
+    getValues,
+    isSubmitting
   };
 };

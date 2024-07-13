@@ -59,7 +59,8 @@ export function FormProdukBaru() {
     unregister,
     onSubmitForm,
     setValue,
-    getValues
+    getValues,
+    isSubmitting
   } = useProdukForm();
 
   const [isVariant, setVariant] = useState<Boolean>(false);
@@ -954,13 +955,21 @@ export function FormProdukBaru() {
               <Button variant={"outline"} className="rounded-3xl me-2">
                 Batal
               </Button>
-              <Button
+              {isSubmitting ? <Button
+                variant={"outline"}
+                type="submit"
+                className="bg-blue-600 text-white rounded-3xl"
+                disabled
+              >
+                Simpan
+              </Button> : <Button
                 variant={"outline"}
                 type="submit"
                 className="bg-blue-600 text-white rounded-3xl"
               >
                 Simpan
-              </Button>
+              </Button>}
+              
             </div>
           </div>
         </div>

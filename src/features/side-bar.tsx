@@ -12,11 +12,15 @@ import {
 } from "../components/accordion";
 
 import { BsPerson, BsPersonBadge } from "react-icons/bs";
+import useStore from "@/z-context";
 
 export function SideBar() {
+  // const user = useStore((state) => state.user);
+  // console.log("test context =",user);
+  const logOutUser = useStore((state) => state.logout);
   return (
     <>
-      <div className="bg-stone-100 w-60 h-screen">
+      <div className="bg-stone-100 w-52 h-screen">
         <ul>
           <div className="text-xl pl-5 h-screen flex flex-col justify-between">
           <div>
@@ -100,6 +104,7 @@ export function SideBar() {
                 <Link
                   to="/login"
                   className="[&.active]:font-bold flex gap-2 items-center"
+                  onClick={logOutUser}
                 >
                  <BsPerson/> Logout
                 </Link>

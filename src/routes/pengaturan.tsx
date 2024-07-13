@@ -10,7 +10,9 @@ function Pengaturan() {
   return (
     <div className="p-2 pr-10 flex">
       <SideBar />
+      <div className="w-10/12">
       <Setting />
+      </div>
       {/* <FormProdukPages /> */}
       {/* <Register/> */}
     </div>

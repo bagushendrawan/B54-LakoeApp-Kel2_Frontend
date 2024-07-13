@@ -1,7 +1,7 @@
 import { SideBar } from "@/features/side-bar";
 import { DashboardPage } from "../pages/dashboard/dashboard-page";
 import { FormProdukPages } from "../pages/addProduct/form-produk-baru";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Register } from "@/pages/auth/register";
 
 export const Route = createFileRoute("/")({
@@ -10,11 +10,13 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="p-2 flex">
-      {/* <SideBar /> */}
-      <DashboardPage />
-      {/* <FormProdukPages /> */}
-      {/* <Register/> */}
+    <div>
+    <div className="w-full h-screen flex">
+    <SideBar />
+      <div className="w-10/12">
+      <DashboardPage></DashboardPage>
+      </div>
     </div>
+  </div>
   );
 }

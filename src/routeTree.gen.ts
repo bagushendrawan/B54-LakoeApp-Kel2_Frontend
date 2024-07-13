@@ -23,6 +23,7 @@ import { Route as FormProdukImport } from './routes/form-produk'
 import { Route as DetailOrderImport } from './routes/detail-order'
 import { Route as CheckoutImport } from './routes/checkout'
 import { Route as BuyerImport } from './routes/buyer'
+import { Route as AuthImport } from './routes/auth'
 import { Route as AturTokoImport } from './routes/atur-toko'
 import { Route as AdminImport } from './routes/admin'
 import { Route as AddProductImport } from './routes/add-product'
@@ -90,6 +91,11 @@ const BuyerRoute = BuyerImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRoute = AuthImport.update({
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AturTokoRoute = AturTokoImport.update({
   path: '/atur-toko',
   getParentRoute: () => rootRoute,
@@ -140,6 +146,13 @@ declare module '@tanstack/react-router' {
       path: '/atur-toko'
       fullPath: '/atur-toko'
       preLoaderRoute: typeof AturTokoImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
     '/buyer': {
@@ -236,6 +249,7 @@ export const routeTree = rootRoute.addChildren({
   AddProductRoute,
   AdminRoute,
   AturTokoRoute,
+  AuthRoute,
   BuyerRoute,
   CheckoutRoute,
   DetailOrderRoute,
@@ -262,6 +276,7 @@ export const routeTree = rootRoute.addChildren({
         "/add-product",
         "/admin",
         "/atur-toko",
+        "/auth",
         "/buyer",
         "/checkout",
         "/detail-order",
@@ -287,6 +302,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/atur-toko": {
       "filePath": "atur-toko.tsx"
+    },
+    "/auth": {
+      "filePath": "auth.tsx"
     },
     "/buyer": {
       "filePath": "buyer.tsx"

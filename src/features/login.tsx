@@ -19,6 +19,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useToast } from "@/components/use-toast";
 import { Label } from "@/components/label";
 import useStore from "../z-context"
+import { useEffect } from "react";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -29,7 +30,7 @@ export function LoginForm() {
   const { toast } = useToast();
   const setUser = useStore((state) => state.SET_USER);
   const userState = useStore((state) => state.user);
-  const navigate = useNavigate({ from: "/login" });
+  const navigate = useNavigate({ from: "/auth/login" });
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -38,6 +39,16 @@ export function LoginForm() {
       password: "",
     },
   });
+
+  useEffect(()=> {
+    if(!userState) {
+      toast({
+        variant: "destructive",
+        title: `Error!`,
+        description: `Please Login First`,
+      });
+    }
+  }, [userState])
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginSchema>) {
@@ -56,7 +67,7 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (response.status === 201) navigate({ to: "/" });
+      if (response.status === 201) navigate({ to: "/seller" });
       const user = response.data.user;
       const token = response.data.token;
 
@@ -126,21 +137,21 @@ export function LoginForm() {
             <div className="flex flex-col">
               <div className="flex">
                 <h1 className="me-1">Are You A Buyer?</h1>
-                <Link to="/buyer" className="text-blue-500">
+                <Link to="/buyer/dashboard" className="text-blue-500">
                   Click Here
                 </Link>
               </div>
 
               <div className="flex">
                 <h1 className="me-1">Are You An Admin?</h1>
-                <Link to="/admin" className="text-blue-500">
+                <Link to="/admin/dashboard" className="text-blue-500">
                   Admin
                 </Link>
               </div>
 
               <div className="flex">
                 <h1 className="me-1">Do you have an account?</h1>
-                <Link to="/register" className="text-blue-500">
+                <Link to="/auth/register" className="text-blue-500">
                   Register
                 </Link>
               </div>

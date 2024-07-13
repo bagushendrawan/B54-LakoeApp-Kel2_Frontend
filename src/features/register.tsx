@@ -18,6 +18,7 @@ import { Input } from "../components/input"
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useToast } from "@/components/use-toast";
 import { Label } from "@/components/label";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/select";
 
 const registerSchema = z.object({
     name: z.string({message:"username tidak boleh kosong"}).max(50),
@@ -29,7 +30,7 @@ const registerSchema = z.object({
 
 export function RegisterForm() {
   const {toast} = useToast()
-  const navigate = useNavigate({from:"/register"});
+  const navigate = useNavigate({from:"/auth/register"});
     // 1. Define your form.
     const form = useForm<z.infer<typeof registerSchema>>({
       mode: "onChange",
@@ -62,7 +63,7 @@ export function RegisterForm() {
           headers: { "Content-Type": "application/json" },
           })
           if(response.status === 201)
-          navigate({to: "/login"});
+          navigate({to: "/auth/login"});
           toast({
             variant: "success",
             title: `User Created! ${response.data.name}`,
@@ -139,30 +140,30 @@ export function RegisterForm() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="role_id"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Role_id</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Masukan Role_id" {...field} disabled/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue defaultValue={"1"} placeholder="Apple" />
+                </SelectTrigger>
+                <SelectContent side="right" position="item-aligned" className="absolute left-52">
+                  <SelectGroup>
+                    <SelectLabel>Role List</SelectLabel>
+                    <SelectItem value="0">Buyer</SelectItem>
+                    <SelectItem value="1">Seller</SelectItem>
+                    <SelectItem value="2">Admin</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             <div className="flex gap-4 items-center text-sm">
             <Button type="submit">Register</Button>
             <div className="flex flex-col">
               <div className="flex">  
               <h1 className="me-1">Are You A Buyer?</h1>
-              <Link to="/buyer" className="text-blue-500">Click Here</Link>
+              <Link to="/buyer/dashboard" className="text-blue-500">Click Here</Link>
               </div>
 
               <div className="flex">
               <h1 className="me-1">Do you have an account?</h1>
-              <Link to="/login" className="text-blue-500">Login</Link>
+              <Link to="/auth/login" className="text-blue-500">Login</Link>
               </div>
             </div>
             </div>

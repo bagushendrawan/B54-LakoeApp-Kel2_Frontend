@@ -81,7 +81,7 @@ export function ProdukPage() {
 
               <div className="flex justify-between mt-5">
                 <Button>
-                  <Link to="/checkout">Beli Langsung</Link>
+                  <Link to="/buyer/checkout">Beli Langsung</Link>
                 </Button>
                 <Button
                   className="gap-2"

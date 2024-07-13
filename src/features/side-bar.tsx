@@ -29,7 +29,7 @@ export function SideBar() {
             <div className="mt-2">
               <li>
                 <Link
-                  to="/"
+                  to="/seller"
                   className="[&.active]:font-bold flex gap-2 items-center py-3"
                 >
                   <GoHome /> Dashboard
@@ -37,7 +37,7 @@ export function SideBar() {
               </li>
               <li>
                 <Link
-                  to="/pesanan"
+                  to="/seller/pesanan"
                   className="[&.active]:font-bold flex gap-2 items-center pb-3"
                 >
                   <FiBox /> Pesanan
@@ -45,7 +45,7 @@ export function SideBar() {
               </li>
               <li>
                 <Link
-                  to="/produk"
+                  to="/seller/produk"
                   className="[&.active]:font-bold flex gap-2 items-center pb-3"
                 >
                   <MdOutlineShoppingBag /> Produk
@@ -53,7 +53,7 @@ export function SideBar() {
               </li>
               <li>
               <Link
-                      to="/atur-toko"
+                      to="/seller/atur-toko"
                       className="[&.active]:font-bold flex gap-2 items-center pb-3"
                     >
                       <IoSettingsOutline/> Pengaturan
@@ -102,7 +102,7 @@ export function SideBar() {
             <div className="mb-5">
               <li>
                 <Link
-                  to="/login"
+                  to="/auth/login"
                   className="[&.active]:font-bold flex gap-2 items-center"
                   onClick={logOutUser}
                 >

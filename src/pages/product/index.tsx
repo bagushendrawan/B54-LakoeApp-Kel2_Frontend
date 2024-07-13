@@ -134,7 +134,7 @@ const Product = () => {
             <div className="flex justify-between items-center mb-4">
                 <p className="text-2xl font-bold">Daftar Produk</p>
                 <Link
-                    to="/add-product"
+                    to="/seller/add-product"
                     className="[&.active]:font-bold flex gap-2 items-center py-3"
                 >
                     <Button className="gap-2 rounded-full bg-[#0086B4]">

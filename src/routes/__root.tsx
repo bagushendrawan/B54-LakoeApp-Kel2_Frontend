@@ -12,10 +12,10 @@ export function isAuthenticated(){
 
 export const Route = createRootRoute({
   component: () => {
-    if(!isAuthenticated())
-    {
-      return <Login />
-    }
+    // if(!isAuthenticated())
+    // {
+    //   return <Login />
+    // }
 
     return <App/>
   }, errorComponent: ErrorComponent,

@@ -1,7 +1,4 @@
-import { Button } from "@/components/button";
-import { useToast } from "@/components/use-toast";
-import {LoginForm} from "@/features/login";
-import { throwLoginToast } from "@/routes/__root";
+import { LoginForm } from "@/features/login";
 
 export function ThrowLogin(){
     return(

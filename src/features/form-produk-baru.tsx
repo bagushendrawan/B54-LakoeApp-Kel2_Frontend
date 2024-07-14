@@ -9,18 +9,19 @@ import {
   SelectValue,
 } from "@/components/select";
 import { ChangeEvent, useEffect, useState } from "react";
-import { BsChatRight, BsChevronBarRight, BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
+import { BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Button } from "../components/button";
 import { Input } from "../components/input";
 
+import { Label } from "@/components/label";
 import { Switch } from "@/components/switch";
 import { Textarea } from "@/components/textarea";
+import { LoadingSpinner } from "@/routes/__root";
 import { useForm } from "react-hook-form";
 import {
   Form
 } from "../components/form";
 import { useProdukForm } from "./hooks/form-produk";
-import { Label } from "@/components/label";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   const dataTransfer = new DataTransfer();
@@ -268,6 +269,7 @@ export function FormProdukBaru() {
             </div>
 
             <Select
+            defaultValue="Elektronik"
               onValueChange={(e) => {
                 unregister("produk_kategori");
                 kategoriHandle(e);
@@ -276,7 +278,7 @@ export function FormProdukBaru() {
               required
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a fruit" />
+                <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -962,6 +964,7 @@ export function FormProdukBaru() {
                 disabled
               >
                 Simpan
+                <LoadingSpinner></LoadingSpinner>
               </Button> : <Button
                 variant={"outline"}
                 type="submit"

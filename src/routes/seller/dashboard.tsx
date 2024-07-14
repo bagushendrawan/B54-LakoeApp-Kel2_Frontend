@@ -1,19 +1,14 @@
 import { SideBar } from "@/features/side-bar";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { DashboardPage } from "../../pages/dashboard/dashboard-page";
-import { authUser } from "../__root";
-import { ThrowLogin } from "@/pages/auth/throw-login";
+import { ProtectedRoute } from "../__root";
 
 export const Route = createFileRoute("/seller/dashboard")({
-  component: () => { 
-    const user = localStorage.getItem("token")
-    if (!user) {
-
-      return <ThrowLogin/>
-    }
-    return <Index/>
-  },
+  component: () => (
+    <ProtectedRoute>
+      <Index/>
+    </ProtectedRoute>
+  )
 });
 
 function Index() {

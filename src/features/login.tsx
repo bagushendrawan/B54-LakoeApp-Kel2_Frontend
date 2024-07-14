@@ -1,26 +1,26 @@
 "use client";
 
+import { Label } from "@/components/label";
+import { ToastAction } from "@/components/toast";
+import { useToast } from "@/components/use-toast";
+import { LoadingSpinner } from "@/routes/__root";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "@tanstack/react-router";
+import Axios from "axios";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Axios from "axios";
-import { Button } from "../components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "../components/form";
 import { Input } from "../components/input";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useToast } from "@/components/use-toast";
-import { Label } from "@/components/label";
-import useStore from "../z-context"
-import { useEffect } from "react";
-import { ToastAction } from "@/components/toast";
+import { Button } from "../components/ui/button";
+import useStore from "../z-context";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -131,7 +131,7 @@ export function LoginForm() {
                   Email <Label className="text-red-600">*</Label>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukan email" {...field} required />
+                  <Input type="email" placeholder="Masukan email" {...field} required />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -147,7 +147,7 @@ export function LoginForm() {
                   Password <Label className="text-red-600">*</Label>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukan password" {...field} required />
+                  <Input type="password" placeholder="Masukan password" {...field} required />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,7 +155,7 @@ export function LoginForm() {
           />
 
           <div className="flex gap-4 items-center text-sm">
-            {!form.formState.isSubmitting ? <Button type="submit">Login</Button> : <Button type="submit" disabled>Login</Button>}
+            {!form.formState.isSubmitting ? <Button type="submit">Login</Button> : <Button type="submit" disabled>Login <LoadingSpinner></LoadingSpinner></Button>}
             <div className="flex flex-col">
               <div className="flex">
                 <h1 className="me-1">Are You A Buyer?</h1>

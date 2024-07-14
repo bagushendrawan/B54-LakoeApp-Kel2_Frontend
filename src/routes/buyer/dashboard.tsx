@@ -1,18 +1,13 @@
 import { ProdukPage } from "@/buyer/pages/produk-page";
-import { Login } from "@/pages/auth/login";
-import { ThrowLogin } from "@/pages/auth/throw-login";
 import { createFileRoute } from "@tanstack/react-router";
+import { ProtectedRoute } from "../__root";
 
 export const Route = createFileRoute("/buyer/dashboard")({
-  component: () => {
-    const user = localStorage.getItem("token")
-    if(!user)
-    {
-      return <ThrowLogin />
-    }
-
-   return <Produk/>
-  }
+  component: () => (
+    <ProtectedRoute>
+      <Produk/>
+    </ProtectedRoute>
+  )
 });
 
 function Produk() {

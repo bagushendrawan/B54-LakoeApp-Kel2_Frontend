@@ -101,6 +101,9 @@ export const useProdukForm = () => {
   } = useForm<formDTO>({
     mode: "onChange",
     resolver: zodResolver(FormSchema),
+    defaultValues : {
+      produk_kategori : "Elektronik"
+    }
   });
   
   const onSubmitForm: SubmitHandler<formDTO> = async (data) => {

@@ -1,24 +1,24 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Label } from "@/components/label";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/select";
+import { useToast } from "@/components/use-toast";
+import { LoadingSpinner } from "@/routes/__root";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import { Button } from "../components/ui/button"
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "../components/form"
-import { Input } from "../components/input"
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useToast } from "@/components/use-toast";
-import { Label } from "@/components/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/select";
+  FormMessage
+} from "../components/form";
+import { Input } from "../components/input";
+import { Button } from "../components/ui/button";
 
 const registerSchema = z.object({
     name: z.string({message:"username tidak boleh kosong"}).max(50),
@@ -35,13 +35,13 @@ export function RegisterForm() {
     const form = useForm<z.infer<typeof registerSchema>>({
       mode: "onChange",
       resolver: zodResolver(registerSchema),
-      // defaultValues: {
-      //   name: "",
-      //   email: "",
-      //   phone: "",
-      //   password: "",
-      //   role_id: NaN,
-      // },
+      defaultValues: {
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+        role_id: 1,
+      },
     })
    
     // 2. Define a submit handler.
@@ -105,7 +105,7 @@ export function RegisterForm() {
                 <FormItem className="mt-4">
                   <FormLabel className="font-normal mt-2">Email <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan email" {...field} required/>
+                    <Input type="email" placeholder="Masukan email" {...field} required/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,7 +119,7 @@ export function RegisterForm() {
                 <FormItem className="mt-4">
                   <FormLabel className="font-normal mt-2">Phone <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan phone" {...field} required/>
+                    <Input type="number" placeholder="Masukan phone" {...field} required/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -133,18 +133,18 @@ export function RegisterForm() {
                 <FormItem className="mt-4">
                   <FormLabel className="font-normal mt-2">Password <Label className="text-red-600">*</Label></FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan password" {...field} required/>
+                    <Input type="password" placeholder="Masukan password" {...field} required/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-              <Select defaultValue="0" onValueChange={(e) => {
+              <p>Role <Label className="text-red-600">*</Label></p>
+              <Select defaultValue="1" onValueChange={(e) => {
                 form.setValue("role_id",parseInt(e))
               }}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Role">Role</SelectValue>
+                  <SelectValue placeholder="Role"></SelectValue>
                 </SelectTrigger>
                 <SelectContent side="top">
                   <SelectGroup>
@@ -156,7 +156,7 @@ export function RegisterForm() {
                 </SelectContent>
               </Select>
             <div className="flex gap-4 items-center text-sm">
-            {!form.formState.isSubmitting ? <Button type="submit">Register</Button> : <Button type="submit" disabled>Register</Button>}
+            {!form.formState.isSubmitting ? <Button type="submit">Register</Button> : <Button type="submit" disabled>Register <LoadingSpinner></LoadingSpinner></Button>}
             <div className="flex flex-col">
               <div className="flex">  
               <h1 className="me-1">Are You A Buyer?</h1>

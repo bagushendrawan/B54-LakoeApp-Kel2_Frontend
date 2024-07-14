@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as IndexImport } from './routes/index'
 import { Route as SellerProdukImport } from './routes/seller/produk'
 import { Route as SellerPesananImport } from './routes/seller/pesanan'
 import { Route as SellerPengaturanImport } from './routes/seller/pengaturan'
@@ -25,6 +26,11 @@ import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AdminDashboardImport } from './routes/admin/dashboard'
 
 // Create/Update Routes
+
+const IndexRoute = IndexImport.update({
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const SellerProdukRoute = SellerProdukImport.update({
   path: '/seller/produk',
@@ -90,6 +96,13 @@ const AdminDashboardRoute = AdminDashboardImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/admin/dashboard'
@@ -180,6 +193,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
+  IndexRoute,
   AdminDashboardRoute,
   AuthLoginRoute,
   AuthRegisterRoute,
@@ -202,6 +216,7 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/admin/dashboard",
         "/auth/login",
         "/auth/register",
@@ -215,6 +230,9 @@ export const routeTree = rootRoute.addChildren({
         "/seller/pesanan",
         "/seller/produk"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/admin/dashboard": {
       "filePath": "admin/dashboard.tsx"

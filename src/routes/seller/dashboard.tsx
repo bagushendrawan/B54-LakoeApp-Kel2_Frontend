@@ -17,7 +17,7 @@ function Index() {
   // },[])
   return (
     <div>
-    <div className="w-full h-screen flex">
+    <div className="w-full h-auto flex bg-slate-800">
     <SideBar />
       <div className="w-10/12">
       <DashboardPage></DashboardPage>

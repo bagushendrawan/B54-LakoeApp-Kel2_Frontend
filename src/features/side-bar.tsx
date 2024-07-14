@@ -20,12 +20,12 @@ export function SideBar() {
   const logOutUser = useStore((state) => state.logout);
   return (
     <>
-      <div className="bg-stone-100 w-52 h-screen">
+      <div className="bg-rose-600 w-52 h-screen">
         <ul>
-          <div className="text-xl pl-5 h-screen flex flex-col justify-between">
+          <div className="text-xl text-white pl-5 h-screen flex flex-col justify-between">
           <div>
             {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
-            <img src="/Lakoe.png" className="w-32 mt-2"/>
+            <img src="/Lakoe-w.png" className="w-32 mt-2"/>
             <div className="mt-2">
               <li>
                 <Link

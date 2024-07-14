@@ -13,7 +13,7 @@ export const Route = createFileRoute('/seller/add-product')({
 
 function AddProduct() {
   return (
-    <div className="w-full h-screen flex">
+    <div className="w-full h-screen flex bg-slate-800">
       <SideBar />
       <div className='w-10/12 p-2'>
         <FormProdukBaru></FormProdukBaru>

@@ -80,8 +80,9 @@ export function RegisterForm() {
     }
 
     return (
-      <div className="w-8/12 h-10/12 rounded-sm mt-8 bg-white p-8 flex flex-col justify-center items-center m-auto">
-        <h1 className="font-bold text-3xl">Register</h1>
+      <div className="w-8/12 h-10/12 rounded-sm mt-16 bg-white flex m-auto">
+        <div className="flex w-1/2 justify-center items-center flex-col p-8 rounded-sm">
+        <h1 className="font-bold text-2xl text-red-600">Register Here</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-4/6">
             <FormField
@@ -156,7 +157,7 @@ export function RegisterForm() {
                 </SelectContent>
               </Select>
             <div className="flex gap-4 items-center text-sm">
-            {!form.formState.isSubmitting ? <Button type="submit">Register</Button> : <Button type="submit" disabled>Register <LoadingSpinner></LoadingSpinner></Button>}
+            {!form.formState.isSubmitting ? <Button type="submit" className="bg-red-600">Register</Button> : <Button type="submit" disabled  className="bg-red-600">Register <LoadingSpinner></LoadingSpinner></Button>}
             <div className="flex flex-col">
               <div className="flex">  
               <h1 className="me-1">Are You A Buyer?</h1>
@@ -171,6 +172,11 @@ export function RegisterForm() {
             </div>
           </form>
         </Form>
+        </div>
+        <div className="flex flex-col w-1/2 justify-center items-center bg-red-50 rounded-sm">
+        <img src="/auth/register.png" className="w-3/4 object-cover"/>
+        <img src="/Lakoe.png" className="w-2/6"/>
+        </div>
         </div>
       )
   }

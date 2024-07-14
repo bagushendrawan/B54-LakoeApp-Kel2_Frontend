@@ -115,8 +115,9 @@ export function LoginForm() {
   },[])
 
   return (
-    <div className="w-8/12 h-10/12 rounded-sm mt-8 bg-white p-8 flex flex-col justify-center items-center m-auto">
-      <h1 className="font-bold text-3xl">Login</h1>
+    <div className="w-8/12 h-10/12 rounded-sm mt-32 m-auto flex">
+      <div className="flex bg-white h-full w-1/2 flex-col justify-start items-center pb-16 pt-8 px-4 rounded-s-sm">
+      <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">Welcome Back!</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -155,7 +156,7 @@ export function LoginForm() {
           />
 
           <div className="flex gap-4 items-center text-sm">
-            {!form.formState.isSubmitting ? <Button type="submit">Login</Button> : <Button type="submit" disabled>Login <LoadingSpinner></LoadingSpinner></Button>}
+            {!form.formState.isSubmitting ? <Button type="submit" className="bg-red-600">Login</Button> : <Button type="submit" disabled className="bg-red-600">Login <LoadingSpinner></LoadingSpinner></Button>}
             <div className="flex flex-col">
               <div className="flex">
                 <h1 className="me-1">Are You A Buyer?</h1>
@@ -181,6 +182,11 @@ export function LoginForm() {
           </div>
         </form>
       </Form>
+      </div>
+      <div className="flex flex-col w-1/2 bg-red-50 justify-center items-center rounded-e-sm">
+      <img src="/auth/login.png" className="w-3/4 object-cover"/>
+      <img src="/Lakoe.png" className="w-2/6"/>
+      </div>
     </div>
   );
 }

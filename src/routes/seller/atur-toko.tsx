@@ -14,7 +14,7 @@ export const Route = createFileRoute('/seller/atur-toko')({
 function AturToko(){
   return (
     <div>
-    <div className="w-full h-screen flex">
+    <div className="w-full h-screen flex bg-slate-800">
       <SideBar />
       <div className='w-10/12'>
       <MainSetting></MainSetting>

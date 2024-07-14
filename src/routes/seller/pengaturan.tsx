@@ -13,7 +13,7 @@ export const Route = createFileRoute("/seller/pengaturan")({
 
 function Pengaturan() {
   return (
-    <div className="p-2 pr-10 flex">
+    <div className="p-2 pr-10 flex bg-slate-800">
       <SideBar />
       <div className="w-10/12">
       <Setting />

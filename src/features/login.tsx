@@ -7,7 +7,7 @@ import { LoadingSpinner } from "@/routes/__root";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -21,6 +21,7 @@ import {
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
 import useStore from "../z-context";
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -113,6 +114,13 @@ export function LoginForm() {
     }
   }, []);
 
+  // for password
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   return (
     <div className="w-full h-full flex bg-slate-600 rounded-sm">
       {/* form */}
@@ -148,7 +156,20 @@ export function LoginForm() {
                     Password <Label className="text-red-600">*</Label>
                   </FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Masukan password" {...field} required />
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Masukan password"
+                        {...field}
+                        required
+                      />
+                      <div
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-sm"
+                      >
+                        {showPassword ? <VscEyeClosed size={'1.5rem'} fill="black" /> : <VscEye size={'1.5rem'} fill="black" />}
+                      </div>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -19,6 +19,8 @@ import {
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
+import { useState } from "react";
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
 const registerSchema = z.object({
   name: z.string({ message: "username tidak boleh kosong" }).max(50),
@@ -78,6 +80,13 @@ export function RegisterForm() {
       console.log(error);
     }
   }
+
+  // for password
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
   return (
     <div className="w-full h-full flex rounded-sm bg-white">
@@ -146,11 +155,23 @@ export function RegisterForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-bold">
-                    Password
-                    <Label className="text-red-600">*</Label>
+                    Password <Label className="text-red-600">*</Label>
                   </FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Masukan password" {...field} required />
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Masukan password"
+                        {...field}
+                        required
+                      />
+                      <div
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-sm"
+                      >
+                        {showPassword ? <VscEyeClosed size={'1.5rem'} fill="black" /> : <VscEye size={'1.5rem'} fill="black" />}
+                      </div>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

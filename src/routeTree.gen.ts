@@ -186,6 +186,7 @@ export const routeTree = rootRoute.addChildren({
 {
   "routes": {
     "__root__": {
+      "filePath": "__root.tsx",
       "children": [
         "/",
         "/add-product",

@@ -1,4 +1,4 @@
-import { FormProdukBaru } from '@/features/form-produk-baru';
+import { FormProdukPages } from '@/pages/addProduct/form-produk-baru';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/add-product')({
@@ -8,8 +8,7 @@ export const Route = createFileRoute('/add-product')({
 function AddProduct() {
   return (
     <div className="w-full p-2">
-      {/* <FormProdukBaru /> */}
-      addproduk
+      <FormProdukPages />
     </div>
   )
 }

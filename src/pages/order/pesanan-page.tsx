@@ -1,6 +1,4 @@
 import { DaftarPesanan } from "@/features/pesanan/components/status-order/daftar-pesanan";
-import { RightBar } from "@/features/right-bar";
-import { SideBar } from "@/features/side-bar";
 
 export function PesananPage() {
   return (

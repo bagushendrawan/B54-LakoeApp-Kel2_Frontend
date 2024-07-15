@@ -1,80 +1,105 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Label } from "@/components/label";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/select";
+import { useToast } from "@/components/use-toast";
+import { LoadingSpinner } from "@/routes/__root";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import { Button } from "../components/ui/button"
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "../components/form"
-import { Input } from "../components/input"
-import { Link } from "@tanstack/react-router";
+  FormMessage
+} from "../components/form";
+import { Input } from "../components/input";
+import { Button } from "../components/ui/button";
 
 const registerSchema = z.object({
-    name: z.string({message:"username tidak boleh kosong"}).max(50),
-    email: z.string({message:"email harus diisi"}).min(2).max(50),
-    phone: z.string({message:"no telp harus diisi"}).max(16),
-    password: z.string({message:"password harus diisi"}).max(32),
-    role_id: z.number({message:"role_id harus diisi"}).max(1),
-  })
+  name: z.string({ message: "username tidak boleh kosong" }).max(50),
+  email: z.string({ message: "email harus diisi" }).min(2).max(50),
+  phone: z.string({ message: "no telp harus diisi" }).max(16),
+  password: z.string({ message: "password harus diisi" }).min(8).max(32),
+  role_id: z.any(),
+});
 
 export function RegisterForm() {
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof registerSchema>>({
-      resolver: zodResolver(registerSchema),
-      defaultValues: {
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        role_id: 1,
-      },
-    })
-   
-    // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof registerSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
+  const { toast } = useToast();
+  const navigate = useNavigate({ from: "/auth/register" });
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof registerSchema>>({
+    mode: "onChange",
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      role_id: 1,
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
     try {
-    const data = {
+      const data = {
         name: values.name,
         email: values.email,
         password: values.password,
         phone: values.phone,
         role_id: values.role_id
-    }
-    const response = await Axios({
+      };
+      const response = await Axios({
         method: "post",
         url: `http://localhost:3000/users`,
         data: data,
         headers: { "Content-Type": "application/json" },
-        })
-        console.log(response)
-        } catch (error : any) {
-        console.log(error);
-        }
+      });
+      if (response.status === 201)
+        navigate({ to: "/auth/login" });
+      toast({
+        variant: "success",
+        title: `User Created! ${response.data.name}`,
+        description: `Please Login to use our services`,
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: `Error!`,
+        description: `${error.message}`,
+      });
+      console.log(error);
     }
+  }
 
-    return (
-      <div className="w-full h-screen bg-slate-200 p-8 flex flex-col justify-center items-center m-auto">
-        <h1 className="font-bold text-3xl">Register</h1>
+  return (
+    <div className="w-full h-full flex rounded-sm bg-white">
+      {/* form */}
+      <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
+        <h1 className="font-bold text-2xl text-red-600">Register Here</h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-4/6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full flex flex-col gap-2"
+          >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Username</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    Username
+                    <Label className="text-red-600">*</Label>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan username" {...field} required/>
+                    <Input placeholder="Masukan username" {...field} required />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,10 +110,13 @@ export function RegisterForm() {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Email</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    Email
+                    <Label className="text-red-600">*</Label>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan email" {...field} required/>
+                    <Input type="email" placeholder="Masukan email" {...field} required />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,10 +127,13 @@ export function RegisterForm() {
               control={form.control}
               name="phone"
               render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Phone</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    Phone
+                    <Label className="text-red-600">*</Label>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan phone" {...field} required/>
+                    <Input type="string" placeholder="Masukan phone" {...field} required />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,37 +144,71 @@ export function RegisterForm() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Password</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    Password
+                    <Label className="text-red-600">*</Label>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan password" {...field} required/>
+                    <Input type="password" placeholder="Masukan password" {...field} required />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="role_id"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Role_id</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Masukan Role_id" {...field} required/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-4 items-center">
-            <Button type="submit">Submit</Button>
-            <h1>Are You A Buyer?</h1>
-            <Link className="">Click Here</Link>
+            <p className="text-sm font-bold">
+              Role
+              <Label className="text-red-600">*</Label>
+            </p>
+            <Select onValueChange={(e) => {
+              form.setValue("role_id", parseInt(e));
+            }}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Pilih role" />
+              </SelectTrigger>
+              <SelectContent side="top">
+                <SelectGroup>
+                  <SelectLabel className="border-b-4">Role List</SelectLabel>
+                  <SelectItem value="1">Buyer</SelectItem>
+                  <SelectItem value="2">Seller</SelectItem>
+                  <SelectItem value="3">Admin</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <div className="flex flex-col items-center mt-4 text-sm">
+              {!form.formState.isSubmitting ?
+                <Button type="submit" className="px-12 bg-red-600">
+                  Register
+                </Button>
+                :
+                <Button type="submit" disabled className="px-12 bg-red-600 gap-2">
+                  <LoadingSpinner />
+                  Register
+                </Button>}
+
+              <div className="flex flex-col items-center mt-4">
+                <div className="flex">
+                  <h1 className="me-1">Are you a buyer?</h1>
+                  <Link to="/buyer/dashboard" className="font-bold text-blue-500">Click Here</Link>
+                </div>
+
+                <div className="flex">
+                  <h1 className="me-1">Do you have an account?</h1>
+                  <Link to="/auth/login" className="font-bold text-blue-500">Login</Link>
+                </div>
+              </div>
             </div>
           </form>
         </Form>
-        </div>
-      )
-  }
+      </div>
 
+      {/* logo */}
+      <div className="flex flex-col w-full justify-center items-center bg-red-50 rounded-sm">
+        <img src="/auth/register.png" className="w-3/4 object-cover" />
+        <img src="/Lakoe.png" className="w-2/6" />
+      </div>
+    </div>
+  );
+}

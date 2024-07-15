@@ -1,6 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import { Link } from "@tanstack/react-router";
-import { CgProfile } from "react-icons/cg";
 import { FiBox } from "react-icons/fi";
 import { GoHome } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -11,20 +9,27 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../components/accordion"
+} from "../components/accordion";
 
-import { BsPersonBadge } from "react-icons/bs";
+import { BsPerson, BsPersonBadge } from "react-icons/bs";
+import useStore from "@/z-context";
 
 export function SideBar() {
+  // const user = useStore((state) => state.user);
+  // console.log("test context =",user);
+  const logOutUser = useStore((state) => state.logout);
   return (
     <>
-      <div className="bg-white w-60 h-screen">
+      <div className="bg-rose-600 w-52 h-screen">
         <ul>
-          <div className="text-xl pl-5 h-screen flex flex-col justify-between">
-            <div className="mt-5">
+          <div className="text-xl text-white pl-5 h-screen flex flex-col justify-between">
+          <div>
+            {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
+            <img src="/Lakoe-w.png" className="w-32 mt-2"/>
+            <div className="mt-2">
               <li>
                 <Link
-                  to="/"
+                  to="/seller/dashboard"
                   className="[&.active]:font-bold flex gap-2 items-center py-3"
                 >
                   <GoHome /> Dashboard
@@ -32,7 +37,7 @@ export function SideBar() {
               </li>
               <li>
                 <Link
-                  to="/pesanan"
+                  to="/seller/pesanan"
                   className="[&.active]:font-bold flex gap-2 items-center pb-3"
                 >
                   <FiBox /> Pesanan
@@ -40,14 +45,26 @@ export function SideBar() {
               </li>
               <li>
                 <Link
-                  to="/produk"
+                  to="/seller/produk"
                   className="[&.active]:font-bold flex gap-2 items-center pb-3"
                 >
                   <MdOutlineShoppingBag /> Produk
                 </Link>
               </li>
               <li>
-              <Accordion type="single" className="border-none" collapsible>
+              <Link
+                      to="/seller/atur-toko"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                      <IoSettingsOutline/> Pengaturan
+              </Link>
+              {/* <Link
+                      to="/form-produk"
+                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    >
+                       Form-varian
+              </Link> */}
+              {/* <Accordion type="single" className="border-none" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="p-0">
                       <IoSettingsOutline/>Pengaturan</AccordionTrigger>
@@ -77,18 +94,19 @@ export function SideBar() {
                     </AccordionContent>
                   </AccordionItem>
                   
-                </Accordion>
+                </Accordion> */}
                 
               </li>
             </div>
-
+          </div>
             <div className="mb-5">
               <li>
                 <Link
-                  to="/profile"
+                  to="/auth/login"
                   className="[&.active]:font-bold flex gap-2 items-center"
+                  onClick={logOutUser}
                 >
-                 <BsPersonBadge/> Profile
+                 <BsPerson/> Logout
                 </Link>
               </li>
             </div>

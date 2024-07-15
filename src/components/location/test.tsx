@@ -37,6 +37,20 @@ export function CarouselSize() {
         selectImage(images[nextIndex].Image);
     };
 
+    const handlePrevious = () => {
+        // Logic untuk menggeser carousel item ke kiri
+        const prevIndex = (currentIndex - 1 + images.length) % images.length;
+        setCurrentIndex(prevIndex);
+        selectImage(images[prevIndex].Image);
+    };
+
+    const handleNext = () => {
+        // Logic untuk menggeser carousel item ke kanan
+        const nextIndex = (currentIndex + 1) % images.length;
+        setCurrentIndex(nextIndex);
+        selectImage(images[nextIndex].Image);
+    };
+
     return (
         <>
             <img
@@ -73,8 +87,8 @@ export function CarouselSize() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext onClick={triggerSelect} />
+                    <CarouselPrevious onClick={() => { handlePrevious(); triggerSelect(); }} />
+                    <CarouselNext onClick={() => { handleNext(); triggerSelect(); }} />
                 </Carousel>
             </div>
         </>

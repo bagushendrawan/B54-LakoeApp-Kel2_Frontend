@@ -1,81 +1,138 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Label } from "@/components/label";
+import { ToastAction } from "@/components/toast";
+import { useToast } from "@/components/use-toast";
+import { LoadingSpinner } from "@/routes/__root";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import { Button } from "../components/ui/button"
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "../components/form"
-import { Input } from "../components/input"
-import { Link } from "@tanstack/react-router";
+  FormMessage
+} from "../components/form";
+import { Input } from "../components/input";
+import { Button } from "../components/ui/button";
+import useStore from "../z-context";
 
-const registerSchema = z.object({
-    name: z.string({message:"username tidak boleh kosong"}).max(50),
-    email: z.string({message:"email harus diisi"}).min(2).max(50),
-    phone: z.string({message:"no telp harus diisi"}).max(16),
-    password: z.string({message:"password harus diisi"}).max(32),
-    role_id: z.number({message:"role_id harus diisi"}).max(1),
-  })
+const loginSchema = z.object({
+  email: z.string({ message: "email harus diisi" }).min(2).max(50),
+  password: z.string({ message: "password harus diisi" }).max(32),
+});
 
 export function LoginForm() {
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof registerSchema>>({
-      resolver: zodResolver(registerSchema),
-      defaultValues: {
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        role_id: 1,
-      },
-    })
-   
-    // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof registerSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
+  const { toast } = useToast();
+  const setUser = useStore((state) => state.SET_USER);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate({ from: "/auth/login" });
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
     try {
-    const data = {
-        name: values.name,
+      const data = {
         email: values.email,
         password: values.password,
-        phone: values.phone,
-        role_id: values.role_id
-    }
-    const response = await Axios({
+      };
+
+      const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/users`,
+        url: `http://localhost:3000/login`,
         data: data,
-        headers: { "Content-Type": "application/json" },
-        })
-        console.log(response)
-        } catch (error : any) {
-        console.log(error);
-        }
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+
+      const user = response.data.user;
+      const token = response.data.token;
+
+      if (!token) {
+        throw new Error("Token Not Found");
+      }
+
+      if (!user) {
+        throw new Error("User Not Found");
+      }
+
+      localStorage.setItem("token", token);
+      setUser(response.data);
+      toast({
+        variant: "success",
+        title: `Welcome ${user.name}!`,
+      });
+
+      switch (response.data.user.role_id) {
+        case 1:
+          navigate({ to: "/buyer/dashboard" });
+          break;
+        case 2:
+          navigate({ to: "/seller/dashboard" });
+          break;
+        case 3:
+          navigate({ to: "/admin/dashboard" });
+          break;
+        default:
+          break;
+      }
+
+    } catch (error: any) {
+      console.log("error", error);
+      toast({
+        variant: "destructive",
+        title: `Error! ${error.response.status}`,
+        description: `${error.message}`,
+      });
     }
+  }
 
-    return (
-      <div className="w-full h-screen bg-slate-200 p-8 flex flex-col justify-center items-center m-auto">
-        <h1 className="font-bold text-3xl">Login</h1>
+  useEffect(() => {
+    if (!token) {
+      toast({
+        variant: "destructive",
+        title: `Error!`,
+        description: `Please login to continue`,
+        action: <ToastAction altText="Try again">Try again</ToastAction>
+      });
+    }
+  }, []);
+
+  return (
+    <div className="w-full h-full flex bg-slate-600 rounded-sm">
+      {/* form */}
+      <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
+        <h1 className="font-bold text-2xl text-red-600 mb-8">Welcome Back!</h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-4/6">
-
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full flex flex-col gap-2"
+          >
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Email</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    Email <Label className="text-red-600">*</Label>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan email" {...field} required/>
+                    <Input type="email" placeholder="Masukan email" {...field} required />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -86,24 +143,53 @@ export function LoginForm() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">Password</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    Password <Label className="text-red-600">*</Label>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukan password" {...field} required/>
+                    <Input type="password" placeholder="Masukan password" {...field} required />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="flex gap-4 items-center">
-            <Button type="submit">Login</Button>
-            <h1>Are You A Buyer?</h1>
-            <Link className="">Click Here</Link>
+            <div className="w-full flex justify-end gap-1 mb-8 text-sm">
+              <h1>Forgot Your Password?</h1>
+              <Link to="/auth/request-password" className="font-bold text-blue-500">
+                Click Here
+              </Link>
+            </div>
+
+            <div className="w-full flex flex-col gap-4 items-center text-sm">
+              {!form.formState.isSubmitting ?
+                <Button type="submit" className="px-12 bg-red-600">
+                  Login
+                </Button>
+                :
+                <Button type="submit" disabled className="px-12 bg-red-600 gap-2">
+                  <LoadingSpinner />
+                  Login
+                </Button>
+              }
+
+              <div className="flex justify-center gap-1 mt-8">
+                <h1>Do you have an account?</h1>
+                <Link to="/auth/register" className="font-bold text-blue-500">
+                  Register
+                </Link>
+              </div>
             </div>
           </form>
         </Form>
-        </div>
-      )
-  }
+      </div>
 
+      {/* logo */}
+      <div className="flex flex-col w-full bg-red-50 justify-center items-center rounded-e-sm">
+        <img src="/auth/login.png" className="w-3/4 object-cover" />
+        <img src="/Lakoe.png" className="w-2/6" />
+      </div>
+    </div>
+  );
+}

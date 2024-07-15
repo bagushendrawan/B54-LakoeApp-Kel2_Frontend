@@ -122,94 +122,96 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full h-full flex bg-slate-600 rounded-sm">
-      {/* form */}
-      <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
-        <h1 className="font-bold text-2xl text-red-600 mb-8">Welcome Back!</h1>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full flex flex-col gap-2"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">
-                    Email <Label className="text-red-600">*</Label>
-                  </FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="Masukan email" {...field} required />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className="w-full h-screen p-12">
+      <div className="w-full h-full flex bg-slate-600 rounded-sm">
+        {/* form */}
+        <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
+          <h1 className="font-bold text-2xl text-red-600 mb-8">Welcome Back!</h1>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full flex flex-col gap-2"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">
+                      Email <Label className="text-red-600">*</Label>
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="Masukan email" {...field} required />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">
-                    Password <Label className="text-red-600">*</Label>
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder="Masukan password"
-                        {...field}
-                        required
-                      />
-                      <div
-                        onClick={togglePasswordVisibility}
-                        className="absolute inset-y-0 right-0 flex items-center px-3 text-sm"
-                      >
-                        {showPassword ? <VscEyeClosed size={'1.5rem'} fill="black" /> : <VscEye size={'1.5rem'} fill="black" />}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold">
+                      Password <Label className="text-red-600">*</Label>
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Masukan password"
+                          {...field}
+                          required
+                        />
+                        <div
+                          onClick={togglePasswordVisibility}
+                          className="absolute inset-y-0 right-0 flex items-center px-3 text-sm"
+                        >
+                          {showPassword ? <VscEyeClosed size={'1.5rem'} fill="black" /> : <VscEye size={'1.5rem'} fill="black" />}
+                        </div>
                       </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="w-full flex justify-end gap-1 mb-8 text-sm">
-              <h1>Forgot Your Password?</h1>
-              <Link to="/auth/request-password" className="font-bold text-blue-500">
-                Click Here
-              </Link>
-            </div>
-
-            <div className="w-full flex flex-col gap-4 items-center text-sm">
-              {!form.formState.isSubmitting ?
-                <Button type="submit" className="px-12 bg-red-600">
-                  Login
-                </Button>
-                :
-                <Button type="submit" disabled className="px-12 bg-red-600 gap-2">
-                  <LoadingSpinner />
-                  Login
-                </Button>
-              }
-
-              <div className="flex justify-center gap-1 mt-8">
-                <h1>Do you have an account?</h1>
-                <Link to="/auth/register" className="font-bold text-blue-500">
-                  Register
+              <div className="w-full flex justify-end gap-1 mb-8 text-sm">
+                <h1>Forgot Your Password?</h1>
+                <Link to="/auth/request-password" className="font-bold text-blue-500">
+                  Click Here
                 </Link>
               </div>
-            </div>
-          </form>
-        </Form>
-      </div>
 
-      {/* logo */}
-      <div className="flex flex-col w-full bg-red-50 justify-center items-center rounded-e-sm">
-        <img src="/auth/login.png" className="w-3/4 object-cover" />
-        <img src="/Lakoe.png" className="w-2/6" />
+              <div className="w-full flex flex-col gap-4 items-center text-sm">
+                {!form.formState.isSubmitting ?
+                  <Button type="submit" className="px-12 bg-red-600">
+                    Login
+                  </Button>
+                  :
+                  <Button type="submit" disabled className="px-12 bg-red-600 gap-2">
+                    <LoadingSpinner />
+                    Login
+                  </Button>
+                }
+
+                <div className="flex justify-center gap-1 mt-8">
+                  <h1>Do you have an account?</h1>
+                  <Link to="/auth/register" className="font-bold text-blue-500">
+                    Register
+                  </Link>
+                </div>
+              </div>
+            </form>
+          </Form>
+        </div>
+
+        {/* logo */}
+        <div className="flex flex-col w-full bg-red-50 justify-center items-center rounded-e-sm">
+          <img src="/auth/login.png" className="w-3/4 object-cover" />
+          <img src="/Lakoe.png" className="w-2/6" />
+        </div>
       </div>
     </div>
   );

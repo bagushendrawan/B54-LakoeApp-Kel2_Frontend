@@ -21,9 +21,11 @@ import { Route as SellerAddProductImport } from './routes/seller/add-product'
 import { Route as BuyerDetailOrderImport } from './routes/buyer/detail-order'
 import { Route as BuyerDashboardImport } from './routes/buyer/dashboard'
 import { Route as BuyerCheckoutImport } from './routes/buyer/checkout'
+import { Route as AuthRequestPasswordImport } from './routes/auth/request-password'
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AdminDashboardImport } from './routes/admin/dashboard'
+import { Route as AuthChangePasswordTokenImport } from './routes/auth/change-password.$token'
 
 // Create/Update Routes
 
@@ -77,6 +79,11 @@ const BuyerCheckoutRoute = BuyerCheckoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRequestPasswordRoute = AuthRequestPasswordImport.update({
+  path: '/auth/request-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthRegisterRoute = AuthRegisterImport.update({
   path: '/auth/register',
   getParentRoute: () => rootRoute,
@@ -89,6 +96,11 @@ const AuthLoginRoute = AuthLoginImport.update({
 
 const AdminDashboardRoute = AdminDashboardImport.update({
   path: '/admin/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthChangePasswordTokenRoute = AuthChangePasswordTokenImport.update({
+  path: '/auth/change-password/$token',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -122,6 +134,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/register'
       fullPath: '/auth/register'
       preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/request-password': {
+      id: '/auth/request-password'
+      path: '/auth/request-password'
+      fullPath: '/auth/request-password'
+      preLoaderRoute: typeof AuthRequestPasswordImport
       parentRoute: typeof rootRoute
     }
     '/buyer/checkout': {
@@ -187,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerProdukImport
       parentRoute: typeof rootRoute
     }
+    '/auth/change-password/$token': {
+      id: '/auth/change-password/$token'
+      path: '/auth/change-password/$token'
+      fullPath: '/auth/change-password/$token'
+      preLoaderRoute: typeof AuthChangePasswordTokenImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -197,6 +223,7 @@ export const routeTree = rootRoute.addChildren({
   AdminDashboardRoute,
   AuthLoginRoute,
   AuthRegisterRoute,
+  AuthRequestPasswordRoute,
   BuyerCheckoutRoute,
   BuyerDashboardRoute,
   BuyerDetailOrderRoute,
@@ -206,6 +233,7 @@ export const routeTree = rootRoute.addChildren({
   SellerPengaturanRoute,
   SellerPesananRoute,
   SellerProdukRoute,
+  AuthChangePasswordTokenRoute,
 })
 
 /* prettier-ignore-end */
@@ -220,6 +248,7 @@ export const routeTree = rootRoute.addChildren({
         "/admin/dashboard",
         "/auth/login",
         "/auth/register",
+        "/auth/request-password",
         "/buyer/checkout",
         "/buyer/dashboard",
         "/buyer/detail-order",
@@ -228,7 +257,8 @@ export const routeTree = rootRoute.addChildren({
         "/seller/dashboard",
         "/seller/pengaturan",
         "/seller/pesanan",
-        "/seller/produk"
+        "/seller/produk",
+        "/auth/change-password/$token"
       ]
     },
     "/": {
@@ -242,6 +272,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/auth/register": {
       "filePath": "auth/register.tsx"
+    },
+    "/auth/request-password": {
+      "filePath": "auth/request-password.tsx"
     },
     "/buyer/checkout": {
       "filePath": "buyer/checkout.tsx"
@@ -269,6 +302,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/seller/produk": {
       "filePath": "seller/produk.tsx"
+    },
+    "/auth/change-password/$token": {
+      "filePath": "auth/change-password.$token.tsx"
     }
   }
 }

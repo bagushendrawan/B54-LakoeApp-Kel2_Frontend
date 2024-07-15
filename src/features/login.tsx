@@ -159,8 +159,8 @@ export function LoginForm() {
             {!form.formState.isSubmitting ? <Button type="submit" className="bg-red-600">Login</Button> : <Button type="submit" disabled className="bg-red-600">Login <LoadingSpinner></LoadingSpinner></Button>}
             <div className="flex flex-col">
               <div className="flex">
-                <h1 className="me-1">Are You A Buyer?</h1>
-                <Link to="/buyer/dashboard" className="text-blue-500">
+                <h1 className="me-1">Forgot Your Password?</h1>
+                <Link to="/auth/request-password" className="text-blue-500">
                   Click Here
                 </Link>
               </div>

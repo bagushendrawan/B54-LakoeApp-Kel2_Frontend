@@ -19,7 +19,7 @@ function Index() {
     <div>
     <div className="w-full h-auto flex bg-slate-800">
     <SideBar />
-      <div className="w-10/12">
+      <div className="w-full h-screen overflow-y-auto">
       <DashboardPage></DashboardPage>
       </div>
     </div>

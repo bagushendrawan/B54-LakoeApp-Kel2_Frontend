@@ -15,7 +15,7 @@ function AddProduct() {
   return (
     <div className="w-full h-screen flex bg-slate-800">
       <SideBar />
-      <div className='w-10/12 p-2'>
+      <div className='w-full h-screen overflow-y-auto p-2'>
         <FormProdukBaru></FormProdukBaru>
       </div>
     </div>

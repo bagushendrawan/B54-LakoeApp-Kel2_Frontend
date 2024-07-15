@@ -166,13 +166,6 @@ export function LoginForm() {
               </div>
 
               <div className="flex">
-                <h1 className="me-1">Are You An Admin?</h1>
-                <Link to="/admin/dashboard" className="text-blue-500">
-                  Admin
-                </Link>
-              </div>
-
-              <div className="flex">
                 <h1 className="me-1">Do you have an account?</h1>
                 <Link to="/auth/register" className="text-blue-500">
                   Register

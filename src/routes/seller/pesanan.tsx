@@ -16,7 +16,7 @@ function Pesanan() {
   <div>
     <div className="w-full h-screen flex bg-slate-800">
     <SideBar />
-    <div className='w-10/12'>
+    <div className='w-full h-screen overflow-y-auto'>
       <PesananPage></PesananPage>
       </div>
     </div>

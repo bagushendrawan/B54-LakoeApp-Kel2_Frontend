@@ -6,20 +6,20 @@ import { ProtectedRoute } from '../__root';
 export const Route = createFileRoute('/seller/produk')({
   component: () => (
     <ProtectedRoute>
-      <Produk/>
+      <Produk />
     </ProtectedRoute>
   )
-})
+});
 
 function Produk() {
   return (
     <div>
       <div className="w-full h-screen flex bg-slate-800">
-      <SideBar />
-      <div className='w-full h-screen overflow-y-auto p-2'>
-      <Product></Product>
+        <SideBar />
+        <div className='w-full h-screen overflow-y-auto p-2'>
+          <Product />
+        </div>
       </div>
-      </div>
-  </div>
-  )
+    </div>
+  );
 }

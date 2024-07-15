@@ -1,8 +1,13 @@
 // import { FC } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
 import { Button } from '@/components/button';
+import { FC } from 'react';
 
-const BulkNonactivateProductDialog = () => {
+interface IBulkNonactivateProps {
+    selectedProduct: [number, boolean][];
+}
+
+const BulkNonactivateProductDialog: FC<IBulkNonactivateProps> = ({ selectedProduct }) => {
 
     return (
         <Dialog>
@@ -13,7 +18,7 @@ const BulkNonactivateProductDialog = () => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold">Nonaktifkan 4 Produk?</DialogTitle>
+                    <DialogTitle className="text-lg font-bold">Nonaktifkan {selectedProduct.length} Produk?</DialogTitle>
                     <DialogDescription>
                         Produk yang dinonaktifkan tidak akan dapat dilihat oleh calon pembeli. Pastikan tindakan kamu benar.
                     </DialogDescription>

@@ -2,8 +2,13 @@
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
 import { Button } from '@/components/button';
 import { MdOutlineDelete } from 'react-icons/md';
+import { FC } from 'react';
 
-const BulkDeleteProductDialog = () => {
+interface IBulkDeleteProps {
+    selectedProduct: [number, boolean][];
+}
+
+const BulkDeleteProductDialog: FC<IBulkDeleteProps> = ({ selectedProduct }) => {
 
     return (
         <Dialog>
@@ -14,7 +19,7 @@ const BulkDeleteProductDialog = () => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold">Hapus 4 Produk?</DialogTitle>
+                    <DialogTitle className="text-lg font-bold">Hapus {selectedProduct.length} Produk?</DialogTitle>
                     <DialogDescription>
                         Produk yang dihapus tidak akan bisa dibatalkan. Pastikan produk yang kamu pilih itu sudah benar.
                     </DialogDescription>

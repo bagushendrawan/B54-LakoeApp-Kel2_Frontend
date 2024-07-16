@@ -8,16 +8,27 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import Axios from "axios";
+import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 
+interface MidtransSnap extends Window {
+  snap: {
+    pay: (token: string) => void;
+  };
+}
+
 interface Data {
-  nama: string;
+  id: number;
+  name: string;
+  price: number;
   image: string[];
 }
 
 const datas: Data = {
-  nama: "BAJU POLOS",
+  id: 1,
+  name: "BAJU POLOS",
+  price: 120000,
   image: [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
@@ -25,14 +36,62 @@ const datas: Data = {
   ],
 };
 
+interface cartItemsForm {
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export function ProdukPage() {
-  const [data, setData] = useState<number>(1);
+  const [data, setData] = useState<cartItemsForm>({
+    name: "",
+    price: 0,
+    quantity: 1,
+  });
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setData({
+      ...data,
+      [name]: value,
+    });
+  }
+
+  async function handleSubmit() {
+    try {
+      const response = await Axios.post(
+        `http://localhost:3000/cart-items`,
+        data
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+
+    const scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+
+    const myMidtransClientKey = import.meta.env.PUBLIC_CLIENT;
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
+
 
   return (
     <>
       <div className="bg-white m-3 rounded-lg">
         <div className="flex items-center p-24">
-
           <Carousel className="w-full max-w-md">
             <CarouselContent>
               {datas.image.map((data, index) => (
@@ -52,35 +111,29 @@ export function ProdukPage() {
           </Carousel>
 
           <div className="ml-24">
-            <h1 className="font-bold text-2xl">{datas.nama}</h1>
+            <h1 className="font-bold text-2xl">{datas.name}</h1>
 
             <div className="mt-5">
               <div className="flex gap-10 text-xl pb-4 border-b-2 border-b-black">
                 <p>Harga</p>
-                <p>Rp 100.000</p>
+                <p>{datas.price}</p>
               </div>
 
               <div className="flex items-center gap-10 mt-5 text-xl pb-4 border-b-2 border-b-black">
                 <p>Jumlah</p>
                 <div className="flex items-center gap-10 text-xl">
-                  <button
-                    className="border border-black w-10 h-11 rounded-md"
-                    onClick={() => setData((prev) => prev - 1)}
-                  >
+                  <button className="border border-black w-10 h-11 rounded-md">
                     -
                   </button>
-                  <div>{data}</div>
-                  <button
-                    className="border border-black w-10 h-11 rounded-md"
-                    onClick={() => setData((prev) => prev + 1)}
-                  >
+                  <div>{data.quantity}</div>
+                  <button className="border border-black w-10 h-11 rounded-md">
                     +
                   </button>
                 </div>
               </div>
 
               <div className="flex justify-between mt-5">
-                <Button>
+                <Button onClick={handleSubmit}>
                   <Link to="/checkout">Beli Langsung</Link>
                 </Button>
                 <Button
@@ -91,6 +144,20 @@ export function ProdukPage() {
                 >
                   Keranjang <FaArrowRightFromBracket />
                 </Button>
+                <Button
+                  onClick={async () => {
+                    const response = await Axios.post(
+                      "http://localhost:3000/payment"
+                    );
+                    console.log(response);
+                    
+                    const token = response.data.token;
+                    (window as unknown as MidtransSnap).snap.pay(token);
+                  }}
+                >
+                  Link Generate
+                </Button>
+
               </div>
             </div>
           </div>

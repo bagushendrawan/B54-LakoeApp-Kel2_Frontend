@@ -137,7 +137,7 @@ export const useProdukForm = () => {
       if(data.produk_ukuran_option_img)
       {
         for (let i = 0; i < data.produk_ukuran_option_img.length; i++) {
-          console.log("produk_ukuran_option_img", data.produk_ukuran_option_img[i])
+          // console.log("produk_ukuran_option_img", data.produk_ukuran_option_img[i])
           form_data.append("produk_ukuran_option_img", data.produk_ukuran_option_img[i]);  
         }
       }

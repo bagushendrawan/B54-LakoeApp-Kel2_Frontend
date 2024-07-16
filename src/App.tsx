@@ -1,8 +1,11 @@
 import { Outlet } from "@tanstack/react-router";
+<<<<<<< HEAD
 import { Toaster } from "./components/toaster";
 import useStore from "./z-context";
 import { useEffect } from "react";
 import Axios from "axios"
+=======
+>>>>>>> origin/product
 
 function App() {
   // const user = useStore((state) => state.user)

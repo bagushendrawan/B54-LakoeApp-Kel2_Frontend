@@ -8,6 +8,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import { LuPackageX } from "react-icons/lu";
 import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
+import { Link } from "@tanstack/react-router";
 
 const Product = () => {
     const categories = ["Semua Kategori", "Audio, Kamera & Elektronik", "Buku", "Dapur", "Fashion Anak & Bayi", "Fashion Muslim", "Fashion Pria", "Fashion Wanita"];
@@ -131,18 +132,23 @@ const Product = () => {
     return (
         <div className="min-h-screen p-4 bg-white rounded">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">Daftar Produk</h1>
-                <Button className="gap-2 rounded-full bg-[#0086B4]">
-                    <CiCirclePlus size={"1.5rem"} />
-                    Tambah Produk
-                </Button>
+                <p className="text-2xl font-bold">Daftar Produk</p>
+                <Link
+                    to="/seller/add-product"
+                    className="[&.active]:font-bold flex gap-2 items-center py-3"
+                >
+                    <Button className="gap-2 rounded-full bg-[#0086B4]">
+                        <CiCirclePlus size={"1.5rem"} />
+                        Tambah Produk
+                    </Button>
+                </Link>
             </div>
             <div className="flex space-x-4 mb-4 border-b">
                 <button onClick={() => handleSortIsActive(null)} className={`pb-2 ${isActive === null ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Semua</button>
                 <button onClick={() => handleSortIsActive(true)} className={`pb-2 ${isActive === true ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Aktif</button>
                 <button onClick={() => handleSortIsActive(false)} className={`pb-2 ${isActive === false ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Nonaktif</button>
             </div>
-            <div className="flex space-x-4 mb-4">
+            <div className="flex gap-2 mb-4">
                 {/* search sort */}
                 <IconInput value={searchTerm} onChange={handleSearchChange} />
 

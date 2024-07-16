@@ -11,22 +11,22 @@ export type formDTO = {
     produk_url_checkout: string,
     produk_kategori: string,
     produk_deskripsi: string,
-    produk_foto: File | null,
-    produk_foto_1: File | null,
-    produk_foto_2: File | null,
-    produk_foto_3: File | null,
-    produk_foto_4: File | null,
+    produk_foto: any
+    produk_foto_1: any
+    produk_foto_2: any
+    produk_foto_3: any
+    produk_foto_4: any
     produk_harga: number,
     produk_min_beli: number,
     produk_stok: number,
-    produk_sku: number,
+    produk_sku: string,
     produk_berat: number,
     produk_panjang: number,
     produk_lebar: number,
     produk_tinggi: number,
     produk_ukuran_option: string[]
     produk_ukuran_option_weight: number[]
-    produk_ukuran_option_img: string[]
+    produk_ukuran_option_img: any[]
     produk_ukuran_option_sku: string[]
     produk_ukuran_option_stock: number[]
     produk_ukuran_option_price: number[]
@@ -95,37 +95,66 @@ export const useProdukForm = () => {
     handleSubmit,
     unregister,
     setValue,
-    formState: { errors,  },
+    formState: { errors,  isSubmitting},
     control,
     getValues
   } = useForm<formDTO>({
     mode: "onChange",
     resolver: zodResolver(FormSchema),
+    defaultValues : {
+      produk_kategori : "Elektronik"
+    }
   });
   
   const onSubmitForm: SubmitHandler<formDTO> = async (data) => {
     try {
-      console.log(data);
-    const response = await Axios({
-        method: "post",
-        url: `http://localhost:3000/form-produk`,
-        data: {
-          ...data,
+      
+      let dataSubmit : formDTO = data;
+      if(data.produk_ukuran_option) {
+        dataSubmit = {
+          ...dataSubmit,
           produk_ukuran_option_price : Object.values(data.produk_ukuran_option_price).map(item => Number(item)),
           produk_ukuran_option_weight : Object.values(data.produk_ukuran_option_weight).map(item => Number(item)),
           produk_ukuran_option_stock : Object.values(data.produk_ukuran_option_stock).map(item => Number(item)),
           produk_ukuran_option_panjang : Object.values(data.produk_ukuran_option_lebar).map(item => Number(item)),
           produk_ukuran_option_lebar : Object.values(data.produk_ukuran_option_lebar).map(item => Number(item)),
           produk_ukuran_option_tinggi : Object.values(data.produk_ukuran_option_tinggi).map(item => Number(item)),
-          produk_ukuran_option_sku : Object.values(data.produk_ukuran_option_sku).map(item => Number(item))
-        },
-        headers: { "Content-Type": "application/json" },
+          produk_ukuran_option_sku : Object.values(data.produk_ukuran_option_sku).map(item => String(item))
+        }
+      }
+      
+      let form_data = new FormData();
+
+      for ( let key in dataSubmit ) {
+          form_data.append(key, (dataSubmit as any)[key]);
+      }
+      if(data.produk_foto)form_data.append("produk_foto", data.produk_foto[0]);
+      if(data.produk_foto_1)form_data.append("produk_foto_1", data.produk_foto_1[0]);
+      if(data.produk_foto_2)form_data.append("produk_foto_2", data.produk_foto_2[0]);
+      if(data.produk_foto_3)form_data.append("produk_foto_3", data.produk_foto_3[0]);
+      if(data.produk_foto_4)form_data.append("produk_foto_4", data.produk_foto_4[0]);
+
+      if(data.produk_ukuran_option_img)
+      {
+        for (let i = 0; i < data.produk_ukuran_option_img.length; i++) {
+          // console.log("produk_ukuran_option_img", data.produk_ukuran_option_img[i])
+          form_data.append("produk_ukuran_option_img", data.produk_ukuran_option_img[i]);  
+        }
+      }
+
+      console.log("img",form_data.getAll("produk_ukuran_option_img"));
+
+    const response = await Axios({
+        method: "post",
+        url: `http://localhost:3000/form-produk`,
+        data: form_data,
+        headers: { "Content-Type": "multipart/form-data" },
         })
 
         console.log(response);
         toast({
             title: "Add Product Success",
-            description: response.data,
+            description: JSON.stringify(response.data),
           })
     } catch (error) {
       console.log("test",error)
@@ -140,6 +169,7 @@ export const useProdukForm = () => {
     errors,
     control, 
     setValue,
-    getValues
+    getValues,
+    isSubmitting
   };
 };

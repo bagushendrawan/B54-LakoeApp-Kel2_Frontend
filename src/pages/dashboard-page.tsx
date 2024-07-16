@@ -42,7 +42,7 @@ export function DashboardPage() {
                         <h2 className="text-gray-700 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
                 </div>
             </div>
-            
+
             <div className="w-full bg-slate-50 h-72 flex flex-col p-4">
                 <div className="flex justify-between">
                 <h1 className="font-bold text-xl text-gray-600">Reporting Period</h1>

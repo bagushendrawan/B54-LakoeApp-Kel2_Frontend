@@ -133,8 +133,8 @@ export function ProdukPage() {
               </div>
 
               <div className="flex justify-between mt-5">
-                <Button onClick={handleSubmit}>
-                  <Link to="/checkout">Beli Langsung</Link>
+                <Button>
+                  <Link to="/buyer/checkout">Beli Langsung</Link>
                 </Button>
                 <Button
                   className="gap-2"

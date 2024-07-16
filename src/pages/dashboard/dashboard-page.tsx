@@ -7,19 +7,19 @@ export function DashboardPage() {
     return (
         <>
             <div className=" w-full flex flex-col gap-4 ms-4 p-4">
-                <h1 className="text-2xl font-bold text-orange-600">Credit Dashboard</h1>
+                <h1 className="text-2xl font-bold text-white">Credit Dashboard</h1>
                 <div className="flex gap-4">
-                    <div className="w-5/12 bg-stone-50 p-4">
+                    <div className="w-5/12 bg-white p-4">
                         <p className="text-sm text-gray-600 mb-2">Current Balance</p>
                         <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
                         <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Saldo</Button>
                     </div>
-                    <div className="w-3/12 bg-stone-50 p-4">
+                    <div className="w-3/12 bg-white p-4">
                         <BsReceipt className="text-3xl mb-4 text-green-600"></BsReceipt>
                         <p className="text-sm text-gray-600 mb-1">Penarikan Sedang Dalam Proses</p>
                         <h2 className="text-gray-700 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
                     </div>
-                    <div className="w-3/12 bg-stone-50 p-4">
+                    <div className="w-3/12 bg-white p-4">
                         <BsCash className="text-3xl mb-4 text-green-600"></BsCash>
                         <div className="flex justify-between">
                             <div className="flex">
@@ -30,7 +30,7 @@ export function DashboardPage() {
                         </div>
                         <h2 className="text-gray-700 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
                     </div>
-                    <div className="w-3/12 bg-stone-50 p-4">
+                    <div className="w-3/12 bg-white p-4">
                         <BsCash className="text-3xl mb-4 text-green-600"></BsCash>
                         <div className="flex justify-between">
                             <div className="flex">
@@ -43,7 +43,7 @@ export function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="w-full bg-stone-50 h-72 flex flex-col p-4">
+                <div className="w-full bg-white h-72 flex flex-col p-4">
                     <div className="flex justify-between">
                         <h1 className="font-bold text-xl text-gray-600">Reporting Period</h1>
                         <div className="w-1/4 text-gray-700">
@@ -59,7 +59,7 @@ export function DashboardPage() {
                             </Select>
                         </div>
                     </div>
-                    <div className="w-full bg-stone-50 h-24 mt-4 flex gap-4">
+                    <div className="w-full bg-white h-24 mt-4 flex gap-4">
                         <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
                             <BsCash className="text-3xl text-red-500 ms-8"></BsCash>
                             <div className="flex flex-col mt-4">
@@ -90,7 +90,7 @@ export function DashboardPage() {
                         </div>
                     </div>
 
-                    <div className="w-full bg-stone-50 rounded-sm h-24 mt-4 pb-4 flex gap-4">
+                    <div className="w-full bg-white rounded-sm h-24 mt-4 pb-4 flex gap-4">
                         <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
                             <BsCash className="text-3xl text-red-500 ms-8"></BsCash>
                             <div className="flex flex-col mt-4">
@@ -160,7 +160,7 @@ export function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="bg-stone-50 w-full h-12 mt-4 flex justify-between items-center py-6 px-12  text-xs font-bold">
+                <div className="bg-white w-full h-12 mt-4 flex justify-between items-center py-6 px-12  text-xs font-bold">
                     <p>No.</p>
                     <p>Deskripsi</p>
                     <p>Nilai</p>
@@ -169,7 +169,7 @@ export function DashboardPage() {
                     <p>Tanggal</p>
                 </div>
 
-                <div className="bg-stone-50 w-full h-64 flex justify-center items-center">
+                <div className="bg-white w-full h-64 flex justify-center items-center">
                     <p className="flex gap-4 justify-center items-center text-xl text-gray-300"><BsInfoCircle />Tidak ada aktifitas dalam rentang tanggal ini</p>
                 </div>
             </div>

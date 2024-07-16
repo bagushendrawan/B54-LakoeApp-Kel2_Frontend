@@ -11,90 +11,96 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as RegisterImport } from './routes/register'
-import { Route as ProfileImport } from './routes/profile'
-import { Route as ProdukImport } from './routes/produk'
-import { Route as PesananImport } from './routes/pesanan'
-import { Route as PengirimanImport } from './routes/pengiriman'
-import { Route as PengaturanImport } from './routes/pengaturan'
-import { Route as MetodeImport } from './routes/metode'
-import { Route as LoginImport } from './routes/login'
-import { Route as DetailOrderImport } from './routes/detail-order'
-import { Route as CheckoutImport } from './routes/checkout'
-import { Route as BuyerDashboardImport } from './routes/buyer-dashboard'
-import { Route as BuyerImport } from './routes/buyer'
-import { Route as AturTokoImport } from './routes/atur-toko'
 import { Route as IndexImport } from './routes/index'
+import { Route as SellerProdukImport } from './routes/seller/produk'
+import { Route as SellerPesananImport } from './routes/seller/pesanan'
+import { Route as SellerPengaturanImport } from './routes/seller/pengaturan'
+import { Route as SellerDashboardImport } from './routes/seller/dashboard'
+import { Route as SellerAturTokoImport } from './routes/seller/atur-toko'
+import { Route as SellerAddProductImport } from './routes/seller/add-product'
+import { Route as BuyerDetailOrderImport } from './routes/buyer/detail-order'
+import { Route as BuyerDashboardImport } from './routes/buyer/dashboard'
+import { Route as BuyerCheckoutImport } from './routes/buyer/checkout'
+import { Route as AuthRequestPasswordImport } from './routes/auth/request-password'
+import { Route as AuthRegisterImport } from './routes/auth/register'
+import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AdminDashboardImport } from './routes/admin/dashboard'
+import { Route as AuthChangePasswordTokenImport } from './routes/auth/change-password.$token'
 
 // Create/Update Routes
 
-const RegisterRoute = RegisterImport.update({
-  path: '/register',
+const IndexRoute = IndexImport.update({
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProfileRoute = ProfileImport.update({
-  path: '/profile',
+const SellerProdukRoute = SellerProdukImport.update({
+  path: '/seller/produk',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProdukRoute = ProdukImport.update({
-  path: '/produk',
+const SellerPesananRoute = SellerPesananImport.update({
+  path: '/seller/pesanan',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PesananRoute = PesananImport.update({
-  path: '/pesanan',
+const SellerPengaturanRoute = SellerPengaturanImport.update({
+  path: '/seller/pengaturan',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PengirimanRoute = PengirimanImport.update({
-  path: '/pengiriman',
+const SellerDashboardRoute = SellerDashboardImport.update({
+  path: '/seller/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PengaturanRoute = PengaturanImport.update({
-  path: '/pengaturan',
+const SellerAturTokoRoute = SellerAturTokoImport.update({
+  path: '/seller/atur-toko',
   getParentRoute: () => rootRoute,
 } as any)
 
-const MetodeRoute = MetodeImport.update({
-  path: '/metode',
+const SellerAddProductRoute = SellerAddProductImport.update({
+  path: '/seller/add-product',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LoginRoute = LoginImport.update({
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DetailOrderRoute = DetailOrderImport.update({
-  path: '/detail-order',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CheckoutRoute = CheckoutImport.update({
-  path: '/checkout',
+const BuyerDetailOrderRoute = BuyerDetailOrderImport.update({
+  path: '/buyer/detail-order',
   getParentRoute: () => rootRoute,
 } as any)
 
 const BuyerDashboardRoute = BuyerDashboardImport.update({
-  path: '/buyer-dashboard',
+  path: '/buyer/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
-const BuyerRoute = BuyerImport.update({
-  path: '/buyer',
+const BuyerCheckoutRoute = BuyerCheckoutImport.update({
+  path: '/buyer/checkout',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AturTokoRoute = AturTokoImport.update({
-  path: '/atur-toko',
+const AuthRequestPasswordRoute = AuthRequestPasswordImport.update({
+  path: '/auth/request-password',
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const AuthRegisterRoute = AuthRegisterImport.update({
+  path: '/auth/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDashboardRoute = AdminDashboardImport.update({
+  path: '/admin/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthChangePasswordTokenRoute = AuthChangePasswordTokenImport.update({
+  path: '/auth/change-password/$token',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,95 +115,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/atur-toko': {
-      id: '/atur-toko'
-      path: '/atur-toko'
-      fullPath: '/atur-toko'
-      preLoaderRoute: typeof AturTokoImport
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardImport
       parentRoute: typeof rootRoute
     }
-    '/buyer': {
-      id: '/buyer'
-      path: '/buyer'
-      fullPath: '/buyer'
-      preLoaderRoute: typeof BuyerImport
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof rootRoute
     }
-    '/buyer-dashboard': {
-      id: '/buyer-dashboard'
-      path: '/buyer-dashboard'
-      fullPath: '/buyer-dashboard'
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/request-password': {
+      id: '/auth/request-password'
+      path: '/auth/request-password'
+      fullPath: '/auth/request-password'
+      preLoaderRoute: typeof AuthRequestPasswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/buyer/checkout': {
+      id: '/buyer/checkout'
+      path: '/buyer/checkout'
+      fullPath: '/buyer/checkout'
+      preLoaderRoute: typeof BuyerCheckoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/buyer/dashboard': {
+      id: '/buyer/dashboard'
+      path: '/buyer/dashboard'
+      fullPath: '/buyer/dashboard'
       preLoaderRoute: typeof BuyerDashboardImport
       parentRoute: typeof rootRoute
     }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutImport
+    '/buyer/detail-order': {
+      id: '/buyer/detail-order'
+      path: '/buyer/detail-order'
+      fullPath: '/buyer/detail-order'
+      preLoaderRoute: typeof BuyerDetailOrderImport
       parentRoute: typeof rootRoute
     }
-    '/detail-order': {
-      id: '/detail-order'
-      path: '/detail-order'
-      fullPath: '/detail-order'
-      preLoaderRoute: typeof DetailOrderImport
+    '/seller/add-product': {
+      id: '/seller/add-product'
+      path: '/seller/add-product'
+      fullPath: '/seller/add-product'
+      preLoaderRoute: typeof SellerAddProductImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+    '/seller/atur-toko': {
+      id: '/seller/atur-toko'
+      path: '/seller/atur-toko'
+      fullPath: '/seller/atur-toko'
+      preLoaderRoute: typeof SellerAturTokoImport
       parentRoute: typeof rootRoute
     }
-    '/metode': {
-      id: '/metode'
-      path: '/metode'
-      fullPath: '/metode'
-      preLoaderRoute: typeof MetodeImport
+    '/seller/dashboard': {
+      id: '/seller/dashboard'
+      path: '/seller/dashboard'
+      fullPath: '/seller/dashboard'
+      preLoaderRoute: typeof SellerDashboardImport
       parentRoute: typeof rootRoute
     }
-    '/pengaturan': {
-      id: '/pengaturan'
-      path: '/pengaturan'
-      fullPath: '/pengaturan'
-      preLoaderRoute: typeof PengaturanImport
+    '/seller/pengaturan': {
+      id: '/seller/pengaturan'
+      path: '/seller/pengaturan'
+      fullPath: '/seller/pengaturan'
+      preLoaderRoute: typeof SellerPengaturanImport
       parentRoute: typeof rootRoute
     }
-    '/pengiriman': {
-      id: '/pengiriman'
-      path: '/pengiriman'
-      fullPath: '/pengiriman'
-      preLoaderRoute: typeof PengirimanImport
+    '/seller/pesanan': {
+      id: '/seller/pesanan'
+      path: '/seller/pesanan'
+      fullPath: '/seller/pesanan'
+      preLoaderRoute: typeof SellerPesananImport
       parentRoute: typeof rootRoute
     }
-    '/pesanan': {
-      id: '/pesanan'
-      path: '/pesanan'
-      fullPath: '/pesanan'
-      preLoaderRoute: typeof PesananImport
+    '/seller/produk': {
+      id: '/seller/produk'
+      path: '/seller/produk'
+      fullPath: '/seller/produk'
+      preLoaderRoute: typeof SellerProdukImport
       parentRoute: typeof rootRoute
     }
-    '/produk': {
-      id: '/produk'
-      path: '/produk'
-      fullPath: '/produk'
-      preLoaderRoute: typeof ProdukImport
-      parentRoute: typeof rootRoute
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileImport
-      parentRoute: typeof rootRoute
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterImport
+    '/auth/change-password/$token': {
+      id: '/auth/change-password/$token'
+      path: '/auth/change-password/$token'
+      fullPath: '/auth/change-password/$token'
+      preLoaderRoute: typeof AuthChangePasswordTokenImport
       parentRoute: typeof rootRoute
     }
   }
@@ -207,19 +220,20 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AturTokoRoute,
-  BuyerRoute,
+  AdminDashboardRoute,
+  AuthLoginRoute,
+  AuthRegisterRoute,
+  AuthRequestPasswordRoute,
+  BuyerCheckoutRoute,
   BuyerDashboardRoute,
-  CheckoutRoute,
-  DetailOrderRoute,
-  LoginRoute,
-  MetodeRoute,
-  PengaturanRoute,
-  PengirimanRoute,
-  PesananRoute,
-  ProdukRoute,
-  ProfileRoute,
-  RegisterRoute,
+  BuyerDetailOrderRoute,
+  SellerAddProductRoute,
+  SellerAturTokoRoute,
+  SellerDashboardRoute,
+  SellerPengaturanRoute,
+  SellerPesananRoute,
+  SellerProdukRoute,
+  AuthChangePasswordTokenRoute,
 })
 
 /* prettier-ignore-end */
@@ -231,62 +245,66 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/atur-toko",
-        "/buyer",
-        "/buyer-dashboard",
-        "/checkout",
-        "/detail-order",
-        "/login",
-        "/metode",
-        "/pengaturan",
-        "/pengiriman",
-        "/pesanan",
-        "/produk",
-        "/profile",
-        "/register"
+        "/admin/dashboard",
+        "/auth/login",
+        "/auth/register",
+        "/auth/request-password",
+        "/buyer/checkout",
+        "/buyer/dashboard",
+        "/buyer/detail-order",
+        "/seller/add-product",
+        "/seller/atur-toko",
+        "/seller/dashboard",
+        "/seller/pengaturan",
+        "/seller/pesanan",
+        "/seller/produk",
+        "/auth/change-password/$token"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/atur-toko": {
-      "filePath": "atur-toko.tsx"
+    "/admin/dashboard": {
+      "filePath": "admin/dashboard.tsx"
     },
-    "/buyer": {
-      "filePath": "buyer.tsx"
+    "/auth/login": {
+      "filePath": "auth/login.tsx"
     },
-    "/buyer-dashboard": {
-      "filePath": "buyer-dashboard.tsx"
+    "/auth/register": {
+      "filePath": "auth/register.tsx"
     },
-    "/checkout": {
-      "filePath": "checkout.tsx"
+    "/auth/request-password": {
+      "filePath": "auth/request-password.tsx"
     },
-    "/detail-order": {
-      "filePath": "detail-order.tsx"
+    "/buyer/checkout": {
+      "filePath": "buyer/checkout.tsx"
     },
-    "/login": {
-      "filePath": "login.tsx"
+    "/buyer/dashboard": {
+      "filePath": "buyer/dashboard.tsx"
     },
-    "/metode": {
-      "filePath": "metode.tsx"
+    "/buyer/detail-order": {
+      "filePath": "buyer/detail-order.tsx"
     },
-    "/pengaturan": {
-      "filePath": "pengaturan.tsx"
+    "/seller/add-product": {
+      "filePath": "seller/add-product.tsx"
     },
-    "/pengiriman": {
-      "filePath": "pengiriman.tsx"
+    "/seller/atur-toko": {
+      "filePath": "seller/atur-toko.tsx"
     },
-    "/pesanan": {
-      "filePath": "pesanan.tsx"
+    "/seller/dashboard": {
+      "filePath": "seller/dashboard.tsx"
     },
-    "/produk": {
-      "filePath": "produk.tsx"
+    "/seller/pengaturan": {
+      "filePath": "seller/pengaturan.tsx"
     },
-    "/profile": {
-      "filePath": "profile.tsx"
+    "/seller/pesanan": {
+      "filePath": "seller/pesanan.tsx"
     },
-    "/register": {
-      "filePath": "register.tsx"
+    "/seller/produk": {
+      "filePath": "seller/produk.tsx"
+    },
+    "/auth/change-password/$token": {
+      "filePath": "auth/change-password.$token.tsx"
     }
   }
 }

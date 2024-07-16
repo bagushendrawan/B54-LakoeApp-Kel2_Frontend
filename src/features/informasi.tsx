@@ -5,11 +5,11 @@ import { Textarea } from "@/components/textarea";
 import { HeaderLogoToko } from "./headerPengaturan";
 
 import React, { useState } from "react";
-
+import { store } from "@/datas/type";
 
 export const FormInformasiToko: React.FC = () => {
   // State untuk menyimpan nilai dari input, textarea, dan file
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<store>({
     namaToko: "",
     selogan: "",
     deskripsi: "",

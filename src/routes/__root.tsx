@@ -1,17 +1,121 @@
-import { SideBar } from '@/features/side-bar';
-import { createRootRoute, Outlet } from "@tanstack/react-router";
-// import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import App from '@/App';
+import { useToast } from '@/components/use-toast';
+import { cn } from '@/lib/utils';
+import { createRootRoute, ErrorComponent, Navigate } from "@tanstack/react-router";
+import Axios from 'axios';
+import { ReactNode } from 'react';
+
+export interface ISVGProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+  className?: string;
+}
+
+export const LoadingSpinner = ({
+  size = 24,
+  className,
+  ...props
+}: ISVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("animate-spin", className)}
+    >
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+    </svg>
+  );
+};
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+export const ProtectedRoute : React.FC<ProtectedRouteProps> = ({children}) => {
+  const user = localStorage.getItem("token");
+  if(!user){
+    return <Navigate to='/auth/login' replace/>;
+  }
+  return children
+}
+
+export function throwLoginToast(){
+  console.log("throw login toast");
+  const {toast} = useToast()
+  toast({
+    variant: "destructive",
+    title: `Error!`,
+    description: `Please Login First`,
+  });
+}
+
+export async function authUser(){
+  const token = localStorage.getItem("token");
+  try {
+    const auth = await Axios({
+      method: "get",
+      url: `http://localhost:3000/login/auth`,
+      headers: { 
+          "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${token}`
+      },
+      })
+
+      if(auth.status === 401){
+        localStorage.removeItem("token");
+      }
+  } catch(err){
+    const {toast} = useToast()
+    toast({
+      variant: "destructive",
+      title: `Error!`,
+    });
+  }
+}
+
+// export async function checkAuth(){
+//   const token = localStorage.token;
+//   const setUser = useStore((state) => state.SET_USER);
+//   const {toast} = useToast()
+//   if(!token){
+//     toast({
+//       variant: "destructive",
+//       title: `Error!`,
+//       description: `Please Login First`,
+//     });
+//   }
+
+//   try {
+//     const response = await Axios({
+//       method: "get",
+//       url: `http://localhost:3000/login/auth`,
+//       headers: { 
+//           "Content-Type": "multipart/form-data",
+//           'Authorization': `Bearer ${token}`
+//       },
+//       })
+//       setUser(response.data)
+//   } catch(err){
+//     console.log("err",err);
+//     localStorage.removeItem("token");
+//   }
+    
+// }
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <div className="w-full h-screen flex">
-        <SideBar />
-        <div className='w-full bg-stone-200 h-screen overflow-y-auto'>
-          <Outlet />
-        </div>
-      </div>
-      {/* <TanStackRouterDevtools /> */}
-    </>
-  ),
+  component: () => {
+    // if(!isAuthenticated())
+    // {
+    //   return <Login />
+    // }
+
+    return <App/>
+  }, errorComponent: ErrorComponent,
 });

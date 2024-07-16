@@ -148,7 +148,10 @@ export const useProdukForm = () => {
         method: "post",
         url: `http://localhost:3000/form-produk`,
         data: form_data,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+         },
         })
 
         console.log(response);

@@ -7,6 +7,7 @@ type userType = {
     phone: string,
     role_id: number,
     isVerified: boolean,
+    store_id : string
 }
 
 type Store = {
@@ -22,6 +23,7 @@ const useStore = create<Store>() ((set) => ({
       phone: "",
       role_id: NaN,
       isVerified: false,
+      store_id: ""
     },
     SET_USER: (newUser : userType) => set(({ user: newUser })),
     logout: () => {
@@ -32,6 +34,7 @@ const useStore = create<Store>() ((set) => ({
       phone: "",
       role_id: NaN,
       isVerified: false,
+      store_id : ""
     },});
     localStorage.removeItem("token");
   },

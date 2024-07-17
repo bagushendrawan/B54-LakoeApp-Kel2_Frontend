@@ -10,7 +10,7 @@ export function DropdownKurir() {
   return (
     <>
         <Select>
-          <SelectTrigger className="w-60">
+          <SelectTrigger>
             <SelectValue placeholder="Kurir" />
           </SelectTrigger>
           <SelectContent>

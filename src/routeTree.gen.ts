@@ -15,12 +15,13 @@ import { Route as IndexImport } from './routes/index'
 import { Route as SellerProdukImport } from './routes/seller/produk'
 import { Route as SellerPesananImport } from './routes/seller/pesanan'
 import { Route as SellerPengaturanImport } from './routes/seller/pengaturan'
+import { Route as SellerDetailOrderImport } from './routes/seller/detail-order'
 import { Route as SellerDashboardImport } from './routes/seller/dashboard'
 import { Route as SellerAturTokoImport } from './routes/seller/atur-toko'
 import { Route as SellerAddProductImport } from './routes/seller/add-product'
-import { Route as BuyerDetailOrderImport } from './routes/buyer/detail-order'
 import { Route as BuyerDashboardImport } from './routes/buyer/dashboard'
 import { Route as BuyerCheckoutImport } from './routes/buyer/checkout'
+import { Route as BuyerAddCartImport } from './routes/buyer/add-cart'
 import { Route as AuthRequestPasswordImport } from './routes/auth/request-password'
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
@@ -49,6 +50,11 @@ const SellerPengaturanRoute = SellerPengaturanImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SellerDetailOrderRoute = SellerDetailOrderImport.update({
+  path: '/seller/detail-order',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const SellerDashboardRoute = SellerDashboardImport.update({
   path: '/seller/dashboard',
   getParentRoute: () => rootRoute,
@@ -64,11 +70,6 @@ const SellerAddProductRoute = SellerAddProductImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const BuyerDetailOrderRoute = BuyerDetailOrderImport.update({
-  path: '/buyer/detail-order',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const BuyerDashboardRoute = BuyerDashboardImport.update({
   path: '/buyer/dashboard',
   getParentRoute: () => rootRoute,
@@ -76,6 +77,11 @@ const BuyerDashboardRoute = BuyerDashboardImport.update({
 
 const BuyerCheckoutRoute = BuyerCheckoutImport.update({
   path: '/buyer/checkout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BuyerAddCartRoute = BuyerAddCartImport.update({
+  path: '/buyer/add-cart',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -143,6 +149,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRequestPasswordImport
       parentRoute: typeof rootRoute
     }
+    '/buyer/add-cart': {
+      id: '/buyer/add-cart'
+      path: '/buyer/add-cart'
+      fullPath: '/buyer/add-cart'
+      preLoaderRoute: typeof BuyerAddCartImport
+      parentRoute: typeof rootRoute
+    }
     '/buyer/checkout': {
       id: '/buyer/checkout'
       path: '/buyer/checkout'
@@ -155,13 +168,6 @@ declare module '@tanstack/react-router' {
       path: '/buyer/dashboard'
       fullPath: '/buyer/dashboard'
       preLoaderRoute: typeof BuyerDashboardImport
-      parentRoute: typeof rootRoute
-    }
-    '/buyer/detail-order': {
-      id: '/buyer/detail-order'
-      path: '/buyer/detail-order'
-      fullPath: '/buyer/detail-order'
-      preLoaderRoute: typeof BuyerDetailOrderImport
       parentRoute: typeof rootRoute
     }
     '/seller/add-product': {
@@ -183,6 +189,13 @@ declare module '@tanstack/react-router' {
       path: '/seller/dashboard'
       fullPath: '/seller/dashboard'
       preLoaderRoute: typeof SellerDashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/seller/detail-order': {
+      id: '/seller/detail-order'
+      path: '/seller/detail-order'
+      fullPath: '/seller/detail-order'
+      preLoaderRoute: typeof SellerDetailOrderImport
       parentRoute: typeof rootRoute
     }
     '/seller/pengaturan': {
@@ -224,12 +237,13 @@ export const routeTree = rootRoute.addChildren({
   AuthLoginRoute,
   AuthRegisterRoute,
   AuthRequestPasswordRoute,
+  BuyerAddCartRoute,
   BuyerCheckoutRoute,
   BuyerDashboardRoute,
-  BuyerDetailOrderRoute,
   SellerAddProductRoute,
   SellerAturTokoRoute,
   SellerDashboardRoute,
+  SellerDetailOrderRoute,
   SellerPengaturanRoute,
   SellerPesananRoute,
   SellerProdukRoute,
@@ -249,12 +263,13 @@ export const routeTree = rootRoute.addChildren({
         "/auth/login",
         "/auth/register",
         "/auth/request-password",
+        "/buyer/add-cart",
         "/buyer/checkout",
         "/buyer/dashboard",
-        "/buyer/detail-order",
         "/seller/add-product",
         "/seller/atur-toko",
         "/seller/dashboard",
+        "/seller/detail-order",
         "/seller/pengaturan",
         "/seller/pesanan",
         "/seller/produk",
@@ -276,14 +291,14 @@ export const routeTree = rootRoute.addChildren({
     "/auth/request-password": {
       "filePath": "auth/request-password.tsx"
     },
+    "/buyer/add-cart": {
+      "filePath": "buyer/add-cart.tsx"
+    },
     "/buyer/checkout": {
       "filePath": "buyer/checkout.tsx"
     },
     "/buyer/dashboard": {
       "filePath": "buyer/dashboard.tsx"
-    },
-    "/buyer/detail-order": {
-      "filePath": "buyer/detail-order.tsx"
     },
     "/seller/add-product": {
       "filePath": "seller/add-product.tsx"
@@ -293,6 +308,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/seller/dashboard": {
       "filePath": "seller/dashboard.tsx"
+    },
+    "/seller/detail-order": {
+      "filePath": "seller/detail-order.tsx"
     },
     "/seller/pengaturan": {
       "filePath": "seller/pengaturan.tsx"

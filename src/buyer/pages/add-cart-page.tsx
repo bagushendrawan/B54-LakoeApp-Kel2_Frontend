@@ -7,16 +7,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Link } from "@tanstack/react-router";
+import { Route } from "@/routes/buyer/add-cart";
+import { useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
-
-interface MidtransSnap extends Window {
-  snap: {
-    pay: (token: string) => void;
-  };
-}
 
 interface Data {
   id: number;
@@ -42,56 +37,54 @@ interface cartItemsForm {
   quantity: number;
 }
 
-export function ProdukPage() {
-  const [data, setData] = useState<cartItemsForm>({
+export function AddCartPage() {
+
+  const params = Route.useSearch();
+  console.log("params", params);
+
+  const [dataOrder, setDataOrder] = useState<cartItemsForm>({
     name: "",
     price: 0,
     quantity: 1,
   });
 
+  const navigate = useNavigate();
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const name = event.target.name;
     const value = event.target.value;
 
-    setData({
-      ...data,
+    setDataOrder({
+      ...dataOrder,
       [name]: value,
     });
   }
 
   async function handleSubmit() {
     try {
-      const response = await Axios.post(
-        `http://localhost:3000/cart-items`,
-        data
-      );
-      console.log(response.data);
+      const response = await Axios({
+        method: "post",
+        url: `http://localhost:3000/cart-items`,
+        data: dataOrder,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+
+      setDataOrder(response.data)
+      console.log(dataOrder);
+      
+      navigate({ to: "/buyer/checkout", search: { dataOrder } });
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
-    const scriptTag = document.createElement("script");
-    scriptTag.src = midtransScriptUrl;
-
-    const myMidtransClientKey = import.meta.env.PUBLIC_CLIENT;
-    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
-
-    document.body.appendChild(scriptTag);
-
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  }, []);
-
-
   return (
     <>
-      <div className="bg-white m-3 rounded-lg">
-        <div className="flex items-center p-24">
+      <div className="bg-white m-3 rounded-lg h-screen flex justify-center">
+        <div className="flex items-center">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
               {datas.image.map((data, index) => (
@@ -110,13 +103,13 @@ export function ProdukPage() {
             <CarouselNext />
           </Carousel>
 
-          <div className="ml-24">
-            <h1 className="font-bold text-2xl">{datas.name}</h1>
+          <div className="ml-52">
+            <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
 
             <div className="mt-5">
               <div className="flex gap-10 text-xl pb-4 border-b-2 border-b-black">
                 <p>Harga</p>
-                <p>{datas.price}</p>
+                <p>{dataOrder.price}</p>
               </div>
 
               <div className="flex items-center gap-10 mt-5 text-xl pb-4 border-b-2 border-b-black">
@@ -125,7 +118,7 @@ export function ProdukPage() {
                   <button className="border border-black w-10 h-11 rounded-md">
                     -
                   </button>
-                  <div>{data.quantity}</div>
+                  <p>{dataOrder.quantity}</p>
                   <button className="border border-black w-10 h-11 rounded-md">
                     +
                   </button>
@@ -133,8 +126,11 @@ export function ProdukPage() {
               </div>
 
               <div className="flex justify-between mt-5">
-                <Button>
-                  <Link to="/buyer/checkout">Beli Langsung</Link>
+                <Button onClick={handleSubmit}>
+                  {/* <Link to="/buyer/checkout" search={{ id: 2 }}>
+                    Beli Langsung
+                  </Link> */}
+                  Beli Langsung
                 </Button>
                 <Button
                   className="gap-2"
@@ -144,20 +140,6 @@ export function ProdukPage() {
                 >
                   Keranjang <FaArrowRightFromBracket />
                 </Button>
-                <Button
-                  onClick={async () => {
-                    const response = await Axios.post(
-                      "http://localhost:3000/payment"
-                    );
-                    console.log(response);
-                    
-                    const token = response.data.token;
-                    (window as unknown as MidtransSnap).snap.pay(token);
-                  }}
-                >
-                  Link Generate
-                </Button>
-
               </div>
             </div>
           </div>

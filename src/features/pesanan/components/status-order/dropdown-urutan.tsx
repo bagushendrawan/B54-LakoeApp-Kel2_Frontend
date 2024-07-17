@@ -10,7 +10,7 @@ export function DropdownUrutan() {
   return (
     <>
       <Select>
-        <SelectTrigger className="w-60">
+        <SelectTrigger>
           <SelectValue placeholder="Urutkan" />
         </SelectTrigger>
         <SelectContent>

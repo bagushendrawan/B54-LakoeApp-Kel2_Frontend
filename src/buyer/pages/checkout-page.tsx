@@ -18,36 +18,43 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Route } from "@/routes/buyer/checkout";
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowForward, IoIosPin } from "react-icons/io";
 import { IoWarning } from "react-icons/io5";
 
-interface DataProduct {
-  name: string;
-  price: number;
-  image: string[];
+interface MidtransSnap extends Window {
+  snap: {
+    pay: (token: string) => void;
+  };
 }
 
-const datasProduct: DataProduct = {
-  name: "BAJU POLOS",
-  price: 120000,
-  image: [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-  ],
-};
+// interface DataProduct {
+//   name: string;
+//   price: number;
+//   image: string[];
+// }
 
-interface DataUser {
-  name: string;
-  phone: string;
-}
+// const datasProduct: DataProduct = {
+//   name: "BAJU POLOS",
+//   price: 120000,
+//   image: [
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
+//   ],
+// };
 
-const datasUser: DataUser = {
-  name: "Tiyo Igusty",
-  phone: "087654321",
-};
+// interface DataUser {
+//   name: string;
+//   phone: string;
+// }
+
+// const datasUser: DataUser = {
+//   name: "Tiyo Igusty",
+//   phone: "87654321234",
+// };
 
 interface checkoutForm {
   name: string;
@@ -60,14 +67,10 @@ interface checkoutForm {
 }
 
 export function CheckoutPage() {
-  async function getDataDetailOrder() {
-    const response = await Axios.get(
-      `http://localhost:3000/cart-items/7134d828-45a9-4bcf-bf91-529da3703f77`
-    );
-    console.log(response.data);
-  }
+  const params = Route.useSearch();
+  console.log("params", params);
 
-  const [data, setData] = useState<checkoutForm>({
+  const [dataOrder, setDataOrder] = useState<checkoutForm>({
     name: "",
     phone: "",
     receiver_name: "",
@@ -81,22 +84,44 @@ export function CheckoutPage() {
     const name = event.target.name;
     const value = event.target.value;
 
-    setData({
-      ...data,
+    setDataOrder({
+      ...dataOrder,
       [name]: value,
     });
   }
 
   async function handleSubmit() {
     try {
-      const response = await Axios.post(`http://localhost:3000/invoices`, data);
+      const response = await Axios({
+        method: "post",
+        url: `http://localhost:3000/invoices`,
+        data: dataOrder,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   }
 
-  
+  useEffect(() => {
+    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+
+    const scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+
+    const myMidtransClientKey = import.meta.env.PUBLIC_CLIENT;
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
 
   return (
     <>
@@ -115,18 +140,10 @@ export function CheckoutPage() {
                       id="nama"
                       name="name"
                       className="border-black"
-                      defaultValue={datasUser.name}
+                      defaultValue="test"
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor="nomor">Nomor Whatsapp</Label>
-                    <Input
-                      id="nomor"
-                      name="phone"
-                      className="border-black"
-                      defaultValue={datasUser.phone}
-                    />
-
                     <Label htmlFor="phone-input">Nomor Whatsapp</Label>
                     <div className="relative">
                       <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
@@ -135,10 +152,9 @@ export function CheckoutPage() {
                       <Input
                         type="text"
                         id="phone-input"
-                        aria-describedby="helper-text-explanation"
                         className="border border-black w-full ps-12"
                         placeholder="123-456-7890"
-                        required
+                        defaultValue="09876"
                       />
                     </div>
                   </div>
@@ -156,13 +172,19 @@ export function CheckoutPage() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor="nomor">Nomor Whatsapp</Label>
-                    <Input
-                      id="nomor"
-                      name="receiver_phone"
-                      onChange={handleChange}
-                      className="border-black"
-                    />
+                    <Label htmlFor="phone-input">Nomor Whatsapp</Label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                        <p>+62</p>
+                      </div>
+                      <Input
+                        type="text"
+                        id="phone-input"
+                        className="border border-black w-full ps-12"
+                        placeholder="123-456-7890"
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                   <div className="space-y-1">
                     <Label htmlFor="kecamatan">Kecamatan</Label>
@@ -322,22 +344,18 @@ export function CheckoutPage() {
                   <p>Ringkasan Pesanan</p>
 
                   <div className="mt-3 flex gap-3 items-center">
-                    <img
-                      src={datasProduct.image[0]}
-                      alt="image"
-                      className="w-3/12 rounded-sm"
-                    />
+                    <img src="" alt="image" className="w-3/12 rounded-sm" />
 
                     <div className="text-s">
-                      <p>{datasProduct.name}</p>
+                      <p>Nama Produk</p>
                       <p>1 item (100gr)</p>
-                      <p>Rp {datasProduct.price}</p>
+                      <p>Rp 120.0000</p>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center my-4">
                     <p>Total Harga (1)</p>
-                    <p>Rp {datasProduct.price}</p>
+                    <p>Rp 120000</p>
                   </div>
                   <div className="flex justify-between items-center pb-4 border-b-2">
                     <p>Biaya Pengiriman</p>
@@ -357,7 +375,18 @@ export function CheckoutPage() {
                   />
                 </div>
 
-                <Button className="w-5/6" onClick={getDataDetailOrder}>
+                <Button
+                  className="w-5/6"
+                  onClick={async () => {
+                    const response = await Axios.post(
+                      "http://localhost:3000/payment"
+                    );
+                    console.log(response);
+
+                    const token: string = response.data as string;
+                    (window as unknown as MidtransSnap).snap.pay(token);
+                  }}
+                >
                   Bayar Sekarang
                 </Button>
               </div>

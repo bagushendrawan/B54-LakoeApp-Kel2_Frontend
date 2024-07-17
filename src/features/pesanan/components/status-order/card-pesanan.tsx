@@ -8,11 +8,18 @@ export function BelumDibayar() {
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-yellow-500 rounded-sm">Belum Dibayar</Button>
+              <Button size={"sm"} className="bg-yellow-500 rounded-sm">
+                Belum Dibayar
+              </Button>
               <p>INV/20240708/MPL/000004235</p>
             </div>
             <div className="p-2">
-              <button className="border rounded-full py-1 px-3">Hubungi Pembeli</button>
+              <button
+                className="border rounded-full py-1 px-3"
+                // onClick={"https://api.whatsapp.com/send/?phone=62xxxxxxxxx"}
+              >
+                Hubungi Pembeli
+              </button>
             </div>
           </div>
         </div>
@@ -26,8 +33,8 @@ export function BelumDibayar() {
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/detail-order">
-                  T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                  <Link to="/seller/detail-order">
+                    T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
                   </Link>
                 </p>
                 <p className="font-light">3 Barang</p>
@@ -52,11 +59,18 @@ export function PesananBaru() {
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-green-500 rounded-sm text-white">Pesanan Baru</Button>
+              <Button
+                size={"sm"}
+                className="bg-green-500 rounded-sm text-white"
+              >
+                Pesanan Baru
+              </Button>
               <p>INV/20240708/MPL/000004235</p>
             </div>
             <div className="p-2">
-              <button className="border rounded-full py-1 px-3">Hubungi Pembeli</button>
+              <button className="border rounded-full py-1 px-3">
+                Proses Pesanan
+              </button>
             </div>
           </div>
         </div>
@@ -70,8 +84,8 @@ export function PesananBaru() {
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/detail-order">
-                  T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                  <Link to="/seller/detail-order">
+                    T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
                   </Link>
                 </p>
                 <p className="font-light">3 Barang</p>
@@ -96,11 +110,15 @@ export function SiapDikirim() {
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-blue-500 rounded-sm text-white">Siap Dikirim</Button>
+              <Button size={"sm"} className="bg-blue-500 rounded-sm text-white">
+                Siap Dikirim
+              </Button>
               <p>INV/20240708/MPL/000004235</p>
             </div>
             <div className="p-2">
-              <button className="border rounded-full py-1 px-3">Hubungi Pembeli</button>
+              <button className="border rounded-full py-1 px-3">
+                Hubungi Pembeli
+              </button>
             </div>
           </div>
         </div>
@@ -114,8 +132,8 @@ export function SiapDikirim() {
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/detail-order">
-                  T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                  <Link to="/seller/detail-order">
+                    T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
                   </Link>
                 </p>
                 <p className="font-light">3 Barang</p>
@@ -140,11 +158,18 @@ export function DalamPengiriman() {
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-orange-500 rounded-sm text-white">Dalam Pengiriman</Button>
+              <Button
+                size={"sm"}
+                className="bg-orange-500 rounded-sm text-white"
+              >
+                Dalam Pengiriman
+              </Button>
               <p>INV/20240708/MPL/000004235</p>
             </div>
             <div className="p-2">
-              <button className="border rounded-full py-1 px-3">Hubungi Pembeli</button>
+              <button className="border rounded-full py-1 px-3">
+                Lihat Rincian Pengiriman
+              </button>
             </div>
           </div>
         </div>
@@ -158,8 +183,8 @@ export function DalamPengiriman() {
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/detail-order">
-                  T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                  <Link to="/seller/detail-order">
+                    T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
                   </Link>
                 </p>
                 <p className="font-light">3 Barang</p>
@@ -184,11 +209,15 @@ export function PesananSelesai() {
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-gray-500 rounded-sm">Pesanan Selesai</Button>
+              <Button size={"sm"} className="bg-gray-500 rounded-sm">
+                Pesanan Selesai
+              </Button>
               <p>INV/20240708/MPL/000004235</p>
             </div>
             <div className="p-2">
-              <button className="border rounded-full py-1 px-3">Hubungi Pembeli</button>
+              <button className="border rounded-full py-1 px-3">
+                Hubungi Pembeli
+              </button>
             </div>
           </div>
         </div>
@@ -202,8 +231,8 @@ export function PesananSelesai() {
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/detail-order">
-                  T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                  <Link to="/seller/detail-order">
+                    T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
                   </Link>
                 </p>
                 <p className="font-light">3 Barang</p>
@@ -228,11 +257,15 @@ export function Dibatalkan() {
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-red-500 rounded-sm text-white">Dibatalkan</Button>
+              <Button size={"sm"} className="bg-red-500 rounded-sm text-white">
+                Dibatalkan
+              </Button>
               <p>INV/20240708/MPL/000004235</p>
             </div>
             <div className="p-2">
-              <button className="border rounded-full py-1 px-3">Hubungi Pembeli</button>
+              <button className="border rounded-full py-1 px-3">
+                Hubungi Pembeli
+              </button>
             </div>
           </div>
         </div>
@@ -246,8 +279,8 @@ export function Dibatalkan() {
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/detail-order">
-                  T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                  <Link to="/seller/detail-order">
+                    T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
                   </Link>
                 </p>
                 <p className="font-light">3 Barang</p>

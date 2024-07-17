@@ -1,19 +1,19 @@
-import { ProdukPage } from "@/buyer/pages/produk-page";
 import { createFileRoute } from "@tanstack/react-router";
 import { ProtectedRoute } from "../__root";
+import { BuyerDashboardPage } from "@/pages/buyer/buyer-dashboard-page";
 
 export const Route = createFileRoute("/buyer/dashboard")({
   component: () => (
     <ProtectedRoute>
-      <Produk/>
+      <Dashboard />
     </ProtectedRoute>
-  )
+  ),
 });
 
-function Produk() {
+function Dashboard() {
   return (
     <>
-      <ProdukPage />
+      <BuyerDashboardPage />
     </>
   );
 }

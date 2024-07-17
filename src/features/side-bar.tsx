@@ -18,6 +18,8 @@ export function SideBar() {
   // const user = useStore((state) => state.user);
   // console.log("test context =",user);
   const logOutUser = useStore((state) => state.logout);
+
+  
   return (
     <>
       <div className="bg-rose-600 w-52 h-screen">

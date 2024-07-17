@@ -8,6 +8,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { ChangeEvent, useEffect, useState } from "react";
 import { BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Button } from "../components/button";
@@ -18,10 +29,10 @@ import { Switch } from "@/components/switch";
 import { Textarea } from "@/components/textarea";
 import { LoadingSpinner } from "@/routes/__root";
 import { useForm } from "react-hook-form";
-import {
-  Form
-} from "../components/form";
+import { Form } from "../components/form";
 import { useProdukForm } from "./hooks/form-produk";
+import { Toggle } from "@/components/toggle";
+import { DialogClose } from "@/components/dialog";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   const dataTransfer = new DataTransfer();
@@ -61,15 +72,24 @@ export function FormProdukBaru() {
     onSubmitForm,
     setValue,
     getValues,
-    isSubmitting
+    isSubmitting,
   } = useProdukForm();
+
+  type all = {
+    harga: number;
+    berat: number;
+    sku: string;
+    stok: number;
+  };
+
+  const formAll = useForm<all>();
 
   const [isVariant, setVariant] = useState<Boolean>(false);
   const [preview, setPreview] = useState<string[]>([]);
   const [previewOptions, setPreviewOptions] = useState<string[]>([]);
   const [variant, setVariantValue] = useState<string[]>([]);
   const [variantOptions, setVariantOptions] = useState<string[][]>([]);
-  const [currentVariant, setCurrentVariant] = useState<string>("");
+  const [currentVariant, setCurrentVariant] = useState<string>("0");
   const [isVariantOption, setIsVariantOption] = useState<boolean[]>([]);
   const [isVariantGambar, setIsVariantGambar] = useState<boolean[]>([]);
   const [kategori, setKategori] = useState<string>("");
@@ -82,6 +102,8 @@ export function FormProdukBaru() {
   const [tinggiValue, setTinggiValue] = useState<number[]>([]);
   const [kategoriArray, setKategoriArray] = useState<string[]>([]);
   const [imageVarian, setImageVarian] = useState<(File | null)[]>([]);
+  const [varianArray, setvarianArray] = useState<number[]>([]);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   // const handleChangeVariant = (value :  string, index: number, event: React.ChangeEvent<HTMLInputElement>) => {
   //   const price = { ...hargaValue };
@@ -89,6 +111,17 @@ export function FormProdukBaru() {
   //   sethargaValue(price);
   //   setValue(value, price);
   // };
+
+  const setAllVarian = (index: number, isToggle: boolean) => {
+    const array = [...varianArray];
+    if (isToggle) {
+      array.push(index);
+    } else {
+      array.splice(index, 1);
+    }
+
+    setvarianArray(array);
+  };
 
   const handlehargaChange = (index: number, event: any) => {
     const price = { ...hargaValue };
@@ -147,11 +180,11 @@ export function FormProdukBaru() {
     setValue("produk_ukuran_option_sku", price);
   };
 
-    const formUse = useForm({
-        defaultValues: {
-            options: "",
-        },
-    });
+  const formUse = useForm({
+    defaultValues: {
+      options: "",
+    },
+  });
 
   function onSubmit(data: any) {
     console.log("data", data);
@@ -165,8 +198,8 @@ export function FormProdukBaru() {
     console.log(newUrl);
   }
 
-  function imageOptionHandle(index: number, url: string, img : File | null) {
-    const newImg = [...imageVarian]
+  function imageOptionHandle(index: number, url: string, img: File | null) {
+    const newImg = [...imageVarian];
     newImg[index] = img;
     setImageVarian(newImg);
     const newUrl = [...previewOptions];
@@ -191,7 +224,7 @@ export function FormProdukBaru() {
     const vary = [...variantOptions];
     vary[x].splice(y, 1);
     setVariantOptions(vary);
-    setValue("produk_ukuran_option", vary[x])
+    setValue("produk_ukuran_option", vary[x]);
     console.log(variantOptions);
   }
 
@@ -218,13 +251,13 @@ export function FormProdukBaru() {
     console.log(variants);
   }
 
-  function kategoriHandle(event : any) {
+  function kategoriHandle(event: any) {
     // console.log("kategori", event)
     setKategori(event);
     setValue("produk_kategori", event);
   }
 
-  function kategoriArrayHandle(index : number,event : any) {
+  function kategoriArrayHandle(index: number, event: any) {
     const variants = [...kategoriArray];
     variants[index] = event;
     setKategoriArray(variants);
@@ -235,6 +268,10 @@ export function FormProdukBaru() {
     console.log("variantopt", variantOptions);
   }, [variantOptions]);
 
+  useEffect(() => {
+    variantHandle(0, "Varian");
+  }, []);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitForm)} className="w-full">
@@ -242,14 +279,18 @@ export function FormProdukBaru() {
           {/* informasi produk */}
           <div id="informasi-produk" className=" bg-white p-4 rounded">
             <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
-            <h1 className=" text-md mb-2 mt-4">Nama Produk <Label className="text-red-600">*</Label></h1>
+            <h1 className=" text-md mb-2 mt-4">
+              Nama Produk <Label className="text-red-600">*</Label>
+            </h1>
             <Input
               placeholder="Masukan nama produk"
               {...register("produk_nama")}
               required
             />
 
-            <h1 className=" text-md mb-2 mt-4">URL Halaman Checkout <Label className="text-red-600">*</Label></h1>
+            <h1 className=" text-md mb-2 mt-4">
+              URL Halaman Checkout <Label className="text-red-600">*</Label>
+            </h1>
             <div className="flex justify-center items-center">
               <p className="bg-slate-100 p-3 rounded-s-lg border-2 text-xs">
                 lakoe.store/
@@ -262,18 +303,18 @@ export function FormProdukBaru() {
               />
             </div>
             <div className="flex gap-2">
-              <p className="font-normal mt-4">Kategori <Label className="text-red-600">*</Label></p>
               <p className="font-normal mt-4">
-                {kategori && kategori}
+                Kategori <Label className="text-red-600">*</Label>
               </p>
+              <p className="font-normal mt-4">{kategori && kategori}</p>
             </div>
 
             <Select
-            defaultValue="Elektronik"
+              defaultValue="Elektronik"
               onValueChange={(e) => {
                 unregister("produk_kategori");
                 kategoriHandle(e);
-                kategoriArrayHandle(0,e);
+                kategoriArrayHandle(0, e);
               }}
               required
             >
@@ -282,9 +323,9 @@ export function FormProdukBaru() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  
-                    {/* <Select
+                  <SelectLabel>Category</SelectLabel>
+
+                  {/* <Select
                       onValueChange={(e) => {
                         unregister("produk_kategori");
                         kategoriHandle(e);
@@ -347,11 +388,11 @@ export function FormProdukBaru() {
                       </SelectGroup>
                     </SelectContent>
                   </Select> */}
-                        <SelectItem value="Elektronik">Elektronik</SelectItem>
-                        <SelectItem value="Makanan">Makanan</SelectItem>
-                        <SelectItem value="Kesehatan">Kesehatan</SelectItem>
-                        <SelectItem value="Pakaian">Pakaian</SelectItem>
-                        <SelectItem value="Furnitur">Furnitur</SelectItem>
+                  <SelectItem value="Elektronik">Elektronik</SelectItem>
+                  <SelectItem value="Makanan">Makanan</SelectItem>
+                  <SelectItem value="Kesehatan">Kesehatan</SelectItem>
+                  <SelectItem value="Pakaian">Pakaian</SelectItem>
+                  <SelectItem value="Furnitur">Furnitur</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -557,7 +598,7 @@ export function FormProdukBaru() {
                     Hapus Varian
                   </Button>
                 </div>
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   <Button
                     variant={"outline"}
                     className="rounded-2xl"
@@ -570,31 +611,7 @@ export function FormProdukBaru() {
                   >
                     Ukuran
                   </Button>
-                  {/* <Button
-                    variant={"outline"}
-                    className="rounded-2xl"
-                    onClick={() => {
-                      variantHandle(1, "Warna");
-                      setCurrentVariant("1");
-                    }}
-                  >
-                    Warna
-                  </Button> */}
-                  {/* <Button
-                    variant={"outline"}
-                    className="rounded-2xl"
-                    onClick={() => {
-                      variantHandle(2, "Ukuran Kemasan");
-                      setCurrentVariant("2");
-                    }}
-                  >
-                    Ukuran Kemasan
-                  </Button>
-                  <Button variant={"outline"} className="rounded-2xl">
-                    <BsPlusCircle className="me-2" />
-                    Tambah Varian
-                  </Button> */}
-                </div>
+                </div> */}
               </div>
             ) : (
               <div className="flex justify-between">
@@ -610,14 +627,14 @@ export function FormProdukBaru() {
                   className="rounded-2xl self-end"
                   onClick={() => {
                     setVariant(true);
-                    setValue("produk_berat", NaN);
-                    setValue("produk_panjang",NaN);
-                    setValue("produk_harga",NaN);
-                    setValue("produk_lebar",NaN);
-                    setValue("produk_tinggi",NaN);
-                    setValue("produk_berat",NaN);
+                    setValue("produk_berat", 0);
+                    setValue("produk_panjang",0);
+                    setValue("produk_harga",0);
+                    setValue("produk_lebar",0);
+                    setValue("produk_tinggi",0);
+                    setValue("produk_berat",0);
                     setValue("produk_sku","");
-                    setValue("produk_stok",NaN);
+                    setValue("produk_stok",0);
                   }}
                 >
                   <BsPlusCircle className="me-2" />
@@ -625,8 +642,133 @@ export function FormProdukBaru() {
                 </Button>
               </div>
             )}
-
+            
+            {isVariant && 
             <div className="mt-2">
+              <h1 className="font-bold text-xl mb-2">Varian Produk</h1>
+              <Dialog open={dialogOpen}>
+                  <DialogTrigger asChild onClick={()=> setDialogOpen(!dialogOpen)}>
+                    <Button
+                      variant="outline"
+                      className="bg-blue-600 text-white"
+                    >
+                      Atur Sekaligus
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                  <Button type="button" onClick={()=> setDialogOpen(!dialogOpen)} className="w-12 bg-red-600">X</Button>
+                  <form
+                onSubmit={() => {
+                  formAll.handleSubmit((data) => {
+                  console.log("submit varian all");
+                  for (let index in varianArray) {
+                    const inNum = Number(index);
+
+                    const harga_all = [...hargaValue];
+                    harga_all.splice(inNum, 1, data.harga);
+                    sethargaValue(harga_all);
+
+                    const sku_all = [...skuValue];
+                    sku_all.splice(inNum, 1, data.sku);
+                    setskuValue(sku_all);
+
+                    const berat_all = [...weightValue];
+                    berat_all.splice(inNum, 1, data.berat);
+                    setweightValue(berat_all);
+
+                    const stok_all = [...stokValue];
+                    stok_all.splice(inNum, 1, data.stok);
+                    setstokValue(stok_all);
+                  }
+                  
+                });}}
+              >
+                    <DialogHeader>
+                      <DialogTitle>Atur Sekaligus</DialogTitle>
+                      <DialogDescription>
+                        Atur Seluruh Varian Disini
+                      </DialogDescription>
+                    </DialogHeader>
+                    {variant.map((item, i) => (
+                      <div className="grid gap-4">
+                        <div className="flex gap-4">
+                          {variantOptions[i] &&
+                            variantOptions[i].map((item, x) => (
+                              <div key={x}>
+                                <Toggle
+                                  aria-label="Toggle italic"
+                                  className="bg-blue-600 text-white"
+                                  onPressedChange={(e) => {
+                                    setAllVarian(x, e);
+                                  }}
+                                >
+                                  {item}
+                                </Toggle>
+                              </div>
+                            ))}
+                        </div>
+                        <div className="">
+                          <div className="flex flex-col gap-4">
+                            <div className="flex items-center gap-2">
+                              <div className="flex justify-center items-center mt-2 w-1/2">
+                                <p className="bg-slate-100 py-2 px-4 rounded-s-lg border-2 text-sm">
+                                  Rp.
+                                </p>
+
+                                <Input
+                                  placeholder="Harga"
+                                  className="rounded-s-none rounded-e-xl"
+                                  {...formAll.register("harga")}
+
+                                  // value={hargaValue[x]}
+                                  // onChange={(e) => handlehargaChange(x, e)}
+                                />
+                              </div>
+                              <div className="flex justify-center items-center mt-2 w-1/2">
+                                <Input
+                                  placeholder="Stok Produk"
+                                  className="rounded-xl"
+                                  {...formAll.register("stok")}
+                                  // value={stokValue[x]}
+                                  // onChange={(e) => handleStokChange(x, e)}
+                                />
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex justify-center items-center mt-2 w-1/2">
+                                <Input
+                                  placeholder="Stok Keeping Unit"
+                                  className="rounded-xl"
+                                  {...formAll.register("sku")}
+                                  // value={skuValue[x]}
+                                  // onChange={(e) => handleSKUChange(x, e)}
+                                />
+                              </div>
+                              <div className="flex justify-center items-center mt-2 w-1/2">
+                                <Input
+                                  placeholder="Berat Produk"
+                                  className="rounded-e-none rounded-s-xl"
+                                  {...formAll.register("berat")}
+                                  // value={weightValue[x]}
+                                  // onChange={(e) => handleWeightChange(x, e)}
+                                />
+                                <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
+                                  Kg
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <Button type="submit">
+                      Save changes
+                    </Button>
+                  </form>
+                  </DialogContent>
+                </Dialog>
+
+
               {variant.map((item, i) => (
                 <div className="w-full flex flex-col" key={i}>
                   <p className="my-2">{item}</p>
@@ -634,7 +776,7 @@ export function FormProdukBaru() {
                     <form className="w-2/3 space-y-6 flex gap-4 items-center">
                       <div className="flex items-center gap-4">
                         <Input
-                          placeholder="Ukuran"
+                          placeholder="Varian"
                           {...formUse.register("options")}
                         />
                         <Button
@@ -670,7 +812,7 @@ export function FormProdukBaru() {
                   <Switch onClick={()=> handleVariantSwitch(x,!isVariantOption[x])}/>
                 </div>
               )} */}
-              {variantOptions[0] && (
+              {/* {variantOptions[0] && (
                 <div className="flex justify-between mt-8">
                   <div className="flex flex-col">
                     <h1 className="font-bold">Atur Sekaligus</h1>
@@ -686,7 +828,7 @@ export function FormProdukBaru() {
                     Atur Sekaligus
                   </Button>
                 </div>
-              )}
+              )} */}
 
               <div className="flex flex-col gap-4 mt-4">
                 {variantOptions[parseInt(currentVariant)] &&
@@ -713,7 +855,7 @@ export function FormProdukBaru() {
                               onChange={(event) => {
                                 const { files, displayUrl } =
                                   getImageData(event);
-                                imageOptionHandle(x, displayUrl,files[0]);
+                                imageOptionHandle(x, displayUrl, files[0]);
                               }}
                             ></Input>
                             {previewOptions[x] && (
@@ -841,18 +983,22 @@ export function FormProdukBaru() {
                   </>
                 ))}
             </div>
-          </div>
+            }
+            </div>
+            
 
           {/* minimal pembelian */}
           <div className="bg-white p-4 rounded">
-            <p className="mt-4">Minimal Pembelian <Label className="text-red-600">*</Label></p>
+            <p className="mt-4">
+              Minimal Pembelian <Label className="text-red-600">*</Label>
+            </p>
             <div className="flex justify-center items-center mt-2">
               <Input
                 placeholder="Produk"
                 className="rounded-e-none rounded-s-xl"
                 {...register("produk_min_beli", { valueAsNumber: true })}
                 required
-              /> 
+              />
               <p className="bg-slate-100 py-2 px-4 rounded-e-lg border-2 text-sm">
                 Produk
               </p>
@@ -957,22 +1103,25 @@ export function FormProdukBaru() {
               <Button variant={"outline"} className="rounded-3xl me-2">
                 Batal
               </Button>
-              {isSubmitting ? <Button
-                variant={"outline"}
-                type="submit"
-                className="bg-blue-600 text-white rounded-3xl"
-                disabled
-              >
-                Simpan
-                <LoadingSpinner></LoadingSpinner>
-              </Button> : <Button
-                variant={"outline"}
-                type="submit"
-                className="bg-blue-600 text-white rounded-3xl"
-              >
-                Simpan
-              </Button>}
-              
+              {isSubmitting ? (
+                <Button
+                  variant={"outline"}
+                  type="submit"
+                  className="bg-blue-600 text-white rounded-3xl"
+                  disabled
+                >
+                  Simpan
+                  <LoadingSpinner></LoadingSpinner>
+                </Button>
+              ) : (
+                <Button
+                  variant={"outline"}
+                  type="submit"
+                  className="bg-blue-600 text-white rounded-3xl"
+                >
+                  Simpan
+                </Button>
+              )}
             </div>
           </div>
         </div>

@@ -8,17 +8,49 @@ import DropDownMenu from "./dropDownMenu";
 import { Input } from "@/components/input";
 import ActivateProductDialog from "./activateProductDialog";
 
+interface IVariantOptionValues {
+    id: string;
+    variant_option_id: string;
+    sku: string;
+    weight: number;
+    stock: number;
+    price: number;
+    is_active: boolean;
+    img?: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IVariantOptions {
+    id: string;
+    name: string;
+    variant_id: string;
+    variant_option_values: IVariantOptionValues;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IVariants {
+    id: string;
+    name: string;
+    is_active: boolean;
+    product_id: string;
+    variant_option: IVariantOptions[];
+    created_at: Date;
+    updated_at: Date;
+}
+
 interface IProduct {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     attachments: string[];
     is_active: boolean;
-    variants: string;
+    variants: IVariants[];
     size: string;
-    minimum_order: string
-    store_id: string;
-    categories_id: string;
+    minimum_order: string;
+    store_id?: string;
+    categories_id?: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -32,7 +64,9 @@ interface IProductItemProps {
     selectedAll: boolean;
 }
 
-const ProductItem: FC<IProductItemProps> = ({ product, onUpdatePrice, onUpdateStock, onChecked, selectedAll }) => {
+const ProductItem: FC<IProductItemProps> = ({
+    product, onUpdatePrice, onUpdateStock, onChecked, selectedAll
+}) => {
     const handleUpdatePrice = (newPrice: string) => {
         // onUpdatePrice(product.id, newPrice);
     };
@@ -56,7 +90,7 @@ const ProductItem: FC<IProductItemProps> = ({ product, onUpdatePrice, onUpdateSt
             <div className="w-full flex items-center gap-4">
                 {/* product image */}
                 <img
-                    src={product.attachments[0]}
+                    src={product.variants[0].variant_option[0].variant_option_values.img}
                     alt={product.name}
                     width={'90rem'}
                 />
@@ -77,11 +111,13 @@ const ProductItem: FC<IProductItemProps> = ({ product, onUpdatePrice, onUpdateSt
 
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-2 text-[18px]">
-                            <p className="font-[600]">Rp{product.id}</p>
+                            <p className="font-[600]">
+                                Rp{product.variants[0].variant_option[0].variant_option_values.price}
+                            </p>
                             <GoDotFill fill="#909090" size={'.8rem'} />
-                            <p className="text-gray-500">Stock : {product.id}</p>
+                            <p className="text-gray-500">Stock : {product.variants[0].variant_option[0].variant_option_values.stock}</p>
                             <GoDotFill fill="#909090" size={'.8rem'} />
-                            <p className="text-gray-500">SKU : {product.id}</p>
+                            <p className="text-gray-500">SKU : {product.variants[0].variant_option[0].variant_option_values.sku}</p>
                         </div>
 
                         <div className={`flex items-center ${product.is_active ? 'justify-center' : 'justify-end'}`}>
@@ -98,7 +134,7 @@ const ProductItem: FC<IProductItemProps> = ({ product, onUpdatePrice, onUpdateSt
                             )}
 
                             {/* activate product */}
-                            <ActivateProductDialog product={product}  />
+                            <ActivateProductDialog product={product} />
                         </div>
                     </div>
                 </div>

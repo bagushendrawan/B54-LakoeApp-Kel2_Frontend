@@ -11,11 +11,11 @@ export type formDTO = {
     produk_url_checkout: string,
     produk_kategori: string,
     produk_deskripsi: string,
-    produk_foto: File | null,
-    produk_foto_1: File | null,
-    produk_foto_2: File | null,
-    produk_foto_3: File | null,
-    produk_foto_4: File | null,
+    produk_foto: any
+    produk_foto_1: any
+    produk_foto_2: any
+    produk_foto_3: any
+    produk_foto_4: any
     produk_harga: number,
     produk_min_beli: number,
     produk_stok: number,
@@ -26,7 +26,7 @@ export type formDTO = {
     produk_tinggi: number,
     produk_ukuran_option: string[]
     produk_ukuran_option_weight: number[]
-    produk_ukuran_option_img: (File | null)[]
+    produk_ukuran_option_img: any[]
     produk_ukuran_option_sku: string[]
     produk_ukuran_option_stock: number[]
     produk_ukuran_option_price: number[]
@@ -108,8 +108,8 @@ export const useProdukForm = () => {
   
   const onSubmitForm: SubmitHandler<formDTO> = async (data) => {
     try {
-      console.log(data);
-      let dataSubmit = data;
+      
+      let dataSubmit : formDTO = data;
       if(data.produk_ukuran_option) {
         dataSubmit = {
           ...dataSubmit,
@@ -122,12 +122,36 @@ export const useProdukForm = () => {
           produk_ukuran_option_sku : Object.values(data.produk_ukuran_option_sku).map(item => String(item))
         }
       }
+      
+      let form_data = new FormData();
+
+      for ( let key in dataSubmit ) {
+          form_data.append(key, (dataSubmit as any)[key]);
+      }
+      if(data.produk_foto)form_data.append("produk_foto", data.produk_foto[0]);
+      if(data.produk_foto_1)form_data.append("produk_foto_1", data.produk_foto_1[0]);
+      if(data.produk_foto_2)form_data.append("produk_foto_2", data.produk_foto_2[0]);
+      if(data.produk_foto_3)form_data.append("produk_foto_3", data.produk_foto_3[0]);
+      if(data.produk_foto_4)form_data.append("produk_foto_4", data.produk_foto_4[0]);
+
+      if(data.produk_ukuran_option_img)
+      {
+        for (let i = 0; i < data.produk_ukuran_option_img.length; i++) {
+          // console.log("produk_ukuran_option_img", data.produk_ukuran_option_img[i])
+          form_data.append("produk_ukuran_option_img", data.produk_ukuran_option_img[i]);  
+        }
+      }
+
+      console.log("img",form_data.getAll("produk_ukuran_option_img"));
 
     const response = await Axios({
         method: "post",
         url: `http://localhost:3000/form-produk`,
-        data: dataSubmit,
-        headers: { "Content-Type": "application/json" },
+        data: form_data,
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+         },
         })
 
         console.log(response);

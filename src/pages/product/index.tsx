@@ -11,17 +11,49 @@ import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDia
 import { Link } from "@tanstack/react-router";
 import axios from "axios";
 
-interface IProductBe {
+interface IVariantOptionValues {
+    id: string;
+    variant_option_id: string;
+    sku: string;
+    weight: number;
+    stock: number;
+    price: number;
+    is_active: boolean;
+    img?: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IVariantOptions {
     id: string;
     name: string;
-    description: string;
+    variant_id: string;
+    variant_option_values: IVariantOptionValues;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IVariants {
+    id: string;
+    name: string;
+    is_active: boolean;
+    product_id: string;
+    variant_option: IVariantOptions[];
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IProduct {
+    id: string;
+    name: string;
+    description?: string;
     attachments: string[];
     is_active: boolean;
-    variants: string;
+    variants: IVariants[];
     size: string;
-    minimum_order: string
-    store_id: string;
-    categories_id: string;
+    minimum_order: string;
+    store_id?: string;
+    categories_id?: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -48,71 +80,12 @@ const Product = () => {
         "Stok Tersedikit"
     ];
 
-    const [productBe, setProductBe] = useState<IProductBe[]>();
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const res = await axios.get('http://localhost:3000/product/all/3247e115-6d9f-4d5a-948b-e80e306506a4');
-
-                setProductBe(res.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    console.log(productBe);
-
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            image: "https://via.placeholder.com/150",
-            name: "Kaos",
-            category: "fashion pria",
-            price: 55000,
-            stock: 200,
-            sku: "0219AKD192",
-            is_active: true,
-        },
-        {
-            id: 2,
-            image: "https://via.placeholder.com/150",
-            name: "Celana",
-            category: "fashion wanita",
-            price: 100000,
-            stock: 80,
-            sku: "0219AKD192",
-            is_active: true,
-        },
-        {
-            id: 3,
-            image: "https://via.placeholder.com/150",
-            name: "Sepatu",
-            category: "fashion anak & bayi",
-            price: 180000,
-            stock: 90,
-            sku: "0219AKD192",
-            is_active: false,
-        },
-        {
-            id: 4,
-            image: "https://via.placeholder.com/150",
-            name: "Kemeja",
-            category: "fashion pria",
-            price: 80000,
-            stock: 120,
-            sku: "0219AKD192",
-            is_active: true,
-        },
-    ]);
+    const [products, setProducts] = useState<IProduct[]>();
 
     const [isActive, setIsActive] = useState<boolean | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
-    const [selectedAction, setSelectedAction] = useState("Terlaris");
+    const [selectedAction, setSelectedAction] = useState("Terakhir Diubah");
 
     const handleSortIsActive = (status: boolean | null) => {
         setIsActive(status);
@@ -159,12 +132,13 @@ const Product = () => {
         }
     };
 
-    const filteredProducts = products.filter((product) => {
+    const filteredProducts = products?.filter((product) => {
         const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesIsActive = isActive === null || product.is_active === isActive;
-        const matchesCategory = selectedCategory === "Semua Kategori" || product.category.toLowerCase() === selectedCategory.toLowerCase();
-        return matchesSearchTerm && matchesIsActive && matchesCategory;
-    });
+        // const matchesCategory = selectedCategory === "Semua Kategori" || product.toLowerCase() === selectedCategory.toLowerCase();
+        // return matchesSearchTerm && matchesIsActive && matchesCategory;
+        return matchesSearchTerm && matchesIsActive;
+    }) || [];
 
     const sortedAndFilteredProducts = sortProducts(filteredProducts);
 
@@ -216,6 +190,27 @@ const Product = () => {
             setSelectAll(false);
         }
     };
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/product/all/3247e115-6d9f-4d5a-948b-e80e306506a4', {
+                    params: {
+                        searchTerm,
+                        isActive,
+                        category: selectedCategory,
+                        action: selectedAction
+                    }
+                });
+
+                setProducts(res.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchProducts();
+    }, [searchTerm, isActive, selectedCategory, selectedAction]);
 
     return (
         <div className="min-h-screen p-4 bg-white rounded">
@@ -281,7 +276,7 @@ const Product = () => {
             </div>
 
             {/* result */}
-            {sortedAndFilteredProducts.length === 0 ? (
+            {products?.length === 0 ? (
                 // if result 0
                 <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
                     <LuPackageX size={'4rem'} color="#909090" />
@@ -293,9 +288,21 @@ const Product = () => {
             ) : (
                 // if result !0
                 <div className="flex flex-col gap-2">
-                    {productBe.map((product) => (
-                        <ProductItem key={product.id} product={product} onToggle={handleToggle} onUpdatePrice={handleUpdatePrice} onUpdateStock={handleUpdateStock} onChecked={handleSelectedProduct} selectedAll={selectAll} />
-                    ))}
+                    {products ? (
+                        products.map((product) => (
+                            <ProductItem
+                                key={product.id}
+                                product={product}
+                                onToggle={handleToggle}
+                                onUpdatePrice={handleUpdatePrice}
+                                onUpdateStock={handleUpdateStock}
+                                onChecked={handleSelectedProduct}
+                                selectedAll={selectAll}
+                            />
+                        ))
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </div>
             )}
         </div>

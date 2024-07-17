@@ -1,12 +1,14 @@
 import { SideBar } from '@/features/side-bar'
 import { createFileRoute } from '@tanstack/react-router'
 import { PesananPage } from '../../pages/order/pesanan-page'
-import { ProtectedRoute } from '../__root'
+import { ProtectedRoute, ProtectedSellerRoute } from '../__root'
 
 export const Route = createFileRoute('/seller/pesanan')({
   component: () => (
     <ProtectedRoute>
+      <ProtectedSellerRoute>
       <Pesanan/>
+      </ProtectedSellerRoute>
     </ProtectedRoute>
   )
 })

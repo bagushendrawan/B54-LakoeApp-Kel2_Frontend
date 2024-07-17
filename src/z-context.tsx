@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type userType = {
+type User = {
     id: string,
     name: string,
     email: string,
@@ -10,32 +10,39 @@ type userType = {
     store_id : string
 }
 
+type userType = {
+  token : string,
+  user : User
+}
+
 type Store = {
-    user: userType
-    SET_USER: (newUser : userType) => void
+    user: User
+    SET_USER: (newUser : User) => void
     logout: () => void
   }
 const useStore = create<Store>() ((set) => ({
-    user: {
-      id: "",
-      name: "",
-      email:"",
-      phone: "",
-      role_id: NaN,
-      isVerified: false,
-      store_id: ""
-    },
-    SET_USER: (newUser : userType) => set(({ user: newUser })),
+  user : {
+    id: "",
+    name: "",
+    email:"",
+    phone: "",
+    role_id: NaN,
+    isVerified: false,
+    store_id: ""
+  },
+    SET_USER: (newUser : User) => set(({ user: newUser })),
     logout: () => {
-      set({ user: {
-      id: "",
-      name: "",
-      email:"",
-      phone: "",
-      role_id: NaN,
-      isVerified: false,
-      store_id : ""
-    },});
+      set({
+        user : {
+          id: "",
+          name: "",
+          email:"",
+          phone: "",
+          role_id: NaN,
+          isVerified: false,
+          store_id: ""
+        }
+      });
     localStorage.removeItem("token");
   },
 }))

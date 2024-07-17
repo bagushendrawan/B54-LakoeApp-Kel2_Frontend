@@ -14,26 +14,26 @@ import Axios from "axios"
 
    
   export function TableCart() {
-    const [items, setItems] = useState<>
-    useEffect(() => {
-        async function fetchItems(){
-          try {
-            const response = await Axios({
-              method: "get",
-              url: `http://localhost:3000/cart-items/all`,
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`,
-              },
-            });
-            console.log("fetch items",response.data);
+    // const [items, setItems] = useState<>
+    // useEffect(() => {
+    //     async function fetchItems(){
+    //       try {
+    //         const response = await Axios({
+    //           method: "get",
+    //           url: `http://localhost:3000/cart-items/all`,
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    //           },
+    //         });
+    //         console.log("fetch items",response.data);
             
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        fetchItems()
-      },[])
+    //       } catch (error) {
+    //         console.log(error);
+    //       }
+    //     }
+    //     fetchItems()
+    //   },[])
     return (
       <Table>
         <TableHeader>

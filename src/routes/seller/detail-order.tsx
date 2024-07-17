@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DetailOrderPage } from "../../pages/detailOrder/detail-order-page";
-import { ProtectedRoute } from "../__root";
+import { ProtectedRoute, ProtectedSellerRoute } from "../__root";
 import { SideBar } from "@/features/side-bar";
 
 export const Route = createFileRoute("/seller/detail-order")({
   component: () => (
     <ProtectedRoute>
-      <DetailOrder />
+      <ProtectedSellerRoute>
+        <DetailOrder />
+        </ProtectedSellerRoute>
     </ProtectedRoute>
   ),
 });

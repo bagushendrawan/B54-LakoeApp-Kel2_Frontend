@@ -19,6 +19,7 @@ function App() {
             "Authorization": `Bearer ${token}`
            },
         });
+        console.log("res",response.data)
         return setUser(response.data);
       } catch (error) {
           return localStorage.removeItem("token");

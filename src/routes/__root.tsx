@@ -1,6 +1,7 @@
 import App from '@/App';
 import { useToast } from '@/components/use-toast';
 import { cn } from '@/lib/utils';
+import useStore from '@/z-context';
 import { createRootRoute, ErrorComponent, Navigate } from "@tanstack/react-router";
 import Axios from 'axios';
 import { ReactNode } from 'react';
@@ -46,6 +47,48 @@ export const ProtectedRoute : React.FC<ProtectedRouteProps> = ({children}) => {
   return children
 }
 
+export const ProtectedSellerRoute : React.FC<ProtectedRouteProps> = ({children}) => {
+  const {toast} = useToast()
+  const user = useStore((state) => state.user)
+  if(user.role_id !==2){
+    localStorage.removeItem("token")
+    toast({
+      variant: "destructive",
+      title: `You're not Authorized!`,
+    });
+    return <Navigate to='/auth/login' replace/>;
+  }
+  return children
+}
+
+export const ProtectedBuyerRoute : React.FC<ProtectedRouteProps> = ({children}) => {
+  const {toast} = useToast()
+  const user = useStore((state) => state.user)
+  if(user.role_id !==1){
+    localStorage.removeItem("token")
+    toast({
+      variant: "destructive",
+      title: `You're not Authorized!`,
+    });
+    return <Navigate to='/auth/login' replace/>;
+  }
+  return children
+}
+
+export const ProtectedAdminRoute : React.FC<ProtectedRouteProps> = ({children}) => {
+  const {toast} = useToast()
+  const user = useStore((state) => state.user)
+  if(user.role_id !==3){
+    localStorage.removeItem("token")
+    toast({
+      variant: "destructive",
+      title: `You're not Authorized!`,
+    });
+    return <Navigate to='/auth/login' replace/>;
+  }
+  return children
+}
+
 export function throwLoginToast(){
   console.log("throw login toast");
   const {toast} = useToast()
@@ -58,6 +101,7 @@ export function throwLoginToast(){
 
 export async function authUser(){
   const token = localStorage.getItem("token");
+  const setUser = useStore((state) => state.SET_USER)
   try {
     const auth = await Axios({
       method: "get",
@@ -71,6 +115,9 @@ export async function authUser(){
       if(auth.status === 401){
         localStorage.removeItem("token");
       }
+
+      setUser(auth.data)
+      console.log(auth.data);
   } catch(err){
     const {toast} = useToast()
     toast({

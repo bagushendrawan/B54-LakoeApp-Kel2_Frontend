@@ -1,14 +1,7 @@
 import React from "react";
 import { Button } from "@/components/button";
-
-interface TemplatePesan {
-  id: number;
-  judulPesan: string;
-  daftarIsiPesan: string[];
-  namaPembeli: string;
-  namaToko: string;
-  namaProduk: string;
-}
+import { TemplatePesan } from "@/datas/type";
+import { UpdateTemplate } from "./EditTemplateDialog";
 
 interface TemplateCardProps {
   template: TemplatePesan;
@@ -21,21 +14,31 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({
   onDelete,
   onEdit,
 }) => {
+  const { judulPesan, daftarIsiPesan } = template
+
   return (
     <div className="border rounded p-4 flex justify-between items-start">
-      <div className="flex-col">
+      <div className="flex-col w-screen">
         <p className="font-bold text-2xl">
-          <strong>{template.judulPesan} </strong>
+          <strong>{judulPesan} </strong>
         </p>
-        <p className="mt-10">{template.daftarIsiPesan}</p>
+        <p className="mt-10">{daftarIsiPesan}</p>
       </div>
-      <div className="flex space-x-2">
-        <Button variant="ghost" onClick={() => onEdit(template)}>
-          ✏️
-        </Button>
-        <Button variant="ghost" onClick={() => onDelete(template.id)}>
-          🗑️
-        </Button>
+      <div className="flex">
+        <div className="w-32">
+          <UpdateTemplate
+            template={template}
+            onUpdate={() => onEdit(template)}
+          // onSave={handleSave}
+
+          // variant="ghost"
+          />
+        </div>
+        <div className="mt-3">
+          <Button variant="outline" onClick={() => onDelete(template.id)}>
+            Delete
+          </Button>
+        </div>
       </div>
     </div>
   );

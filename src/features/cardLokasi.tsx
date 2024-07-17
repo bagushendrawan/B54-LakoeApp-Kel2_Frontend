@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AddLocation } from "@/components/AddLocationDialog";
 import { UpdateLocation } from "@/components/EditLocationDialog";
 import { LocationCard } from "@/components/LocationCard";
-import { LocationContext, LocationContextProvider } from "@/context/LocationContext";
+import { LocationContext } from "@/context/LocationContext";
 import { Location } from "@/datas/type";
 
 interface DialogProps {
@@ -19,10 +19,9 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
 
   const { locations, setLocations } = context;
 
-  const handleAddLocation = (newLocation: Location) => {
-    const updatedLocations = [...locations, newLocation];
-    setLocations(updatedLocations);
-    onSave(updatedLocations);
+  const handleAddLocation = (location: Location) => {
+    setLocations([...locations, location]);
+
   };
 
   const handleEditLocation = (updatedLocation: Location) => {
@@ -41,9 +40,9 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
   };
 
   return (
-    <LocationContextProvider>
+    <>
       <AddLocation onSave={handleAddLocation} />
-      {locations.map((location) => (
+      {locations?.map((location) => (
         <LocationCard
           key={location.id}
           location={location}
@@ -57,6 +56,6 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
           onUpdate={handleEditLocation}
         />
       )}
-    </LocationContextProvider>
+    </>
   );
 };

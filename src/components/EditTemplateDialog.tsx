@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -7,127 +7,104 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogClose,
 } from "@/components/dialog";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
+import { TemplatePesan } from "@/datas/type";
+import { TemplateContext } from "@/context/TemplateContext";
+import { Textarea } from "./textarea";
 
-interface DialogProps {
-  template: TemplatePesan | null;
-  onSave: (data: TemplatePesan) => void;
-  children?: React.ReactNode;
+interface UpdateTemplateProps {
+  template: TemplatePesan;
+  onUpdate: (updateTemplate: TemplatePesan) => void;
 }
-
-interface TemplatePesan {
-  id: number;
-  judulPesan: string;
-  daftarIsiPesan: string[];
-  namaPembeli: string;
-  namaToko: string;
-  namaProduk: string;
-}
-
-export const EditTemplateDialog: React.FC<DialogProps> = ({
-  template,
-  onSave,
-  children,
+export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
+  template, onUpdate
 }) => {
-  const [formData, setFormData] = useState<TemplatePesan | null>(template);
 
-  useEffect(() => {
-    setFormData(template);
-  }, [template]);
+  const context = useContext(TemplateContext)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (formData) {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-  };
+  const [judulPesan, setJudulPesan] = useState(template.judulPesan)
+  const [daftarIsiPesan, setDaftarIsiPesan] = useState(template.daftarIsiPesan)
+  // const [namaPembeli, setnamaPembeli] = useState(template.namaPembeli)
+  // const [namaProduk, setNamaProduk] = useState(template.namaProduk)
+  // const [namaToko, setNamaToko] = useState(template.namaToko)
 
-  const handleSave = () => {
-    if (formData) {
-      onSave(formData);
-    }
-  };
+  if (!context) {
+    return null
+  }
 
-  // if (!formData) return null;
+  const { templates, setTemplates } = context;
 
+  console.log(templates);
+
+  const handleUpdate = () => {
+    const updateTemplates = templates.map(tmp =>
+      tmp.id === template.id ? { ...tmp, judulPesan, daftarIsiPesan } : tmp);
+
+    setTemplates(updateTemplates as TemplatePesan[])
+  }
   return (
-    <div className="mt-5 mr-10">
-      <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
+    <>
+      <Dialog >
+        <div className="mr-40 mt-3">
+          <DialogTrigger>
+            <Button variant="outline">Edit Tamplate</Button>
+          </DialogTrigger>
+        </div>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit Pesan</DialogTitle>
-            <DialogDescription>Edit Template Pesan.</DialogDescription>
+            <DialogTitle>Edit Template</DialogTitle>
+            <DialogDescription>Edit Tamplate Pesan.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="judulPesan" className="text-right">
-                Judul Pesan
+            <div className="flex-col justify-between items-center">
+              <Label htmlFor="judulPesan" className="">
+                Judul Pesan<span className="text-red-600">*</span>
               </Label>
               <Input
                 id="judulPesan"
                 name="judulPesan"
-                value={formData?.judulPesan}
-                onChange={handleChange}
-                className="col-span-3"
+                value={judulPesan}
+                onChange={(e) => setJudulPesan(e.target.value)}
+                className="flex w-full mt-4"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="alamdaftarIsiPesan" className="text-right">
-                Daftar Isi Pesanan
+
+            <div className="flex justify-between items-center">
+              <div className="flex">
+                <Button variant="outline">Nama Customer</Button>
+              </div>
+              <div className="flex">
+                <Button variant="outline">Nama Produk</Button>
+              </div>
+              <div className="flex">
+                <Button variant="outline">Nama Toko</Button>
+              </div>
+            </div>
+
+            <div className="flex-col justify-between items-center">
+              <Label htmlFor="daftarIsiPesan" className="">
+                Detail isi pesan<span className="text-red-600">*</span>
               </Label>
-              <Input
+              <Textarea
                 id="daftarIsiPesan"
                 name="daftarIsiPesan"
-                value={formData?.daftarIsiPesan}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="namaPembeli" className="text-right">
-                Nama Pembeli
-              </Label>
-              <Input
-                id="namaPembeli"
-                name="namaPembeli"
-                value={formData?.namaPembeli}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="namaToko" className="text-right">
-                Nama Toko
-              </Label>
-              <Input
-                id="namaToko"
-                name="namaToko"
-                value={formData?.namaToko}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="namaProduk" className="text-right">
-                Nama Produk
-              </Label>
-              <Input
-                id="namaProduk"
-                name="namaProduk"
-                value={formData?.namaProduk}
-                onChange={handleChange}
-                className="col-span-3"
+                value={daftarIsiPesan.join(", ")}
+                onChange={(e) => setDaftarIsiPesan([e.target.value])}
+                className="flex w-full mt-4"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleSave}>Save changes</Button>
+            <DialogClose asChild>
+              <Button onClick={handleUpdate}>Save changes</Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
-    </div>
-  );
+      </Dialog >
+    </>
+  )
 };

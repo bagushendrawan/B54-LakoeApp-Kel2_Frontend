@@ -7,11 +7,11 @@ import { Textarea } from "@/components/textarea";
 import { HeaderLogoToko } from "./headerPengaturan";
 
 import React, { useState } from "react";
-import { Location } from "@/datas/type";
+import { Informasi } from "@/datas/type";
 
 export const FormInformasiToko: React.FC = () => {
   // State untuk menyimpan nilai dari input, textarea, dan file
-  const [formData, setFormData] = useState<Location[]>([]);
+  const [formData, setFormData] = useState<Informasi[]>([]);
 
   const [namaToko, setNamaToko] = useState<string>("");
   const [selogan, setSelogan] = useState<string>("");
@@ -46,7 +46,7 @@ export const FormInformasiToko: React.FC = () => {
   // Handler untuk mengirimkan data form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newStore: Location = {
+    const newStore: Informasi = {
       id: formData.length + 1, // Generate unique id
       namaToko,
       selogan,
@@ -70,27 +70,31 @@ export const FormInformasiToko: React.FC = () => {
       <div className="w-screen">
         <div className="flex gap-9">
           <div className="mt-3 w-screen">
-            <Label className="py-10">Selogan</Label>
-            <Input
-              placeholder="Buat Selogan Untuk Toko"
-              className="mt-3 mb-3"
-              value={selogan}
-              onChange={handleSeloganChange}
-            ></Input>
-            <Label>Nama Toko</Label>
-            <Input
-              className="mt-3 mb-3"
-              value={namaToko}
-              onChange={handleNameChange}
-            ></Input>
+            <div className="flex-col">
+              <Label className="py-10">Selogan</Label>
+              <Input
+                placeholder="Buat Selogan Untuk Toko"
+                className="mt-3 mb-3 w-96"
+                value={selogan}
+                onChange={handleSeloganChange}
+              ></Input>
+              <Label>Nama Toko</Label>
+              <Input
+                className="mt-3 mb-3 w-96"
+                value={namaToko}
+                onChange={handleNameChange}
+              ></Input>
+            </div>
           </div>
           <div className="flex-col mr-10 mt-3 w-screen">
-            <Label className="py-10">Deskripsi</Label>
-            <Textarea
-              className="mt-3 mb-5"
-              value={deskripsi}
-              onChange={handleDescriptionChange}
-            />
+            <div>
+              <Label className="py-10">Deskripsi</Label>
+              <Textarea
+                className="mt-3 mb-5"
+                value={deskripsi}
+                onChange={handleDescriptionChange}
+              />
+            </div>
           </div>
         </div>
         <div className="flex justify-end mr-10 border-b pb-5">

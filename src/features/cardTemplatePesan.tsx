@@ -1,59 +1,60 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AddTemplatePesan } from "@/components/AddTemplatePesan";
-import { EditTemplateDialog } from "@/components/EditTemplateDialog";
 import { TemplateCard } from "@/components/TemplateCard";
+import { TemplatePesan } from "@/datas/type";
+import { TemplateContext } from "@/context/TemplateContext";
+import { UpdateTemplate } from "@/components/EditTemplateDialog";
 
-interface TamplatePesan {
-  id: number;
-  judulPesan: string;
-  daftarIsiPesan: string[];
-  namaPembeli: string;
-  namaToko: string;
-  namaProduk: string;
+
+interface DialogProps {
+  onSave: (templates: TemplatePesan[]) => void
 }
 
-export const CardTemplatePesan: React.FC = () => {
-  const [templatePesans, setPesans] = useState<TamplatePesan[]>([]);
-  const [editingPesan, setEditingPesan] = useState<TamplatePesan | null>(null);
 
-  const handleAddLocation = (templatePesan: TamplatePesan) => {
-    setPesans([...templatePesans, templatePesan]);
-  };
+export const CardTemplate: React.FC<DialogProps> = ({ onSave }) => {
+  const context = useContext(TemplateContext)
+  const [editingTemplate, seteditingTamplate] = useState<TemplatePesan | null>(null);
 
-  const handleEditTemplate = (updatedTemplate: TamplatePesan) => {
-    setPesans(
-      templatePesans.map((templatePesan) =>
-        templatePesan.id === updatedTemplate.id
-          ? updatedTemplate
-          : templatePesan
-      )
-    );
-    setEditingPesan(null);
-  };
+  if (!context) {
+    return null
+  }
+
+  const { templates, setTemplates } = context;
+
+  const handleAddTemplate = (template: TemplatePesan) => {
+    setTemplates([...templates, template])
+  }
+
+  const handleEditTemplate = (updatedTemplate: TemplatePesan) => {
+    const updatedTemplates = templates.map((template) => template.id === updatedTemplate.id ? updatedTemplate : template);
+    setTemplates(updatedTemplates)
+    onSave(updatedTemplates)
+    seteditingTamplate(null)
+  }
 
   const handleDeleteTemplate = (id: number) => {
-    setPesans(
-      templatePesans.filter((templatePesan) => templatePesan.id !== id)
-    );
-  };
+    const updatedTemplates = templates.filter((template) => template.id !== id)
+    setTemplates(updatedTemplates)
+    onSave(updatedTemplates)
+  }
 
   return (
     <>
-      <AddTemplatePesan onSave={handleAddLocation} />
-      {templatePesans.map((templatePesan) => (
+      <AddTemplatePesan onSave={handleAddTemplate} />
+      {templates?.map((template) => (
         <TemplateCard
-          key={templatePesan.id}
-          template={templatePesan}
+          key={template.id}
+          template={template}
           onDelete={handleDeleteTemplate}
-          onEdit={setEditingPesan}
+          onEdit={(template) => seteditingTamplate(template)}
         />
       ))}
-      {editingPesan && (
-        <EditTemplateDialog
-          template={editingPesan}
-          onSave={handleEditTemplate}
+      {editingTemplate && (
+        <UpdateTemplate
+          template={editingTemplate}
+          onUpdate={handleEditTemplate}
         />
       )}
     </>
-  );
-};
+  )
+}

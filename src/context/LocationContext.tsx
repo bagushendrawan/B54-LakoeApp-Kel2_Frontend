@@ -6,14 +6,15 @@ interface LocationContext {
     setLocations: React.Dispatch<React.SetStateAction<Location[]>>;
 }
 
-export const LocationContext = createContext<LocationContext | null>(null);
+export const LocationContext = createContext<LocationContext | undefined>(undefined);
 
-export function LocationContextProvider({ children }: { children: React.ReactNode }) {
+export const LocationContextProvider: React.FC<({ children: React.ReactNode })> = ({ children }) => {
     const [locations, setLocations] = useState<Location[]>([]);
+
     return (
         <LocationContext.Provider value={{ locations, setLocations }}>
             {children}
-        </LocationContext.Provider>
+        </LocationContext.Provider >
     );
 }
 

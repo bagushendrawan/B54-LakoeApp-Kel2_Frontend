@@ -26,13 +26,14 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
 
   const handleSave = () => {
     const newLocation: Location = {
-      id: locations.length ? locations[locations.length - 1].id + 1 : 1,
+      id: Date.now(),
       namaLokasi,
       alamat,
       kota,
       kodePos,
       pinPoint,
     };
+    console.log(newLocation);
 
     setLocations([...locations, newLocation]);
     setNamaLokasi("");

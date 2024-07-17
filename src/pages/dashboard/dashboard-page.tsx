@@ -10,6 +10,8 @@ import Axios from "axios";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/use-toast";
 import { Chart } from "./chart";
+import WithdrawDialog from "./components/withdrawDialog";
+import { CardTransaction } from "./components/cardTransaction";
 
 type bankData = {
     bank: string,
@@ -78,7 +80,7 @@ export function DashboardPage() {
                     {/* <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button> */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button>
+                            <Button className="bg-green-500 w-full mx-auto mb-2"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
@@ -129,6 +131,7 @@ export function DashboardPage() {
                             </form>
                         </DialogContent>
                     </Dialog>
+                    <WithdrawDialog/>
                 </div>
                 <div className="w-3/12 bg-white p-4">
                     <BsCreditCard className="text-3xl mb-4 text-green-600"></BsCreditCard>
@@ -176,67 +179,6 @@ export function DashboardPage() {
                     </div>
                 </div>
                 <Chart />
-                {/* <div className="w-full bg-white h-24 mt-4 flex gap-4">
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-red-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Penarikan Sedang Dalam Proses</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-green-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Pendapatan COD</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-green-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Cashback Pengiriman</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-green-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Pendapatan E-Payments</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="w-full bg-white rounded-sm h-24 mt-4 pb-4 flex gap-4">
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-red-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Refund Biaya Pengiriman</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-yellow-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Kredit Lainnya</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-yellow-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Klaim Pengiriman</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp. 0</h2>
-                            </div>
-                        </div>
-                        <div className="w-1/4 bg-transparent border-2 p-2 rounded-sm h-11/12 flex items-center gap-6">
-                            <BsCash className="text-3xl text-red-500 ms-8"></BsCash>
-                            <div className="flex flex-col mt-4">
-                                <p className="text-xs text-gray-600 mb-1">Pembaca Penagihan</p>
-                                <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp.0</h2>
-                            </div>
-                        </div>
-                    </div> */}
             </div>
 
             <div className="flex justify-between w-full">
@@ -282,12 +224,19 @@ export function DashboardPage() {
                 <p>Deskripsi</p>
                 <p>Nilai</p>
                 <p>Status</p>
-                <p>Tipe</p>
+                <p>Order ID</p>
                 <p>Tanggal</p>
             </div>
 
-            <div className="bg-white w-full h-64 flex justify-center items-center">
-                <p className="flex gap-4 justify-center items-center text-xl text-gray-300"><BsInfoCircle />Tidak ada aktifitas dalam rentang tanggal ini</p>
+            <div className="bg-white w-full h-64 justify-start items-center gap-4 p-4 overflow-y-auto">
+                <CardTransaction disabled={false} title="Hello" ></CardTransaction>
+                <CardTransaction disabled={false} title="Hello" ></CardTransaction>
+                <CardTransaction disabled={false} title="Hello" ></CardTransaction>
+                <CardTransaction disabled={false} title="Hello" ></CardTransaction>
+                <CardTransaction disabled={false} title="Hello" ></CardTransaction>
+                {/* <p className="flex gap-4 justify-center items-center text-xl text-gray-300">
+                    <BsInfoCircle />Tidak ada aktifitas dalam rentang tanggal ini
+                </p> */}
             </div>
         </div>
     );

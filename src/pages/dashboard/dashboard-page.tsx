@@ -10,6 +10,7 @@ import Axios from "axios";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/use-toast";
 import { Chart } from "./chart";
+import WithdrawDialog from "./components/withdrawDialog";
 
 type bankData = {
     bank: string,
@@ -78,7 +79,10 @@ export function DashboardPage() {
                     {/* <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button> */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button>
+                            <Button className="bg-green-500 w-full mx-auto">
+                                <BsPlus className="text-xl me-2" />
+                                Tambahkan Akun Bank
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>

@@ -21,24 +21,27 @@ interface VariantOptionValue {
 }
 
 interface VariantOption {
-  nameVariantOption: string;
-  variantOptionValue: VariantOptionValue;
+  name: string;
+  variantOptionValue: VariantOptionValue[];
 }
 
 interface Variant {
-  nameVariant: string;
-  variantOption: VariantOption;
+  id : string;
+  name: string;
+  variant_option: VariantOption[];
 }
 
 interface ProductDashboard {
+  id: string;
   attachments: string;
   name: string;
-  variant: Variant;
+  variants: Variant[];
   store_id: string;
 }
 
 export function BuyerDashboardPage() {
   const [product, setProduct] = useState<ProductDashboard[]>([]);
+  const [selectedVariant, setSelectedVariant] = useState<String>("")
 
   async function getDataProduct() {
     try {
@@ -52,6 +55,7 @@ export function BuyerDashboardPage() {
       });
 
       setProduct(response.data);
+      // console.log("fetchproduk",response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -91,9 +95,10 @@ export function BuyerDashboardPage() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 m-3 p-3 rounded-lg">
-          {product.map((data) => {
+          {product.map((data, index) => {
             return (
-              <Card className="w-1/6">
+              <>
+              <Card className="w-1/6" key={index}>
                 <CardContent className="p-3 border-b">
                   <h1 className="flex justify-center mb-2">{data?.store_id}</h1>
                   <img
@@ -104,29 +109,37 @@ export function BuyerDashboardPage() {
                 </CardContent>
                 <CardFooter className="flex flex-col p-3">
                   <h1 className="font-bold text">{data?.name}</h1>
-                  <Select>
+                  <Select onValueChange={(e) => setSelectedVariant(e)}>
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Varian" />
+                      <SelectValue placeholder="Varian" defaultValue={data.variants[0].id} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent side="top">
                       <SelectGroup>
-                        <SelectItem value="test">Test</SelectItem>
+                        {data.variants?.map((value) => {
+                          return (
+                            <SelectItem value={value.id} >{value.variant_option[0].name}</SelectItem>
+                          )
+                        })}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
                   <p>Rp 1200000</p>
                   <Button>
                     {" "}
-                    <Link to="/buyer/add-cart" search={{ product }}>
+                    <Link to="/buyer/add-cart" search={{ product_id : data.id, varian_id:selectedVariant }}>
                       Beli Sekarang
                     </Link>
                   </Button>
                 </CardFooter>
               </Card>
-            );
+
+
+</>
+            )
           })}
         </div>
       </div>
     </>
   );
 }
+

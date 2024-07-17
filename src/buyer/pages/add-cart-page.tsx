@@ -10,43 +10,88 @@ import {
 import { Route } from "@/routes/buyer/add-cart";
 import { useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { TableCart } from "./table-cart";
+import { useForm } from "react-hook-form";
 
 interface Data {
   id: number;
   name: string;
   price: number;
-  image: string[];
+  attachments: string[];
 }
 
-const datas: Data = {
-  id: 1,
-  name: "BAJU POLOS",
-  price: 120000,
-  image: [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-  ],
-};
+// const datas: Data = {
+//   id: 1,
+//   name: "BAJU POLOS",
+//   price: 120000,
+//   image: [
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
+//   ],
+// };
 
 interface cartItemsForm {
+  attachments: string[];
   name: string;
   price: number;
-  quantity: number;
+  quantity: Number;
+  stock : Number;
+}
+
+type paramsCart = {
+  product_id : string,
+  varian_id : string
 }
 
 export function AddCartPage() {
 
-  const params = Route.useSearch();
+  // const formAddCart = useForm<cartItemsForm>()
+  const params : paramsCart = Route.useSearch();
   console.log("params", params);
 
   const [dataOrder, setDataOrder] = useState<cartItemsForm>({
+    attachments: [],
     name: "",
     price: 0,
     quantity: 1,
+    stock : 0,
   });
+
+  const [quantity, setQuantity] = useState<Number>(0)
+
+
+  useEffect(() => {
+    async function fetchVarian(){
+      try {
+        const response = await Axios({
+          method: "get",
+          url: `http://localhost:3000/form-produk/${params.product_id}/${params.varian_id}`,
+          data: dataOrder,
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = {
+          attachments: response.data.attachments,
+          name: response.data.name,
+          price: response.data.variants[0].variant_option[0].variant_option_values.price,
+          quantity: response.data.minimum_order,
+          stock: response.data.variants[0].variant_option[0].variant_option_values.stock
+        }
+        setQuantity(data.quantity)
+        setDataOrder(data);
+        console.log("fetch varian",data);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchVarian()
+  },[])
 
   const navigate = useNavigate();
 
@@ -60,26 +105,36 @@ export function AddCartPage() {
     });
   }
 
-  async function handleSubmit() {
+  async function addCart() {
     try {
+      const data = {
+        // store_id = params.store_id
+        attachments: dataOrder.attachments,
+        name: dataOrder.name,
+        price: dataOrder.price,
+       quantity: quantity
+      }
+      console.log(data);
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/cart-items`,
+        url: `http://localhost:3000/cart-items/${params.product_id}`,
         data: dataOrder,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      setDataOrder(response.data)
-      console.log(dataOrder);
+      // setDataOrder(response.data)
+      console.log(response.data);
       
-      navigate({ to: "/buyer/checkout", search: { dataOrder } });
+      // navigate({ to: "/buyer/checkout", search: { dataOrder } });
     } catch (error) {
       console.log(error);
     }
   }
+
+  
 
   return (
     <>
@@ -87,7 +142,7 @@ export function AddCartPage() {
         <div className="flex items-center">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
-              {datas.image.map((data, index) => (
+              {dataOrder.attachments.map((data, index) => (
                 <CarouselItem key={index}>
                   <div className="p-1">
                     <Card>
@@ -115,18 +170,27 @@ export function AddCartPage() {
               <div className="flex items-center gap-10 mt-5 text-xl pb-4 border-b-2 border-b-black">
                 <p>Jumlah</p>
                 <div className="flex items-center gap-10 text-xl">
-                  <button className="border border-black w-10 h-11 rounded-md">
+                  {quantity <= dataOrder.quantity ? <button className="border border-black w-10 h-11 rounded-md hidden" disabled >
                     -
-                  </button>
-                  <p>{dataOrder.quantity}</p>
-                  <button className="border border-black w-10 h-11 rounded-md">
+                  </button>  : <button className="border border-black w-10 h-11 rounded-md" onClick={() => {
+                    setQuantity(Number(quantity) - 1);
+                  }} >
+                    -
+                  </button> }
+                  
+                  <p>{String(quantity)}</p>
+                  {quantity >= dataOrder.stock ? <button className="border border-black w-10 h-11 rounded-md hidden" disabled >
                     +
-                  </button>
+                  </button>  : <button className="border border-black w-10 h-11 rounded-md" onClick={() => {
+                    setQuantity(Number(quantity) + 1);
+                  }} >
+                    +
+                  </button> }
                 </div>
               </div>
 
               <div className="flex justify-between mt-5">
-                <Button onClick={handleSubmit}>
+                <Button >
                   {/* <Link to="/buyer/checkout" search={{ id: 2 }}>
                     Beli Langsung
                   </Link> */}
@@ -134,15 +198,16 @@ export function AddCartPage() {
                 </Button>
                 <Button
                   className="gap-2"
-                  onClick={() => {
-                    alert("Produk sudah ditambahkan kedalam keranjang!");
-                  }}
+                  onClick={() => addCart()}
                 >
                   Keranjang <FaArrowRightFromBracket />
                 </Button>
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <TableCart/>
         </div>
       </div>
     </>

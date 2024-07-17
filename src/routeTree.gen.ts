@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TestImport } from './routes/test'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as ProdukImport } from './routes/produk'
 import { Route as PesananImport } from './routes/pesanan'
@@ -19,6 +20,11 @@ import { Route as DetailOrderImport } from './routes/detail-order'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const TestRoute = TestImport.update({
+  path: '/test',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProfileRoute = ProfileImport.update({
   path: '/profile',
@@ -96,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -108,6 +121,7 @@ export const routeTree = rootRoute.addChildren({
   PesananRoute,
   ProdukRoute,
   ProfileRoute,
+  TestRoute,
 })
 
 /* prettier-ignore-end */
@@ -123,7 +137,8 @@ export const routeTree = rootRoute.addChildren({
         "/pengaturan",
         "/pesanan",
         "/produk",
-        "/profile"
+        "/profile",
+        "/test"
       ]
     },
     "/": {
@@ -143,6 +158,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/test": {
+      "filePath": "test.tsx"
     }
   }
 }

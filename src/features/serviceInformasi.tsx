@@ -1,12 +1,15 @@
+
+
+// =================================================================================
 import { store } from "@/datas/type";
 
-const LOCAL_STORAGE_KEY = "STORE";
+const LOCAL_STORAGE_KEY = "datas";
 
 export const StoreService = {
   //Get Store
   getStore: (): store[] => {
-    const dataStr = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return dataStr ? JSON.parse(dataStr) : [];
+    const datasStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return datasStr ? JSON.parse(datasStr) : [];
   },
 
   //Adding Store
@@ -23,7 +26,7 @@ export const StoreService = {
       selogan,
       deskripsi,
       image,
-      completed: false,
+      completed: false
     };
     const updateStore = [...datas, newStore];
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updateStore));
@@ -38,11 +41,11 @@ export const StoreService = {
     return data;
   },
 
-  //!Delet the store
+  //!Delete the store
   deleteStore: (id: number): void => {
     const datas = StoreService.getStore();
 
-    const updateStore = datas.filter((data) => data.id !== id);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updateStore));
+    const updatedStore = datas.filter((data) => data.id !== id);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedStore));
   },
 };

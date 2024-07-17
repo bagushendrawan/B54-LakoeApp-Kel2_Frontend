@@ -1,8 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
 import { HeaderInformasiToko } from "./headerPengaturan";
 import { FormInformasiToko } from "./informasi";
-import { LokasiToko } from "./lokasi";
+// import { LokasiToko } from "./lokasi";
 import { TemplatePesan } from "./templatePesan";
+// import { UpdateInformasi } from "@/components/UpdateInformasi";
+// import { CardLokasi } from "./cardLokasi";
+// import { InformasiList } from "@/components/LocationCard";
 
 export function MainSetting() {
   return (
@@ -16,10 +19,11 @@ export function MainSetting() {
         <div className="ml-5 my-7">
           <TabsContent value="informasi">
             <HeaderInformasiToko />
+            {/* <InformasiList /> */}
             <FormInformasiToko />
           </TabsContent>
           <TabsContent value="lokasi">
-            <LokasiToko />
+            {/* <CardLokasi /> */}
           </TabsContent>
           <TabsContent value="templatePesan">
             <TemplatePesan />

@@ -8,7 +8,6 @@ import { Button } from "../components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -56,7 +55,7 @@ export function RegisterForm() {
         headers: { "Content-Type": "application/json" },
         })
         console.log(response)
-        } catch (error : any) {
+        } catch (error : unknown) {
         console.log(error);
         }
     }

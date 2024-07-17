@@ -1,55 +1,46 @@
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/dialog";
-import { Button } from "@/components/button";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { useContext, useState } from "react";
+import { LocationContext } from "@/context/LocationContext";
+import { Location } from "@/datas/type";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
+import { Button } from "./button";
+import { Label } from "./label";
+import { Input } from "./input";
 
 interface DialogProps {
-  onSave: (data: Location) => void;
+  onSave: (location: Location) => void;
 }
 
-interface Location {
-  id: number;
-  namaLokasi: string;
-  alamat: string;
-  kota: string;
-  kodePos: string;
-  pinpoint: string;
-}
+export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
+  const context = useContext(LocationContext);
 
-const AddLocationDialog: React.FC<DialogProps> = ({ onSave }) => {
-  const [formData, setFormData] = useState<Location>({
-    id: 0,
-    namaLokasi: "",
-    alamat: "",
-    kota: "",
-    kodePos: "",
-    pinpoint: "",
-  });
+  const [namaLokasi, setNamaLokasi] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [kota, setKota] = useState("");
+  const [kodePos, setKodePos] = useState("");
+  const [pinPoint, setPinPoint] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  if (!context) {
+    return null;
+  }
+  const { locations, setLocations } = context;
 
   const handleSave = () => {
-    onSave({ ...formData, id: Date.now() });
-    setFormData({
-      id: 0,
-      namaLokasi: "",
-      alamat: "",
-      kota: "",
-      kodePos: "",
-      pinpoint: "",
-    });
+    const newLocation: Location = {
+      id: locations.length ? locations[locations.length - 1].id + 1 : 1,
+      namaLokasi,
+      alamat,
+      kota,
+      kodePos,
+      pinPoint,
+    };
+
+    setLocations([...locations, newLocation]);
+    setNamaLokasi("");
+    setAlamat("");
+    setKota("");
+    setKodePos("");
+    setPinPoint("");
+    onSave(newLocation);
   };
 
   return (
@@ -73,71 +64,69 @@ const AddLocationDialog: React.FC<DialogProps> = ({ onSave }) => {
               <DialogDescription>Tambahkan Lokasi Baru Toko.</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="namaLokasi" className="text-right">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="namaLokasi" className="text-left">
                   Nama Lokasi
                 </Label>
                 <Input
                   id="namaLokasi"
                   name="namaLokasi"
-                  value={formData.namaLokasi}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={namaLokasi}
+                  onChange={(e) => setNamaLokasi(e.target.value)}
+                  className="flex w-64"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="alamat" className="text-right">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="alamat" className="text-left">
                   Alamat
                 </Label>
                 <Input
                   id="alamat"
                   name="alamat"
-                  value={formData.alamat}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={alamat}
+                  onChange={(e) => setAlamat(e.target.value)}
+                  className="flex w-64"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="kota" className="text-right">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="kota" className="text-left">
                   Kota/Kecamatan
                 </Label>
                 <Input
                   id="kota"
                   name="kota"
-                  value={formData.kota}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={kota}
+                  onChange={(e) => setKota(e.target.value)}
+                  className="flex w-64"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="kodePos" className="text-right">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="kodePos" className="text-left">
                   Kode Pos
                 </Label>
                 <Input
                   id="kodePos"
                   name="kodePos"
-                  value={formData.kodePos}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={kodePos}
+                  onChange={(e) => setKodePos(e.target.value)}
+                  className="flex w-64"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="pinpoint" className="text-right">
+              <div className="flex-col justify-between items-center">
+                <Label htmlFor="pinpoint" className="text-left">
                   Pinpoint Lokasi
                 </Label>
                 <Input
                   id="pinpoint"
                   name="pinpoint"
-                  value={formData.pinpoint}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={pinPoint}
+                  onChange={(e) => setPinPoint(e.target.value)}
+                  className="flex w-full"
                 />
               </div>
             </div>
             <DialogFooter>
-              <DialogClose>
-                <Button onClick={handleSave}>Save changes</Button>
-              </DialogClose>
+              <Button onClick={handleSave}>Save changes</Button>
             </DialogFooter>
           </DialogContent>
         </div>
@@ -145,5 +134,3 @@ const AddLocationDialog: React.FC<DialogProps> = ({ onSave }) => {
     </div>
   );
 };
-
-export default AddLocationDialog;

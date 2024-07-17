@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import IconInput from "./components/iconInput";
 import Dropdown from "./components/dropDownSort";
 import ProductItem from "./components/productItem";
@@ -9,11 +9,62 @@ import { LuPackageX } from "react-icons/lu";
 import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 import { Link } from "@tanstack/react-router";
+import axios from "axios";
+
+interface IProductBe {
+    id: string;
+    name: string;
+    description: string;
+    attachments: string[];
+    is_active: boolean;
+    variants: string;
+    size: string;
+    minimum_order: string
+    store_id: string;
+    categories_id: string;
+    created_at: Date;
+    updated_at: Date;
+}
 
 const Product = () => {
-    const categories = ["Semua Kategori", "Audio, Kamera & Elektronik", "Buku", "Dapur", "Fashion Anak & Bayi", "Fashion Muslim", "Fashion Pria", "Fashion Wanita"];
+    const categories = [
+        "Semua Kategori",
+        "Audio, Kamera & Elektronik",
+        "Buku",
+        "Dapur",
+        "Fashion Anak & Bayi",
+        "Fashion Muslim",
+        "Fashion Pria",
+        "Fashion Wanita"
+    ];
 
-    const action = ["Terakhir Diubah", "Terlaris", "Kurang Diminati", "Harga Tertinggi", "Harga Terendah", "Stok Terbanyak", "Stok Tersedikit"];
+    const action = [
+        "Terakhir Diubah",
+        "Terlaris",
+        "Kurang Diminati",
+        "Harga Tertinggi",
+        "Harga Terendah",
+        "Stok Terbanyak",
+        "Stok Tersedikit"
+    ];
+
+    const [productBe, setProductBe] = useState<IProductBe[]>();
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/product/all/3247e115-6d9f-4d5a-948b-e80e306506a4');
+
+                setProductBe(res.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    console.log(productBe);
 
     const [products, setProducts] = useState([
         {
@@ -71,12 +122,12 @@ const Product = () => {
         setSearchTerm(e.target.value);
     };
 
-    const handleToggle = (id: number) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.id === id ? { ...product, active: !product.is_active } : product
-            )
-        );
+    const handleToggle = (id: string) => {
+        // setProducts((prevProducts) =>
+        //     prevProducts.map((product) =>
+        //         product.id === id ? { ...product, active: !product.is_active } : product
+        //     )
+        // );
     };
 
     const handleSortCategory = (category: string) => {
@@ -117,21 +168,21 @@ const Product = () => {
 
     const sortedAndFilteredProducts = sortProducts(filteredProducts);
 
-    const handleUpdatePrice = (id: number, newPrice: number) => {
-        setProducts(products.map(product =>
-            product.id === id ? { ...product, price: newPrice } : product
-        ));
+    const handleUpdatePrice = (id: string, newPrice: string) => {
+        // setProducts(products.map(product =>
+        //     product.id === id ? { ...product, price: newPrice } : product
+        // ));
     };
 
-    const handleUpdateStock = (id: number, newStock: number) => {
-        setProducts(products.map(product =>
-            product.id === id ? { ...product, stock: newStock } : product
-        ));
+    const handleUpdateStock = (id: string, newStock: string) => {
+        // setProducts(products.map(product =>
+        //     product.id === id ? { ...product, stock: newStock } : product
+        // ));
     };
 
-    const [selectedProduct, setSelectedProduct] = useState<[number, boolean][]>([]);
+    const [selectedProduct, setSelectedProduct] = useState<[string, boolean][]>([]);
 
-    const handleSelectedProduct = (id: number, isChecked: boolean) => {
+    const handleSelectedProduct = (id: string, isChecked: boolean) => {
         setSelectedProduct(prevSelected => {
             const existingProductIndex = prevSelected.findIndex(product => product[0] === id);
 
@@ -152,21 +203,19 @@ const Product = () => {
         });
     };
 
-    const [selectAll, setSelectAll] = useState(false)
+    const [selectAll, setSelectAll] = useState(false);
 
     const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;
 
-        if(isChecked) {
-            setSelectedProduct(products.map(product => [product.id, true]));
-            setSelectAll(!selectAll)
+        if (isChecked) {
+            // setSelectedProduct(products.map(product => [product.id, true]));
+            setSelectAll(!selectAll);
         } else {
-            setSelectedProduct([])
-            setSelectAll(false)
+            setSelectedProduct([]);
+            setSelectAll(false);
         }
     };
-
-    console.log(selectedProduct);
 
     return (
         <div className="min-h-screen p-4 bg-white rounded">
@@ -244,7 +293,7 @@ const Product = () => {
             ) : (
                 // if result !0
                 <div className="flex flex-col gap-2">
-                    {sortedAndFilteredProducts.map((product) => (
+                    {productBe.map((product) => (
                         <ProductItem key={product.id} product={product} onToggle={handleToggle} onUpdatePrice={handleUpdatePrice} onUpdateStock={handleUpdateStock} onChecked={handleSelectedProduct} selectedAll={selectAll} />
                     ))}
                 </div>

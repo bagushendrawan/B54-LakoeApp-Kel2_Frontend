@@ -4,32 +4,37 @@ import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 
 interface IProduct {
-    id: number;
-    image: string;
+    id: string;
     name: string;
-    price: number;
-    stock: number;
-    sku: string;
+    description: string;
+    attachments: string[];
     is_active: boolean;
+    variants: string;
+    size: string;
+    minimum_order: string
+    store_id: string;
+    categories_id: string;
+    created_at: Date;
+    updated_at: Date;
 }
 
 interface IUpdatePriceProps {
     product: IProduct;
-    updatePrice: (id: number, newPrice: number) => void;
+    updatePrice: (id: string, newPrice: string) => void;
 }
 
 const UpdateStockDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
-    const [stock, setStock] = useState<string>(product.stock.toString());
+    // const [stock, setStock] = useState<string>(product.stock.toString());
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     const handleSave = () => {
-        const numericStock = parseFloat(stock.replace(/,/g, ''));
-        if (!isNaN(numericStock)) {
-            updatePrice(product.id, numericStock);
-            if (dialogRef.current) {
-                dialogRef.current.close();
-            }
-        }
+        // const numericStock = parseFloat(stock.replace(/,/g, ''));
+        // if (!isNaN(numericStock)) {
+        //     updatePrice(product.id, numericStock);
+        //     if (dialogRef.current) {
+        //         dialogRef.current.close();
+        //     }
+        // }
     };
 
     return (
@@ -47,8 +52,8 @@ const UpdateStockDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
                         type="text"
                         className="border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder='Cari Produk'
-                        value={stock}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setStock(e.target.value)}
+                        // value={stock}
+                        // onChange={(e: ChangeEvent<HTMLInputElement>) => setStock(e.target.value)}
                     />
                 </DialogHeader>
                 <DialogFooter>

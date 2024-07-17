@@ -13,13 +13,18 @@ import DeleteProductDialog from "./deleteProductDialog";
 import { FC } from "react";
 
 interface IProduct {
-    id: number;
-    image: string;
+    id: string;
     name: string;
-    price: number;
-    stock: number;
-    sku: string;
+    description: string;
+    attachments: string[];
     is_active: boolean;
+    variants: string;
+    size: string;
+    minimum_order: string
+    store_id: string;
+    categories_id: string;
+    created_at: Date;
+    updated_at: Date;
 }
 
 interface IDropDownMenuProps {

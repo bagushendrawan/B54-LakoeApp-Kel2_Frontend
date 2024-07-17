@@ -18,13 +18,11 @@ function Index() {
   //   authUser();
   // },[])
   return (
-    <div>
     <div className="w-full h-auto flex bg-slate-800">
-    <SideBar />
-      <div className="w-full h-screen overflow-y-auto">
-      <DashboardPage></DashboardPage>
+      <SideBar />
+      <div className="w-full h-screen p-2 overflow-y-auto">
+        <DashboardPage />
       </div>
     </div>
-  </div>
   );
 }

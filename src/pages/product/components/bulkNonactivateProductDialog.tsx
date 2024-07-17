@@ -4,7 +4,7 @@ import { Button } from '@/components/button';
 import { FC } from 'react';
 
 interface IBulkNonactivateProps {
-    selectedProduct: [number, boolean][];
+    selectedProduct: [string, boolean][];
 }
 
 const BulkNonactivateProductDialog: FC<IBulkNonactivateProps> = ({ selectedProduct }) => {

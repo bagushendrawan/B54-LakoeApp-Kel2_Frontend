@@ -5,7 +5,7 @@ import { MdOutlineDelete } from 'react-icons/md';
 import { FC } from 'react';
 
 interface IBulkDeleteProps {
-    selectedProduct: [number, boolean][];
+    selectedProduct: [string, boolean][];
 }
 
 const BulkDeleteProductDialog: FC<IBulkDeleteProps> = ({ selectedProduct }) => {

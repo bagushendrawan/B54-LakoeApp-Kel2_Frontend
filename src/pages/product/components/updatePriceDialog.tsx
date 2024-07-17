@@ -3,29 +3,66 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 
-interface IProduct {
-    id: number;
-    image: string;
-    name: string;
-    price: number;
-    stock: number;
+interface IVariantOptionValues {
+    id: string;
+    variant_option_id: string;
     sku: string;
+    weight: number;
+    stock: number;
+    price: number;
     is_active: boolean;
+    img?: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IVariantOptions {
+    id: string;
+    name: string;
+    variant_id: string;
+    variant_option_values: IVariantOptionValues;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IVariants {
+    id: string;
+    name: string;
+    is_active: boolean;
+    product_id: string;
+    variant_option: IVariantOptions[];
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IProduct {
+    id: string;
+    name: string;
+    description?: string;
+    attachments: string[];
+    is_active: boolean;
+    variants: IVariants[];
+    size: string;
+    minimum_order: string;
+    store_id?: string;
+    categories_id?: string;
+    created_at: Date;
+    updated_at: Date;
 }
 
 interface IUpdatePriceProps {
     product: IProduct;
-    updatePrice: (id: number, newPrice: number) => void;
+    updatePrice: (id: string, newPrice: string) => void;
 }
 
 const UpdatePriceDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
-    const [price, setPrice] = useState<string>(product.price.toString());
+    // const [price, setPrice] = useState<string>(product.price.toString());
 
     const handleSave = () => {
-        const numericPrice = parseFloat(price.replace(/,/g, ''));
-        if (!isNaN(numericPrice)) {
-            updatePrice(product.id, numericPrice);
-        }
+        // const numericPrice = parseFloat(price.replace(/,/g, ''));
+        // if (!isNaN(numericPrice)) {
+        //     updatePrice(product.id, numericPrice);
+        // }
     };
 
     return (
@@ -48,8 +85,8 @@ const UpdatePriceDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
                             type="text"
                             className="pl-10 pr-4 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder='Cari Produk'
-                            value={price}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(e.target.value)}
+                            // value={}
+                            // onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(e.target.value)}
                         />
                     </div>
                 </DialogHeader>

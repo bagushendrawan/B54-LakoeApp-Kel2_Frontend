@@ -161,7 +161,7 @@ const Product = () => {
                 const token = localStorage.getItem('token');
                 console.log(token);
 
-                const res = await axios.get('http://localhost:3000/product/all/b0398a24-ab3c-4287-9fcc-c3fb1f707c20', {
+                const res = await axios.get('http://localhost:3000/product/all/5631a688-ee80-44eb-a8c5-88da82ff16fb', {
                     params: {
                         searchTerm,
                         isActive,

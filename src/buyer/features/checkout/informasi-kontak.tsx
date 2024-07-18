@@ -4,7 +4,7 @@ import useStore from "@/z-context";
 
 export function InformasiKontak() {
   const user = useStore((state) => state.user)
-  console.log(user);
+  // console.log(user);
   
   return (
     <>

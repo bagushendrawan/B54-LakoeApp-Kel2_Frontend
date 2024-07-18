@@ -182,7 +182,7 @@ const Product = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/product/all/3247e115-6d9f-4d5a-948b-e80e306506a4', {
+                const res = await axios.get('http://localhost:3000/product/all/5631a688-ee80-44eb-a8c5-88da82ff16fb', {
                     params: {
                         searchTerm,
                         isActive,

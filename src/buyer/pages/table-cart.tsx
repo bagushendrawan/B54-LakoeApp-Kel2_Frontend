@@ -43,14 +43,15 @@ export function TableCart() {
 
     fetchItems();
   }, []);
-  // console.log("ini items", items);
+
+  
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
           asChild
-          className="w-2/12 border border-black bg-slate-800"
+          className="w-2/12 border border-black bg-slate-800 :hover"
         >
           <Button variant="outline">
             <div className="flex items-center gap-3 text-xl text-white">
@@ -81,9 +82,10 @@ export function TableCart() {
                   </div>
 
                   <Button className="w-1/4">
-                    <Link to="/buyer/checkout" search={{ product_id: data.id }}>
+                    <Link to="/buyer/checkout" search={{ id : data.id }}>
                       Bayar Sekarang
                     </Link>
+                    
                   </Button>
                 </div>
               </DropdownMenuCheckboxItem>

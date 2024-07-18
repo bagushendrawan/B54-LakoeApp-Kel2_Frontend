@@ -1,22 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 
-export function BelumDibayar() {
+export function BelumDibayar(props : any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-yellow-500 rounded-sm">
+              <div className="bg-yellow-500 rounded-sm text-white p-2 font-semibold">
                 Belum Dibayar
-              </Button>
-              <p>INV/20240708/MPL/000004235</p>
+              </div>
+              <p>{props.invoice}</p>
             </div>
             <div className="p-2">
               <button
                 className="border rounded-full py-1 px-3"
-                // onClick={"https://api.whatsapp.com/send/?phone=62xxxxxxxxx"}
+                // onClick={`https://api.whatsapp.com/send/?phone=${props.phone}`}
               >
                 Hubungi Pembeli
               </button>

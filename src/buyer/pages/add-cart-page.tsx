@@ -8,12 +8,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Route } from "@/routes/buyer/add-cart";
-import { useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
-import { TableCart } from "./table-cart";
-import { useForm } from "react-hook-form";
 
 interface Data {
   id: number;
@@ -22,49 +20,37 @@ interface Data {
   attachments: string[];
 }
 
-// const datas: Data = {
-//   id: 1,
-//   name: "BAJU POLOS",
-//   price: 120000,
-//   image: [
-//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYBcR8lwHq-b82E_vCRw02NKJVbsTAJu9dw&s",
-//   ],
-// };
-
 interface cartItemsForm {
   attachments: string[];
   name: string;
   price: number;
   quantity: Number;
-  stock : Number;
+  stock: Number;
 }
 
 type paramsCart = {
-  product_id : string,
-  varian_id : string
-}
+  product_id: string;
+  varian_id: string;
+};
 
 export function AddCartPage() {
-
   // const formAddCart = useForm<cartItemsForm>()
-  const params : paramsCart = Route.useSearch();
+  const params: paramsCart = Route.useSearch();
   console.log("params", params);
 
   const [dataOrder, setDataOrder] = useState<cartItemsForm>({
     attachments: [],
     name: "",
     price: 0,
-    quantity: 1,
-    stock : 0,
+    quantity: 0,
+    stock: 0,
   });
 
-  const [quantity, setQuantity] = useState<Number>(0)
-
+  const [quantity, setQuantity] = useState<Number>(0);
+  const [dataCart, setDataCart] = useState<any>([])
 
   useEffect(() => {
-    async function fetchVarian(){
+    async function fetchVarian() {
       try {
         const response = await Axios({
           method: "get",
@@ -78,32 +64,24 @@ export function AddCartPage() {
         const data = {
           attachments: response.data.attachments,
           name: response.data.name,
-          price: response.data.variants[0].variant_option[0].variant_option_values.price,
+          price:
+            response.data.variants[0].variant_option[0].variant_option_values
+              .price,
           quantity: response.data.minimum_order,
-          stock: response.data.variants[0].variant_option[0].variant_option_values.stock
-        }
-        setQuantity(data.quantity)
+          stock:
+            response.data.variants[0].variant_option[0].variant_option_values
+              .stock,
+        };
+        setQuantity(data.quantity);
         setDataOrder(data);
-        console.log("fetch varian",data);
+        console.log("ini data order", data);
         
       } catch (error) {
         console.log(error);
       }
     }
-    fetchVarian()
-  },[])
-
-  const navigate = useNavigate();
-
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setDataOrder({
-      ...dataOrder,
-      [name]: value,
-    });
-  }
+    fetchVarian();
+  }, []);
 
   async function addCart() {
     try {
@@ -112,29 +90,25 @@ export function AddCartPage() {
         attachments: dataOrder.attachments,
         name: dataOrder.name,
         price: dataOrder.price,
-       quantity: quantity
-      }
-      console.log(data);
+        quantity: quantity,
+      };
+
       const response = await Axios({
         method: "post",
         url: `http://localhost:3000/cart-items/${params.product_id}`,
-        data: dataOrder,
+        data,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      // setDataOrder(response.data)
-      console.log(response.data);
-      
-      // navigate({ to: "/buyer/checkout", search: { dataOrder } });
+      console.log("ini data post",response.data);
+      setDataCart(data)
     } catch (error) {
       console.log(error);
     }
   }
-
-  
 
   return (
     <>
@@ -170,44 +144,57 @@ export function AddCartPage() {
               <div className="flex items-center gap-10 mt-5 text-xl pb-4 border-b-2 border-b-black">
                 <p>Jumlah</p>
                 <div className="flex items-center gap-10 text-xl">
-                  {quantity <= dataOrder.quantity ? <button className="border border-black w-10 h-11 rounded-md hidden" disabled >
-                    -
-                  </button>  : <button className="border border-black w-10 h-11 rounded-md" onClick={() => {
-                    setQuantity(Number(quantity) - 1);
-                  }} >
-                    -
-                  </button> }
-                  
+                  {quantity <= dataOrder.quantity ? (
+                    <button
+                      className="border border-black w-10 h-11 rounded-md hidden"
+                      disabled
+                    >
+                      -
+                    </button>
+                  ) : (
+                    <button
+                      className="border border-black w-10 h-11 rounded-md"
+                      onClick={() => {
+                        setQuantity(Number(quantity) - 1);
+                      }}
+                    >
+                      -
+                    </button>
+                  )}
+
                   <p>{String(quantity)}</p>
-                  {quantity >= dataOrder.stock ? <button className="border border-black w-10 h-11 rounded-md hidden" disabled >
-                    +
-                  </button>  : <button className="border border-black w-10 h-11 rounded-md" onClick={() => {
-                    setQuantity(Number(quantity) + 1);
-                  }} >
-                    +
-                  </button> }
+                  {quantity >= dataOrder.stock ? (
+                    <button
+                      className="border border-black w-10 h-11 rounded-md hidden"
+                      disabled
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      className="border border-black w-10 h-11 rounded-md"
+                      onClick={() => {
+                        setQuantity(Number(quantity) + 1);
+                      }}
+                    >
+                      +
+                    </button>
+                  )}
                 </div>
               </div>
 
               <div className="flex justify-between mt-5">
-                <Button >
-                  {/* <Link to="/buyer/checkout" search={{ id: 2 }}>
+                <Button>
+                  <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
                     Beli Langsung
-                  </Link> */}
-                  Beli Langsung
+                  </Link>
                 </Button>
-                <Button
-                  className="gap-2"
-                  onClick={() => addCart()}
-                >
+                <Button className="gap-2" onClick={() => addCart()}>
                   Keranjang <FaArrowRightFromBracket />
                 </Button>
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          <TableCart/>
         </div>
       </div>
     </>

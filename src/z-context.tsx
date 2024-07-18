@@ -7,7 +7,7 @@ type User = {
     phone: string,
     role_id: number,
     isVerified: boolean,
-    store_id : string
+    store_id : string,
 }
 
 type userType = {

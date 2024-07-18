@@ -2,59 +2,22 @@ import { FC } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
 import { Button } from '@/components/button';
 import { MdOutlineDelete } from 'react-icons/md';
-
-interface IVariantOptionValues {
-    id: string;
-    variant_option_id: string;
-    sku: string;
-    weight: number;
-    stock: number;
-    price: number;
-    is_active: boolean;
-    img?: string;
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IVariantOptions {
-    id: string;
-    name: string;
-    variant_id: string;
-    variant_option_values: IVariantOptionValues;
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IVariants {
-    id: string;
-    name: string;
-    is_active: boolean;
-    product_id: string;
-    variant_option: IVariantOptions[];
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IProduct {
-    id: string;
-    name: string;
-    description?: string;
-    attachments: string[];
-    is_active: boolean;
-    variants: IVariants[];
-    size: string;
-    minimum_order: string;
-    store_id?: string;
-    categories_id?: string;
-    created_at: Date;
-    updated_at: Date;
-}
+import axios from 'axios';
 
 interface IUpdatePriceProps {
     product: IProduct;
 }
 
 const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
+    // delete product
+    const deleteProduct = async (id: string) => {
+        try {
+            const res = await axios.delete(`http://localhost:3000/product/${id}`)
+            return res.data
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    }
 
     return (
         <Dialog>
@@ -86,6 +49,9 @@ const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
                         <DialogClose>
                             <Button
                                 className="px-4 py-2 text-white bg-blue-500 rounded-full"
+                                onClick={() => {
+                                    deleteProduct(product.id)
+                                }}
                             >
                                 Ya, Hapus
                             </Button>

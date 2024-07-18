@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import 'tailwindcss/tailwind.css';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 const ChangeView = ({ center }: { center: [number, number] }) => {
     const map = useMap();
@@ -10,12 +10,12 @@ const ChangeView = ({ center }: { center: [number, number] }) => {
     return null;
 };
 
-const MapComponent = () => {
-    const [markerPosition, setMarkerPosition] = useState<[number, number]>([
-        0, 0,
-    ]);
+interface MapComponentProps {
+    markerPosition: [number, number];
+    setMarkerPosition: (position: [number, number]) => void;
+}
 
-    console.log(markerPosition);
+const MapComponent: React.FC<MapComponentProps> = ({ markerPosition, setMarkerPosition }) => {
 
     const handleMarkerDragEnd = (event: L.LeafletEvent) => {
         const marker = event.target;

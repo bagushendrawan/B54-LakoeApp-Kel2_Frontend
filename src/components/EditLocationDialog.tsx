@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { LocationContext } from '@/context/LocationContext';
 import { Location } from '@/datas/type';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './dialog';
-import { Button } from './button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './dialog';
+import { Button, buttonVariants } from './button';
 import { Label } from './label';
 import { Input } from './input';
+import MapComponent from './location';
 
 interface UpdateLocationProps {
   location: Location;
@@ -36,82 +37,80 @@ export const UpdateLocation: React.FC<UpdateLocationProps> = ({ location, onUpda
   };
 
   return (
-    <div className="mt-5 mr-40">
+    <div className="mt-5">
       <Dialog>
-        <DialogTrigger>
-          <Button variant="outline">Edit Location</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Edit Lokasi</DialogTitle>
-            <DialogDescription>Edit Lokasi Toko.</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="namaLokasi" className="text-right">
-                Nama Lokasi
-              </Label>
-              <Input
-                id="namaLokasi"
-                name="namaLokasi"
-                value={namaLokasi}
-                onChange={(e) => setNamaLokasi(e.target.value)}
-                className="col-span-3"
-              />
+        <div className="flex justify-between bg-slate-50 mr-2 mb-5">
+          <DialogTrigger>
+            <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} >Edit Location</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Edit Lokasi</DialogTitle>
+              <DialogDescription>Edit Lokasi Toko.</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="namaLokasi" className="text-right">
+                  Nama Lokasi
+                </Label>
+                <Input
+                  id="namaLokasi"
+                  name="namaLokasi"
+                  value={namaLokasi}
+                  onChange={(e) => setNamaLokasi(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="alamat" className="text-right">
+                  Alamat
+                </Label>
+                <Input
+                  id="alamat"
+                  name="alamat"
+                  value={alamat}
+                  onChange={(e) => setAlamat(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="kota" className="text-right">
+                  Kota/Kecamatan
+                </Label>
+                <Input
+                  id="kota"
+                  name="kota"
+                  value={kota}
+                  onChange={(e) => setKota(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="kodePos" className="text-right">
+                  Kode Pos
+                </Label>
+                <Input
+                  id="kodePos"
+                  name="kodePos"
+                  value={kodePos}
+                  onChange={(e) => setKodePos(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="flex-col justify-between items-center">
+                <Label htmlFor="pinpoint" className="text-left">
+                  Pinpoint Lokasi
+                </Label>
+                <MapComponent markerPosition={pinPoint} setMarkerPosition={setPinPoint} />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="alamat" className="text-right">
-                Alamat
-              </Label>
-              <Input
-                id="alamat"
-                name="alamat"
-                value={alamat}
-                onChange={(e) => setAlamat(e.target.value)}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="kota" className="text-right">
-                Kota/Kecamatan
-              </Label>
-              <Input
-                id="kota"
-                name="kota"
-                value={kota}
-                onChange={(e) => setKota(e.target.value)}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="kodePos" className="text-right">
-                Kode Pos
-              </Label>
-              <Input
-                id="kodePos"
-                name="kodePos"
-                value={kodePos}
-                onChange={(e) => setKodePos(e.target.value)}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="pinpoint" className="text-right">
-                Pinpoint Lokasi
-              </Label>
-              <Input
-                id="pinpoint"
-                name="pinpoint"
-                value={pinPoint}
-                onChange={(e) => setPinPoint(e.target.value)}
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button onClick={handleUpdate}>Save changes</Button>
-          </DialogFooter>
-        </DialogContent>
+            <DialogFooter>
+              <DialogClose>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleUpdate}>Save changes</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </div>
       </Dialog>
     </div>
   );

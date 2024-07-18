@@ -7,13 +7,14 @@
 //   completed: boolean;
 // };
 
+
 export type Location = {
   id: number;
   namaLokasi: string;
   alamat: string;
   kota: string;
   kodePos: string;
-  pinPoint: string;
+  pinPoint: [number,number];
   completed?: boolean;
 };
 

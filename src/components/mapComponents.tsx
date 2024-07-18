@@ -14,7 +14,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Label } from "./label";
-import { Button } from "./button";
+import { Button, buttonVariants } from "./button";
 import { Input } from "./input";
 
 // Fix Leaflet's default icon paths
@@ -76,7 +76,7 @@ export const LokasiTokoHeaders: React.FC = () => {
         <div className="mt-5 mr-10">
           <Dialog>
             <DialogTrigger>
-              <Button variant="outline">Tambah Lokasi</Button>
+              <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Tambah Lokasi</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
@@ -137,7 +137,7 @@ export const LokasiTokoHeaders: React.FC = () => {
                 <MapComponent setLocation={setLocation} />
               </div>
               <DialogFooter>
-                <Button type="submit" onClick={handleSave} disabled={!location}>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} type="submit" onClick={handleSave} disabled={!location}>
                   Save changes
                 </Button>
               </DialogFooter>

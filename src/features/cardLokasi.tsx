@@ -41,21 +41,25 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
 
   return (
     <>
-      <AddLocation onSave={handleAddLocation} />
-      {locations?.map((location) => (
-        <LocationCard
-          key={location.id}
-          location={location}
-          onDelete={handleDeleteLocation}
-          onEdit={(location) => setEditingLocation(location)}
-        />
-      ))}
-      {editingLocation && (
-        <UpdateLocation
-          location={editingLocation}
-          onUpdate={handleEditLocation}
-        />
-      )}
+      <div className="w-full">
+        <AddLocation onSave={handleAddLocation} />
+        {locations?.map((location) => (
+          <div className="bg-slate-50">
+            <LocationCard
+              key={location.id}
+              location={location}
+              onDelete={handleDeleteLocation}
+              onEdit={(location) => setEditingLocation(location)}
+            />
+          </div>
+        ))}
+        {editingLocation && (
+          <UpdateLocation
+            location={editingLocation}
+            onUpdate={handleEditLocation}
+          />
+        )}
+      </div >
     </>
   );
 };

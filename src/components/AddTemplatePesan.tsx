@@ -8,7 +8,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/dialog";
-import { Button } from "@/components/button";
+import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -43,6 +43,9 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
       namaPembeli,
       namaProduk,
       namaToko,
+      map: function (arg0: (temp: { id: number; }) => { id: number; } | { judulPesan: string; daftarIsiPesan: string[]; namaPembeli: string; namaProduk: string; namaToko: string; id: number; }): unknown {
+        throw new Error("Function not implemented.");
+      }
     }
     console.log(newTemplate);
 
@@ -55,15 +58,18 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
   }
 
   return (
-    <div className="mt-5 mr-10">
-      <Dialog>
-        <div className="w-screen inline-flex justify-between">
-          <div className="mt-3 mb-5 w-screen flex flex-col">
+    <Dialog>
+      <div className="bg-slate-50">
+        <div className="flex justify-between">
+          <div className="mt-3 mb-5 w-full flex flex-col">
             <Label className="font-bold text-xl">Daftar Template Pesan</Label>
+            <Label className="text-xl" hidden>
+              Alamat toko ini akan digunakan sebagai alamat pengirimanmu
+            </Label>
           </div>
-          <div className="mr-20 mt-3">
+          <div className="mt-3">
             <DialogTrigger>
-              <Button variant="outline">Buat Tamplate</Button>
+              <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Buat Tamplate</Button>
             </DialogTrigger>
           </div>
           <DialogContent className="sm:max-w-[425px]">
@@ -87,13 +93,13 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
 
               <div className="flex justify-between items-center">
                 <div className="flex">
-                  <Button variant="outline">Nama Customer</Button>
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button>
                 </div>
                 <div className="flex">
-                  <Button variant="outline">Nama Produk</Button>
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button>
                 </div>
                 <div className="flex">
-                  <Button variant="outline">Nama Toko</Button>
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button>
                 </div>
               </div>
 
@@ -112,13 +118,13 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button onClick={handleSave}>Save changes</Button>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleSave}>Save changes</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
         </div>
-      </Dialog>
-    </div>
+      </div >
+    </Dialog>
   )
 };
 

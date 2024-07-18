@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/dialog";
-import { Button } from "@/components/button";
+import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { TemplatePesan } from "@/datas/type";
@@ -51,7 +51,7 @@ export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
       <Dialog >
         <div className="mr-40 mt-3">
           <DialogTrigger>
-            <Button variant="outline">Edit Tamplate</Button>
+            <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Edit Tamplate</Button>
           </DialogTrigger>
         </div>
         <DialogContent className="sm:max-w-[425px]">
@@ -75,13 +75,13 @@ export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
 
             <div className="flex justify-between items-center">
               <div className="flex">
-                <Button variant="outline">Nama Customer</Button>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button>
               </div>
               <div className="flex">
-                <Button variant="outline">Nama Produk</Button>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button>
               </div>
               <div className="flex">
-                <Button variant="outline">Nama Toko</Button>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button>
               </div>
             </div>
 
@@ -100,7 +100,7 @@ export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button onClick={handleUpdate}>Save changes</Button>
+              <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleUpdate}>Save changes</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

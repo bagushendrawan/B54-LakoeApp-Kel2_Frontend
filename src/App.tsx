@@ -28,7 +28,7 @@ function App() {
   }, [])
   return (
     <>
-      <div className='w-full bg-slate-800 h-screen overflow-y-auto'>
+      <div className='w-screen bg-slate-200 h-screen overflow-auto'>
         {/* <img src="/bg.jpg" className="w-full h-full z-0 absolute object-cover bg-cover"></img> */}
         <Outlet />
       </div>

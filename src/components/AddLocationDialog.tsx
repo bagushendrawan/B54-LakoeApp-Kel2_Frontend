@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { LocationContext } from "@/context/LocationContext";
 import { Location } from "@/datas/type";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
-import { Button } from "./button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
+import { Button, buttonVariants } from "./button";
 import { Label } from "./label";
 import { Input } from "./input";
-
+import MapComponent from "./location";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./select";
 interface DialogProps {
   onSave: (location: Location) => void;
 }
@@ -17,7 +18,10 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
   const [alamat, setAlamat] = useState("");
   const [kota, setKota] = useState("");
   const [kodePos, setKodePos] = useState("");
-  const [pinPoint, setPinPoint] = useState("");
+  const [pinPoint, setPinPoint] = useState<[number, number]>([
+    -6.381870411756581,
+    106.74959499999997
+  ]);
 
   if (!context) {
     return null;
@@ -31,8 +35,9 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
       alamat,
       kota,
       kodePos,
-      pinPoint,
+      pinPoint: pinPoint,
     };
+
     console.log(newLocation);
 
     setLocations([...locations, newLocation]);
@@ -40,24 +45,26 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
     setAlamat("");
     setKota("");
     setKodePos("");
-    setPinPoint("");
+    setPinPoint([-6.381870411756581, 106.74959499999997]);
     onSave(newLocation);
   };
 
   return (
-    <div className="mt-5 mr-10">
+    <>
       <Dialog>
-        <div className="w-screen inline-flex justify-between">
-          <div className="mt-3 mb-5 w-screen flex flex-col">
-            <Label className="font-bold text-xl">Lokasi Toko</Label>
-            <Label className="text-xl">
-              Alamat toko ini akan digunakan sebagai alamat pengirimanmu
-            </Label>
-          </div>
-          <div className="mr-40 mt-3">
-            <DialogTrigger>
-              <Button variant="outline">Tambah Lokasi</Button>
-            </DialogTrigger>
+        <div className=" bg-slate-50">
+          <div className="flex">
+            <div className="mt-3 mb-5 w-full flex flex-col">
+              <Label className="font-bold text-xl">Lokasi Toko</Label>
+              <Label className="text-xl">
+                Alamat toko ini akan digunakan sebagai alamat pengirimanmu
+              </Label>
+            </div>
+            <div className="mt-3">
+              <DialogTrigger>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Tambah Lokasi1</Button>
+              </DialogTrigger>
+            </div>
           </div>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -90,48 +97,78 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
                 />
               </div>
               <div className="flex justify-between items-center">
-                <Label htmlFor="kota" className="text-left">
-                  Kota/Kecamatan
-                </Label>
-                <Input
+                <div>
+                  <Label htmlFor="kota" className="text-left">
+                    Kota/Kecamatan
+                  </Label>
+                </div>
+                <div className="flex w-64">
+                  <Select>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select Your Kota/Kecamatan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Kota/Kecamatan</SelectLabel>
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {/* <Input
                   id="kota"
                   name="kota"
                   value={kota}
                   onChange={(e) => setKota(e.target.value)}
                   className="flex w-64"
-                />
-              </div>
+                /> */}
               <div className="flex justify-between items-center">
-                <Label htmlFor="kodePos" className="text-left">
-                  Kode Pos
-                </Label>
-                <Input
+                <div>
+                  <Label htmlFor="kodePos" className="text-left">
+                    Kode Pos
+                  </Label>
+                </div>
+                <div className="flex w-64">
+                  <Select>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select Your Kode Pos" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Kode Pos</SelectLabel>
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {/* <Input
                   id="kodePos"
                   name="kodePos"
                   value={kodePos}
                   onChange={(e) => setKodePos(e.target.value)}
                   className="flex w-64"
-                />
+                /> */}
               </div>
               <div className="flex-col justify-between items-center">
                 <Label htmlFor="pinpoint" className="text-left">
                   Pinpoint Lokasi
                 </Label>
-                <Input
-                  id="pinpoint"
-                  name="pinpoint"
-                  value={pinPoint}
-                  onChange={(e) => setPinPoint(e.target.value)}
-                  className="flex w-full"
-                />
+                <MapComponent markerPosition={pinPoint} setMarkerPosition={setPinPoint} />
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={handleSave}>Save changes</Button>
+              <DialogClose>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleSave}>Save changes</Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </div>
       </Dialog>
-    </div>
+    </>
   );
 };

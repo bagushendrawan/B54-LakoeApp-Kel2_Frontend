@@ -4,7 +4,7 @@ import { Informasi } from '@/datas/type';
 import { Label } from './label';
 import { Input } from './input';
 import { Textarea } from './textarea';
-import { Button } from './button';
+import { Button, buttonVariants } from './button';
 import { HeaderLogoToko } from '@/features/headerPengaturan';
 
 export const AddInformasi: React.FC = () => {
@@ -36,9 +36,9 @@ export const AddInformasi: React.FC = () => {
 
     return (
 
-        <div className="w-screen">
+        <div className="w-full">
             <div className="flex gap-9">
-                <div className="mt-3 w-screen">
+                <div className="mt-3">
                     <Label className="py-10">Selogan</Label>
                     <Input
                         placeholder="Buat Selogan Untuk Toko"
@@ -53,7 +53,7 @@ export const AddInformasi: React.FC = () => {
                         onChange={(e) => setNamaToko(e.target.value)}
                     ></Input>
                 </div>
-                <div className="flex-col mr-10 mt-3 w-screen">
+                <div className="flex-col mr-10 mt-3 ">
                     <Label className="py-10">Deskripsi</Label>
                     <Textarea
                         className="mt-3 mb-5"
@@ -63,7 +63,7 @@ export const AddInformasi: React.FC = () => {
                 </div>
             </div>
             <div className="flex justify-end mr-10 border-b pb-5">
-                <Button onClick={handleAdd} type="submit">Simpan</Button>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleAdd} type="submit">Simpan</Button>
             </div>
             <HeaderLogoToko />
             <div className="border-b">

@@ -1,6 +1,6 @@
 
 // ======================================================================================================
-import { Button } from "@/components/button";
+import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { Textarea } from "@/components/textarea";
@@ -66,10 +66,10 @@ export const FormInformasiToko: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="w-screen">
+    <form onSubmit={handleSubmit} className="bg-slate-50">
+      <div>
         <div className="flex gap-9">
-          <div className="mt-3 w-screen">
+          <div className="mt-3">
             <div className="flex-col">
               <Label className="py-10">Selogan</Label>
               <Input
@@ -86,7 +86,7 @@ export const FormInformasiToko: React.FC = () => {
               ></Input>
             </div>
           </div>
-          <div className="flex-col mr-10 mt-3 w-screen">
+          <div className="flex-col mr-10 mt-3 w-full">
             <div>
               <Label className="py-10">Deskripsi</Label>
               <Textarea
@@ -98,10 +98,10 @@ export const FormInformasiToko: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-end mr-10 border-b pb-5">
-          <Button type="submit">Simpan</Button>
+          <Button type="submit" className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Simpan</Button>
         </div>
         <HeaderLogoToko />
-        <div className="border-b">
+        <div >
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Input
               id="picture"
@@ -111,7 +111,7 @@ export const FormInformasiToko: React.FC = () => {
             />
           </div>
         </div>
-      </div>
-    </form>
+      </div >
+    </form >
   );
 };

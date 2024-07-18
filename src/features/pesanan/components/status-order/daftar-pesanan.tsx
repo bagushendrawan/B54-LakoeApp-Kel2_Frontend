@@ -17,6 +17,11 @@ import Axios from "axios"
 export function DaftarPesanan() {
   const token = localStorage.getItem("token")
   const [invoiceData, setInvoiceData] = useState([]);
+  const [invoiceBelumData, setInvoiceBelumData] = useState([]);
+  const [invoiceBaruData, setInvoiceBaruData] = useState([]);
+  const [invoiceSiapData, setInvoiceSiapData] = useState([]);
+  const [invoiceDalamData, setInvoiceDalamData] = useState([]);
+  const [invoiceBatalData, setInvoiceBatalData] = useState([]);
   //9 == all
   const [status, setStatus] = useState(9);
   useEffect(() => {
@@ -24,7 +29,7 @@ export function DaftarPesanan() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/pesanan/80b735c5-f3e7-4917-93a2-3cefa1d128ed/${status}`,
+          url: `http://localhost:3000/form-produk/pesanan/80b735c5-f3e7-4917-93a2-3cefa1d128ed/9`,
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
@@ -32,12 +37,17 @@ export function DaftarPesanan() {
         });
         console.log("res",response.data)
         setInvoiceData(response.data)
+
+        setInvoiceBelumData(response.data.filter((value : any) => {return value.status === "BELUM_DIBAYAR"}))
+        setInvoiceBaruData(response.data.filter((value : any) => {return value.status === "PESANAN_BARU"}))
       } catch (error) {
         console.log(error)
       }
     }
     auth();
-  }, [status])
+  }, [])
+
+  console.log(invoiceBelumData)
 
   return (
     <>
@@ -51,32 +61,32 @@ export function DaftarPesanan() {
                 <TabsList className="bg-white">
                   <TabsTrigger value="9">
                     <div className="bg-blue-800 text-white w-6 h-6 rounded-full text-center leading-6 mr-1">
-                      1
+                      {invoiceData.length}
                     </div>
                     <p>Semua</p>
                   </TabsTrigger>
                   <TabsTrigger value="0">
-                    <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                      1
-                    </div>
+                    {invoiceBelumData && <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                      {invoiceBelumData.length}
+                    </div>}
                     <p>Belum Dibayar</p>
                   </TabsTrigger>
                   <TabsTrigger value="1">
-                    <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                      1
-                    </div>
+                    {invoiceBaruData &&  <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                      {invoiceBaruData.length}
+                    </div>}
                     <p>Pesanan Baru</p>
                   </TabsTrigger>
                   <TabsTrigger value="2">
-                    <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                    {/* <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
                       1
-                    </div>
+                    </div> */}
                     <p>Siap Dikirim</p>
                   </TabsTrigger>
                   <TabsTrigger value="3">
-                    <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                    {/* <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
                       1
-                    </div>
+                    </div> */}
                     <p>Dalam Pengiriman</p>
                   </TabsTrigger>
                   <TabsTrigger value="4">
@@ -101,8 +111,13 @@ export function DaftarPesanan() {
             </div>
 
             <TabsContent value="9">
-              {invoiceData && invoiceData.map((value) =>(
+              {invoiceBelumData && invoiceBelumData.map((value) =>(
                 <BelumDibayar invoice={value}/>
+              )
+              )}
+
+              {invoiceBaruData && invoiceBaruData.map((value) =>(
+                <PesananBaru invoice={value}/>
               )
               )}
 
@@ -113,13 +128,13 @@ export function DaftarPesanan() {
               <Dibatalkan /> */}
             </TabsContent>
             <TabsContent value="0">
-            {invoiceData && invoiceData.map((value) =>(
+            {invoiceBelumData && invoiceBelumData.map((value) =>(
                 <BelumDibayar invoice={value}/>
               )
               )}
             </TabsContent>
             <TabsContent value="1">
-            {invoiceData && invoiceData.map((value) =>(
+            {invoiceBaruData && invoiceBaruData.map((value) =>(
                 <PesananBaru invoice={value}/>
               )
               )}

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
+import { Link, redirect } from "@tanstack/react-router";
 
 export function Semua(props : any) {
   return (
@@ -65,12 +65,12 @@ export function BelumDibayar(props : any) {
               <p>{props.invoice.id}</p>
             </div>
             <div className="p-2">
-              <button
+            {/* `https://api.whatsapp.com/send/?phone=${props.invoice.user.phone}` */}
+              <Link to={"https://api.whatsapp.com/send/?phone=6285156703211"}
                 className="border rounded-full py-1 px-3"
-                // onClick={`https://api.whatsapp.com/send/?phone=${props.invoice.user.phone}`}
               >
                 Hubungi Pembeli
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@ export function PesananBaru(props : any) {
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.invoices.prices}</p>
+              <p className="font-bold">Rp {props.invoice.prices}</p>
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ export function SiapDikirim(props : any) {
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.prices}</p>
+              <p className="font-bold">Rp {props.invoice.prices}</p>
             </div>
           </div>
         </div>
@@ -244,7 +244,7 @@ export function DalamPengiriman(props : any) {
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.prices}</p>
+              <p className="font-bold">Rp {props.invoice.prices}</p>
             </div>
           </div>
         </div>

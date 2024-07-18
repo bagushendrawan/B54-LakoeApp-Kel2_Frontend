@@ -16,7 +16,7 @@ export function DaftarPesanan() {
   return (
     <>
       <div>
-        <h1 className="font-bold text-xl p-3">Daftar Pesanan</h1>
+        <h1 className="font-bold text-xl p-4 ps-8 pt-8">Daftar Pesanan</h1>
 
         <div className="border-b-2 pr-3 pl-3 pb-3">
           <Tabs>

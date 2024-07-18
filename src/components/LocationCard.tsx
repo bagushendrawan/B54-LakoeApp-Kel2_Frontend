@@ -69,13 +69,13 @@ export const LocationCard: React.FC<LocationCardProps> = ({
                   <DialogClose>
                     <Button variant="outline" >No</Button>
                   </DialogClose>
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={() => onDelete(location.id)}>
+                  <Button className={buttonVariants({ variant: 'custom', className: "rounded-xl" })} onClick={() => onDelete(location.id)}>
                     Yes, Delete
                   </Button>
                 </DialogFooter>
               </DialogContent>
               <DialogTrigger asChild>
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Delete</Button>
+                <Button className={buttonVariants({ variant: 'custom', className: "rounded-xl" })}>Delete</Button>
               </DialogTrigger>
             </Dialog>
           </div>

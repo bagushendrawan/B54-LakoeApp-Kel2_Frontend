@@ -204,7 +204,7 @@ const Product = () => {
 
 
     return (
-        <div className="min-h-screen p-4 bg-white rounded">
+        <div className="min-h-screen px-6 py-4 bg-white rounded">
             {/* header */}
             <div className="flex justify-between items-center mb-4">
                 <p className="text-2xl font-bold">Daftar Produk</p>

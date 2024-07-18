@@ -20,7 +20,7 @@ function Index() {
   return (
     <div className="w-full h-auto flex bg-slate-800">
       <SideBar />
-      <div className="w-full h-screen p-2 overflow-y-auto">
+      <div className="w-full h-screen pe-4 overflow-y-auto overflow-hidden">
         <DashboardPage />
       </div>
     </div>

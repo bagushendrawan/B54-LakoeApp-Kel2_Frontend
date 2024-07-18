@@ -52,7 +52,7 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
   return (
     <>
       <Dialog>
-        <div className=" bg-slate-50">
+        <div className=" bg-white">
           <div className="flex">
             <div className="mt-3 mb-5 w-full flex flex-col">
               <Label className="font-bold text-xl">Lokasi Toko</Label>
@@ -62,7 +62,7 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
             </div>
             <div className="mt-3">
               <DialogTrigger>
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Tambah Lokasi1</Button>
+                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Tambah Lokasi1</Button>
               </DialogTrigger>
             </div>
           </div>
@@ -163,7 +163,7 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
             </div>
             <DialogFooter>
               <DialogClose>
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleSave}>Save changes</Button>
+                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })} onClick={handleSave}>Save changes</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>

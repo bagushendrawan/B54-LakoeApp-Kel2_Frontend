@@ -11,7 +11,7 @@ import { Label } from "@/components/label";
 export function MainSetting() {
   return (
     <>
-      <div className="m-10 px-10 py-10 bg-slate-50 h-screen">
+      <div className="m-6 p-10 rounded-sm bg-white h-screen">
         <div className="mb-5">
           <Label className="font-bold text-2xl">Suka Suka Store</Label>
         </div>

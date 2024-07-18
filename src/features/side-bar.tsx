@@ -22,7 +22,7 @@ export function SideBar() {
   
   return (
     <>
-      <div className="bg-rose-600 w-52 h-screen">
+      <div className="bg-rose-600 w-64 h-screen">
         <ul>
           <div className="text-xl text-white pl-5 h-screen flex flex-col justify-between">
           <div>

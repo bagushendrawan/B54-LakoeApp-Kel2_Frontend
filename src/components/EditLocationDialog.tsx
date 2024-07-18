@@ -41,7 +41,7 @@ export const UpdateLocation: React.FC<UpdateLocationProps> = ({ location, onUpda
       <Dialog>
         <div className="flex justify-between bg-slate-50 mr-2 mb-5">
           <DialogTrigger>
-            <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} >Edit Location</Button>
+            <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })} >Edit Location</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -106,7 +106,7 @@ export const UpdateLocation: React.FC<UpdateLocationProps> = ({ location, onUpda
             </div>
             <DialogFooter>
               <DialogClose>
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleUpdate}>Save changes</Button>
+                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })} onClick={handleUpdate}>Save changes</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>

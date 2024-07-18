@@ -59,7 +59,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
 
   return (
     <Dialog>
-      <div className="bg-slate-50">
+      <div className="bg-white">
         <div className="flex justify-between">
           <div className="mt-3 mb-5 w-full flex flex-col">
             <Label className="font-bold text-xl">Daftar Template Pesan</Label>
@@ -69,7 +69,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
           </div>
           <div className="mt-3">
             <DialogTrigger>
-              <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Buat Tamplate</Button>
+              <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Buat Tamplate</Button>
             </DialogTrigger>
           </div>
           <DialogContent className="sm:max-w-[425px]">
@@ -93,13 +93,13 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
 
               <div className="flex justify-between items-center">
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button>
+                  <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Nama Customer</Button>
                 </div>
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button>
+                  <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Nama Produk</Button>
                 </div>
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button>
+                  <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Nama Toko</Button>
                 </div>
               </div>
 
@@ -118,7 +118,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleSave}>Save changes</Button>
+                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })} onClick={handleSave}>Save changes</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>

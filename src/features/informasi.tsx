@@ -66,7 +66,7 @@ export const FormInformasiToko: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-slate-50">
+    <form onSubmit={handleSubmit} className="bg-white">
       <div>
         <div className="flex gap-9">
           <div className="mt-3">
@@ -98,7 +98,7 @@ export const FormInformasiToko: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-end mr-10 border-b pb-5">
-          <Button type="submit" className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Simpan</Button>
+          <Button type="submit" className={buttonVariants({ variant: 'custom', className: "rounded-xl" })}>Simpan</Button>
         </div>
         <HeaderLogoToko />
         <div >

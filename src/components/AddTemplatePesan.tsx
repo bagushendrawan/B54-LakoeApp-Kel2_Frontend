@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -8,149 +8,225 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/dialog";
-import { Button } from "@/components/button";
+import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { Textarea } from "./textarea";
+import { TemplateContext } from "@/context/TemplateContext";
+import { TemplatePesan } from "@/datas/type";
 
 interface DialogProps {
-  onSave: (data: TemplatePesan) => void;
-}
-
-interface TemplatePesan {
-  id: number;
-  judulPesan: string;
-  daftarIsiPesan: string[];
-  namaPembeli: string;
-  namaToko: string;
-  namaProduk: string;
+  onSave: (templates: TemplatePesan) => void;
 }
 
 export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
-  const [formData, setFormData] = useState<TemplatePesan>({
-    id: 0,
-    judulPesan: "",
-    daftarIsiPesan: [""],
-    namaPembeli: "",
-    namaToko: "",
-    namaProduk: "",
-  });
+  const context = useContext(TemplateContext);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const [judulPesan, setJudulPesan] = useState("")
+  const [daftarIsiPesan, setDaftarIsiPesan] = useState([""])
+  const [namaPembeli, setNamaPembeli] = useState("")
+  const [namaProduk, setNamaProduk] = useState("")
+  const [namaToko, setNamaToko] = useState("")
+
+  if (!context) {
+    return null
+  }
+
+  const { templates, setTemplates } = context;
 
   const handleSave = () => {
-    onSave({ ...formData, id: Date.now() });
-    setFormData({
-      id: 0,
-      judulPesan: "",
-      daftarIsiPesan: [""],
-      namaPembeli: "",
-      namaToko: "",
-      namaProduk: "",
-    });
-  };
+    const newTemplate: TemplatePesan = {
+      id: Date.now(),
+      judulPesan,
+      daftarIsiPesan,
+      namaPembeli,
+      namaProduk,
+      namaToko,
+      map: function (arg0: (temp: { id: number; }) => { id: number; } | { judulPesan: string; daftarIsiPesan: string[]; namaPembeli: string; namaProduk: string; namaToko: string; id: number; }): unknown {
+        throw new Error("Function not implemented.");
+      }
+    }
+    console.log(newTemplate);
+
+    setTemplates([...templates, newTemplate])
+    setJudulPesan("")
+    setDaftarIsiPesan([""])
+    setNamaPembeli("")
+    setNamaProduk("")
+    setNamaToko("")
+  }
 
   return (
-    <div className="mt-5 mr-10">
-      <Dialog>
-        <div className="w-screen inline-flex justify-between">
-          <div className="mt-3 mb-5 w-screen flex flex-col">
-            <Label className="font-bold text-xl">Lokasi Toko</Label>
-            <Label className="text-xl">
+    <Dialog>
+      <div className="bg-slate-50">
+        <div className="flex justify-between">
+          <div className="mt-3 mb-5 w-full flex flex-col">
+            <Label className="font-bold text-xl">Daftar Template Pesan</Label>
+            <Label className="text-xl" hidden>
               Alamat toko ini akan digunakan sebagai alamat pengirimanmu
             </Label>
           </div>
-          <div className="mr-40 mt-3">
-            <DialogTrigger asChild>
-              <Button variant="outline">Tambah Lokasi</Button>
+          <div className="mt-3">
+            <DialogTrigger>
+              <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Buat Tamplate</Button>
             </DialogTrigger>
           </div>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Tambahkan Lokasi Baru</DialogTitle>
-              <DialogDescription>Tambahkan Lokasi Baru Toko.</DialogDescription>
+              <DialogTitle>Buat Template Baru</DialogTitle>
+              <DialogDescription>Buat Tamplate Pesan.</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="judulPesan" className="text-right">
-                  Nama Lokasi
+              <div className="flex-col justify-between items-center">
+                <Label htmlFor="judulPesan" className="">
+                  Judul Pesan<span className="text-red-600">*</span>
                 </Label>
                 <Input
                   id="judulPesan"
                   name="judulPesan"
-                  value={formData.judulPesan}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={judulPesan}
+                  onChange={(e) => setJudulPesan(e.target.value)}
+                  className="flex w-full mt-4"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="daftarIsiPesan" className="text-right">
-                  Alamat
+
+              <div className="flex justify-between items-center">
+                <div className="flex">
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button>
+                </div>
+                <div className="flex">
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button>
+                </div>
+                <div className="flex">
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button>
+                </div>
+              </div>
+
+              <div className="flex-col justify-between items-center">
+                <Label htmlFor="daftarIsiPesan" className="">
+                  Detail isi pesan<span className="text-red-600">*</span>
                 </Label>
-                <Input
+                <Textarea
                   id="daftarIsiPesan"
                   name="daftarIsiPesan"
-                  value={formData.daftarIsiPesan.join(", ")}
-                  onChange={(e) =>
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      daftarIsiPesan: e.target.value.split(", "),
-                    }))
-                  }
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="namaPembeli" className="text-right">
-                  Kota/Kecamatan
-                </Label>
-                <Input
-                  id="namaPembeli"
-                  name="namaPembeli"
-                  value={formData.namaPembeli}
-                  onChange={handleChange}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="namaToko" className="text-right">
-                  Kode Pos
-                </Label>
-                <Input
-                  id="namaToko"
-                  name="namaToko"
-                  value={formData.namaToko}
-                  onChange={handleChange}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="namaProduk" className="text-right">
-                  Pinpoint Lokasi
-                </Label>
-                <Input
-                  id="namaProduk"
-                  name="namaProduk"
-                  value={formData.namaProduk}
-                  onChange={handleChange}
-                  className="col-span-3"
+                  value={daftarIsiPesan.join(", ")}
+                  onChange={(e) => setDaftarIsiPesan([e.target.value])}
+                  className="flex w-full mt-4"
                 />
               </div>
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button onClick={handleSave}>Save changes</Button>
+                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleSave}>Save changes</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
         </div>
-      </Dialog>
-    </div>
-  );
+      </div >
+    </Dialog>
+  )
 };
+
+
+// =====================================================================================
+// const [formData, setFormData] = useState<TemplatePesan>({
+//   id: 0,
+//   judulPesan: "",
+//   daftarIsiPesan: [""],
+//   namaPembeli: "",
+//   namaToko: "",
+//   namaProduk: "",
+// });
+
+// const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//   const { name, value } = e.target;
+//   setFormData((prevData) => ({
+//     ...prevData,
+//     [name]: value,
+//   }));
+// };
+
+// const handleSave = () => {
+//   onSave({ ...formData, id: Date.now() });
+//   setFormData({
+//     id: 0,
+//     judulPesan: "",
+//     daftarIsiPesan: [""],
+//     namaPembeli: "",
+//     namaToko: "",
+//     namaProduk: "",
+//   });
+// };
+
+// return (
+// < div className = "mt-5 mr-10" >
+//   <Dialog>
+//     <div className="w-screen inline-flex justify-between">
+//       <div className="mt-3 mb-5 w-screen flex flex-col">
+//         <Label className="font-bold text-xl">Daftar Template Pesan</Label>
+//       </div>
+//       <div className="mr-40 mt-3">
+//         <DialogTrigger asChild>
+//           <Button variant="outline">Buat Tamplate</Button>
+//         </DialogTrigger>
+//       </div>
+//       <DialogContent className="sm:max-w-[425px]">
+//         <DialogHeader>
+//           <DialogTitle>Buat Template Baru</DialogTitle>
+//           <DialogDescription>Buat Tamplate Pesan.</DialogDescription>
+//         </DialogHeader>
+//         <div className="grid gap-4 py-4">
+//           <div className="flex-col justify-between items-center">
+//             <Label htmlFor="judulPesan" className="">
+//               Judul Pesan<span className="text-red-600">*</span>
+//             </Label>
+//             <Input
+//               id="judulPesan"
+//               name="judulPesan"
+//               value={formData.judulPesan}
+//               onChange={handleChange}
+//               className="flex w-full mt-4"
+//             />
+//           </div>
+
+//           <div className="flex justify-between items-center">
+//             <div className="flex">
+//               <Button variant="outline">Nama Customer</Button>
+//             </div>
+//             <div className="flex">
+//               <Button variant="outline">Nama Produk</Button>
+//             </div>
+//             <div className="flex">
+//               <Button variant="outline">Nama Toko</Button>
+//             </div>
+//           </div>
+
+//           <div className="flex-col justify-between items-center">
+//             <Label htmlFor="daftarIsiPesan" className="">
+//               Detail isi pesan<span className="text-red-600">*</span>
+//             </Label>
+//             <Textarea
+//               id="daftarIsiPesan"
+//               name="daftarIsiPesan"
+//               value={formData.daftarIsiPesan.join(", ")}
+//               onChange={(e) =>
+//                 setFormData((prevData) => ({
+//                   ...prevData,
+//                   daftarIsiPesan: e.target.value.split(", "),
+//                 }))
+//               }
+//               className="flex w-full mt-4"
+//             />
+//           </div>
+//         </div>
+//         <DialogFooter>
+//           <DialogClose asChild>
+//             <Button onClick={handleSave}>Save changes</Button>
+//           </DialogClose>
+//         </DialogFooter>
+//       </DialogContent>
+//     </div>
+//   </Dialog>
+// </ >
+// );

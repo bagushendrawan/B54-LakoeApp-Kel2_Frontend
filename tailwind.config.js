@@ -21,6 +21,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        customBlue: {
+          DEFAULT: '#007BBC', // warna tombol
+          hover: '#005F8C',  // warna hover tombol
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,6 +77,7 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: '9999px',
       },
       keyframes: {
         "accordion-down": {

@@ -80,7 +80,10 @@ export function DashboardPage() {
                     {/* <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button> */}
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button className="bg-green-500 w-full mx-auto mb-2"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button>
+                            <Button className="bg-green-500 w-full mx-auto">
+                                <BsPlus className="text-xl me-2" />
+                                Tambahkan Akun Bank
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>

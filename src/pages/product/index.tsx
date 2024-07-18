@@ -72,8 +72,6 @@ const Product = () => {
 
     const action = [
         "Terakhir Diubah",
-        "Terlaris",
-        "Kurang Diminati",
         "Harga Tertinggi",
         "Harga Terendah",
         "Stok Terbanyak",
@@ -131,16 +129,6 @@ const Product = () => {
                 return products;
         }
     };
-
-    const filteredProducts = products?.filter((product) => {
-        const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesIsActive = isActive === null || product.is_active === isActive;
-        // const matchesCategory = selectedCategory === "Semua Kategori" || product.toLowerCase() === selectedCategory.toLowerCase();
-        // return matchesSearchTerm && matchesIsActive && matchesCategory;
-        return matchesSearchTerm && matchesIsActive;
-    }) || [];
-
-    const sortedAndFilteredProducts = sortProducts(filteredProducts);
 
     const handleUpdatePrice = (id: string, newPrice: string) => {
         // setProducts(products.map(product =>
@@ -212,6 +200,9 @@ const Product = () => {
         fetchProducts();
     }, [searchTerm, isActive, selectedCategory, selectedAction]);
 
+    console.log(products);
+
+
     return (
         <div className="min-h-screen p-4 bg-white rounded">
             {/* header */}
@@ -249,7 +240,7 @@ const Product = () => {
 
             {/* header and action */}
             <div className="flex items-center mb-2">
-                <p className="flex flex-1 text-xl font-bold">{sortedAndFilteredProducts.length} Produk</p>
+                <p className="flex flex-1 text-xl font-bold">{products?.length} Produk</p>
 
                 <div className="flex items-center gap-2">
                     {selectedProduct.length !== 0 && (
@@ -259,19 +250,26 @@ const Product = () => {
                         </>
                     )}
 
-                    <div className={sortedAndFilteredProducts.length === 0 ? 'hidden' : 'block'}>
-                        {sortedAndFilteredProducts.length > 0 && (
-                            <div className="flex items-center gap-2">
-                                <p>Pilih Semua</p>
-                                <input
-                                    type="checkbox"
-                                    className="w-4 h-4"
-                                    checked={selectAll}
-                                    onChange={handleSelectAll}
-                                />
-                            </div>
-                        )}
-                    </div>
+                    {products ? (
+                        <div className={products?.length === 0 ? 'hidden' : 'block'}>
+                            {products?.length > 0 && (
+                                <div className="flex items-center gap-2">
+                                    <p>Pilih Semua</p>
+                                    <input
+                                        type="checkbox"
+                                        className="w-4 h-4"
+                                        checked={selectAll}
+                                        onChange={handleSelectAll}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )
+                    :
+                    (
+                        <div></div>
+                    )
+                    }
                 </div>
             </div>
 

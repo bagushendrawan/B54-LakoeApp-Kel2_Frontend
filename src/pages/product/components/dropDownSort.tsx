@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/select";
 
 interface IDropDownProps {
-    options: string[];
+    options: ICategories[] | IActions[] | undefined;
     selectedOption: string;
     onSelect: (selectedOption: string) => void;
 }
 
-const Dropdown: FC<IDropDownProps> = ({ options, selectedOption, onSelect }) => {
+const DropdownSort: FC<IDropDownProps> = ({ options, selectedOption, onSelect }) => {
     const handleOptionClick = (option: string) => {
         onSelect(option);
     };
@@ -25,14 +25,22 @@ const Dropdown: FC<IDropDownProps> = ({ options, selectedOption, onSelect }) => 
                 <SelectValue placeholder={selectedOption} />
             </SelectTrigger>
             <SelectContent>
-                {options.map((option) => (
-                    <SelectItem key={option} value={option}>
-                        {option}
+                {options ? (
+                    options.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                            {option.name}
+                        </SelectItem>
+                    ))
+                )
+                :
+                (
+                    <SelectItem value="empty" disabled>
+                        Belum ada kategori
                     </SelectItem>
-                ))}
+                )}
             </SelectContent>
         </Select>
     );
 };
 
-export default Dropdown;
+export default DropdownSort;

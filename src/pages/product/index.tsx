@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, useEffect, useState } from "react";
 import IconInput from "./components/iconInput";
-import Dropdown from "./components/dropDownSort";
 import ProductItem from "./components/productItem";
 import { Button } from "@/components/ui/button";
 import { CiCirclePlus } from "react-icons/ci";
@@ -10,89 +9,73 @@ import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 import { Link } from "@tanstack/react-router";
 import axios from "axios";
-
-interface IVariantOptionValues {
-    id: string;
-    variant_option_id: string;
-    sku: string;
-    weight: number;
-    stock: number;
-    price: number;
-    is_active: boolean;
-    img?: string;
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IVariantOptions {
-    id: string;
-    name: string;
-    variant_id: string;
-    variant_option_values: IVariantOptionValues;
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IVariants {
-    id: string;
-    name: string;
-    is_active: boolean;
-    product_id: string;
-    variant_option: IVariantOptions[];
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IProduct {
-    id: string;
-    name: string;
-    description?: string;
-    attachments: string[];
-    is_active: boolean;
-    variants: IVariants[];
-    size: string;
-    minimum_order: string;
-    store_id?: string;
-    categories_id?: string;
-    created_at: Date;
-    updated_at: Date;
-}
+import DropdownSort from "./components/dropDownSort";
 
 const Product = () => {
-    const categories = [
-        "Semua Kategori",
-        "Audio, Kamera & Elektronik",
-        "Buku",
-        "Dapur",
-        "Fashion Anak & Bayi",
-        "Fashion Muslim",
-        "Fashion Pria",
-        "Fashion Wanita"
+    // categories & action
+    const [categories, setCategories] = useState<ICategories[]>();
+    const actions = [
+        {
+            id: '1',
+            name: "Terakhir Diubah"
+        },
+        {
+            id: '2',
+            name: "Harga Tertinggi"
+        },
+        {
+            id: '3',
+            name: "Harga Terendah"
+        },
+        {
+            id: '4',
+            name: "Stok Paling Banyak"
+        },
+        {
+            id: '5',
+            name: "Stok Paling Sedikit"
+        }
     ];
 
-    const action = [
-        "Terakhir Diubah",
-        "Harga Tertinggi",
-        "Harga Terendah",
-        "Stok Terbanyak",
-        "Stok Tersedikit"
-    ];
-
+    // data product
     const [products, setProducts] = useState<IProduct[]>();
 
-    const [isActive, setIsActive] = useState<boolean | null>(null);
+    console.log(products);
+
+
+    // state sort status
+    const [isActive, setIsActive] = useState<number>(1);
+
+    // state sort by search, category, action
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
     const [selectedAction, setSelectedAction] = useState("Terakhir Diubah");
 
-    const handleSortIsActive = (status: boolean | null) => {
+    // state select product
+    const [selectedProduct, setSelectedProduct] = useState<[string, boolean][]>([]);
+    const [selectAll, setSelectAll] = useState(false);
+
+    // function sort status
+    const handleSortIsActive = (status: number) => {
         setIsActive(status);
     };
 
+    // function search
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
+    // function sort category
+    const handleSortCategory = (category: string) => {
+        setSelectedCategory(category);
+    };
+
+    // function sort action
+    const handleSortAction = (action: string) => {
+        setSelectedAction(action);
+    };
+
+    // function update status product
     const handleToggle = (id: string) => {
         // setProducts((prevProducts) =>
         //     prevProducts.map((product) =>
@@ -101,49 +84,42 @@ const Product = () => {
         // );
     };
 
-    const handleSortCategory = (category: string) => {
-        setSelectedCategory(category);
-    };
+    // const sortProducts = (products: any[]) => {
+    //     switch (selectedAction) {
+    //         case "Terakhir Diubah":
+    //             return products; // Implement sorting logic here if you have the last modified date
+    //         case "Terlaris":
+    //             return products; // Implement sorting logic here if you have sales data
+    //         case "Kurang Diminati":
+    //             return products; // Implement sorting logic here if you have sales data
+    //         case "Harga Tertinggi":
+    //             return [...products].sort((a, b) => b.price - a.price);
+    //         case "Harga Terendah":
+    //             return [...products].sort((a, b) => a.price - b.price);
+    //         case "Stok Terbanyak":
+    //             return [...products].sort((a, b) => b.stock - a.stock);
+    //         case "Stok Tersedikit":
+    //             return [...products].sort((a, b) => a.stock - b.stock);
+    //         default:
+    //             return products;
+    //     }
+    // };
 
-    const handleSortAction = (action: string) => {
-        setSelectedAction(action);
-    };
-
-    const sortProducts = (products: any[]) => {
-        switch (selectedAction) {
-            case "Terakhir Diubah":
-                return products; // Implement sorting logic here if you have the last modified date
-            case "Terlaris":
-                return products; // Implement sorting logic here if you have sales data
-            case "Kurang Diminati":
-                return products; // Implement sorting logic here if you have sales data
-            case "Harga Tertinggi":
-                return [...products].sort((a, b) => b.price - a.price);
-            case "Harga Terendah":
-                return [...products].sort((a, b) => a.price - b.price);
-            case "Stok Terbanyak":
-                return [...products].sort((a, b) => b.stock - a.stock);
-            case "Stok Tersedikit":
-                return [...products].sort((a, b) => a.stock - b.stock);
-            default:
-                return products;
-        }
-    };
-
+    // function update price
     const handleUpdatePrice = (id: string, newPrice: string) => {
         // setProducts(products.map(product =>
         //     product.id === id ? { ...product, price: newPrice } : product
         // ));
     };
 
+    // function update stock
     const handleUpdateStock = (id: string, newStock: string) => {
         // setProducts(products.map(product =>
         //     product.id === id ? { ...product, stock: newStock } : product
         // ));
     };
 
-    const [selectedProduct, setSelectedProduct] = useState<[string, boolean][]>([]);
-
+    // function select product
     const handleSelectedProduct = (id: string, isChecked: boolean) => {
         setSelectedProduct(prevSelected => {
             const existingProductIndex = prevSelected.findIndex(product => product[0] === id);
@@ -165,8 +141,7 @@ const Product = () => {
         });
     };
 
-    const [selectAll, setSelectAll] = useState(false);
-
+    // function select product all
     const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;
 
@@ -179,10 +154,14 @@ const Product = () => {
         }
     };
 
+    // fetch product
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/product/all/3247e115-6d9f-4d5a-948b-e80e306506a4', {
+                const token = localStorage.getItem('token');
+                console.log(token);
+
+                const res = await axios.get('http://localhost:3000/product/all/b0398a24-ab3c-4287-9fcc-c3fb1f707c20', {
                     params: {
                         searchTerm,
                         isActive,
@@ -200,8 +179,20 @@ const Product = () => {
         fetchProducts();
     }, [searchTerm, isActive, selectedCategory, selectedAction]);
 
-    console.log(products);
+    // fetch categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/categories');
 
+                setCategories(res.data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     return (
         <div className="min-h-screen p-4 bg-white rounded">
@@ -221,9 +212,9 @@ const Product = () => {
 
             {/* sort status */}
             <div className="flex space-x-4 mb-4 border-b">
-                <button onClick={() => handleSortIsActive(null)} className={`pb-2 ${isActive === null ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Semua</button>
-                <button onClick={() => handleSortIsActive(true)} className={`pb-2 ${isActive === true ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Aktif</button>
-                <button onClick={() => handleSortIsActive(false)} className={`pb-2 ${isActive === false ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Nonaktif</button>
+                <button onClick={() => handleSortIsActive(1)} className={`pb-2 ${isActive === 1 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Semua</button>
+                <button onClick={() => handleSortIsActive(2)} className={`pb-2 ${isActive === 2 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Aktif</button>
+                <button onClick={() => handleSortIsActive(3)} className={`pb-2 ${isActive === 3 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Nonaktif</button>
             </div>
 
             {/* sort comp */}
@@ -232,10 +223,10 @@ const Product = () => {
                 <IconInput value={searchTerm} onChange={handleSearchChange} />
 
                 {/* category sort */}
-                <Dropdown options={categories} selectedOption={selectedCategory} onSelect={handleSortCategory} />
+                <DropdownSort options={categories} selectedOption={selectedCategory} onSelect={handleSortCategory} />
 
                 {/* action sort */}
-                <Dropdown options={action} selectedOption={selectedAction} onSelect={handleSortAction} />
+                <DropdownSort options={actions} selectedOption={selectedAction} onSelect={handleSortAction} />
             </div>
 
             {/* header and action */}
@@ -265,10 +256,10 @@ const Product = () => {
                             )}
                         </div>
                     )
-                    :
-                    (
-                        <div></div>
-                    )
+                        :
+                        (
+                            <div></div>
+                        )
                     }
                 </div>
             </div>
@@ -279,8 +270,8 @@ const Product = () => {
                 <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
                     <LuPackageX size={'4rem'} color="#909090" />
                     <div>
-                        <p className="text-xl font-bold">{isActive === true ? 'Oops, saat ini belum ada produk yang aktif' : isActive === null ? 'Oops, saat ini belum ada produk' : 'Semua produk telah aktif'}</p>
-                        <p className="text-[#909090]">{isActive === true ? 'Aktifkan produk kamu atau buat produk baru' : 'Kamu bisa buat produk baru dan menyimpannya'}</p>
+                        <p className="text-xl font-bold">{isActive === 2 ? 'Oops, saat ini belum ada produk yang aktif' : isActive === 1 ? 'Oops, saat ini belum ada produk' : 'Semua produk telah aktif'}</p>
+                        <p className="text-[#909090]">{isActive === 2 ? 'Aktifkan produk kamu atau buat produk baru' : 'Kamu bisa buat produk baru dan menyimpannya'}</p>
                     </div>
                 </div>
             ) : (
@@ -299,7 +290,7 @@ const Product = () => {
                             />
                         ))
                     ) : (
-                        <p>Loading...</p>
+                        <p>Belum ada produk</p>
                     )}
                 </div>
             )}

@@ -185,9 +185,9 @@ export function AddCartPage() {
 
               <div className="flex justify-between mt-5">
                 <Button>
-                  <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
+                  {/* <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
                     Beli Langsung
-                  </Link>
+                  </Link> */}
                 </Button>
                 <Button className="gap-2" onClick={() => addCart()}>
                   Keranjang <FaArrowRightFromBracket />

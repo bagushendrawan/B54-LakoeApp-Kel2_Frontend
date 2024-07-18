@@ -1,6 +1,5 @@
 import { Textarea } from "@/components/textarea";
 import { Button } from "@/components/ui/button";
-import { Route } from "@/routes/buyer/checkout";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -16,19 +15,6 @@ interface MidtransSnap extends Window {
   };
 }
 
-interface productItemsForm {
-  attachments: string[];
-  name: string;
-  price: number;
-  quantity: number;
-  stock: number;
-  amount: number;
-}
-
-interface paramsTypes {
-  product_id: number;
-}
-
 interface checkoutForm {
   name: string;
   phone: string;
@@ -40,49 +26,6 @@ interface checkoutForm {
 }
 
 export function CheckoutPage() {
-  const params: paramsTypes = Route.useSearch();
-  console.log("ini dari addcart", params);
-
-  const [dataProduct, setDataProduct] = useState<productItemsForm>({
-    attachments: [],
-    name: "",
-    price: 0,
-    quantity: 0,
-    stock: 0,
-    amount: 0,
-  });
-
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const response = await Axios({
-          method: "get",
-          url: `http://localhost:3000/form-produk/${params.product_id}`,
-          data: dataProduct,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        const data: productItemsForm = {
-          attachments: response.data.attachment,
-          name: response.data.name,
-          price: response.data.price,
-          quantity: response.data.quantity,
-          stock: response.data.stock,
-          amount: response.data.price * response.data.quantity,
-        };
-
-        setDataProduct(data);
-        // console.log(dataProduct);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchProduct();
-  }, []);
-
   const [dataOrder, setDataOrder] = useState<checkoutForm>({
     name: "",
     phone: "",

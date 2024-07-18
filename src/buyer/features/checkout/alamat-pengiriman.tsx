@@ -1,11 +1,3 @@
-import { Button } from "@/components/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/dialog";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import MapComponent from "@/components/location";
@@ -16,11 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
-import { IoIosPin } from "react-icons/io";
-import { IoWarning } from "react-icons/io5";
-import dataDaerah from "../../../assets/data-daerah/data-daerah.json";
-import { useEffect, useState } from "react";
 import { Textarea } from "@/components/textarea";
+import { useEffect, useState } from "react";
+import { IoIosPin } from "react-icons/io";
+import dataDaerah from "../../../assets/data-daerah/data-daerah.json";
 
 interface Villages {
   id: string;
@@ -204,44 +195,7 @@ export function AlamatPengiriman() {
               <p>Karang Semut, Trimulya, Jetis, Bantul, Yogyakarta Indonesia</p>
             </div>
 
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-white text-blue-500 border border-blue-900 hover:bg-blue-200 hover:text-black">
-                  Ubah Pin Point
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="text-sm">
-                <DialogHeader className="border-b-2 py-3">
-                  <DialogTitle>Tandai Pin Point</DialogTitle>
-                </DialogHeader>
-
-                <div className="p-3 border border-blue-900 bg-blue-100 rounded-md flex gap-3 items-center">
-                  <IoWarning />
-                  <p>Pastikan pin point lokasi sesuai dengan alamat!</p>
-                </div>
-
-                <div>
-                  <MapComponent />
-                </div>
-
-                <div className="flex gap-3 items-center text-blue-500">
-                  <IoIosPin className="text-2xl" />
-                  <p>
-                    Karang Semut, Trimulya, Jetis, Bantul, Daerah Istimewa
-                    Yogyakarta Indonesia
-                  </p>
-                </div>
-
-                <div className="flex gap-5 justify-center">
-                  <Button className="w-5/12 bg-white text-blue-500 border border-blue-900 hover:bg-blue-200 hover:text-black">
-                    Kembali
-                  </Button>
-                  <Button className="w-5/12 bg-blue-700 text-white border border-blue-900 hover:bg-blue-200 hover:text-black">
-                    Pilih Lokasi
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <MapComponent />
           </div>
         </div>
       </div>

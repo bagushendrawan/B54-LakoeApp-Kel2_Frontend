@@ -1,9 +1,5 @@
 import { create } from 'zustand'
 
-type cart = {
-  
-}
-
 type userType = {
     id: string,
     name: string,

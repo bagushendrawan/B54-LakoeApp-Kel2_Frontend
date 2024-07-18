@@ -1,5 +1,9 @@
 import { create } from 'zustand'
 
+type cart = {
+  
+}
+
 type userType = {
     id: string,
     name: string,
@@ -7,7 +11,7 @@ type userType = {
     phone: string,
     role_id: number,
     isVerified: boolean,
-    store_id : string
+    store_id : string,
 }
 
 type Store = {

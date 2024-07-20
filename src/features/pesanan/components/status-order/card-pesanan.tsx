@@ -1,49 +1,182 @@
 import { Button } from "@/components/ui/button";
-import { Link, redirect } from "@tanstack/react-router";
+import { Link,redirect } from "@tanstack/react-router";
+import { JSXElementConstructor, useEffect, useState } from "react";
+import Axios from "axios";
+import { formCourier } from "./hooks/order";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-export function Semua(props : any) {
+export const formattedNumber = (num : number) => new Intl.NumberFormat('id-ID', {
+  style: "currency", currency: "IDR"
+}).format(num);
+
+export function Semua(props: any) {
+  const [color, setColor] = useState("");
+  const [button, setButton] = useState(<div></div>);
+  const [status, setStatus] = useState();
+
+  async function fetchInvoice() {
+    try {
+      const response = await Axios({
+        method: "get",
+        url: `http://localhost:3000/form-produk/${props.invoice?.id}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("inv",response.data)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  const { data: invoiceFetchData, refetch: refetchPesanan,  } = useQuery({
+    queryKey: ["pesananStatus"],
+    queryFn: fetchInvoice,
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async () => {
+      return await Axios({
+        method: "post",
+        url: `http://localhost:3000/form-produk/order-couriers/${props.invoice?.id}`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    },
+  });
+
+  function switchColor(status: any) {
+    const stats = status.toString();
+    console.log(stats);
+    switch (stats) {
+      case "BELUM_DIBAYAR":
+        setColor("bg-orange-500");
+        setButton(
+          <Button className="border bg-lime-500 text-white font-semibold px-4 rounded-full p-4 mt-3">
+            <a href={"https://api.whatsapp.com/send/?phone=6285156703211"}>
+              Hubungi Pembeli
+            </a>
+          </Button>
+        );
+        break;
+      case "PESANAN_BARU":
+        setColor("bg-yellow-500");
+        {
+          setButton(
+                <button
+                  onClick={async() => {
+                    await mutateAsync();
+                    refetchPesanan();
+                  }}
+                  className="border bg-blue-500 text-white font-semibold px-4 rounded-full p-4 mt-3 me-2"
+                >
+                  Proses Pesanan
+                </button>
+              );
+        }
+        break;
+      case "SIAP_DIKIRIM":
+        setColor("bg-lime-500");
+        setButton(
+          <Button className="border bg-lime-500 text-white font-semibold px-4 rounded-full p-4 mt-3">
+            <a href={"https://api.whatsapp.com/send/?phone=6285156703211"}>
+              Hubungi Pembeli
+            </a>
+          </Button>
+        );
+        break;
+      case "DALAM_PENGIRIMAN":
+        setColor("bg-green-500");
+        setButton(
+          <Button className="border bg-lime-500 text-white font-semibold px-4 rounded-full p-4 mt-3">
+            <a href={"https://api.whatsapp.com/send/?phone=6285156703211"}>
+              Hubungi Pembeli
+            </a>
+          </Button>
+        );
+        break;
+      case "PESANAN_SELESAI":
+        setColor("bg-blue-500");
+        setButton(
+          <Button className="border bg-lime-500 text-white font-semibold px-4 rounded-full p-4 mt-3">
+            <a href={"https://api.whatsapp.com/send/?phone=6285156703211"}>
+              Hubungi Pembeli
+            </a>
+          </Button>
+        );
+        break;
+      case "DIBATALKAN":
+        setColor("bg-red-500");
+        setButton(
+          <Button className="border bg-lime-500 text-white font-semibold px-4 rounded-full p-4 mt-3">
+            <a href={"https://api.whatsapp.com/send/?phone=6285156703211"}>
+              Hubungi Pembeli
+            </a>
+          </Button>
+        );
+        break;
+    }
+  }
+
+  useEffect(() => {
+    const fetchAndSwitch = async () => {
+      const invoiceData = await fetchInvoice();
+      setStatus(invoiceData.status);
+      switchColor(invoiceData.status);
+    };
+  
+    fetchAndSwitch();
+  }, []);
+
+  useEffect(() => {
+    setStatus(invoiceFetchData?.status)
+    switchColor(invoiceFetchData?.status)
+  }, [invoiceFetchData])
   return (
     <>
       <div className="border rounded-lg mb-3">
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <div className="bg-yellow-500 rounded-sm text-white p-2 font-semibold">
-                Belum Dibayar
-              </div>
-              <p>{props.invoice.id}</p>
-            </div>
-            <div className="p-2">
-              <button
-                className="border rounded-full py-1 px-3"
-                // onClick={`https://api.whatsapp.com/send/?phone=${props.invoice.user.phone}`}
+              <div
+                className={`${color} w-44 rounded-sm text-white flex justify-center items-center p-2 font-semibold`}
               >
-                Hubungi Pembeli
-              </button>
+                <p>{status && status}</p>
+              </div>
+              <p>INV/{props.invoice.id}</p>
             </div>
+            <div className="pe-2">{button}</div>
           </div>
         </div>
         <div>
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                    {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">{props.invoice.prices}</p>
+              <p className="font-bold">
+                {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>
@@ -52,25 +185,26 @@ export function Semua(props : any) {
   );
 }
 
-export function BelumDibayar(props : any) {
+export function BelumDibayar(props: any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <div className="bg-yellow-500 rounded-sm text-white p-2 font-semibold">
-                Belum Dibayar
+              <div className="bg-orange-500 w-40 rounded-sm text-white flex justify-center items-center p-2 font-semibold">
+                <p>{props.invoice.status}</p>
               </div>
-              <p>{props.invoice.id}</p>
+              <p>INV/{props.invoice.id}</p>
             </div>
             <div className="p-2">
-            {/* `https://api.whatsapp.com/send/?phone=${props.invoice.user.phone}` */}
-              <Link to={"https://api.whatsapp.com/send/?phone=6285156703211"}
+              {/* `https://api.whatsapp.com/send/?phone=${props.invoice.user.phone}` */}
+              <a
+                href={"https://api.whatsapp.com/send/?phone=6285156703211"}
                 className="border rounded-full py-1 px-3"
               >
                 Hubungi Pembeli
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -78,23 +212,28 @@ export function BelumDibayar(props : any) {
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                    {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">{props.invoice.prices}</p>
+              <p className="font-bold">
+              {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>
@@ -103,7 +242,7 @@ export function BelumDibayar(props : any) {
   );
 }
 
-export function PesananBaru(props : any) {
+export function PesananBaru(props: any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
@@ -112,11 +251,11 @@ export function PesananBaru(props : any) {
             <div className="p-2">
               <Button
                 size={"sm"}
-                className="bg-green-500 rounded-sm text-white"
+                className="bg-yellow-500 w-40 rounded-sm text-white flex justify-center items-center p-2 font-semibold"
               >
-                Pesanan Baru
+                <p>{props.invoice.status}</p>
               </Button>
-              <p>{props.invoice.id}</p>
+              <p>INV/{props.invoice.id}</p>
             </div>
             <div className="p-2">
               <button className="border rounded-full py-1 px-3">
@@ -129,23 +268,28 @@ export function PesananBaru(props : any) {
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                  {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.invoice.prices}</p>
+              <p className="font-bold">
+              {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>
@@ -154,17 +298,20 @@ export function PesananBaru(props : any) {
   );
 }
 
-export function SiapDikirim(props : any) {
+export function SiapDikirim(props: any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-blue-500 rounded-sm text-white">
-                Siap Dikirim
+              <Button
+                size={"sm"}
+                className="bg-blue-500w-40 rounded-sm text-white flex justify-center items-center p-2 font-semibold"
+              >
+                {props.invoice.status}
               </Button>
-              <p>{props.invoice.id}</p>
+              <p>INV/{props.invoice.id}</p>
             </div>
             <div className="p-2">
               <button className="border rounded-full py-1 px-3">
@@ -177,23 +324,28 @@ export function SiapDikirim(props : any) {
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                  {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.invoice.prices}</p>
+              <p className="font-bold">
+              {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>
@@ -202,7 +354,7 @@ export function SiapDikirim(props : any) {
   );
 }
 
-export function DalamPengiriman(props : any) {
+export function DalamPengiriman(props: any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
@@ -211,11 +363,11 @@ export function DalamPengiriman(props : any) {
             <div className="p-2">
               <Button
                 size={"sm"}
-                className="bg-orange-500 rounded-sm text-white"
+                className="bg-orange-500 w-40 rounded-sm text-white flex justify-center items-center p-2 font-semibold"
               >
-                Dalam Pengiriman
+                {props.invoice.status}
               </Button>
-              <p>{props.invoice.id}</p>
+              <p>INV/{props.invoice.id}</p>
             </div>
             <div className="p-2">
               <button className="border rounded-full py-1 px-3">
@@ -228,23 +380,28 @@ export function DalamPengiriman(props : any) {
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                  {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.invoice.prices}</p>
+              <p className="font-bold">
+              {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>
@@ -253,17 +410,20 @@ export function DalamPengiriman(props : any) {
   );
 }
 
-export function PesananSelesai(props : any) {
+export function PesananSelesai(props: any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
         <div className="border-b">
           <div className="flex justify-between">
             <div className="p-2">
-              <Button size={"sm"} className="bg-gray-500 rounded-sm">
-                Pesanan Selesai
+              <Button
+                size={"sm"}
+                className="bg-gray-500 w-40 rounded-sm text-white flex justify-center items-center p-2 font-semibold"
+              >
+                {props.invoice.status}
               </Button>
-              <p>{props.invoice.id}</p>
+              <p>INV/{props.invoice.id}</p>
             </div>
             <div className="p-2">
               <button className="border rounded-full py-1 px-3">
@@ -276,23 +436,28 @@ export function PesananSelesai(props : any) {
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                  {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.invoice.prices}</p>
+              <p className="font-bold">
+              {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>
@@ -301,7 +466,7 @@ export function PesananSelesai(props : any) {
   );
 }
 
-export function Dibatalkan(props : any) {
+export function Dibatalkan(props: any) {
   return (
     <>
       <div className="border rounded-lg mb-3">
@@ -309,10 +474,10 @@ export function Dibatalkan(props : any) {
           <div className="flex justify-between">
             <div className="p-2">
               <Button size={"sm"} className="bg-red-500 rounded-sm text-white">
-                Dibatalkan
+                {props.invoice.status}
               </Button>
-              <p>{props.invoice.id}</p>
-            </div>{props.invoice.id}
+              <p>INV/{props.invoice.id}</p>
+            </div>
             <div className="p-2">
               <button className="border rounded-full py-1 px-3">
                 Hubungi Pembeli
@@ -324,23 +489,28 @@ export function Dibatalkan(props : any) {
           <div className="flex justify-between">
             <div className="flex p-2 gap-3">
               <img
-                src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+                src={props.invoice.cart.carts_items[0]?.img}
                 alt="cardImage"
                 className="w-20"
               />
               <div>
                 <p className="font-bold">
-                  <Link to="/seller/detail-order">
-                  {props.invoice.cart.carts_items[0].name}
+                  <Link
+                    to="/seller/detail-order"
+                    search={{ id: props.invoice.id, itemID: props.items.id }}
+                  >
+                    {props.items.name}
                   </Link>
                 </p>
-                <p className="font-light">{props.invoice.cart.carts_items[0].quantity} Barang</p>
+                <p className="font-light">{props.items.quantity} Barang</p>
               </div>
             </div>
 
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
-              <p className="font-bold">Rp {props.invoice.prices}</p>
+              <p className="font-bold">
+              {formattedNumber(props.items.quantity*props.items.price)}
+              </p>
             </div>
           </div>
         </div>

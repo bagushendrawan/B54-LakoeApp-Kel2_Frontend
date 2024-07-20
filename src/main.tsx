@@ -3,6 +3,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import "../app/globals.css"
 
+
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 import { Toaster } from './components/toaster'
@@ -25,6 +26,6 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <RouterProvider router={router} />
       <Toaster/>
-    </StrictMode>,
+    </StrictMode>
   )
 }

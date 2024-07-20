@@ -11,8 +11,10 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as Test1Import } from './routes/test1'
 import { Route as TestImport } from './routes/test'
 import { Route as IndexImport } from './routes/index'
+import { Route as Test1ChildImport } from './routes/test1.child'
 import { Route as SellerProdukImport } from './routes/seller/produk'
 import { Route as SellerPesananImport } from './routes/seller/pesanan'
 import { Route as SellerPengaturanImport } from './routes/seller/pengaturan'
@@ -31,6 +33,11 @@ import { Route as AuthChangePasswordTokenImport } from './routes/auth/change-pas
 
 // Create/Update Routes
 
+const Test1Route = Test1Import.update({
+  path: '/test1',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const TestRoute = TestImport.update({
   path: '/test',
   getParentRoute: () => rootRoute,
@@ -39,6 +46,11 @@ const TestRoute = TestImport.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const Test1ChildRoute = Test1ChildImport.update({
+  path: '/child',
+  getParentRoute: () => Test1Route,
 } as any)
 
 const SellerProdukRoute = SellerProdukImport.update({
@@ -132,6 +144,13 @@ declare module '@tanstack/react-router' {
       path: '/test'
       fullPath: '/test'
       preLoaderRoute: typeof TestImport
+      parentRoute: typeof rootRoute
+    }
+    '/test1': {
+      id: '/test1'
+      path: '/test1'
+      fullPath: '/test1'
+      preLoaderRoute: typeof Test1Import
       parentRoute: typeof rootRoute
     }
     '/admin/dashboard': {
@@ -232,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerProdukImport
       parentRoute: typeof rootRoute
     }
+    '/test1/child': {
+      id: '/test1/child'
+      path: '/child'
+      fullPath: '/test1/child'
+      preLoaderRoute: typeof Test1ChildImport
+      parentRoute: typeof Test1Import
+    }
     '/auth/change-password/$token': {
       id: '/auth/change-password/$token'
       path: '/auth/change-password/$token'
@@ -247,6 +273,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   TestRoute,
+  Test1Route: Test1Route.addChildren({ Test1ChildRoute }),
   AdminDashboardRoute,
   AuthLoginRoute,
   AuthRegisterRoute,
@@ -274,6 +301,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/test",
+        "/test1",
         "/admin/dashboard",
         "/auth/login",
         "/auth/register",
@@ -296,6 +324,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/test": {
       "filePath": "test.tsx"
+    },
+    "/test1": {
+      "filePath": "test1.tsx",
+      "children": [
+        "/test1/child"
+      ]
     },
     "/admin/dashboard": {
       "filePath": "admin/dashboard.tsx"
@@ -338,6 +372,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/seller/produk": {
       "filePath": "seller/produk.tsx"
+    },
+    "/test1/child": {
+      "filePath": "test1.child.tsx",
+      "parent": "/test1"
     },
     "/auth/change-password/$token": {
       "filePath": "auth/change-password.$token.tsx"

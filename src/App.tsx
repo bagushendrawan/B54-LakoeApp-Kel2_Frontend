@@ -3,6 +3,13 @@ import { Outlet } from "@tanstack/react-router";
 import useStore from "./z-context";
 import { useEffect } from "react";
 import Axios from "axios"
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 function App() {
   // const user = useStore((state) => state.user)
@@ -31,7 +38,9 @@ function App() {
     <>
       <div className='w-full bg-slate-800 h-screen overflow-y-auto'>
         {/* <img src="/bg.jpg" className="w-full h-full z-0 absolute object-cover bg-cover"></img> */}
+        <QueryClientProvider client={queryClient}>
         <Outlet />
+        </QueryClientProvider>
       </div>
       {/* <TanStackRouterDevtools /> */}
     </>

@@ -12,6 +12,7 @@ export const AddInformasi: React.FC = () => {
     const [namaToko, setNamaToko] = useState('');
     const [selogan, setSelogan] = useState('');
     const [deskripsi, setDeskripsi] = useState('');
+    const [image, setImage] = useState('');
 
     if (!context) {
         return null;
@@ -25,11 +26,13 @@ export const AddInformasi: React.FC = () => {
             namaToko,
             selogan,
             deskripsi,
+            image,
         };
         setInforms([...informs, newInformasi]);
         setNamaToko('');
         setSelogan('');
         setDeskripsi('');
+        setImage('');
     };
     console.log(informs);
 
@@ -67,14 +70,14 @@ export const AddInformasi: React.FC = () => {
             </div>
             <HeaderLogoToko />
             <div className="border-b">
-                {/* <div className="grid w-full max-w-sm items-center gap-1.5">
+                <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Input
                         id="picture"
                         type="file"
-                        // value={image}
-                        onChange={"handleFileChange"}
+                        value={image}
+                    // onChange={"handleFileChange"}
                     />
-                </div> */}
+                </div>
             </div>
         </div>
 

@@ -30,6 +30,7 @@ const registerSchema = z.object({
   role_id: z.any(),
 });
 
+
 export function RegisterForm() {
   const { toast } = useToast();
   const navigate = useNavigate({ from: "/auth/register" });

@@ -1,13 +1,20 @@
-
 // ======================================================================================================
+"use client";
 import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { Textarea } from "@/components/textarea";
 import { HeaderLogoToko } from "./headerPengaturan";
-
+import { z } from "zod"
 import React, { useState } from "react";
 import { Informasi } from "@/datas/type";
+
+const informasiSchema = z.object({
+  name: z.string({ message: "nama Tidak boleh kosong" }).max(50),
+  slogan: z.string({ massage: "slogan Tidak boleh kosong" }).min(2).max(50),
+  description: z.array({ massage: "description Tidak boleh kosong" }).max(50),
+})
+
 
 export const FormInformasiToko: React.FC = () => {
   // State untuk menyimpan nilai dari input, textarea, dan file

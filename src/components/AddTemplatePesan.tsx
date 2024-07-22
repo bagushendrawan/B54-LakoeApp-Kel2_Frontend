@@ -35,6 +35,10 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
 
   const { templates, setTemplates } = context;
 
+  const handleButtonClick = (text: string) => {
+    setDaftarIsiPesan([daftarIsiPesan + text]);
+  };
+
   const handleSave = () => {
     const newTemplate: TemplatePesan = {
       id: Date.now(),
@@ -87,19 +91,20 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
                   name="judulPesan"
                   value={judulPesan}
                   onChange={(e) => setJudulPesan(e.target.value)}
-                  className="flex w-full mt-4"
-                />
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md" />
               </div>
-
               <div className="flex justify-between items-center">
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button>
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={() => handleButtonClick('[Nama Customer]')} >Nama Customer</Button>
+                  {/* <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button> */}
                 </div>
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button>
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={() => handleButtonClick('[Nama Produk]')}>Nama Produk</Button>
+                  {/* <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button> */}
                 </div>
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button>
+                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={() => handleButtonClick('[Nama Toko]')} >Nama Toko</Button>
+                  {/* <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button> */}
                 </div>
               </div>
 
@@ -124,7 +129,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
           </DialogContent>
         </div>
       </div >
-    </Dialog>
+    </Dialog >
   )
 };
 

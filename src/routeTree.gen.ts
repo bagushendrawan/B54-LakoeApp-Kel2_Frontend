@@ -17,6 +17,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as Test1ChildImport } from './routes/test1.child'
 import { Route as SellerProdukImport } from './routes/seller/produk'
 import { Route as SellerPesananImport } from './routes/seller/pesanan'
+import { Route as SellerPengirimanImport } from './routes/seller/pengiriman'
 import { Route as SellerPengaturanImport } from './routes/seller/pengaturan'
 import { Route as SellerDetailOrderImport } from './routes/seller/detail-order'
 import { Route as SellerDashboardImport } from './routes/seller/dashboard'
@@ -60,6 +61,11 @@ const SellerProdukRoute = SellerProdukImport.update({
 
 const SellerPesananRoute = SellerPesananImport.update({
   path: '/seller/pesanan',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SellerPengirimanRoute = SellerPengirimanImport.update({
+  path: '/seller/pengiriman',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -237,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerPengaturanImport
       parentRoute: typeof rootRoute
     }
+    '/seller/pengiriman': {
+      id: '/seller/pengiriman'
+      path: '/seller/pengiriman'
+      fullPath: '/seller/pengiriman'
+      preLoaderRoute: typeof SellerPengirimanImport
+      parentRoute: typeof rootRoute
+    }
     '/seller/pesanan': {
       id: '/seller/pesanan'
       path: '/seller/pesanan'
@@ -286,6 +299,7 @@ export const routeTree = rootRoute.addChildren({
   SellerDashboardRoute,
   SellerDetailOrderRoute,
   SellerPengaturanRoute,
+  SellerPengirimanRoute,
   SellerPesananRoute,
   SellerProdukRoute,
   AuthChangePasswordTokenRoute,
@@ -314,6 +328,7 @@ export const routeTree = rootRoute.addChildren({
         "/seller/dashboard",
         "/seller/detail-order",
         "/seller/pengaturan",
+        "/seller/pengiriman",
         "/seller/pesanan",
         "/seller/produk",
         "/auth/change-password/$token"
@@ -366,6 +381,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/seller/pengaturan": {
       "filePath": "seller/pengaturan.tsx"
+    },
+    "/seller/pengiriman": {
+      "filePath": "seller/pengiriman.tsx"
     },
     "/seller/pesanan": {
       "filePath": "seller/pesanan.tsx"

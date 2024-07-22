@@ -4,6 +4,7 @@ import { z } from "zod";
 import Axios from "axios";
 import { ToastAction } from "../../components/toast"
 import { useToast } from "../../components/use-toast"
+import useStore from "@/z-context";
 
 
 export type formDTO = {
@@ -57,7 +58,7 @@ export type formDTO = {
     values_is_active: boolean
   }
 
-  const FormSchema = z.object({
+  export const addProdukSchema = z.object({
     produk_nama: z.string(),
     produk_url_checkout: z.string(),
     produk_kategori: z.string(),
@@ -67,14 +68,14 @@ export type formDTO = {
     produk_foto_2: z.any(),
     produk_foto_3: z.any(),
     produk_foto_4: z.any(),
-    produk_harga: z.any(),
-    produk_min_beli: z.any(),
-    produk_stok: z.any(),
-    produk_sku: z.any(),
-    produk_berat: z.any(),
-    produk_panjang: z.any(),
-    produk_lebar: z.any(),
-    produk_tinggi: z.any(),
+    produk_harga: z.number(),
+    produk_min_beli: z.number(),
+    produk_stok: z.number(),
+    produk_sku: z.string(),
+    produk_berat: z.number(),
+    produk_panjang: z.number(),
+    produk_lebar: z.number(),
+    produk_tinggi: z.number(),
     produk_ukuran_option: z.any(),
     produk_ukuran_option_weight: z.any(),
     produk_ukuran_option_img: z.any(),
@@ -89,27 +90,24 @@ export type formDTO = {
 
 export const useProdukForm = () => {
   const { toast } = useToast()
- 
+  const setProduct = useStore((state) => state.SET_PRODUCT);
+  const product = useStore((state) => state.produk);
   const {
     register,
     handleSubmit,
     unregister,
     setValue,
-    formState: { errors,  isSubmitting},
+    formState: { errors,  isSubmitting, isSubmitted},
     control,
     getValues
-  } = useForm<formDTO>({
-    mode: "onChange",
-    resolver: zodResolver(FormSchema),
-    defaultValues : {
-      produk_kategori : "Elektronik"
-    }
+  } = useForm<z.infer<typeof addProdukSchema>>({
+    mode: "all",
+    resolver: zodResolver(addProdukSchema),
   });
   
-  const onSubmitForm: SubmitHandler<formDTO> = async (data) => {
+  const onSubmitForm: SubmitHandler<z.infer<typeof addProdukSchema>> = async (data) => {
     try {
-      
-      let dataSubmit : formDTO = data;
+      let dataSubmit : z.infer<typeof addProdukSchema> = data;
       if(data.produk_ukuran_option) {
         dataSubmit = {
           ...dataSubmit,
@@ -153,14 +151,22 @@ export const useProdukForm = () => {
           "Authorization": `Bearer ${localStorage.getItem("token")}`
          },
         })
+        setProduct(response.data);
+        console.log("prod",product)
 
         console.log(response);
         toast({
+            variant : "success",
             title: "Add Product Success",
             description: JSON.stringify(response.data),
           })
     } catch (error) {
       console.log("test",error)
+      toast({
+        variant : "destructive",
+        title: "Add Product Falied",
+        description: JSON.stringify(error),
+      })
     }
   };
 
@@ -169,6 +175,7 @@ export const useProdukForm = () => {
     unregister,
     handleSubmit,
     onSubmitForm,
+    isSubmitted,
     errors,
     control, 
     setValue,

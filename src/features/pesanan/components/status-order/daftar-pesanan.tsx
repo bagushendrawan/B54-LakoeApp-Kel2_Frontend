@@ -13,84 +13,256 @@ import { DropdownUrutan } from "./dropdown-urutan";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
-import Axios from "axios"
+import Axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import useStore from "@/z-context";
+import { CollapsibleVariant } from "./collapsible-variant";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/select";
 
 export function DaftarPesanan() {
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const [invoiceData, setInvoiceData] = useState<any[]>([]);
   const [invoiceOriData, setInvoiceOriData] = useState<any[]>([]);
   const [invoiceBelumData, setInvoiceBelumData] = useState<any[]>([]);
   const [invoiceBaruData, setInvoiceBaruData] = useState<any[]>([]);
-  const [invoiceSiapDikirimData, setInvoiceSiapDikirimData] = useState<any[]>([]);
+  const [invoiceSiapDikirimData, setInvoiceSiapDikirimData] = useState<any[]>(
+    []
+  );
   const [invoiceDalamKirimData, setInvoiceDalamKirimData] = useState<any[]>([]);
   const [invoiceSelesaiData, setInvoiceSelesaiData] = useState<any[]>([]);
   const [invoiceBatalData, setInvoiceBatalData] = useState<any[]>([]);
-  const [searced, setSearched] = useState([]);
+  const [kurir, setKurir] = useState("");
   const [searchPesanan, setSearchPesanan] = useState("");
 
-  const user = useStore((state) => state.user)
+  const user = useStore((state) => state.user);
   //9 == all
   const [status, setStatus] = useState(9);
+  const [order, setOrder] = useState(1);
+  // useEffect(() => {
+  //   async function auth() {
+  //     try {
+  //       const response = await Axios({
+  //         method: "get",
+  //         url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9`,
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       setInvoiceData(response.data);
+  //       setInvoiceOriData(response.data);
+
+  //       setInvoiceBelumData(
+  //         response.data.filter((value: any) => {
+  //           return value.status === "BELUM_DIBAYAR";
+  //         })
+  //       );
+  //       setInvoiceBaruData(
+  //         response.data.filter((value: any) => {
+  //           return value.status === "PESANAN_BARU";
+  //         })
+  //       );
+  //       setInvoiceSiapDikirimData(
+  //         response.data.filter((value: any) => {
+  //           return value.status === "SIAP_DIKIRIM";
+  //         })
+  //       );
+  //       setInvoiceDalamKirimData(
+  //         response.data.filter((value: any) => {
+  //           return value.status === "DALAM_PENGIRIMAN";
+  //         })
+  //       );
+  //       setInvoiceSelesaiData(
+  //         response.data.filter((value: any) => {
+  //           return value.status === "PESANAN_SELESAI";
+  //         })
+  //       );
+  //       setInvoiceBatalData(
+  //         response.data.filter((value: any) => {
+  //           return value.status === "DIBATALKAN";
+  //         })
+  //       );
+
+  //       if (searchPesanan) {
+  //         setInvoiceData(
+  //           invoiceData
+  //             .filter((value: any) =>
+  //               value.cart.carts_items.some((item: any) =>
+  //                 item.name.toLowerCase().includes(searchPesanan.toLowerCase())
+  //               )
+  //             )
+  //             .map((value: any) => ({
+  //               ...value,
+  //               cart: {
+  //                 ...value.cart,
+  //                 carts_items: value.cart.carts_items.filter((item: any) =>
+  //                   item.name
+  //                     .toLowerCase()
+  //                     .includes(searchPesanan.toLowerCase())
+  //                 ),
+  //               },
+  //             }))
+  //         );
+  //         setInvoiceBelumData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.status === "BELUM_DIBAYAR";
+  //           })
+  //         );
+  //         setInvoiceBaruData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.status === "PESANAN_BARU";
+  //           })
+  //         );
+  //         setInvoiceSiapDikirimData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.status === "SIAP_DIKIRIM";
+  //           })
+  //         );
+  //         setInvoiceDalamKirimData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.status === "DALAM_PENGIRIMAN";
+  //           })
+  //         );
+  //         setInvoiceSelesaiData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.status === "PESANAN_SELESAI";
+  //           })
+  //         );
+  //         setInvoiceBaruData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.status === "DIBATALKAN";
+  //           })
+  //         );
+  //       }
+
+  //       if (kurir) {
+  //         console.log("kurir", invoiceData);
+  //         setInvoiceData(
+  //           invoiceData.filter(
+  //             (value: any) => value.courier.courier_code == kurir
+  //           )
+  //         );
+  //         setInvoiceBelumData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.courier?.courier_code === kurir;
+  //           })
+  //         );
+  //         setInvoiceBaruData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.courier?.courier_code === kurir;
+  //           })
+  //         );
+  //         setInvoiceSiapDikirimData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.courier?.courier_code === kurir;
+  //           })
+  //         );
+  //         setInvoiceDalamKirimData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.courier?.courier_code === kurir;
+  //           })
+  //         );
+  //         setInvoiceSelesaiData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.courier?.courier_code === kurir;
+  //           })
+  //         );
+  //         setInvoiceBaruData(
+  //           invoiceData.filter((value: any) => {
+  //             return value.courier?.courier_code === kurir;
+  //           })
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+
+  //   auth();
+  // }, [searchPesanan, kurir]);
   useEffect(() => {
     async function auth() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9`,
+          url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9/${order}`,
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setInvoiceData(response.data)
-        setInvoiceOriData(response.data)
-
-        setInvoiceBelumData(response.data.filter((value : any) => {return value.status === "BELUM_DIBAYAR"}))
-        setInvoiceBaruData(response.data.filter((value : any) => {return value.status === "PESANAN_BARU"}))
-        setInvoiceSiapDikirimData(response.data.filter((value : any) => {return value.status === "SIAP_DIKIRIM"}))
-        setInvoiceDalamKirimData(response.data.filter((value : any) => {return value.status === "DALAM_PENGIRIMAN"}))
-        setInvoiceSelesaiData(response.data.filter((value : any) => {return value.status === "PESANAN_SELESAI"}))
-        setInvoiceBatalData(response.data.filter((value : any) => {return value.status === "DIBATALKAN"}))
-        
-        if(searchPesanan)
-        {
-          const filteredInvoiceData = invoiceData
-          .filter((value: any) => 
-              value.cart.carts_items.some((item: any) => 
-                  item.name.toLowerCase().includes(searchPesanan.toLowerCase())
-              )
-          )
-          .map((value: any) => ({
-              ...value,
-              cart: {
-                  ...value.cart,
-                  carts_items: value.cart.carts_items.filter((item: any) =>
-                      item.name.toLowerCase().includes(searchPesanan.toLowerCase())
-                  )
-              }
-          }));
-          setInvoiceData(filteredInvoiceData)
-          setInvoiceBelumData(invoiceData.filter((value : any) => {return value.status === "BELUM_DIBAYAR"}))
-          setInvoiceBaruData(invoiceData.filter((value : any) => {return value.status === "PESANAN_BARU"}))
-          setInvoiceSiapDikirimData(invoiceData.filter((value : any) => {return value.status === "SIAP_DIKIRIM"}))
-          setInvoiceDalamKirimData(invoiceData.filter((value : any) => {return value.status === "DALAM_PENGIRIMAN"}))
-          setInvoiceSelesaiData(invoiceData.filter((value : any) => {return value.status === "PESANAN_SELESAI"}))
-          setInvoiceBaruData(invoiceData.filter((value : any) => {return value.status === "DIBATALKAN"}))
-          
-        }
+        const data = response.data;
+        console.log("data", data);
+        setInvoiceData(data);
+        setInvoiceOriData(data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
+
     auth();
-  }, [searchPesanan])
-  
+
+    if (!searchPesanan) auth();
+  }, [user.store_id, token, order, searchPesanan]);
+
+  useEffect(() => {
+    let filteredData = [...invoiceOriData];
+
+    if (searchPesanan) {
+      filteredData = filteredData
+        .filter((value) =>
+          value.cart.carts_items.some((item: any) =>
+            item.name.toLowerCase().includes(searchPesanan.toLowerCase())
+          )
+        )
+        .map((value) => ({
+          ...value,
+          cart: {
+            ...value.cart,
+            carts_items: value.cart.carts_items.filter((item: any) =>
+              item.name.toLowerCase().includes(searchPesanan.toLowerCase())
+            ),
+          },
+        }));
+    }
+
+    if (kurir) {
+      filteredData = filteredData.filter(
+        (value) => value.courier?.courier_code === kurir
+      );
+    }
+
+    setInvoiceData(filteredData);
+    setInvoiceBelumData(
+      filteredData.filter((value) => value.status === "BELUM_DIBAYAR")
+    );
+    setInvoiceBaruData(
+      filteredData.filter((value) => value.status === "PESANAN_BARU")
+    );
+    setInvoiceSiapDikirimData(
+      filteredData.filter((value) => value.status === "SIAP_DIKIRIM")
+    );
+    setInvoiceDalamKirimData(
+      filteredData.filter((value) => value.status === "DALAM_PENGIRIMAN")
+    );
+    setInvoiceSelesaiData(
+      filteredData.filter((value) => value.status === "PESANAN_SELESAI")
+    );
+    setInvoiceBatalData(
+      filteredData.filter((value) => value.status === "DIBATALKAN")
+    );
+  }, [invoiceOriData, searchPesanan, kurir]);
+
   return (
     <>
       <div>
-        <h1 className="font-bold text-xl p-4 ps-8 pt-8">Daftar Pesanan</h1>
+        <h1 className="font-bold text-2xl p-4 ps-8 pt-8">Daftar Pesanan</h1>
 
         <div className="border-b-2 pr-3 pl-3 pb-3">
           <Tabs defaultValue="9" onValueChange={(e) => setStatus(Number(e))}>
@@ -104,39 +276,75 @@ export function DaftarPesanan() {
                     <p>Semua</p>
                   </TabsTrigger>
                   <TabsTrigger value="0">
-                    {invoiceBelumData && <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                      {(invoiceOriData.filter((value : any) => {return value.status === "BELUM_DIBAYAR"})).length}
-                    </div>}
+                    {invoiceBelumData && (
+                      <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                        {
+                          invoiceOriData.filter((value: any) => {
+                            return value.status === "BELUM_DIBAYAR";
+                          }).length
+                        }
+                      </div>
+                    )}
                     <p>Belum Dibayar</p>
                   </TabsTrigger>
                   <TabsTrigger value="1">
-                    {invoiceBaruData &&  <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                      {(invoiceOriData.filter((value : any) => {return value.status === "PESANAN_BARU"})).length}
-                    </div>}
+                    {invoiceBaruData && (
+                      <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                        {
+                          invoiceOriData.filter((value: any) => {
+                            return value.status === "PESANAN_BARU";
+                          }).length
+                        }
+                      </div>
+                    )}
                     <p>Pesanan Baru</p>
                   </TabsTrigger>
                   <TabsTrigger value="2">
-                  {invoiceSiapDikirimData &&  <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                    {(invoiceOriData.filter((value : any) => {return value.status === "SIAP_DIKIRIM"})).length}
-                  </div>}
+                    {invoiceSiapDikirimData && (
+                      <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                        {
+                          invoiceOriData.filter((value: any) => {
+                            return value.status === "SIAP_DIKIRIM";
+                          }).length
+                        }
+                      </div>
+                    )}
                     <p>Siap Dikirim</p>
                   </TabsTrigger>
                   <TabsTrigger value="3">
-                  {invoiceDalamKirimData &&  <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                    {(invoiceOriData.filter((value : any) => {return value.status === "DALAM_PENGIRIMAN"})).length}
-                  </div>}
+                    {invoiceDalamKirimData && (
+                      <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                        {
+                          invoiceOriData.filter((value: any) => {
+                            return value.status === "DALAM_PENGIRIMAN";
+                          }).length
+                        }
+                      </div>
+                    )}
                     <p>Dalam Pengiriman</p>
                   </TabsTrigger>
                   <TabsTrigger value="4">
-                  {invoiceSelesaiData &&  <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                    {(invoiceOriData.filter((value : any) => {return value.status === "PESANAN_SELESAI"})).length}
-                  </div>}
+                    {invoiceSelesaiData && (
+                      <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                        {
+                          invoiceOriData.filter((value: any) => {
+                            return value.status === "PESANAN_SELESAI";
+                          }).length
+                        }
+                      </div>
+                    )}
                     <p>Pesanan Selesai</p>
                   </TabsTrigger>
                   <TabsTrigger value="5">
-                  {invoiceBatalData &&  <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
-                    {(invoiceOriData.filter((value : any) => {return value.status === "DIBATALKAN"})).length}
-                  </div>}
+                    {invoiceBatalData && (
+                      <div className="bg-blue-800 text-white w-6 h-6 rounded-full leading-6 mr-1">
+                        {
+                          invoiceOriData.filter((value: any) => {
+                            return value.status === "DIBATALKAN";
+                          }).length
+                        }
+                      </div>
+                    )}
                     <p>Dibatalkan</p>
                   </TabsTrigger>
                 </TabsList>
@@ -147,19 +355,50 @@ export function DaftarPesanan() {
             <div className="p-3">
               <form>
                 <div className="flex gap-3 justify-between">
-                  <Input type="text" placeholder="Cari Pesanan" onChange={(e) => setSearchPesanan(e.target.value)} />
-                  <DropdownKurir />
-                  <DropdownUrutan />
+                  <Input
+                    type="text"
+                    placeholder="Cari Pesanan"
+                    onChange={(e) => setSearchPesanan(e.target.value)}
+                  />
+                  <Select onValueChange={(e) => setKurir(e)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Kurir" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="grab">Grab</SelectItem>
+                      <SelectItem value="tiki">TIKI</SelectItem>
+                      <SelectItem value="gojek">Gojek</SelectItem>
+                      <SelectItem value="jne">JNE</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select onValueChange={(e) => setOrder(Number(e))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Urutkan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">Paling Lama</SelectItem>
+                      <SelectItem value="2">Paling Baru</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </form>
             </div>
 
             <TabsContent value="9">
-              
-              {invoiceData && invoiceData.map((value : any) => {
-                return value.cart.carts_items.map((carts_item : any) => (<Semua invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceData &&
+                invoiceData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
 
               {/* <PesananBaru />
               <SiapDikirim />
@@ -168,40 +407,100 @@ export function DaftarPesanan() {
               <Dibatalkan /> */}
             </TabsContent>
             <TabsContent value="0">
-            {invoiceBelumData && invoiceBelumData.map((value : any) => {
-                return value.cart.carts_items.map((carts_item : any) => (<BelumDibayar invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceBelumData &&
+                invoiceBelumData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
             </TabsContent>
             <TabsContent value="1">
-            {invoiceBaruData && invoiceBaruData.map((value : any) => {
-                 return value.cart.carts_items.map((carts_item : any) => (<PesananBaru invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceBaruData &&
+                invoiceBaruData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
             </TabsContent>
             <TabsContent value="2">
-            {invoiceSiapDikirimData && invoiceSiapDikirimData.map((value : any) =>{
-                 return value.cart.carts_items.map((carts_item : any) => (<SiapDikirim invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceSiapDikirimData &&
+                invoiceSiapDikirimData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
             </TabsContent>
             <TabsContent value="3">
-            {invoiceDalamKirimData && invoiceDalamKirimData.map((value : any) =>{
-                 return value.cart.carts_items.map((carts_item : any) => (<DalamPengiriman invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceDalamKirimData &&
+                invoiceDalamKirimData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
             </TabsContent>
             <TabsContent value="4">
-            {invoiceSelesaiData && invoiceSelesaiData.map((value : any) =>{
-                 return value.cart.carts_items.map((carts_item : any) => (<PesananSelesai invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceSelesaiData &&
+                invoiceSelesaiData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
             </TabsContent>
             <TabsContent value="5">
-            {invoiceBatalData && invoiceBatalData.map((value : any) =>{
-                 return value.cart.carts_items.map((carts_item : any) => (<Dibatalkan invoice={value} items={carts_item}/>))
-              }
-              )}
+              {invoiceBatalData &&
+                invoiceBatalData.map((value: any) => {
+                  if (value.cart.carts_items.length === 1)
+                    return value.cart.carts_items?.map((carts_item: any) => (
+                      <Semua invoice={value} items={carts_item} />
+                    ));
+
+                  return (
+                    <CollapsibleVariant
+                      invoice={value}
+                      value={value.cart.carts_items}
+                    />
+                  );
+                })}
             </TabsContent>
           </Tabs>
         </div>

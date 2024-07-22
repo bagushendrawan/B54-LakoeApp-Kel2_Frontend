@@ -1,27 +1,26 @@
+import { PengirimanPages } from "@/pages/setting/pengiriman";
+import { MainSetting } from "@/features/mainInformasi";
 import { SideBar } from "@/features/side-bar";
-import { Setting } from "@/pages/setting/setting";
 import { createFileRoute } from "@tanstack/react-router";
 import { ProtectedRoute, ProtectedSellerRoute } from "../__root";
 
-export const Route = createFileRoute("/seller/pengaturan")({
+export const Route = createFileRoute("/seller/pengiriman")({
   component: () => (
     <ProtectedRoute>
       <ProtectedSellerRoute>
-        <Pengaturan />
+        <Pengiriman />
       </ProtectedSellerRoute>
     </ProtectedRoute>
   ),
 });
 
-function Pengaturan() {
+function Pengiriman() {
   return (
     <div className="flex bg-slate-800">
       <SideBar />
-      <div className="w-full p-4 h-screen overflow-y-auto">
-        <Setting />
+      <div className="w-full p-2 py-2 h-screen overflow-y-auto">
+        <PengirimanPages />
       </div>
-      {/* <FormProdukPages /> */}
-      {/* <Register/> */}
     </div>
   );
 }

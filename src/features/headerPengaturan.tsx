@@ -6,7 +6,7 @@ export function HeaderPengaturan() {
     <>
       <div className="w-full">
         <div className="mt-3 ">
-          <Label className="text-2xl pl-5">Pengaturan</Label>
+          {/* <Label className="text-2xl pl-5">Pengaturan</Label> */}
         </div>
       </div>
     </>
@@ -45,7 +45,14 @@ export function TemplatePesanHeader() {
           </Label>
         </div>
         <div className="mr-10 mt-3">
-          <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Buat Template</Button>
+          <Button
+            className={buttonVariants({
+              variant: "custom",
+              borderRadius: "xl",
+            })}
+          >
+            Buat Template
+          </Button>
         </div>
       </div>
     </>

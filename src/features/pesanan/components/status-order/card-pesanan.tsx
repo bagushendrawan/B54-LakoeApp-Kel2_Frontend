@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Link,redirect } from "@tanstack/react-router";
+import { Link, redirect } from "@tanstack/react-router";
 import { JSXElementConstructor, useEffect, useState } from "react";
 import Axios from "axios";
 import { formCourier } from "./hooks/order";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const formattedNumber = (num : number) => new Intl.NumberFormat('id-ID', {
-  style: "currency", currency: "IDR"
-}).format(num);
+export const formattedNumber = (num: number) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(num);
 
 export function Semua(props: any) {
   const [color, setColor] = useState("");
@@ -16,6 +18,7 @@ export function Semua(props: any) {
 
   async function fetchInvoice() {
     try {
+      console.log("props", props.invoice?.id);
       const response = await Axios({
         method: "get",
         url: `http://localhost:3000/form-produk/${props.invoice?.id}`,
@@ -23,14 +26,14 @@ export function Semua(props: any) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("inv",response.data)
+      console.log("inv", response.data);
       return response.data;
     } catch (error) {
       return error;
     }
   }
 
-  const { data: invoiceFetchData, refetch: refetchPesanan,  } = useQuery({
+  const { data: invoiceFetchData, refetch: refetchPesanan } = useQuery({
     queryKey: ["pesananStatus"],
     queryFn: fetchInvoice,
   });
@@ -66,16 +69,16 @@ export function Semua(props: any) {
         setColor("bg-yellow-500");
         {
           setButton(
-                <button
-                  onClick={async() => {
-                    await mutateAsync();
-                    refetchPesanan();
-                  }}
-                  className="border bg-blue-500 text-white font-semibold px-4 rounded-full p-4 mt-3 me-2"
-                >
-                  Proses Pesanan
-                </button>
-              );
+            <button
+              onClick={async () => {
+                await mutateAsync();
+                refetchPesanan();
+              }}
+              className="border bg-blue-500 text-white font-semibold px-4 rounded-full p-4 mt-3 me-2"
+            >
+              Proses Pesanan
+            </button>
+          );
         }
         break;
       case "SIAP_DIKIRIM":
@@ -127,14 +130,14 @@ export function Semua(props: any) {
       setStatus(invoiceData.status);
       switchColor(invoiceData.status);
     };
-  
+
     fetchAndSwitch();
-  }, []);
+  }, [props.invoice?.id]);
 
   useEffect(() => {
-    setStatus(invoiceFetchData?.status)
-    switchColor(invoiceFetchData?.status)
-  }, [invoiceFetchData])
+    setStatus(invoiceFetchData?.status);
+    switchColor(invoiceFetchData?.status);
+  }, [invoiceFetchData]);
   return (
     <>
       <div className="border rounded-lg mb-3">
@@ -175,7 +178,7 @@ export function Semua(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>
@@ -232,7 +235,7 @@ export function BelumDibayar(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-              {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>
@@ -288,7 +291,7 @@ export function PesananBaru(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-              {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>
@@ -344,7 +347,7 @@ export function SiapDikirim(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-              {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>
@@ -400,7 +403,7 @@ export function DalamPengiriman(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-              {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>
@@ -456,7 +459,7 @@ export function PesananSelesai(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-              {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>
@@ -509,7 +512,7 @@ export function Dibatalkan(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-              {formattedNumber(props.items.quantity*props.items.price)}
+                {formattedNumber(props.items.quantity * props.items.price)}
               </p>
             </div>
           </div>

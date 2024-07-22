@@ -54,12 +54,12 @@ const ProductItem: FC<IProductItemProps> = ({
                         <p className="flex flex-1 text-xl font-bold">{product.name}</p>
 
                         {/* checkbox */}
-                        <Input
+                        {/* <Input
                             type="checkbox"
                             className="w-4 h-4"
                             checked={selectedAll ? selectedAll : isChecked}
                             onClick={handleCheck}
-                        />
+                        /> */}
                     </div>
 
                     <div className="flex flex-col gap-4">

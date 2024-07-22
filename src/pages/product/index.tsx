@@ -40,9 +40,6 @@ const Product = () => {
     // data product
     const [products, setProducts] = useState<IProduct[]>();
 
-    console.log(products);
-
-
     // state sort status
     const [isActive, setIsActive] = useState<number>(1);
 
@@ -233,7 +230,7 @@ const Product = () => {
             <div className="flex items-center mb-2">
                 <p className="flex flex-1 text-xl font-bold">{products?.length} Produk</p>
 
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                     {selectedProduct.length !== 0 && (
                         <>
                             <BulkDeleteProductDialog selectedProduct={selectedProduct} />
@@ -241,7 +238,7 @@ const Product = () => {
                         </>
                     )}
 
-                    {products ? (
+                    {products && (
                         <div className={products?.length === 0 ? 'hidden' : 'block'}>
                             {products?.length > 0 && (
                                 <div className="flex items-center gap-2">
@@ -255,13 +252,8 @@ const Product = () => {
                                 </div>
                             )}
                         </div>
-                    )
-                        :
-                        (
-                            <div></div>
-                        )
-                    }
-                </div>
+                    )}
+                </div> */}
             </div>
 
             {/* result */}
@@ -277,7 +269,7 @@ const Product = () => {
             ) : (
                 // if result !0
                 <div className="flex flex-col gap-2">
-                    {products ? (
+                    {products && (
                         products.map((product) => (
                             <ProductItem
                                 key={product.id}
@@ -289,8 +281,6 @@ const Product = () => {
                                 selectedAll={selectAll}
                             />
                         ))
-                    ) : (
-                        <p>Belum ada produk</p>
                     )}
                 </div>
             )}

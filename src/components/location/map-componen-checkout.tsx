@@ -1,3 +1,6 @@
+import { Route } from "@/routes/buyer/checkout";
+import useStore from "@/z-context";
+import Axios from "axios";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useRef, useState } from "react";
@@ -16,9 +19,6 @@ import {
 import { Label } from "../label";
 import { getAddress } from "./geoCoding";
 import { SearchControl } from "./search";
-import Axios from "axios";
-import { Route } from "@/routes/buyer/checkout";
-import useStore from "@/z-context";
 
 interface Items {
   name: string;
@@ -34,15 +34,16 @@ interface paramsTypes {
   id: number;
 }
 
-const MapComponentCheckout = () => {
+const MapComponentCheckout = (props: any) => {
   const [markerPosition] = useState<[number, number]>([-6.381821, 106.749643]);
-
   const [position, setPosition] = useState<L.LatLng | null>(null);
   const [address, setAddress] = useState<string | undefined>(undefined);
   const markerRef = useRef<L.Marker<any>>(null);
 
   const updatePosition = async (latLng: L.LatLng) => {
     setPosition(latLng);
+    props.form?.setValue("receiver_latitude", latLng.lat.toString());
+    props.form?.setValue("receiver_longitude", latLng.lng.toString());
     const address = await getAddress(latLng.lat, latLng.lng);
     setAddress(address);
   };
@@ -83,6 +84,7 @@ const MapComponentCheckout = () => {
 
   const params: paramsTypes = Route.useSearch();
 
+  const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
 
   useEffect(() => {
@@ -97,7 +99,8 @@ const MapComponentCheckout = () => {
           },
         });
 
-        // console.log("cari id", response.data.store_id);
+        // console.log("cari id", response.data);
+        setName(response.data.name);
         setId(response.data.store_id);
       } catch (error) {
         console.log(error);
@@ -116,7 +119,7 @@ const MapComponentCheckout = () => {
     try {
       const dataItems: Items[] = [
         {
-          name: "Baju",
+          name: name,
         },
       ];
 

@@ -1,32 +1,35 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import Axios from "axios";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-type checkoutForm = {
-  name: string;
-  phone: string;
-  receiver_name: string;
-  receiver_phone: string;
-  receiver_district: string;
-  receiver_address: string;
-  receiver_latitude: number;
-  receiver_longitude: number;
-  prices: number;
+export type checkoutForm = {
+  courier_code: string;
+  courier_service: string;
   service_charge: number;
+  receiver_longitude: string;
+  receiver_latitude: string;
+  receiver_district: string;
+  receiver_phone: string;
+  receiver_address: string;
+  receiver_name: string;
+  prices: number;
+  user_id: string;
+  store_id: string;
 };
 
 const checkoutSchema = z.object({
-  name: z.string(),
-  phone: z.string(),
-  receiver_name: z.string(),
-  receiver_phone: z.string(),
-  receiver_district: z.string(),
-  receiver_address: z.string(),
-  receiver_latitude: z.number(),
-  receiver_longitude: z.number(),
-  prices: z.number(),
-  service_charge: z.number(),
+  courier_code: z.any(),
+  courier_service: z.any(),
+  service_charge: z.any(),
+  receiver_name: z.any(),
+  receiver_phone: z.any(),
+  receiver_district: z.any(),
+  receiver_address: z.any(),
+  receiver_latitude: z.any(),
+  receiver_longitude: z.any(),
+  prices: z.any(),
+  user_id: z.any(),
+  store_id: z.any(),
 });
 
 export const useCheckoutForm = () => {
@@ -34,23 +37,6 @@ export const useCheckoutForm = () => {
     mode: "onChange",
     resolver: zodResolver(checkoutSchema),
   });
-
-  const onSubmit: SubmitHandler<checkoutForm> = async (data) => {
-    try {
-      const response = await Axios({
-        method: "post",
-        url: `http://localhost:3000/buyers/buy`,
-        data,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return form;
 };

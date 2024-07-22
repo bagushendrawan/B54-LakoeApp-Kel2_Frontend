@@ -63,7 +63,6 @@ export function BuyerDashboardPage() {
   }
 
   useEffect(() => {
-    
     getDataProduct();
   }, []);
 
@@ -99,13 +98,15 @@ export function BuyerDashboardPage() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 p-3 rounded-lg">
-          {product.map((data) => {
+          {product.map((data, index) => {
             return (
               <>
-                <Card className="w-1/6 border-rose-600">
+                <Card key={index} className="w-1/6 border-rose-600">
                   <CardContent className="p-3 border-b border-b-rose-600">
                     <div>
-                      <h1 className="mb-2 flex justify-center">{data?.store_id}</h1>
+                      <h1 className="mb-2 flex justify-center">
+                        {data?.store_id}
+                      </h1>
                     </div>
                     <div>
                       <img

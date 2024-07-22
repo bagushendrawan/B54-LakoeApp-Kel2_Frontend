@@ -1,4 +1,3 @@
-import { DialogClose } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,11 +16,15 @@ interface courierType {
   price: number;
 }
 
-export function MetodePengiriman() {
-  const [pengiriman, setPengiriman] = useState<courierType | undefined>(undefined);
+export function MetodePengiriman(props: any) {
+  // const [pengiriman, setPengiriman] = useState<courierType | undefined>(
+  //   undefined
+  // );
+
   const [selectedPengiriman, setSelectedPengiriman] = useState<
     courierType | undefined
   >();
+
   const [open, setOpen] = useState(false);
 
   const courier = useStore((state) => state.courier);
@@ -33,6 +36,13 @@ export function MetodePengiriman() {
   const selectedCourier = useStore((state) => state.setSelectedCourier);
   selectedCourier(selectedPengiriman);
 
+  props.form?.setValue("service_charge", selectedPengiriman?.price as number);
+  props.form?.setValue("courier_code", selectedPengiriman?.name as string);
+  props.form?.setValue(
+    "courier_service",
+    selectedPengiriman?.service as string
+  );
+
   return (
     <>
       <div className="p-3 border border-black rounded-md mb-5">
@@ -40,7 +50,7 @@ export function MetodePengiriman() {
         <div className="space-y-1">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              {pengiriman ? (
+              {selectedPengiriman ? (
                 <button
                   className="w-2/4 flex justify-between gap-4 items-center border p-2 rounded-lg border-blue-800 bg-blue-100"
                   onClick={() => {
@@ -51,12 +61,12 @@ export function MetodePengiriman() {
                     <div className="flex items-center gap-5">
                       <img src="" alt="img" className="w-1/5 h-14" />
                       <div>
-                        <p>{pengiriman.service}</p>
-                        <p>{pengiriman.name}</p>
-                        <p>{pengiriman.duration}</p>
+                        <p>{selectedPengiriman.service}</p>
+                        <p>{selectedPengiriman.name}</p>
+                        <p>{selectedPengiriman.duration}</p>
                       </div>
                     </div>
-                    <div>{pengiriman.price}</div>
+                    <div>{selectedPengiriman.price}</div>
                   </div>
                 </button>
               ) : (
@@ -84,23 +94,30 @@ export function MetodePengiriman() {
               </div>
 
               <div className="h-80 overflow-y-scroll">
-                {dataCourir.map((data) => (
-                  <button
-                    className="w-full flex justify-between gap-4 items-center border p-7"
-                    onClick={() => {
-                      setSelectedPengiriman(data);
-                      setOpen(false);
-                    }}
-                  >
-                    <div className="flex gap-3 items-center">
-                      <img src="" alt="gambar" className="w-10" />
-                      <p>{data.name}</p>
-                    </div>
-                    <div>
-                      <p>Rp {data.price}</p>
-                    </div>
-                  </button>
-                ))}
+                {dataCourir ? (
+                  dataCourir.map((data) => (
+                    <button
+                      className="w-full flex justify-between gap-4 items-center border p-7"
+                      onClick={() => {
+                        setSelectedPengiriman(data);
+                        setOpen(false);
+                      }}
+                      key={data.name}
+                    >
+                      <div className="flex gap-3 items-center">
+                        <img src="" alt="gambar" className="w-10" />
+                        <p>{data.name}</p>
+                      </div>
+                      <div>
+                        <p>Rp {data.price}</p>
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <p>
+                    Silakan atur pin point untuk mengetahui kurir yang tersedia!
+                  </p>
+                )}
               </div>
             </DialogContent>
           </Dialog>

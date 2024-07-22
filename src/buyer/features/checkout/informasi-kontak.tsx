@@ -1,26 +1,19 @@
-import { useCheckoutForm } from "@/buyer/hooks/use-checkout-form";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import useStore from "@/z-context";
 
-export function InformasiKontak() {
-  const user = useStore((state) => state.user)
-  // console.log(user);
+export function InformasiKontak(props: any) {
+  const user = useStore((state) => state.user);
+  // console.log("ini user checkout", user);
+  props.form?.setValue("user_id", user.id);
 
-  const form = useCheckoutForm();
-  
   return (
     <>
       <div className="p-3 border border-black rounded-md mb-5">
         <h1 className="font-bold mt-3">Informasi Kontak</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>
-          <Input
-            id="nama"
-            className="border-black"
-            defaultValue={user.name}
-            {...form.register("name")}
-          />
+          <Input id="nama" className="border-black" defaultValue={user.name} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="phone-input">Nomor Whatsapp</Label>
@@ -34,7 +27,6 @@ export function InformasiKontak() {
               className="border border-black w-full ps-12"
               placeholder="123-456-7890"
               defaultValue={user.phone}
-              {...form.register("phone")}
             />
           </div>
         </div>

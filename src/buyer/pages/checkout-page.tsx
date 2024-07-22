@@ -8,6 +8,8 @@ import { GunakanVoucher } from "../features/checkout/gunakan-voucher";
 import { InformasiKontak } from "../features/checkout/informasi-kontak";
 import { MetodePengiriman } from "../features/checkout/metode-pengiriman";
 import { RingkasanPesanan } from "../features/checkout/ringkasan-pesanan";
+import { useCheckoutForm } from "../hooks/use-checkout-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 interface MidtransSnap extends Window {
   snap: {
@@ -26,42 +28,7 @@ interface checkoutForm {
 }
 
 export function CheckoutPage() {
-  const [dataOrder, setDataOrder] = useState<checkoutForm>({
-    name: "",
-    phone: "",
-    receiver_name: "",
-    receiver_phone: "",
-    receiver_district: "",
-    receiver_address: "",
-    // courier_id: "",
-  });
-
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setDataOrder({
-      ...dataOrder,
-      [name]: value,
-    });
-  }
-
-  async function handleSubmit() {
-    try {
-      const response = await Axios({
-        method: "post",
-        url: `http://localhost:3000/invoices`,
-        data: dataOrder,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const form = useCheckoutForm()
 
   useEffect(() => {
     const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
@@ -85,20 +52,20 @@ export function CheckoutPage() {
         <h1 className="text-xl font-bold">CHECKOUT</h1>
 
         <div className="mt-4">
-          <form>
+          <form {...form}>
             <div className="flex ">
               <div className="basis-3/5">
-                <InformasiKontak/>
+                <InformasiKontak />
 
-                <AlamatPengiriman/>
+                <AlamatPengiriman />
 
-                <MetodePengiriman/>
+                <MetodePengiriman />
               </div>
 
               <div className="flex flex-col basis-2/5 items-center">
-                <GunakanVoucher/>
+                <GunakanVoucher />
 
-                <RingkasanPesanan/>
+                <RingkasanPesanan />
 
                 <div className="border border-black w-5/6 rounded-lg p-3 mb-4">
                   <p className="mb-3">Catatan</p>
@@ -110,6 +77,7 @@ export function CheckoutPage() {
 
                 <Button
                   className="w-5/6"
+                  type="submit"
                   onClick={async (e) => {
                     e.preventDefault();
                     const response = await Axios.post(

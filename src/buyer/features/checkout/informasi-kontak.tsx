@@ -1,3 +1,4 @@
+import { useCheckoutForm } from "@/buyer/hooks/use-checkout-form";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import useStore from "@/z-context";
@@ -5,6 +6,8 @@ import useStore from "@/z-context";
 export function InformasiKontak() {
   const user = useStore((state) => state.user)
   // console.log(user);
+
+  const form = useCheckoutForm();
   
   return (
     <>
@@ -14,9 +17,9 @@ export function InformasiKontak() {
           <Label htmlFor="nama">Nama</Label>
           <Input
             id="nama"
-            name="name"
             className="border-black"
             defaultValue={user.name}
+            {...form.register("name")}
           />
         </div>
         <div className="space-y-1">
@@ -31,6 +34,7 @@ export function InformasiKontak() {
               className="border border-black w-full ps-12"
               placeholder="123-456-7890"
               defaultValue={user.phone}
+              {...form.register("phone")}
             />
           </div>
         </div>

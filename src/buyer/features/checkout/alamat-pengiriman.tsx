@@ -1,6 +1,6 @@
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import MapComponent from "@/components/location";
+import MapComponentCheckout from "@/components/location/map-componen-checkout";
 import {
   Select,
   SelectContent,
@@ -10,8 +10,11 @@ import {
 } from "@/components/select";
 import { Textarea } from "@/components/textarea";
 import { useEffect, useState } from "react";
-import { IoIosPin } from "react-icons/io";
 import dataDaerah from "../../../assets/data-daerah/data-daerah.json";
+import { Route } from "@/routes/buyer/checkout";
+import  Axios  from "axios";
+import useStore from "@/z-context";
+import { useCheckoutForm } from "@/buyer/hooks/use-checkout-form";
 
 interface Villages {
   id: string;
@@ -39,14 +42,16 @@ interface Regencies {
   districts: Districts[];
 }
 
-interface DataDaerah {
-  id: string;
-  name: string;
-  alt_name: string;
-  latitude: number;
-  longitude: number;
-  regencies: Regencies[];
-}
+// interface DataDaerah {
+//   id: string;
+//   name: string;
+//   alt_name: string;
+//   latitude: number;
+//   longitude: number;
+//   regencies: Regencies[];
+// }
+
+const form = useCheckoutForm();
 
 export function AlamatPengiriman() {
   // const [daerah] = useState<DataDaerah>(dataDaerah);
@@ -85,13 +90,16 @@ export function AlamatPengiriman() {
     }
   }, [selectedProvinsiId, selectedKabupatenId, selectedKecamatanId]);
 
+
+ 
+
   return (
     <>
       <div className="p-3 border rounded-md border-black mb-5">
         <h1 className="font-bold mt-3">Alamat Pengiriman</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>
-          <Input id="nama" name="receiver_name" className="border-black" />
+          <Input id="nama" className="border-black" {...form.register("receiver_name")} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="phone-input">Nomor Whatsapp</Label>
@@ -104,6 +112,7 @@ export function AlamatPengiriman() {
               id="phone-input"
               className="border border-black w-full ps-12"
               placeholder="123-456-7890"
+              {...form.register("receiver_phone")}
             />
           </div>
         </div>
@@ -171,7 +180,7 @@ export function AlamatPengiriman() {
             <SelectContent>
               {selectedKelurahan?.map((kelurahan) => {
                 return (
-                  <SelectItem value={kelurahan.id}>
+                  <SelectItem value={kelurahan.id} {...form.register("receiver_district")}>
                     <p className="text-black">{kelurahan.name}</p>
                   </SelectItem>
                 );
@@ -183,20 +192,12 @@ export function AlamatPengiriman() {
           <Label htmlFor="alamat">Detail Alamat</Label>
           <Textarea
             id="alamat"
-            name="receiver_address"
             className="border-black h-20 resize-none"
+            {...form.register("receiver_address")}
           ></Textarea>
         </div>
         <div className="space-y-1">
-          <Label htmlFor="alamat">Pin Alamat</Label>
-          <div className="p-3 border border-blue-900 bg-blue-100 rounded-md flex justify-around items-center">
-            <div className="flex gap-3 items-center">
-              <IoIosPin className="text-2xl" />
-              <p>Karang Semut, Trimulya, Jetis, Bantul, Yogyakarta Indonesia</p>
-            </div>
-
-            <MapComponent />
-          </div>
+            <MapComponentCheckout />
         </div>
       </div>
     </>

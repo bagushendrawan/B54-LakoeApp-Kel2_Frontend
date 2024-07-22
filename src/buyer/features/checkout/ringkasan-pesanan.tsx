@@ -1,4 +1,5 @@
 import { Route } from "@/routes/buyer/checkout";
+import useStore from "@/z-context";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -12,11 +13,14 @@ interface productItemsForm {
   quantity: number;
   // stock: number;
   amount: number;
+  store_id: string
 }
 
 export function RingkasanPesanan() {
   const params: paramsTypes = Route.useSearch();
-  // console.log("ini id cart-items", params);
+
+  const selectedCourier = useStore((state) => state.selectedCourier);
+  // console.log("ini kurir dipilih", selectedCourier);
 
   const [dataProduct, setDataProduct] = useState<productItemsForm>({
     name: "",
@@ -24,6 +28,7 @@ export function RingkasanPesanan() {
     quantity: 0,
     // stock: 0,
     amount: 0,
+    store_id: "",
   });
 
   useEffect(() => {
@@ -45,16 +50,21 @@ export function RingkasanPesanan() {
           quantity: response.data.quantity,
           // stock: response.data.stock,
           amount: response.data.price * response.data.quantity,
+          store_id: response.data.store_id,
         };
 
         setDataProduct(data);
-        console.log("ringkasan pesanan", data);
+        
+        // console.log("ringkasan pesanan", data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchProduct();
+
   }, []);
+
+
 
   return (
     <>
@@ -72,16 +82,16 @@ export function RingkasanPesanan() {
         </div>
 
         <div className="flex justify-between items-center my-4">
-          <p>Total Harga (1)</p>
+          <p>Total Harga ({dataProduct.quantity})</p>
           <p>Rp {dataProduct.amount}</p>
         </div>
         <div className="flex justify-between items-center pb-4 border-b-2">
           <p>Biaya Pengiriman</p>
-          <p>Rp 190.000</p>
+          <p>Rp {selectedCourier?.price}</p>
         </div>
         <div className="flex justify-between items-center my-4">
-          <p>Total Pembayaran (1)</p>
-          <p>Rp 190.000</p>
+          <p>Total Pembayaran ({dataProduct.quantity})</p>
+          <p>Rp {selectedCourier && dataProduct.amount + selectedCourier.price}</p>
         </div>
       </div>
     </>

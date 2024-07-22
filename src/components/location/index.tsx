@@ -1,10 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import L, { LatLng, latLng } from "leaflet";
-import "tailwindcss/tailwind.css";
 import { useEffect, useRef, useState } from "react";
-import { SearchControl } from "./search";
-import { getAddress } from "./geoCoding";
+import { IoIosPin } from "react-icons/io";
+import { IoWarning } from "react-icons/io5";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "tailwindcss/tailwind.css";
+import { Button } from "../button";
 import {
   Dialog,
   DialogContent,
@@ -12,9 +13,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../dialog";
-import { IoIosPin } from "react-icons/io";
-import { IoWarning } from "react-icons/io5";
-import { Button } from "../button";
+import { Label } from "../label";
+import { getAddress } from "./geoCoding";
+import { SearchControl } from "./search";
 
 // const ChangeView = ({ center }: { center: [number, number] }) => {
 //   const map = useMap();
@@ -24,7 +25,7 @@ import { Button } from "../button";
 
 const MapComponent = () => {
   const [markerPosition, setMarkerPosition] = useState<[number, number]>([
-    0, 0,
+    -6.381821, 106.749643
   ]);
 
   const [position, setPosition] = useState<L.LatLng | null>(null);
@@ -73,6 +74,14 @@ const MapComponent = () => {
 
   return (
     <div className="w-full">
+      
+      <Label htmlFor="alamat">Pin Alamat</Label>
+          <div className="p-3 border border-blue-900 bg-blue-100 rounded-md flex justify-around items-center">
+            <div className="flex gap-3 items-center">
+              <IoIosPin className="text-2xl" />
+              <p>{address}</p>
+            </div>
+
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-white text-blue-500 border border-blue-900 hover:bg-blue-200 hover:text-black">
@@ -130,6 +139,7 @@ const MapComponent = () => {
           </div>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 };

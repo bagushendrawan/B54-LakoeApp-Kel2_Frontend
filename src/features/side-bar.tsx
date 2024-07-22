@@ -19,88 +19,87 @@ export function SideBar() {
   // console.log("test context =",user);
   const logOutUser = useStore((state) => state.logout);
 
-  
   return (
     <>
-      <div className="bg-rose-600 w-52 h-screen">
+      <div className="bg-rose-600 w-64 h-screen">
         <ul>
           <div className="text-xl text-white pl-5 h-screen flex flex-col justify-between">
-          <div>
-            {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
-            <img src="/Lakoe-w.png" className="w-32 mt-2"/>
-            <div className="mt-2">
-              <li>
-                <Link
-                  to="/seller/dashboard"
-                  className="[&.active]:font-bold flex gap-2 items-center py-3"
-                >
-                  <GoHome /> Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seller/pesanan"
-                  className="[&.active]:font-bold flex gap-2 items-center pb-3"
-                >
-                  <FiBox /> Pesanan
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/seller/produk"
-                  className="[&.active]:font-bold flex gap-2 items-center pb-3"
-                >
-                  <MdOutlineShoppingBag /> Produk
-                </Link>
-              </li>
-              <li>
-              <Link
+            <div>
+              {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
+              <img src="/Lakoe-w.png" className="w-32 mt-2" />
+              <div className="mt-2">
+                <li>
+                  <Link
+                    to="/seller/dashboard"
+                    className="[&.active]:font-bold flex gap-2 items-center py-3"
+                  >
+                    <GoHome /> Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seller/pesanan"
+                    className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                  >
+                    <FiBox /> Pesanan
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/seller/produk"
+                    className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                  >
+                    <MdOutlineShoppingBag /> Produk
+                  </Link>
+                </li>
+                <li>
+                  {/* <Link
                       to="/seller/atur-toko"
                       className="[&.active]:font-bold flex gap-2 items-center pb-3"
                     >
                       <IoSettingsOutline/> Pengaturan
-              </Link>
-              {/* <Link
+              </Link> */}
+                  {/* <Link
                       to="/form-produk"
                       className="[&.active]:font-bold flex gap-2 items-center pb-3"
                     >
                        Form-varian
               </Link> */}
-              {/* <Accordion type="single" className="border-none" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="p-0">
-                      <IoSettingsOutline/>Pengaturan</AccordionTrigger>
-                    <AccordionContent className="mt-2 p-0 ms-7">
-                    <Link
-                      to="/atur-toko"
-                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
-                    >
-                      Atur Toko
-                    </Link>
-                    </AccordionContent>
-                    <AccordionContent className="m-0 p-0 ms-7">
-                    <Link
-                      to="/pengiriman"
-                      className="[&.active]:font-bold flex gap-2 items-center pb-3"
-                    >
-                      Pengiriman
-                    </Link>
-                    </AccordionContent>
-                    <AccordionContent className="m-0 p-0 ms-7">
+                  <Accordion type="single" className="border-none" collapsible>
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger className="p-0">
+                        <IoSettingsOutline />
+                        Pengaturan
+                      </AccordionTrigger>
+                      <AccordionContent className="mt-2 p-0 ms-7">
+                        <Link
+                          to="/seller/pengaturan"
+                          className="[&.active]:font-bold flex gap-2 items-center pb-3 text-lg"
+                        >
+                          Atur Toko
+                        </Link>
+                      </AccordionContent>
+                      <AccordionContent className="m-0 p-0 ms-7">
+                        <Link
+                          to="/seller/pengiriman"
+                          className="[&.active]:font-bold flex gap-2 items-center pb-3 text-lg"
+                        >
+                          Pengiriman
+                        </Link>
+                      </AccordionContent>
+                      {/* <AccordionContent className="m-0 p-0 ms-7">
                     <Link
                       to="/metode"
                       className="[&.active]:font-bold flex gap-2 items-center pb-3"
                     >
                       Metode Pembayaran
                     </Link>
-                    </AccordionContent>
-                  </AccordionItem>
-                  
-                </Accordion> */}
-                
-              </li>
+                    </AccordionContent> */}
+                    </AccordionItem>
+                  </Accordion>
+                </li>
+              </div>
             </div>
-          </div>
             <div className="mb-5">
               <li>
                 <Link
@@ -108,7 +107,7 @@ export function SideBar() {
                   className="[&.active]:font-bold flex gap-2 items-center"
                   onClick={logOutUser}
                 >
-                 <BsPerson/> Logout
+                  <BsPerson /> Logout
                 </Link>
               </li>
             </div>

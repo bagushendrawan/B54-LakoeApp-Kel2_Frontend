@@ -2,9 +2,8 @@ import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { ListRiwayatPesanan } from "./list-riwayat-pesanan";
 
-export function RiwayatPesanan() {
+export function RiwayatPesanan(props : any) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <>
       {isOpen ? (
@@ -18,7 +17,7 @@ export function RiwayatPesanan() {
             Sembunyikan Riwayat Pesanan <IoIosArrowUp />
           </h2>
 
-          <ListRiwayatPesanan />
+          <ListRiwayatPesanan status={props?.status} invoice={props?.invoice} />
         </>
       ) : (
         <>

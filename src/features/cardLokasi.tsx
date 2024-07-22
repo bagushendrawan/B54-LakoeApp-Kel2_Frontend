@@ -1,55 +1,65 @@
-import React, { useState } from "react";
-import AddLocationDialog from "@/components/AddLocationDialog";
-import EditLocationDialog from "@/components/EditLocationDialog";
-import LocationCard from "@/components/LocationCard";
+import React, { useContext, useState } from "react";
+import { AddLocation } from "@/components/AddLocationDialog";
+import { UpdateLocation } from "@/components/EditLocationDialog";
+import { LocationCard } from "@/components/LocationCard";
+import { LocationContext } from "@/context/LocationContext";
+import { Location } from "@/datas/type";
 
-interface Location {
-  id: number;
-  namaLokasi: string;
-  alamat: string;
-  kota: string;
-  kodePos: string;
-  pinpoint: string;
+interface DialogProps {
+  onSave: (locations: Location[]) => void;
 }
 
-export const CardLokasi: React.FC = () => {
-  const [locations, setLocations] = useState<Location[]>([]);
+export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
+  const context = useContext(LocationContext);
   const [editingLocation, setEditingLocation] = useState<Location | null>(null);
+
+  if (!context) {
+    return null;
+  }
+
+  const { locations, setLocations } = context;
 
   const handleAddLocation = (location: Location) => {
     setLocations([...locations, location]);
+
   };
 
   const handleEditLocation = (updatedLocation: Location) => {
-    setLocations(
-      locations.map((location) =>
-        location.id === updatedLocation.id ? updatedLocation : location
-      )
+    const updatedLocations = locations.map((location) =>
+      location.id === updatedLocation.id ? updatedLocation : location
     );
+    setLocations(updatedLocations);
+    onSave(updatedLocations);
     setEditingLocation(null);
   };
 
   const handleDeleteLocation = (id: number) => {
-    setLocations(locations.filter((location) => location.id !== id));
+    const updatedLocations = locations.filter((location) => location.id !== id);
+    setLocations(updatedLocations);
+    onSave(updatedLocations);
   };
 
   return (
     <>
-      <AddLocationDialog onSave={handleAddLocation} />
-      {locations.map((location) => (
-        <LocationCard
-          key={location.id}
-          location={location}
-          onDelete={handleDeleteLocation}
-          onEdit={setEditingLocation}
-        />
-      ))}
-      {editingLocation && (
-        <EditLocationDialog
-          location={editingLocation}
-          onSave={handleEditLocation}
-        />
-      )}
+      <div className="w-full">
+        <AddLocation onSave={handleAddLocation} />
+        {locations?.map((location) => (
+          <div className="bg-white">
+            <LocationCard
+              key={location.id}
+              location={location}
+              onDelete={handleDeleteLocation}
+              onEdit={(location) => setEditingLocation(location)}
+            />
+          </div>
+        ))}
+        {editingLocation && (
+          <UpdateLocation
+            location={editingLocation}
+            onUpdate={handleEditLocation}
+          />
+        )}
+      </div >
     </>
   );
 };

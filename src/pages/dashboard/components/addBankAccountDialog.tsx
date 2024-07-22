@@ -11,6 +11,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsPlus } from "react-icons/bs";
 import dataBank from "../../../assets/json/dataBank.json";
+import EditBankDialog from "./editBankDialog";
 
 const AddBankAccountDialog = () => {
     const { toast } = useToast();
@@ -77,17 +78,15 @@ const AddBankAccountDialog = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="bg-green-500 w-full">
-                    <BsPlus className="text-xl me-2" />
-                    Tambahkan Akun Bank
+                <Button className="w-full bg-[#22C55E] hover:bg-green-600">
+                    <BsPlus size={'1.3rem'} />
+                    Tambah Bank
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Informasi Bank</DialogTitle>
+                    <DialogTitle>Tambahkan Akun Bank</DialogTitle>
                     <DialogDescription>
-                        <Label>Tambahkan atau perbarui informasi bank</Label>
-
                         <form className="mt-4">
                             <div className="flex flex-col text-black gap-4">
                                 {/* bank */}
@@ -98,7 +97,7 @@ const AddBankAccountDialog = () => {
                                     </Label>
                                     <Select>
                                         <SelectTrigger id='bank' className="w-full">
-                                            <SelectValue defaultValue={bankData?.bank} placeholder={bankData?.bank} />
+                                            <SelectValue placeholder='Pilih Bank' />
                                         </SelectTrigger>
                                         <SelectContent className="bg-white">
                                             <SelectGroup>
@@ -128,7 +127,7 @@ const AddBankAccountDialog = () => {
                                     </Label>
                                     <Input
                                         id="nomor_rekening"
-                                        defaultValue={bankData?.acc_number}
+                                        placeholder="Masukan Rekening"
                                         {...formBank.register("acc_number")}
                                         className="col-span-3"
                                     />
@@ -142,17 +141,19 @@ const AddBankAccountDialog = () => {
                                     </Label>
                                     <Input
                                         id="nama_rekening"
-                                        defaultValue={bankData?.acc_name}
+                                        placeholder="Masukan Nama"
                                         {...formBank.register("acc_name")}
                                         className="col-span-3"
                                     />
                                 </div>
+
+                                <Label className="mt-2 text-red-600 italic">* Setiap user maksimal 3 akun bank</Label>
                             </div>
                         </form>
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                    <div className="flex justify-end space-x-2 mt-4">
+                    <div className="w-full flex justify-end gap-2 mt-4">
                         <DialogClose asChild>
                             <Button type="button" variant="outline" className='rounded-full'>
                                 Batalkan

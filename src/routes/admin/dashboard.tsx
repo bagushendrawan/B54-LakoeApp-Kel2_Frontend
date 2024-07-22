@@ -1,13 +1,15 @@
 import AdminPage from '@/pages/admin';
 import { createFileRoute } from '@tanstack/react-router';
-import { ProtectedRoute } from '../__root';
+import { ProtectedAdminRoute, ProtectedBuyerRoute, ProtectedRoute } from '../__root';
 
 
 
 export const Route = createFileRoute('/admin/dashboard')({
   component: () => (
     <ProtectedRoute>
+      <ProtectedAdminRoute>
       <AdminPages/>
+      </ProtectedAdminRoute>
     </ProtectedRoute>
   )
 })

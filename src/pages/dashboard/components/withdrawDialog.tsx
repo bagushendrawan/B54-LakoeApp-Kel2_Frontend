@@ -52,7 +52,7 @@ const WithdrawDialog = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="w-full gap-2 bg-[#22C55E]">
+                <Button className="w-full gap-1 bg-[#22C55E] hover:bg-green-600">
                     <BiMoneyWithdraw size={'1.3rem'} />
                     Tarik Saldo
                 </Button>

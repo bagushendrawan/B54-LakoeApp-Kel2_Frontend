@@ -1,10 +1,89 @@
-export function SubmitOrder() {
-    return (
-        <>
-        <div className="flex justify-between p-4">
-            <button className="border-2 border-red-700 px-2 py-1 rounded-full text-red-700 font-bold">Tolak Pesanan</button>
-            <button className="border bg-blue-700 px-3 py-1 rounded-full text-white">Proses Pesanan</button>
-        </div>
-        </>
-    )
+import { Button } from "@/components/button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Axios from "axios";
+
+export function SubmitOrder(props: any) {
+  async function fetchInvoice() {
+    try {
+      console.log("props", props.invoice?.id);
+      const response = await Axios({
+        method: "get",
+        url: `http://localhost:3000/form-produk/${props.invoice?.id}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("inv", response.data);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  const { data: invoiceFetchData, refetch: refetchPesanan } = useQuery({
+    queryKey: ["pesananStatus"],
+    queryFn: fetchInvoice,
+  });
+
+  const order = useMutation({
+    mutationFn: async () => {
+      return await Axios({
+        method: "post",
+        url: `http://localhost:3000/form-produk/order-couriers/${props.invoice?.id}`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    },
+  });
+
+  const batalkan = useMutation({
+    mutationFn: async () => {
+      return await Axios({
+        method: "post",
+        url: `http://localhost:3000/form-produk/batalkan/${props.invoice?.id}`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    },
+  });
+  return (
+    <>
+      <div className="flex justify-between p-4">
+        {props.invoice?.status === "BELUM_DIBAYAR" && (
+          <Button
+            className="border-2 px-2 py-1 rounded-full text-white font-bold bg-red-500"
+            onClick={async () => {
+              await batalkan.mutateAsync();
+              refetchPesanan();
+            }}
+          >
+            Tolak Pesanan
+          </Button>
+        )}
+        {props.invoice?.status === "PESANAN_BARU" && (
+          <Button
+            className="border bg-blue-500 text-white font-semibold px-4 rounded-full p-4 me-2"
+            onClick={async () => {
+              await order.mutateAsync();
+              refetchPesanan();
+            }}
+          >
+            Proses Pesanan
+          </Button>
+        )}
+        {props.invoice?.status !== "PESANAN_BARU" &&
+          props.invoice?.status !== "PESANAN_BARU" && (
+            <Button className="border bg-lime-500 text-white font-semibold px-4 rounded-full p-4  me-2">
+              <a href={"https://api.whatsapp.com/send/?phone=6285156703211"}>
+                Hubungi Pembeli
+              </a>
+            </Button>
+          )}
+      </div>
+    </>
+  );
 }

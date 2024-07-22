@@ -5,7 +5,7 @@ import { MainSetting } from "@/features/mainInformasi";
 export function Setting() {
   return (
     <>
-      <Card className="m-3">
+      <Card className="">
         <HeaderPengaturan />
         <MainSetting />
       </Card>

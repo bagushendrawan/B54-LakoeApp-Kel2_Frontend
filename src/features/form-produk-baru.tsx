@@ -27,13 +27,12 @@ import { Input } from "../components/input";
 import { Label } from "@/components/label";
 import { Switch } from "@/components/switch";
 import { Textarea } from "@/components/textarea";
+import { Toggle } from "@/components/toggle";
 import { LoadingSpinner } from "@/routes/__root";
+import Axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form } from "../components/form";
 import { useProdukForm } from "./hooks/form-produk";
-import { Toggle } from "@/components/toggle";
-import { DialogClose } from "@/components/dialog";
-import Axios from "axios";
 import { PreviewHalaman } from "./preview-halaman";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {

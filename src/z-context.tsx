@@ -17,11 +17,6 @@ type User = {
   store_id: string;
 };
 
-type userType = {
-  token: string;
-  user: User;
-};
-
 type productCreated = {
   product_id: string;
   varian_id: string;

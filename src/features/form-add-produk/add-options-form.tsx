@@ -1,10 +1,11 @@
-"use client"
- 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
- 
-import { Button } from "@/components/ui/button"
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -13,27 +14,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../components/form"
-import { Input } from "@/components/ui/input"
- 
+} from "../../components/form";
+
 const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-})
- 
+});
+
 export function InputForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       username: "",
     },
-  })
- 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    
-  }
- 
+  });
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {}
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
@@ -56,5 +54,5 @@ export function InputForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }

@@ -7,12 +7,11 @@ import {
   DialogTrigger,
 } from "@/components/dialog";
 import { Input } from "@/components/input";
-import { Label } from "@/components/label";
 import {
   Accordion,
+  AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent,
 } from "@radix-ui/react-accordion";
 import { IoIosArrowForward } from "react-icons/io";
 

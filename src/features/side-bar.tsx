@@ -11,8 +11,8 @@ import {
   AccordionTrigger,
 } from "../components/accordion";
 
-import { BsPerson, BsPersonBadge } from "react-icons/bs";
 import useStore from "@/z-context";
+import { BsPerson } from "react-icons/bs";
 
 export function SideBar() {
   // const user = useStore((state) => state.user);

@@ -1,3 +1,12 @@
+import { Input } from "@/components/input";
+import { Label } from "@/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/select";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,19 +17,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
-import { BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/select";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useToast } from "@/components/use-toast";
 import useStore from "@/z-context";
+import { ChangeEvent, useEffect, useState } from "react";
+import { BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
 import kurir from "../../../assets/kurir/kurir.json";
 
 export const courier = [
@@ -192,10 +191,10 @@ export const courier = [
 
 export function DialogKurir(props: any) {
   const [selectedKurir, setSelectedKurir] = useState("");
-  const [selectedCode, setselectedCode] = useState("");
+  const [, setselectedCode] = useState("");
   const [availKurir, setAvailKurir] = useState<string[]>([]);
   const [availCode, setAvailCode] = useState<string[]>([]);
-  const user = useStore((state) => state.user);
+  // const user = useStore((state) => state.user);
   const [preview, setPreview] = useState<string[]>([]);
 
   useEffect(() => {

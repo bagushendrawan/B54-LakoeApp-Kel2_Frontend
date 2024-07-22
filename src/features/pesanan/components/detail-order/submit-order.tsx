@@ -20,7 +20,7 @@ export function SubmitOrder(props: any) {
     }
   }
 
-  const { data: invoiceFetchData, refetch: refetchPesanan } = useQuery({
+  const { refetch: refetchPesanan } = useQuery({
     queryKey: ["pesananStatus"],
     queryFn: fetchInvoice,
   });

@@ -4,15 +4,13 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "@/components/carousel";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
-import { FaArrowRightFromBracket } from "react-icons/fa6";
+import useStore from "@/z-context";
 import Axios from "axios";
 import { useEffect, useState } from "react";
-import useStore from "@/z-context";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 interface Data {
   id: number;

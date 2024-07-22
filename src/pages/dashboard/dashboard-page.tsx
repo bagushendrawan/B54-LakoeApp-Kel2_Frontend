@@ -17,25 +17,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
-import useStore from "@/z-context";
-import { useEffect, useState } from "react";
-import {
-  BsBag,
-  BsCash,
-  BsCreditCard,
-  BsGift,
-  BsInfoCircle,
-  BsPlus,
-  BsQuestionDiamond,
-  BsReceipt,
-} from "react-icons/bs";
-import Axios from "axios";
-import { useForm } from "react-hook-form";
 import { useToast } from "@/components/use-toast";
-import { Chart } from "./chart";
-import WithdrawDialog from "./components/withdrawDialog";
-import { CardTransaction } from "./components/cardTransaction";
 import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
+import useStore from "@/z-context";
+import Axios from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { BsBag, BsCash, BsCreditCard, BsPlus } from "react-icons/bs";
+import { Chart } from "./chart";
+import { CardTransaction } from "./components/cardTransaction";
+import WithdrawDialog from "./components/withdrawDialog";
 
 type bankData = {
   bank: string;

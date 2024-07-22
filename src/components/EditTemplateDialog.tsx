@@ -1,19 +1,20 @@
-import React, { useState, useContext } from "react";
+/* eslint-disable */
+import { Button, buttonVariants } from "@/components/button";
 import {
   Dialog,
-  DialogTrigger,
+  DialogClose,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/dialog";
-import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { TemplatePesan } from "@/datas/type";
 import { TemplateContext } from "@/context/TemplateContext";
+import { TemplatePesan } from "@/datas/type";
+import React, { useContext, useState } from "react";
 import { Textarea } from "./textarea";
 
 interface UpdateTemplateProps {
@@ -21,19 +22,19 @@ interface UpdateTemplateProps {
   onUpdate: (updateTemplate: TemplatePesan) => void;
 }
 export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
-  template, onUpdate
+  template,
+  onUpdate,
 }) => {
+  const context = useContext(TemplateContext);
 
-  const context = useContext(TemplateContext)
-
-  const [judulPesan, setJudulPesan] = useState(template.judulPesan)
-  const [daftarIsiPesan, setDaftarIsiPesan] = useState(template.daftarIsiPesan)
+  const [judulPesan, setJudulPesan] = useState(template.judulPesan);
+  const [daftarIsiPesan, setDaftarIsiPesan] = useState(template.daftarIsiPesan);
   // const [namaPembeli, setnamaPembeli] = useState(template.namaPembeli)
   // const [namaProduk, setNamaProduk] = useState(template.namaProduk)
   // const [namaToko, setNamaToko] = useState(template.namaToko)
 
   if (!context) {
-    return null
+    return null;
   }
 
   const { templates, setTemplates } = context;
@@ -41,17 +42,24 @@ export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
   console.log(templates);
 
   const handleUpdate = () => {
-    const updateTemplates = templates.map(tmp =>
-      tmp.id === template.id ? { ...tmp, judulPesan, daftarIsiPesan } : tmp);
+    const updateTemplates = templates.map((tmp) =>
+      tmp.id === template.id ? { ...tmp, judulPesan, daftarIsiPesan } : tmp
+    );
 
-    setTemplates(updateTemplates as TemplatePesan[])
-  }
+    setTemplates(updateTemplates as TemplatePesan[]);
+  };
   return (
     <>
-      <Dialog >
+      <Dialog>
         <div className="mr-40 mt-3">
           <DialogTrigger>
-            <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Edit Tamplate</Button>
+            <Button
+              className={buttonVariants({
+                variant: "custom",
+              })}
+            >
+              Edit Tamplate
+            </Button>
           </DialogTrigger>
         </div>
         <DialogContent className="sm:max-w-[425px]">
@@ -75,13 +83,31 @@ export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
 
             <div className="flex justify-between items-center">
               <div className="flex">
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Customer</Button>
+                <Button
+                  className={buttonVariants({
+                    variant: "custom",
+                  })}
+                >
+                  Nama Customer
+                </Button>
               </div>
               <div className="flex">
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Produk</Button>
+                <Button
+                  className={buttonVariants({
+                    variant: "custom",
+                  })}
+                >
+                  Nama Produk
+                </Button>
               </div>
               <div className="flex">
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Nama Toko</Button>
+                <Button
+                  className={buttonVariants({
+                    variant: "custom",
+                  })}
+                >
+                  Nama Toko
+                </Button>
               </div>
             </div>
 
@@ -100,11 +126,18 @@ export const UpdateTemplate: React.FC<UpdateTemplateProps> = ({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={handleUpdate}>Save changes</Button>
+              <Button
+                className={buttonVariants({
+                  variant: "custom",
+                })}
+                onClick={handleUpdate}
+              >
+                Save changes
+              </Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog >
+      </Dialog>
     </>
-  )
+  );
 };

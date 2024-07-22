@@ -1,4 +1,4 @@
-import { checkoutForm, useCheckoutForm } from "@/buyer/hooks/use-checkout-form";
+/* eslint-disable */
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import MapComponentCheckout from "@/components/location/map-componen-checkout";
@@ -12,7 +12,6 @@ import {
 import { Textarea } from "@/components/textarea";
 import { useEffect, useState } from "react";
 import dataDaerah from "../../../assets/data-daerah/data-daerah.json";
-import { UseFormReturn } from "react-hook-form";
 
 interface Villages {
   id: string;

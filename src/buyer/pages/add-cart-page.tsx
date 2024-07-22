@@ -8,9 +8,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Route } from "@/routes/buyer/add-cart";
-import { Link } from "@tanstack/react-router";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 interface Data {
@@ -47,7 +46,7 @@ export function AddCartPage() {
   });
 
   const [quantity, setQuantity] = useState<Number>(0);
-  const [dataCart, setDataCart] = useState<any>([])
+  const [dataCart, setDataCart] = useState<any>([]);
 
   useEffect(() => {
     async function fetchVarian() {
@@ -58,7 +57,7 @@ export function AddCartPage() {
           data: dataOrder,
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         const data = {
@@ -75,7 +74,6 @@ export function AddCartPage() {
         setQuantity(data.quantity);
         setDataOrder(data);
         console.log("ini data order", data);
-        
       } catch (error) {
         console.log(error);
       }
@@ -99,12 +97,12 @@ export function AddCartPage() {
         data,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      console.log("ini data post",response.data);
-      setDataCart(data)
+      console.log("ini data post", response.data);
+      setDataCart(data);
     } catch (error) {
       console.log(error);
     }

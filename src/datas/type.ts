@@ -1,11 +1,11 @@
-// export type store = {
-//   id: number | null;
-//   namaToko: string;
-//   selogan: string;
-//   deskripsi: string;
-//   image?: string | null | File | undefined;
-//   completed: boolean;
-// };
+export type store = {
+  id: number | null;
+  namaToko: string;
+  selogan: string;
+  deskripsi: string;
+  image?: string | null | File | undefined;
+  completed: boolean;
+};
 
 
 export type Location = {

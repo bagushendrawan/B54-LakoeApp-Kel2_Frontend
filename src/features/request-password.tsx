@@ -1,13 +1,11 @@
 "use client";
 
 import { Label } from "@/components/label";
-import { ToastAction } from "@/components/toast";
 import { useToast } from "@/components/use-toast";
 import { LoadingSpinner } from "@/routes/__root";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -20,7 +18,6 @@ import {
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
-import useStore from "../z-context";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),

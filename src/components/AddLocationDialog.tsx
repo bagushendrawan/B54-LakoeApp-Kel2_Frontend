@@ -1,12 +1,29 @@
-import { useContext, useState } from "react";
 import { LocationContext } from "@/context/LocationContext";
 import { Location } from "@/datas/type";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
+import { useContext, useState } from "react";
 import { Button, buttonVariants } from "./button";
-import { Label } from "./label";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
 import { Input } from "./input";
+import { Label } from "./label";
 import MapComponent from "./location";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 interface DialogProps {
   onSave: (location: Location) => void;
 }
@@ -19,8 +36,7 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
   const [kota, setKota] = useState("");
   const [kodePos, setKodePos] = useState("");
   const [pinPoint, setPinPoint] = useState<[number, number]>([
-    -6.381870411756581,
-    106.74959499999997
+    -6.381870411756581, 106.74959499999997,
   ]);
 
   if (!context) {
@@ -62,7 +78,14 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
             </div>
             <div className="mt-3">
               <DialogTrigger>
-                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Tambah Lokasi1</Button>
+                <Button
+                  className={buttonVariants({
+                    variant: "custom",
+                    className: "rounded-xl",
+                  })}
+                >
+                  Tambah Lokasi1
+                </Button>
               </DialogTrigger>
             </div>
           </div>
@@ -158,12 +181,23 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
                 <Label htmlFor="pinpoint" className="text-left">
                   Pinpoint Lokasi
                 </Label>
-                <MapComponent markerPosition={pinPoint} setMarkerPosition={setPinPoint} />
+                <MapComponent
+                  markerPosition={pinPoint}
+                  setMarkerPosition={setPinPoint}
+                />
               </div>
             </div>
             <DialogFooter>
               <DialogClose>
-                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })} onClick={handleSave}>Save changes</Button>
+                <Button
+                  className={buttonVariants({
+                    variant: "custom",
+                    className: "rounded-xl",
+                  })}
+                  onClick={handleSave}
+                >
+                  Save changes
+                </Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>

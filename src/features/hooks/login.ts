@@ -1,7 +1,6 @@
 import { useToast } from "@/components/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Axios from 'axios';
-import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 // import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,8 +17,6 @@ const loginSchema = z.object({
 })
 
 export const useLoginForm = () => {
-    const toast = useToast();
-    // const dispatch = useDispatch();
     const navigate = useNavigate();
     const {
         register,

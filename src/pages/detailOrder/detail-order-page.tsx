@@ -4,11 +4,9 @@ import { DetailProduk } from "@/features/pesanan/components/detail-order/detail-
 import { InfoOrder } from "@/features/pesanan/components/detail-order/info-order";
 import { StatusOrder } from "@/features/pesanan/components/detail-order/status-order";
 import { SubmitOrder } from "@/features/pesanan/components/detail-order/submit-order";
-import { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import Axios from "axios"
 
-export function DetailOrderPage(props : any) {
+export function DetailOrderPage(props: any) {
   return (
     <>
       <div className="flex">
@@ -28,7 +26,7 @@ export function DetailOrderPage(props : any) {
           </div>
 
           <div className="m-4 bg-white rounded-lg">
-            <InfoOrder invoice={props.invoice} user={props.user}/>
+            <InfoOrder invoice={props.invoice} user={props.user} />
           </div>
 
           <div className="m-4 bg-white rounded-lg">
@@ -39,13 +37,17 @@ export function DetailOrderPage(props : any) {
 
           <div className="m-4 bg-white rounded-lg">
             <div className="flex">
-              <DetailPengiriman user={props.user} courier={props.courier} invoice={props.invoice}/>
+              <DetailPengiriman
+                user={props.user}
+                courier={props.courier}
+                invoice={props.invoice}
+              />
             </div>
           </div>
 
           <div className="m-4 bg-white rounded-lg">
             <div className="flex">
-              <DetailPembayaran item={props.item} courier={props.courier}/>
+              <DetailPembayaran item={props.item} courier={props.courier} />
             </div>
           </div>
 

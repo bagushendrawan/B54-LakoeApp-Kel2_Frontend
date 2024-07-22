@@ -109,11 +109,11 @@ const MapComponentCheckout = (props: any) => {
     getId();
   }, []);
 
-  const [dataGetRates, setDataGetRates] = useState<RatesTypes>({
-    destination_latitude: 0,
-    destination_longitude: 0,
-    items: [],
-  });
+  // const [dataGetRates, setDataGetRates] = useState<RatesTypes>({
+  //   destination_latitude: 0,
+  //   destination_longitude: 0,
+  //   items: [],
+  // });
 
   async function hitRates() {
     try {

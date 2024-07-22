@@ -1,36 +1,37 @@
-import React, { useContext, useState } from "react";
+/* eslint-disable */
+import { Button, buttonVariants } from "@/components/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/dialog";
-import { Button, buttonVariants } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { Textarea } from "./textarea";
 import { TemplateContext } from "@/context/TemplateContext";
 import { TemplatePesan } from "@/datas/type";
+import { DialogClose } from "@radix-ui/react-dialog";
+import React, { useContext, useState } from "react";
+import { Textarea } from "./textarea";
 
 interface DialogProps {
   onSave: (templates: TemplatePesan) => void;
 }
 
-export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
+export const AddTemplatePesan: React.FC<DialogProps> = () => {
   const context = useContext(TemplateContext);
 
-  const [judulPesan, setJudulPesan] = useState("")
-  const [daftarIsiPesan, setDaftarIsiPesan] = useState([""])
-  const [namaPembeli, setNamaPembeli] = useState("")
-  const [namaProduk, setNamaProduk] = useState("")
-  const [namaToko, setNamaToko] = useState("")
+  const [judulPesan, setJudulPesan] = useState("");
+  const [daftarIsiPesan, setDaftarIsiPesan] = useState([""]);
+  const [namaPembeli, setNamaPembeli] = useState("");
+  const [namaProduk, setNamaProduk] = useState("");
+  const [namaToko, setNamaToko] = useState("");
 
   if (!context) {
-    return null
+    return null;
   }
 
   const { templates, setTemplates } = context;
@@ -43,19 +44,30 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
       namaPembeli,
       namaProduk,
       namaToko,
-      map: function (arg0: (temp: { id: number; }) => { id: number; } | { judulPesan: string; daftarIsiPesan: string[]; namaPembeli: string; namaProduk: string; namaToko: string; id: number; }): unknown {
+      map: function (
+        arg0: (temp: { id: number }) =>
+          | { id: number }
+          | {
+              judulPesan: string;
+              daftarIsiPesan: string[];
+              namaPembeli: string;
+              namaProduk: string;
+              namaToko: string;
+              id: number;
+            }
+      ): unknown {
         throw new Error("Function not implemented.");
-      }
-    }
+      },
+    };
     console.log(newTemplate);
 
-    setTemplates([...templates, newTemplate])
-    setJudulPesan("")
-    setDaftarIsiPesan([""])
-    setNamaPembeli("")
-    setNamaProduk("")
-    setNamaToko("")
-  }
+    setTemplates([...templates, newTemplate]);
+    setJudulPesan("");
+    setDaftarIsiPesan([""]);
+    setNamaPembeli("");
+    setNamaProduk("");
+    setNamaToko("");
+  };
 
   return (
     <Dialog>
@@ -69,7 +81,14 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
           </div>
           <div className="mt-3">
             <DialogTrigger>
-              <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Buat Tamplate</Button>
+              <Button
+                className={buttonVariants({
+                  variant: "custom",
+                  className: "rounded-xl",
+                })}
+              >
+                Buat Tamplate
+              </Button>
             </DialogTrigger>
           </div>
           <DialogContent className="sm:max-w-[425px]">
@@ -93,13 +112,34 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
 
               <div className="flex justify-between items-center">
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Nama Customer</Button>
+                  <Button
+                    className={buttonVariants({
+                      variant: "custom",
+                      className: "rounded-xl",
+                    })}
+                  >
+                    Nama Customer
+                  </Button>
                 </div>
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Nama Produk</Button>
+                  <Button
+                    className={buttonVariants({
+                      variant: "custom",
+                      className: "rounded-xl",
+                    })}
+                  >
+                    Nama Produk
+                  </Button>
                 </div>
                 <div className="flex">
-                  <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })}>Nama Toko</Button>
+                  <Button
+                    className={buttonVariants({
+                      variant: "custom",
+                      className: "rounded-xl",
+                    })}
+                  >
+                    Nama Toko
+                  </Button>
                 </div>
               </div>
 
@@ -118,16 +158,23 @@ export const AddTemplatePesan: React.FC<DialogProps> = ({ onSave }) => {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button className={buttonVariants({ variant: 'custom', className:"rounded-xl" })} onClick={handleSave}>Save changes</Button>
+                <Button
+                  className={buttonVariants({
+                    variant: "custom",
+                    className: "rounded-xl",
+                  })}
+                  onClick={handleSave}
+                >
+                  Save changes
+                </Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
         </div>
-      </div >
+      </div>
     </Dialog>
-  )
+  );
 };
-
 
 // =====================================================================================
 // const [formData, setFormData] = useState<TemplatePesan>({

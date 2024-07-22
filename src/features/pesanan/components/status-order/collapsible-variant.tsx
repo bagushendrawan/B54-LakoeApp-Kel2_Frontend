@@ -2,18 +2,13 @@
 
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/collapsible";
-import {
-  Bs0Circle,
-  BsArrow90DegDown,
-  BsArrow90DegRight,
-  BsDot,
-} from "react-icons/bs";
+import { Button } from "@/components/ui/button";
+import { BsArrow90DegDown, BsDot } from "react-icons/bs";
 import { Semua } from "./card-pesanan";
 
 export function CollapsibleVariant(props: any) {

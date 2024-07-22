@@ -364,7 +364,7 @@ export function FormProdukBaru() {
             <p className="mb-2">Deskripsi</p>
             <Textarea {...register("produk_deskripsi")} className="h-32" />
             <p className="mt-4 mb-2">
-              Foto Produk <Label className="text-red-600">*</Label>
+              Foto Produks <Label className="text-red-600">*</Label>
             </p>
             <div id="produk-foto" className="flex gap-2">
               <label

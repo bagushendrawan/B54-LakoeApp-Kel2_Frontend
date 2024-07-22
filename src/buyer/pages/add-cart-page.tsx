@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/add-cart";
+import { Link, Navigate, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
@@ -35,6 +36,7 @@ type paramsCart = {
 
 export function AddCartPage() {
   // const formAddCart = useForm<cartItemsForm>()
+  const navigate = useNavigate();
   const params: paramsCart = Route.useSearch();
   console.log("params", params);
 
@@ -74,7 +76,7 @@ export function AddCartPage() {
         };
         setQuantity(data.quantity);
         setDataOrder(data);
-        console.log("ini data order", data);
+        // console.log("ini data order", data);
       } catch (error) {
         console.log(error);
       }
@@ -84,6 +86,7 @@ export function AddCartPage() {
 
   async function addCart() {
     try {
+      console.log("hit add");
       const data = {
         // store_id = params.store_id
         attachments: dataOrder.attachments,
@@ -104,6 +107,7 @@ export function AddCartPage() {
 
       console.log("ini data post", response.data);
       setDataCart(data);
+      navigate({ to: "/buyer/dashboard" });
     } catch (error) {
       console.log(error);
     }
@@ -188,9 +192,9 @@ export function AddCartPage() {
                     Beli Langsung
                   </Link> */}
                 </Button>
-                <Button className="gap-2" onClick={() => addCart()}>
+                <Link className="gap-2" onClick={addCart} to="/buyer/dashboard">
                   Keranjang <FaArrowRightFromBracket />
-                </Button>
+                </Link>
               </div>
             </div>
           </div>

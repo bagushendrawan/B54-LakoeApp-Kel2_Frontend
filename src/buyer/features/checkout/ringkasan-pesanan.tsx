@@ -1,3 +1,4 @@
+import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/checkout";
 import useStore from "@/z-context";
@@ -9,6 +10,7 @@ interface paramsTypes {
 }
 
 interface productItemsForm {
+  img: string;
   name: string;
   price: number;
   quantity: number;
@@ -24,6 +26,7 @@ export function RingkasanPesanan(props: any) {
   // console.log("ini kurir dipilih", selectedCourier);
 
   const [dataProduct, setDataProduct] = useState<productItemsForm>({
+    img: "",
     name: "",
     price: 0,
     quantity: 0,
@@ -46,6 +49,7 @@ export function RingkasanPesanan(props: any) {
         });
 
         const data: productItemsForm = {
+          img: response.data.img,
           name: response.data.name,
           price: response.data.price,
           quantity: response.data.quantity,
@@ -53,6 +57,8 @@ export function RingkasanPesanan(props: any) {
           amount: response.data.price * response.data.quantity,
           store_id: response.data.store_id,
         };
+
+        console.log("data", response.data);
 
         setDataProduct(data);
         props.form?.setValue(
@@ -75,24 +81,28 @@ export function RingkasanPesanan(props: any) {
         <p>Ringkasan Pesanan</p>
 
         <div className="mt-3 flex gap-3 items-center">
-          <img src="" alt="image" className="w-3/12 rounded-sm" />
+          <img
+            src={dataProduct.img}
+            alt="image"
+            className="w-3/12 rounded-sm"
+          />
 
           <div className="text-s">
             <p>{dataProduct.name}</p>
             <p>{dataProduct.quantity} item (100gr)</p>
-            <p>Rp {dataProduct.price}</p>
+            <p>Rp {formattedNumber(dataProduct.price)}</p>
           </div>
         </div>
 
         <div className="flex justify-between items-center my-4">
           <p>Total Harga ({dataProduct.quantity})</p>
-          <p>Rp {dataProduct.amount}</p>
+          <p>Rp {formattedNumber(dataProduct.amount)}</p>
         </div>
 
         {selectedCourier?.price ? (
           <div className="flex justify-between items-center pb-4 border-b-2">
             <p>Biaya Pengiriman</p>
-            <p>Rp {selectedCourier?.price}</p>
+            <p>Rp {formattedNumber(selectedCourier?.price)}</p>
           </div>
         ) : (
           <div className="flex justify-between items-center border-b-2"></div>
@@ -102,10 +112,12 @@ export function RingkasanPesanan(props: any) {
           <p>Total Pembayaran ({dataProduct.quantity})</p>
           {selectedCourier && dataProduct.amount + selectedCourier.price ? (
             <p>
-              Rp {selectedCourier && dataProduct.amount + selectedCourier.price}
+              Rp{" "}
+              {selectedCourier &&
+                formattedNumber(dataProduct.amount + selectedCourier.price)}
             </p>
           ) : (
-            <p>Rp {dataProduct.amount}</p>
+            <p>Rp {formattedNumber(dataProduct.amount)}</p>
           )}
         </div>
       </div>

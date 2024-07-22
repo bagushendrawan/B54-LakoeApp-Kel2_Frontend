@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "@/lib/api";
+import { LoadingSpinner } from "@/routes/__root";
 
 export type checkoutForm = {
   courier_code: string;
@@ -63,11 +64,15 @@ export function CheckoutPage() {
   const formCheckout = useCheckoutForm();
   async function onSubmitForm(data: any) {
     try {
-      // console.log("HIT SUBMIT");
+      const newData = {
+        ...data,
+        prices: data.prices + data.service_charge,
+      };
+      console.log("HIT SUBMIT", newData);
       const response = await Axios({
         method: "post",
         url: `${api}/buyers/buy`,
-        data,
+        data: newData,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -127,13 +132,24 @@ export function CheckoutPage() {
                   />
                 </div>
 
-                <Button
+                {/* <Button
                   className="w-5/6"
                   type="submit"
                   // onClick={() => console.log("HIT")}
                 >
                   Bayar Sekarang
-                </Button>
+                </Button> */}
+
+                {!formCheckout.formState.isSubmitting ? (
+                  <Button type="submit" className="w-5/6 bg-slate-800">
+                    Bayar Sekarang
+                  </Button>
+                ) : (
+                  <Button type="submit" disabled className="w-5/6 bg-slate-800">
+                    <LoadingSpinner />
+                    Register
+                  </Button>
+                )}
               </div>
             </div>
           </form>

@@ -140,7 +140,7 @@ const MapComponentCheckout = (props: any) => {
         },
       });
 
-      // console.log("ini rates", response.data.courier);
+      console.log("ini rates", response.data.courier);
       setCourier(response.data.courier);
       setOpen(false);
     } catch (error) {

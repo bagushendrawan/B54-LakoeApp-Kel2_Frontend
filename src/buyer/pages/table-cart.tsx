@@ -13,6 +13,10 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 
+interface cart {
+  carts_items: CartItems[];
+}
+
 interface CartItems {
   id: string;
   name: string;
@@ -22,28 +26,29 @@ interface CartItems {
 }
 
 export function TableCart() {
-  const [items, setItems] = useState<CartItems[]>([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     async function fetchItems() {
       try {
         const response = await Axios({
           method: "get",
-          url: `${api}/cart-items/all`,
+          url: `${api}/cart-items/allUserCart`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
+        console.log("cart", response.data);
         setItems(response.data);
-        console.log("hey", response.data);
       } catch (error) {
         console.log(error);
       }
     }
 
     fetchItems();
+    console.log("items", items);
   }, []);
 
   return (
@@ -63,33 +68,38 @@ export function TableCart() {
           <DropdownMenuLabel>List Cart Item</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          {items.map((data, index) => {
-            return (
-              <DropdownMenuCheckboxItem key={index}>
-                <div className="w-full mt-3 flex justify-between items-center">
-                  <div className="w-full flex items-center gap-2">
-                    <img
-                      src={data.image}
-                      alt="image"
-                      className="w-3/12 rounded-sm"
-                    />
+          {items
+            .filter((data: any) => !data?.invoices)
+            .map((data: any, index) => {
+              return (
+                <DropdownMenuCheckboxItem key={index}>
+                  <div className="w-full mt-3 flex justify-between items-center">
+                    <div className="w-full flex items-center gap-2">
+                      <img
+                        src={data?.carts_items[0].image}
+                        alt="image"
+                        className="w-3/12 rounded-sm"
+                      />
 
-                    <div className="text-s w-full">
-                      <p>{data.name}</p>
-                      <p>{data.quantity} item (100gr)</p>
-                      <p>Rp {data.price}</p>
+                      <div className="text-s w-full">
+                        <p>{data.carts_items[0].name}</p>
+                        <p>{data.carts_items[0].quantity} item (100gr)</p>
+                        <p>Rp {data.carts_items[0].price}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <Button className="w-1/4">
-                    <Link to="/buyer/checkout" search={{ id: data.id }}>
-                      Bayar Sekarang
-                    </Link>
-                  </Button>
-                </div>
-              </DropdownMenuCheckboxItem>
-            );
-          })}
+                    <Button className="w-1/4">
+                      <Link
+                        to="/buyer/checkout"
+                        search={{ id: data.carts_items[0].id }}
+                      >
+                        Bayar Sekarang
+                      </Link>
+                    </Button>
+                  </div>
+                </DropdownMenuCheckboxItem>
+              );
+            })}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

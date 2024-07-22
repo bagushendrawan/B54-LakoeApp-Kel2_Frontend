@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
@@ -33,16 +34,23 @@ interface Variant {
   variant_option: VariantOption[];
 }
 
+interface Store {
+  id: string;
+  name: string;
+}
+
 interface ProductDashboard {
   id: string;
   attachments: string;
   name: string;
   variants: Variant[];
   store_id: string;
+  store: Store;
 }
 
 export function BuyerDashboardPage() {
   const [product, setProduct] = useState<ProductDashboard[]>([]);
+  const [category, setCategory] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState<String>("");
 
   async function getDataProduct() {
@@ -55,8 +63,26 @@ export function BuyerDashboardPage() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      const filtered = response.data.filter((data: any) => data.is_active);
+      setProduct(filtered);
+      console.log("fetchproduk", filtered);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
-      setProduct(response.data);
+  async function getCategoryProduct() {
+    try {
+      const response = await Axios({
+        method: "get",
+        url: `${api}/categories`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("categ", response.data);
+      setCategory(response.data);
       // console.log("fetchproduk",response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -65,11 +91,12 @@ export function BuyerDashboardPage() {
 
   useEffect(() => {
     getDataProduct();
+    getCategoryProduct();
   }, []);
 
   return (
     <>
-      <div className="bg-white m-3 rounded-lg h-screen">
+      <div className="bg-white h-screen overflow-y-auto">
         <div className="flex justify-between items-center font-bold p-4 border-b-2 border-b-black bg-rose-600">
           <h1 className="font-extrabold text-2xl text-white">LAKOEBUYER</h1>
           <h1 className="text-xl text-white">Daftar Produk</h1>
@@ -84,7 +111,10 @@ export function BuyerDashboardPage() {
               <SelectValue placeholder="Kategori" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="gosend">GoSend</SelectItem>
+              {category &&
+                category.map((categ: any) => {
+                  return <SelectItem value={categ.id}>{categ.name}</SelectItem>;
+                })}
             </SelectContent>
           </Select>
 
@@ -98,61 +128,75 @@ export function BuyerDashboardPage() {
           </Select>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 p-3 rounded-lg">
-          {product.map((data, index) => {
+        <div className="flex flex-wrap justify-center gap-6 p-3 py-8 rounded-lg">
+          {product.map((data: any, index) => {
             return (
               <>
-                <Card key={index} className="w-1/6 border-rose-600">
-                  <CardContent className="p-3 border-b border-b-rose-600">
+                <Card key={index} className="w-1/6 shadow-md">
+                  <CardContent className="p-3">
                     <div>
-                      <h1 className="mb-2 flex justify-center">
-                        {data?.store_id}
+                      <h1 className="mb-2 flex justify-center font-light italic">
+                        {data?.store.name} Store
                       </h1>
                     </div>
                     <div>
                       <img
                         src={data?.attachments[0]}
                         alt="gambar"
-                        className="rounded-lg w-full h-52 object-cover object-center"
+                        className="rounded-lg w-full h-52 object-contain"
                       />
                     </div>
                   </CardContent>
-                  <CardFooter className="flex flex-col p-3">
-                    <h1 className="font-bold text mb-2">{data?.name}</h1>
-                    <Select onValueChange={(e) => setSelectedVariant(e)}>
-                      <SelectTrigger className="w-[180px]">
+                  <CardFooter className="flex flex-col">
+                    <h1 className="font-normal italic text-xl">{data?.name}</h1>
+                    <p className="my-2 font-bold">
+                      {formattedNumber(
+                        data?.variants[0].variant_option[0]
+                          .variant_option_values.price
+                      )}
+                    </p>
+                    <Select
+                      defaultValue={data.variants[0].id}
+                      onValueChange={(e) => setSelectedVariant(e)}
+                    >
+                      <SelectTrigger className="w-[180px] mb-4">
                         <SelectValue
-                          placeholder="Varian"
+                          placeholder="Pilih Varian"
                           defaultValue={data.variants[0].id}
                         />
                       </SelectTrigger>
                       <SelectContent side="top">
                         <SelectGroup>
-                          {data.variants?.map((value) => {
-                            return (
-                              <SelectItem key={value.id} value={value.id}>
-                                {value.variant_option[0].name}
-                              </SelectItem>
-                            );
-                          })}
+                          {data.variants
+                            ?.filter(
+                              (value: any) =>
+                                value.variant_option[0].variant_option_values
+                                  ?.stock >= data.minimum_order
+                            )
+                            .map((value: any) => {
+                              return (
+                                <SelectItem key={value.id} value={value.id}>
+                                  {value.variant_option[0].name} - Stok :
+                                  {
+                                    value.variant_option[0]
+                                      .variant_option_values?.stock
+                                  }
+                                </SelectItem>
+                              );
+                            })}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
 
-                    <p className="my-2 font-bold">
-                      Rp{" "}
-                      {
-                        data?.variants[0].variant_option[0]
-                          .variant_option_values.price
-                      }
-                    </p>
                     <Button>
                       {" "}
                       <Link
                         to="/buyer/add-cart"
                         search={{
                           product_id: data.id,
-                          varian_id: selectedVariant,
+                          varian_id: selectedVariant
+                            ? selectedVariant
+                            : data.variants[0].id,
                         }}
                       >
                         Beli Sekarang

@@ -138,35 +138,6 @@ export async function authUser() {
   }
 }
 
-// export async function checkAuth(){
-//   const token = localStorage.token;
-//   const setUser = useStore((state) => state.SET_USER);
-//   const {toast} = useToast()
-//   if(!token){
-//     toast({
-//       variant: "destructive",
-//       title: `Error!`,
-//       description: `Please Login First`,
-//     });
-//   }
-
-//   try {
-//     const response = await Axios({
-//       method: "get",
-//       url: `http://localhost:3000/login/auth`,
-//       headers: {
-//           "Content-Type": "multipart/form-data",
-//           'Authorization': `Bearer ${token}`
-//       },
-//       })
-//       setUser(response.data)
-//   } catch(err){
-//     console.log("err",err);
-//     localStorage.removeItem("token");
-//   }
-
-// }
-
 export const Route = createRootRoute({
   component: () => {
     return <App />;

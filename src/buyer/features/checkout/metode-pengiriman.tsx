@@ -14,6 +14,7 @@ interface courierType {
   service: string;
   duration: string;
   price: number;
+  logo: string;
 }
 
 export function MetodePengiriman(props: any) {
@@ -28,7 +29,7 @@ export function MetodePengiriman(props: any) {
   const [open, setOpen] = useState(false);
 
   const courier = useStore((state) => state.courier);
-  // console.log("ini kurir", courier);
+  console.log("ini kurir", courier);
 
   const dataCourir: courierType[] = courier;
   // console.log("kurir dipilih", pengiriman);
@@ -59,7 +60,11 @@ export function MetodePengiriman(props: any) {
                 >
                   <div className="w-full flex items-center justify-between">
                     <div className="flex items-center gap-5">
-                      <img src="" alt="img" className="w-1/5 h-14" />
+                      <img
+                        src={selectedPengiriman.logo}
+                        alt="img"
+                        className="w-1/5 h-14 object-contain"
+                      />
                       <div>
                         <p>{selectedPengiriman.service}</p>
                         <p>{selectedPengiriman.name}</p>
@@ -105,8 +110,12 @@ export function MetodePengiriman(props: any) {
                       key={data.name}
                     >
                       <div className="flex gap-3 items-center">
-                        <img src="" alt="gambar" className="w-10" />
-                        <p>{data.name}</p>
+                        <img src={data.logo} alt="gambar" className="w-10" />
+                        <div className="flex flex-col justify-normal items-start">
+                          <p>{data.name}</p>
+                          <p>{data.service}</p>
+                          <p>{data.duration}</p>
+                        </div>
                       </div>
                       <div>
                         <p>Rp {data.price}</p>

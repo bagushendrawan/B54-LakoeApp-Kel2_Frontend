@@ -18,7 +18,7 @@ function Pesanan() {
     <div>
       <div className="w-full h-screen flex bg-slate-800">
         <SideBar />
-        <div className="w-full p-4 h-screen overflow-y-auto">
+        <div className="w-full p-4 h-screen overflow-y-scroll">
           <PesananPage></PesananPage>
         </div>
       </div>

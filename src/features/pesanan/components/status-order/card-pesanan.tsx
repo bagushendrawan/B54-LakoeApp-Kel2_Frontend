@@ -52,7 +52,7 @@ export function Semua(props: any) {
   });
 
   function switchColor(status: any) {
-    const stats = status.toString();
+    const stats = status?.toString();
     console.log(stats);
     switch (stats) {
       case "BELUM_DIBAYAR":
@@ -73,6 +73,8 @@ export function Semua(props: any) {
               onClick={async () => {
                 await mutateAsync();
                 refetchPesanan();
+                // setStatus(invoiceFetchData?.status);
+                // switchColor(invoiceFetchData?.status);
               }}
               className="border bg-blue-500 text-white font-semibold px-4 rounded-full p-4 mt-3 me-2"
             >
@@ -127,17 +129,20 @@ export function Semua(props: any) {
   useEffect(() => {
     const fetchAndSwitch = async () => {
       const invoiceData = await fetchInvoice();
-      setStatus(invoiceData.status);
-      switchColor(invoiceData.status);
+      if (invoiceData) {
+        setStatus(invoiceData.status);
+        switchColor(invoiceData.status);
+      }
     };
 
     fetchAndSwitch();
-  }, [props.invoice?.id]);
+  }, [props.invoice?.id, invoiceFetchData]);
 
-  useEffect(() => {
-    setStatus(invoiceFetchData?.status);
-    switchColor(invoiceFetchData?.status);
-  }, [invoiceFetchData]);
+  // useEffect(() => {
+  //   console.log("refetch pesanan");
+  //   setStatus(invoiceFetchData?.status);
+  //   switchColor(invoiceFetchData?.status);
+  // }, [invoiceFetchData]);
   return (
     <>
       <div className="border rounded-lg mb-3">

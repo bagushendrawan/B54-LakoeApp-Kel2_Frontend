@@ -1,5 +1,12 @@
 import { create } from "zustand";
 
+type courierType = {
+  name: string;
+  service: string;
+  duration: string;
+  price: number;
+};
+
 type User = {
   id: string;
   name: string;
@@ -21,13 +28,35 @@ type productCreated = {
 };
 
 type Store = {
+  courier: courierType[];
+  setCourier: (newCourier: courierType[]) => void;
+  selectedCourier: courierType | undefined;
+  setSelectedCourier: (newCourier: courierType | undefined) => void;
   user: User;
   SET_USER: (newUser: User) => void;
-  logout: () => void;
-  SET_PRODUCT: (newProduct: productCreated) => void;
   produk: productCreated;
+  SET_PRODUCT: (newProduct: productCreated) => void;
+  logout: () => void;
 };
+
 const useStore = create<Store>()((set) => ({
+  courier: [
+    {
+      name: "",
+      service: "",
+      duration: "",
+      price: 0,
+    },
+  ],
+  setCourier: (newCourier: courierType[]) => set({ courier: newCourier }),
+  selectedCourier: {
+    name: "",
+    service: "",
+    duration: "",
+    price: 0,
+  },
+  setSelectedCourier: (newSelectedCourier: courierType | undefined) =>
+    set({ selectedCourier: newSelectedCourier }),
   user: {
     id: "",
     name: "",
@@ -52,11 +81,11 @@ const useStore = create<Store>()((set) => ({
     });
     localStorage.removeItem("token");
   },
-  SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
   produk: {
     product_id: "",
     varian_id: "",
   },
+  SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
 }));
 
 export default useStore;

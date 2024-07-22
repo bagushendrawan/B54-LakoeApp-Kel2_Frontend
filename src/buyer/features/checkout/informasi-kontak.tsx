@@ -2,22 +2,18 @@ import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import useStore from "@/z-context";
 
-export function InformasiKontak() {
-  const user = useStore((state) => state.user)
-  // console.log(user);
-  
+export function InformasiKontak(props: any) {
+  const user = useStore((state) => state.user);
+  // console.log("ini user checkout", user);
+  props.form?.setValue("user_id", user.id);
+
   return (
     <>
       <div className="p-3 border border-black rounded-md mb-5">
         <h1 className="font-bold mt-3">Informasi Kontak</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>
-          <Input
-            id="nama"
-            name="name"
-            className="border-black"
-            defaultValue={user.name}
-          />
+          <Input id="nama" className="border-black" defaultValue={user.name} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="phone-input">Nomor Whatsapp</Label>

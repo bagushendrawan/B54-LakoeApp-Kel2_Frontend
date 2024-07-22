@@ -1,16 +1,14 @@
-import { Button } from "@/components/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/dialog";
 import { Input } from "@/components/input";
-import { Label } from "@/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import useStore from "@/z-context";
 import { useEffect, useState } from "react";
-import { BsBag, BsCash, BsCreditCard, BsGift, BsInfoCircle, BsPlus, BsQuestionDiamond, BsReceipt } from "react-icons/bs";
+import { BsBag, BsCash, BsCreditCard, BsInfoCircle } from "react-icons/bs";
 import Axios from "axios";
-import { useForm } from "react-hook-form";
-import { useToast } from "@/components/use-toast";
-import { Chart } from "./chart";
+// import { useForm } from "react-hook-form";
+// import { useToast } from "@/components/use-toast";
+import { Chart } from "./components/chart";
 import WithdrawDialog from "./components/withdrawDialog";
+import AddBankAccountDialog from "./components/addBankAccountDialog";
 
 type bankData = {
     bank: string,
@@ -19,7 +17,7 @@ type bankData = {
 };
 
 export function DashboardPage() {
-    const { toast } = useToast();
+    // const { toast } = useToast();
     const user = useStore((state) => state.user);
     const [bankData, setBankData] = useState<bankData>();
     useEffect(() => {
@@ -39,36 +37,37 @@ export function DashboardPage() {
         fetchBank();
     }, []);
 
-    const formBank = useForm<bankData>();
-    async function onSubmit(data: bankData) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        try {
-            console.log("data", data);
-            const response = await Axios({
-                method: "patch",
-                url: `http://localhost:3000/users/bank`,
-                data: data,
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-            });
-            console.log(response.data);
-            setBankData(response.data);
-            toast({
-                variant: "success",
-                title: `Bank Updated!`
-            });
-        } catch (error: any) {
-            toast({
-                variant: "destructive",
-                title: `Error!`,
-                description: `${error.message}`,
-            });
-            console.log(error);
-        }
-    }
+    // const formBank = useForm<bankData>();
+    // async function onSubmit(data: bankData) {
+    //     // Do something with the form values.
+    //     // ✅ This will be type-safe and validated.
+    //     try {
+    //         console.log("data", data);
+    //         const response = await Axios({
+    //             method: "patch",
+    //             url: `http://localhost:3000/users/bank`,
+    //             data: data,
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Authorization": `Bearer ${localStorage.getItem("token")}`
+    //             },
+    //         });
+    //         console.log(response.data);
+    //         setBankData(response.data);
+    //         toast({
+    //             variant: "success",
+    //             title: `Bank Updated!`
+    //         });
+    //     } catch (error: any) {
+    //         toast({
+    //             variant: "destructive",
+    //             title: `Error!`,
+    //             description: `${error.message}`,
+    //         });
+    //         console.log(error);
+    //     }
+    // }
+
     return (
         <div className=" w-full flex flex-col gap-4 ms-4 p-4">
             <h1 className="text-2xl font-bold text-white">Credit Dashboard</h1>
@@ -77,62 +76,10 @@ export function DashboardPage() {
                     <p className="text-sm text-gray-600 mb-2">Current Balance</p>
                     <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
                     {/* <Button className="bg-green-500 w-full mx-auto"><BsPlus className="text-xl me-2"></BsPlus>Tambahkan Akun Bank</Button> */}
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button className="bg-green-500 w-full mx-auto">
-                                <BsPlus className="text-xl me-2" />
-                                Tambahkan Akun Bank
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                                <DialogTitle>Update Akun Bank</DialogTitle>
-                                <DialogDescription>
-                                    Update Akun Bank Untuk Seller
-                                </DialogDescription>
-                            </DialogHeader>
-                            <form onSubmit={formBank.handleSubmit(onSubmit)}>
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="name" className="text-right">
-                                            Bank
-                                        </Label>
-                                        <Input
-                                            id="bank"
-                                            defaultValue={bankData?.bank}
-                                            {...formBank.register("bank")}
-                                            className="col-span-3"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="username" className="text-right">
-                                            Nomor Rekening
-                                        </Label>
-                                        <Input
-                                            id="nomor_rekening"
-                                            defaultValue={bankData?.acc_number}
-                                            {...formBank.register("acc_number")}
-                                            className="col-span-3"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="name" className="text-right">
-                                            Nama Rekening
-                                        </Label>
-                                        <Input
-                                            id="nama_rekening"
-                                            defaultValue={bankData?.acc_name}
-                                            {...formBank.register("acc_name")}
-                                            className="col-span-3"
-                                        />
-                                    </div>
-                                </div>
-                                <DialogFooter>
-                                    <Button type="submit">Save changes</Button>
-                                </DialogFooter>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+                    <div className="flex flex-col gap-2">
+                        <AddBankAccountDialog />
+                        <WithdrawDialog />
+                    </div>
                 </div>
                 <div className="w-3/12 bg-white p-4">
                     <BsCreditCard className="text-3xl mb-4 text-green-600"></BsCreditCard>

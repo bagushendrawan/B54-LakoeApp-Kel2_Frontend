@@ -11,6 +11,7 @@ import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDia
 import DropdownSort from "./components/dropDownSort";
 import IconInput from "./components/iconInput";
 import ProductItem from "./components/productItem";
+import { api } from "@/lib/api";
 
 const Product = () => {
   // categories & action
@@ -166,7 +167,7 @@ const Product = () => {
         console.log(token);
 
         const res = await axios.get(
-          "http://localhost:3000/product/all/5631a688-ee80-44eb-a8c5-88da82ff16fb",
+          `${api}/product/all/5631a688-ee80-44eb-a8c5-88da82ff16fb`,
           {
             params: {
               searchTerm,
@@ -190,7 +191,7 @@ const Product = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/categories");
+        const res = await axios.get(`${api}/categories`);
 
         setCategories(res.data);
       } catch (error) {

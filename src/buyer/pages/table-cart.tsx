@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
+import { api } from "@/lib/api";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
@@ -28,7 +29,7 @@ export function TableCart() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/cart-items/all`,
+          url: `${api}/cart-items/all`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -36,7 +37,7 @@ export function TableCart() {
         });
 
         setItems(response.data);
-        console.log("hey",response.data)
+        console.log("hey", response.data);
       } catch (error) {
         console.log(error);
       }
@@ -44,8 +45,6 @@ export function TableCart() {
 
     fetchItems();
   }, []);
-
-  
 
   return (
     <>
@@ -83,10 +82,9 @@ export function TableCart() {
                   </div>
 
                   <Button className="w-1/4">
-                    <Link to="/buyer/checkout" search={{ id : data.id }}>
+                    <Link to="/buyer/checkout" search={{ id: data.id }}>
                       Bayar Sekarang
                     </Link>
-                    
                   </Button>
                 </div>
               </DropdownMenuCheckboxItem>

@@ -18,6 +18,7 @@ interface MidtransSnap extends Window {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { api } from "@/lib/api";
 
 export type checkoutForm = {
   courier_code: string;
@@ -65,7 +66,7 @@ export function CheckoutPage() {
       // console.log("HIT SUBMIT");
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/buyers/buy`,
+        url: `${api}/buyers/buy`,
         data,
         headers: {
           "Content-Type": "application/json",

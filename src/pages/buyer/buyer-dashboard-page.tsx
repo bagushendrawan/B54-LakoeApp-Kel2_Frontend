@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+import { api } from "@/lib/api";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
@@ -48,7 +49,7 @@ export function BuyerDashboardPage() {
     try {
       const response = await Axios({
         method: "get",
-        url: "http://localhost:3000/buyers/products",
+        url: `${api}/buyers/products`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

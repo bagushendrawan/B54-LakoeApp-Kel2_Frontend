@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { DialogKurir } from "./component/dialogKurir";
+import { api } from "@/lib/api";
 
 export type kurir = {
   courier_code: string;
@@ -31,7 +32,7 @@ export function PengirimanPages() {
     try {
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/form-produk/add/kurir/${user.id}`,
+        url: `${api}/form-produk/add/kurir/${user.id}`,
         data: dataForm,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -55,7 +56,7 @@ export function PengirimanPages() {
     async function fetchKurir() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/form-produk/get/kurir/${user.id}`,
+        url: `${api}/form-produk/get/kurir/${user.id}`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

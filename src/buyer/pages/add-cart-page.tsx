@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/add-cart";
 import Axios from "axios";
 import { useEffect, useState } from "react";
@@ -53,7 +54,7 @@ export function AddCartPage() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/${params.product_id}/${params.varian_id}`,
+          url: `${api}/form-produk/${params.product_id}/${params.varian_id}`,
           data: dataOrder,
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +94,7 @@ export function AddCartPage() {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/cart-items/${params.product_id}`,
+        url: `${api}/cart-items/${params.product_id}`,
         data,
         headers: {
           "Content-Type": "application/json",

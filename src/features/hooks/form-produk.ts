@@ -4,6 +4,7 @@ import Axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "../../components/use-toast";
+import { api } from "@/lib/api";
 
 
 export type formDTO = {
@@ -143,7 +144,7 @@ export const useProdukForm = () => {
 
     const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/form-produk`,
+        url: `${api}/form-produk`,
         data: form_data,
         headers: { 
           "Content-Type": "multipart/form-data",

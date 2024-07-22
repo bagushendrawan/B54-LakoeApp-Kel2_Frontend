@@ -1,3 +1,4 @@
+import { api } from "@/lib/api";
 import Axios from "axios";
 import { useForm } from "react-hook-form";
 
@@ -6,7 +7,7 @@ export const formCourier = (invID : string) => {
     async function onSubmit(){
         await Axios({
             method: "post",
-            url: `http://localhost:3000/form-produk/order-couriers/${invID}`,
+            url: `${api}/form-produk/order-couriers/${invID}`,
             headers: { 
               "Content-Type": "multipart/form-data",
               "Authorization": `Bearer ${localStorage.getItem("token")}`

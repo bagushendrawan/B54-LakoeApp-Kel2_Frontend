@@ -1,3 +1,4 @@
+import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/checkout";
 import useStore from "@/z-context";
 import Axios from "axios";
@@ -36,7 +37,7 @@ export function RingkasanPesanan(props: any) {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/cart-items/${params.id}`,
+          url: `${api}/cart-items/${params.id}`,
           data: dataProduct,
           headers: {
             "Content-Type": "application/json",

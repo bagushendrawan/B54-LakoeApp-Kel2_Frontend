@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { api } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
@@ -20,7 +21,7 @@ export function Semua(props: any) {
       console.log("props", props.invoice?.id);
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/form-produk/${props.invoice?.id}`,
+        url: `${api}/form-produk/${props.invoice?.id}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -41,7 +42,7 @@ export function Semua(props: any) {
     mutationFn: async () => {
       return await Axios({
         method: "post",
-        url: `http://localhost:3000/form-produk/order-couriers/${props.invoice?.id}`,
+        url: `${api}/form-produk/order-couriers/${props.invoice?.id}`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

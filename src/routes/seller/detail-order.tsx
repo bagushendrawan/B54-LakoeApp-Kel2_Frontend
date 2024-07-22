@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { DetailOrderPage } from "../../pages/detailOrder/detail-order-page";
 import { ProtectedRoute, ProtectedSellerRoute } from "../__root";
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/seller/detail-order")({
   component: () => (
@@ -61,7 +62,7 @@ function DetailOrder() {
     async function getInvoices() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/product/invoice/${params.id}`,
+        url: `${api}/product/invoice/${params.id}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +73,7 @@ function DetailOrder() {
     async function getItem() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/product/items/${params.itemID}`,
+        url: `${api}/product/items/${params.itemID}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

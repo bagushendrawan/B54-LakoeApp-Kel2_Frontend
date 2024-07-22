@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Axios from "axios";
 import { useEffect } from "react";
 import useStore from "./z-context";
+import { api } from "./lib/api";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,7 @@ function App() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/login/auth`,
+          url: `${api}/login/auth`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

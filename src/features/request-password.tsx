@@ -14,10 +14,11 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
+import { api } from "@/lib/api";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -45,72 +46,84 @@ export function RequestPassword() {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/users/request-password`,
+        url: `${api}/users/request-password`,
         data: data,
-        headers: { 
-          "Content-Type": "application/json"
-         },
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       toast({
         variant: "success",
         title: `Please Check Your Email!`,
       });
-
-      
     } catch (error: any) {
-      console.log("error",error);
+      console.log("error", error);
       toast({
         variant: "destructive",
         title: `Error! ${error.response.status}`,
         description: `${error.message}`,
-      })
+      });
     }
   }
 
   return (
     <div className="w-8/12 h-10/12 rounded-sm mt-32 m-auto flex">
       <div className="flex bg-white h-full w-1/2 flex-col justify-start items-center pb-16 pt-8 px-4 rounded-s-sm">
-      <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">Change Password</h1>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-2 w-4/6"
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="mt-4">
-                <FormLabel className="font-normal mt-2">
-                  Email <Label className="text-red-600">*</Label>
-                </FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="Masukan email" {...field} required />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">
+          Change Password
+        </h1>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-2 w-4/6"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="mt-4">
+                  <FormLabel className="font-normal mt-2">
+                    Email <Label className="text-red-600">*</Label>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="Masukan email"
+                      {...field}
+                      required
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <div className="flex gap-4 items-center text-sm">
-            {!form.formState.isSubmitting ? <Button type="submit" className="bg-red-600">Request</Button> : <Button type="submit" disabled className="bg-red-600">Request <LoadingSpinner></LoadingSpinner></Button>}
-            <div className="flex flex-col">
-
+            <div className="flex gap-4 items-center text-sm">
+              {!form.formState.isSubmitting ? (
+                <Button type="submit" className="bg-red-600">
+                  Request
+                </Button>
+              ) : (
+                <Button type="submit" disabled className="bg-red-600">
+                  Request <LoadingSpinner></LoadingSpinner>
+                </Button>
+              )}
               <div className="flex flex-col">
-                <h1 className="me-1">Do you remember your account?</h1>
-                <Link to="/auth/login" className="text-blue-500">
-                  Login
-                </Link>
+                <div className="flex flex-col">
+                  <h1 className="me-1">Do you remember your account?</h1>
+                  <Link to="/auth/login" className="text-blue-500">
+                    Login
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
-      </Form>
+          </form>
+        </Form>
       </div>
       <div className="flex flex-col w-1/2 bg-red-50 justify-center items-center rounded-e-sm">
-      <img src="/auth/login.png" className="w-2/4 object-cover"/>
-      <img src="/Lakoe.png" className="w-2/6"/>
+        <img src="/auth/login.png" className="w-2/4 object-cover" />
+        <img src="/Lakoe.png" className="w-2/6" />
       </div>
     </div>
   );

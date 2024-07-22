@@ -1,5 +1,6 @@
 import App from "@/App";
 import { useToast } from "@/components/use-toast";
+import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import useStore from "@/z-context";
 import {
@@ -115,7 +116,7 @@ export async function authUser() {
   try {
     const auth = await Axios({
       method: "get",
-      url: `http://localhost:3000/login/auth`,
+      url: `${api}/login/auth`,
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,

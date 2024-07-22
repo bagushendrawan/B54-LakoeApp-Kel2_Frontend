@@ -13,6 +13,7 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { Semua } from "./card-pesanan";
 import { CollapsibleVariant } from "./collapsible-variant";
+import { api } from "@/lib/api";
 
 export function DaftarPesanan() {
   const token = localStorage.getItem("token");
@@ -180,7 +181,7 @@ export function DaftarPesanan() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9/${order}`,
+          url: `${api}/form-produk/pesanan/${user.store_id}/9/${order}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

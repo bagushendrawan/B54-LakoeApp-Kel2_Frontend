@@ -27,6 +27,7 @@ import { BsBag, BsCash, BsCreditCard, BsPlus } from "react-icons/bs";
 import { Chart } from "./chart";
 import { CardTransaction } from "./components/cardTransaction";
 import WithdrawDialog from "./components/withdrawDialog";
+import { api } from "@/lib/api";
 
 type bankData = {
   bank: string;
@@ -45,7 +46,7 @@ export function DashboardPage() {
     async function fetchBank() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/users/bank`,
+        url: `${api}/users/bank`,
         data: user.store_id,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -62,7 +63,7 @@ export function DashboardPage() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9/1`,
+          url: `${api}/form-produk/pesanan/${user.store_id}/9/1`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -83,7 +84,7 @@ export function DashboardPage() {
       try {
         const response = await Axios({
           method: "post",
-          url: `http://localhost:3000/form-produk/bulanini/${user.store_id}`,
+          url: `${api}/form-produk/bulanini/${user.store_id}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -107,7 +108,7 @@ export function DashboardPage() {
       console.log("data", data);
       const response = await Axios({
         method: "patch",
-        url: `http://localhost:3000/users/bank`,
+        url: `${api}/users/bank`,
         data: data,
         headers: {
           "Content-Type": "application/json",

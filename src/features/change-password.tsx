@@ -19,6 +19,7 @@ import {
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
+import { api } from "@/lib/api";
 
 const loginSchema = z
   .object({
@@ -56,7 +57,7 @@ export function ChangePassword() {
       console.log("token change pass", token);
       const response = await Axios({
         method: "patch",
-        url: `http://localhost:3000/users/change-password/${token}`,
+        url: `${api}/users/change-password/${token}`,
         data: data,
         headers: {
           "Content-Type": "application/json",

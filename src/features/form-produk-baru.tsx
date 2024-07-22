@@ -34,6 +34,7 @@ import { useForm } from "react-hook-form";
 import { Form } from "../components/form";
 import { useProdukForm } from "./hooks/form-produk";
 import { PreviewHalaman } from "./preview-halaman";
+import { api } from "@/lib/api";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   const dataTransfer = new DataTransfer();
@@ -118,7 +119,7 @@ export function FormProdukBaru() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/categories`,
+          url: `${api}/categories`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

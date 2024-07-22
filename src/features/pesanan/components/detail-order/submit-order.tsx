@@ -1,4 +1,5 @@
 import { Button } from "@/components/button";
+import { api } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Axios from "axios";
 
@@ -8,7 +9,7 @@ export function SubmitOrder(props: any) {
       console.log("props", props.invoice?.id);
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/form-produk/${props.invoice?.id}`,
+        url: `${api}/form-produk/${props.invoice?.id}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -29,7 +30,7 @@ export function SubmitOrder(props: any) {
     mutationFn: async () => {
       return await Axios({
         method: "post",
-        url: `http://localhost:3000/form-produk/order-couriers/${props.invoice?.id}`,
+        url: `${api}/form-produk/order-couriers/${props.invoice?.id}`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,7 +43,7 @@ export function SubmitOrder(props: any) {
     mutationFn: async () => {
       return await Axios({
         method: "post",
-        url: `http://localhost:3000/form-produk/batalkan/${props.invoice?.id}`,
+        url: `${api}/form-produk/batalkan/${props.invoice?.id}`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

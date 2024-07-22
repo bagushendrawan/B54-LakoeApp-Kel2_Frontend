@@ -2,22 +2,22 @@ import { FC } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
 import { Button } from '@/components/button';
 import { MdOutlineDelete } from 'react-icons/md';
-
-interface IProduct {
-    id: number;
-    image: string;
-    name: string;
-    price: number;
-    stock: number;
-    sku: string;
-    is_active: boolean;
-}
+import axios from 'axios';
 
 interface IUpdatePriceProps {
     product: IProduct;
 }
 
 const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
+    // delete product
+    const deleteProduct = async (id: string) => {
+        try {
+            const res = await axios.delete(`http://localhost:3000/product/${id}`)
+            return res.data
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    }
 
     return (
         <Dialog>
@@ -49,6 +49,9 @@ const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
                         <DialogClose>
                             <Button
                                 className="px-4 py-2 text-white bg-blue-500 rounded-full"
+                                onClick={() => {
+                                    deleteProduct(product.id)
+                                }}
                             >
                                 Ya, Hapus
                             </Button>

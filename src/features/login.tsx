@@ -61,8 +61,17 @@ export function LoginForm() {
         },
       });
 
+      
       const user = response.data.user;
       const token = response.data.token;
+      const checkAuth = await Axios({
+        method: "get",
+        url: `http://localhost:3000/login/auth`,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : `Bearer ${token}`
+        },
+      });
 
       if (!token) {
         throw new Error("Token Not Found");
@@ -73,7 +82,7 @@ export function LoginForm() {
       }
 
       localStorage.setItem("token", token);
-      setUser(response.data);
+      setUser(checkAuth.data);
       toast({
         variant: "success",
         title: `Welcome ${user.name}!`,

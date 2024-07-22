@@ -12,16 +12,6 @@ import { LuCopy } from "react-icons/lu";
 import DeleteProductDialog from "./deleteProductDialog";
 import { FC } from "react";
 
-interface IProduct {
-    id: number;
-    image: string;
-    name: string;
-    price: number;
-    stock: number;
-    sku: string;
-    is_active: boolean;
-}
-
 interface IDropDownMenuProps {
     product: IProduct;
 }

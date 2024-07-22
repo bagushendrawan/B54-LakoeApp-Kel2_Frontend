@@ -7,7 +7,7 @@ type courierType = {
   price: number;
 };
 
-type userType = {
+type User = {
   id: string;
   name: string;
   email: string;
@@ -17,13 +17,25 @@ type userType = {
   store_id: string;
 };
 
+type userType = {
+  token: string;
+  user: User;
+};
+
+type productCreated = {
+  product_id: string;
+  varian_id: string;
+};
+
 type Store = {
   courier: courierType[];
   setCourier: (newCourier: courierType[]) => void;
   selectedCourier: courierType | undefined;
   setSelectedCourier: (newCourier: courierType | undefined) => void;
-  user: userType;
-  SET_USER: (newUser: userType) => void;
+  user: User;
+  SET_USER: (newUser: User) => void;
+  produk: productCreated;
+  SET_PRODUCT: (newProduct: productCreated) => void;
   logout: () => void;
 };
 
@@ -54,7 +66,7 @@ const useStore = create<Store>()((set) => ({
     isVerified: false,
     store_id: "",
   },
-  SET_USER: (newUser: userType) => set({ user: newUser }),
+  SET_USER: (newUser: User) => set({ user: newUser }),
   logout: () => {
     set({
       user: {
@@ -69,6 +81,11 @@ const useStore = create<Store>()((set) => ({
     });
     localStorage.removeItem("token");
   },
+  produk: {
+    product_id: "",
+    varian_id: "",
+  },
+  SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
 }));
 
 export default useStore;

@@ -1,6 +1,7 @@
 import { BsBoxSeam } from "react-icons/bs";
+import { formattedNumber } from "../status-order/card-pesanan";
 
-export function DetailProduk() {
+export function DetailProduk(props : any) {
   return (
     <>
       <div className="py-4 px-3 text-xl">
@@ -13,21 +14,21 @@ export function DetailProduk() {
         <div className="border w-full m-2 flex justify-between">
           <div className="flex p-2 gap-3">
             <img
-              src="https://down-id.img.susercontent.com/file/ff4ff54d7b4222546bf55bcd85e81660"
+              src={props.item?.img}
               alt="cardImage"
               className="w-20"
             />
             <div>
               <p className="font-bold">
-                T-SHIRT BASIC - BLACK WHITE | kaos hitam putih - L
+                {props.item?.name}
               </p>
-              <p className="font-light">3 Barang</p>
+              <p className="font-light">{props.item?.quantity} Barang</p>
             </div>
           </div>
 
           <div className="p-2">
             <p className="font-light">Total Belanja</p>
-            <p className="font-bold">Rp 200.000</p>
+            <p className="font-bold">{formattedNumber(props.item?.quantity*props.item?.price)}</p>
           </div>
         </div>
       </div>

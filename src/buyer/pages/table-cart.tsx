@@ -36,6 +36,7 @@ export function TableCart() {
         });
 
         setItems(response.data);
+        console.log("hey",response.data)
       } catch (error) {
         console.log(error);
       }

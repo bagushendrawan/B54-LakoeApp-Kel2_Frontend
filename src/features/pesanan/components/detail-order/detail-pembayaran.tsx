@@ -1,6 +1,7 @@
 import { IoWalletOutline } from "react-icons/io5";
+import { formattedNumber } from "../status-order/card-pesanan";
 
-export function DetailPembayaran() {
+export function DetailPembayaran(props: any) {
   return (
     <>
       <div className="py-4 px-3 text-2xl">
@@ -12,13 +13,13 @@ export function DetailPembayaran() {
 
         <div className="mb-2 pb-2 mr-5 border-b-2">
           <div className="flex justify-between">
-            <p>Total Harga (1 Barang)</p>
-            <p>Rp 190.000</p>
+            <p>Total Harga ({props.item?.quantity} Barang)</p>
+            <p>{formattedNumber(props.item?.quantity*props.item?.price)}</p>
           </div>
 
           <div className="flex justify-between">
             <p>Total Ongkos Kirim (10Kg)</p>
-            <p>Rp 20.000</p>
+            <p>{formattedNumber(props.courier?.price)}</p>
           </div>
 
           <div className="flex justify-between">
@@ -34,7 +35,7 @@ export function DetailPembayaran() {
 
         <div className="flex justify-between mb-2 pb-2 mr-5">
           <p className="font-bold">Rincian Pembayaran</p>
-          <p className="font-bold">Rp 210.000</p>
+          <p className="font-bold">{formattedNumber((props.item?.quantity*props.item?.price)+props.courier?.price)}</p>
         </div>
       </div>
     </>

@@ -1,12 +1,14 @@
 import { MainSetting } from '@/features/mainInformasi'
 import { SideBar } from '@/features/side-bar'
 import { createFileRoute } from '@tanstack/react-router'
-import { ProtectedRoute } from '../__root'
+import { ProtectedRoute, ProtectedSellerRoute } from '../__root'
 
 export const Route = createFileRoute('/seller/atur-toko')({
   component: () => (
     <ProtectedRoute>
+      <ProtectedSellerRoute>
       <AturToko/>
+      </ProtectedSellerRoute>
     </ProtectedRoute>
   )
 })

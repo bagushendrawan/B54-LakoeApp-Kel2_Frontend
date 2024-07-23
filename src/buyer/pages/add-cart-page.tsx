@@ -97,7 +97,7 @@ export function AddCartPage() {
 
       const response = await Axios({
         method: "post",
-        url: `${api}/cart-items/${params.product_id}`,
+        url: `${api}/cart-items/${params.product_id}/${params.varian_id}`,
         data,
         headers: {
           "Content-Type": "application/json",
@@ -108,6 +108,34 @@ export function AddCartPage() {
       console.log("ini data post", response.data);
       setDataCart(data);
       navigate({ to: "/buyer/dashboard" });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addCartLangsung() {
+    try {
+      console.log("hit langsung");
+      const data = {
+        // store_id = params.store_id
+        attachments: dataOrder.attachments,
+        name: dataOrder.name,
+        price: dataOrder.price,
+        quantity: quantity,
+      };
+
+      const response = await Axios({
+        method: "post",
+        url: `${api}/cart-items/langsung/${params.product_id}/${params.varian_id}`,
+        data,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      console.log("ini data langsung", response.data);
+      navigate({ to: "/buyer/checkout", search: { id: response.data.id } });
     } catch (error) {
       console.log(error);
     }
@@ -187,14 +215,22 @@ export function AddCartPage() {
               </div>
 
               <div className="flex justify-between mt-5">
-                <Button>
+                <Button onClick={addCartLangsung} className="me-4">
                   {/* <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
                     Beli Langsung
                   </Link> */}
+                  Beli Langsung
                 </Button>
-                <Link className="gap-2" onClick={addCart} to="/buyer/dashboard">
+
+                <Button onClick={addCart} className="me-4">
+                  {/* <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
+                    Beli Langsung
+                  </Link> */}
+                  Tambahkan Ke Keranjang
+                </Button>
+                {/* <Link className="gap-2" onClick={addCart} to="/buyer/dashboard">
                   Keranjang <FaArrowRightFromBracket />
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

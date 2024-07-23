@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "@/lib/api";
 import { LoadingSpinner } from "@/routes/__root";
+import useStore from "@/z-context";
 
 export type checkoutForm = {
   courier_code: string;
@@ -62,11 +63,15 @@ export const useCheckoutForm = () => {
 
 export function CheckoutPage() {
   const formCheckout = useCheckoutForm();
+  const disc = useStore((state) => state.discount);
   async function onSubmitForm(data: any) {
     try {
+      console.log("data", data);
       const newData = {
         ...data,
-        prices: data.prices + data.service_charge,
+        prices:
+          data.prices + data.service_charge - data.prices * (disc.amount / 100),
+        discount_id: disc.id,
       };
       console.log("HIT SUBMIT", newData);
       const response = await Axios({

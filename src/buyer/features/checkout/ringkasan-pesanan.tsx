@@ -21,8 +21,9 @@ interface productItemsForm {
 
 export function RingkasanPesanan(props: any) {
   const params: paramsTypes = Route.useSearch();
-
+  const disc = useStore((state) => state.discount);
   const selectedCourier = useStore((state) => state.selectedCourier);
+  const [totalPrice, setTotalPrice] = useState(0);
   // console.log("ini kurir dipilih", selectedCourier);
 
   const [dataProduct, setDataProduct] = useState<productItemsForm>({
@@ -75,6 +76,13 @@ export function RingkasanPesanan(props: any) {
     fetchProduct();
   }, []);
 
+  useEffect(() => {
+    const productAmount = dataProduct.amount;
+    const shippingCost = selectedCourier?.price || 0;
+    const discountAmount = disc ? dataProduct.price * (disc.amount / 100) : 0;
+    setTotalPrice(productAmount + shippingCost - discountAmount);
+  }, [dataProduct, selectedCourier, disc]);
+
   return (
     <>
       <div className="border border-blue-900 bg-blue-300 w-5/6 rounded-lg p-3 mb-4">
@@ -102,7 +110,16 @@ export function RingkasanPesanan(props: any) {
         {selectedCourier?.price ? (
           <div className="flex justify-between items-center pb-4 border-b-2">
             <p>Biaya Pengiriman</p>
-            <p>Rp {formattedNumber(selectedCourier?.price)}</p>
+            <p>{formattedNumber(selectedCourier?.price)}</p>
+          </div>
+        ) : (
+          <div className="flex justify-between items-center border-b-2"></div>
+        )}
+
+        {disc ? (
+          <div className="flex justify-between items-center pb-4 border-b-2">
+            <p>Discount</p>
+            <p>{formattedNumber(dataProduct.price * (disc.amount / 100))}</p>
           </div>
         ) : (
           <div className="flex justify-between items-center border-b-2"></div>
@@ -110,15 +127,7 @@ export function RingkasanPesanan(props: any) {
 
         <div className="flex justify-between items-center my-4">
           <p>Total Pembayaran ({dataProduct.quantity})</p>
-          {selectedCourier && dataProduct.amount + selectedCourier.price ? (
-            <p>
-              Rp{" "}
-              {selectedCourier &&
-                formattedNumber(dataProduct.amount + selectedCourier.price)}
-            </p>
-          ) : (
-            <p>Rp {formattedNumber(dataProduct.amount)}</p>
-          )}
+          <p>{formattedNumber(totalPrice)}</p>
         </div>
       </div>
     </>

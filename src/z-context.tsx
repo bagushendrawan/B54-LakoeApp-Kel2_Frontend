@@ -23,6 +23,12 @@ type productCreated = {
   varian_id: string;
 };
 
+type discount = {
+  id: string;
+  code: string;
+  amount: number;
+};
+
 type Store = {
   courier: courierType[];
   setCourier: (newCourier: courierType[]) => void;
@@ -32,6 +38,9 @@ type Store = {
   SET_USER: (newUser: User) => void;
   produk: productCreated;
   SET_PRODUCT: (newProduct: productCreated) => void;
+  discount: discount;
+  SET_DISCOUNT: (newDisc: discount) => void;
+  DELETE_DISCOUNT: () => void;
   logout: () => void;
 };
 
@@ -65,6 +74,21 @@ const useStore = create<Store>()((set) => ({
     store_id: "",
   },
   SET_USER: (newUser: User) => set({ user: newUser }),
+  discount: {
+    id: "",
+    code: "",
+    amount: 0,
+  },
+  SET_DISCOUNT: (newDisc: discount) => set({ discount: newDisc }),
+  DELETE_DISCOUNT: () => {
+    set({
+      discount: {
+        id: "",
+        code: "",
+        amount: 0,
+      },
+    });
+  },
   logout: () => {
     set({
       user: {

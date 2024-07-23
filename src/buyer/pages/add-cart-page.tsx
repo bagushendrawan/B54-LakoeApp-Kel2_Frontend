@@ -77,11 +77,7 @@ export function AddCartPage() {
         };
         setQuantity(data.quantity);
         setDataOrder(data);
-<<<<<<< HEAD
-        console.log("ini data order", data);
-=======
         // console.log("ini data order", data);
->>>>>>> origin/dev
       } catch (error) {
         console.log(error);
       }
@@ -112,10 +108,7 @@ export function AddCartPage() {
 
       console.log("ini data post", response.data);
       setDataCart(data);
-<<<<<<< HEAD
-=======
       navigate({ to: "/buyer/dashboard" });
->>>>>>> origin/dev
     } catch (error) {
       console.log(error);
     }

@@ -11,8 +11,17 @@ import {
   AccordionTrigger,
 } from "../components/accordion";
 
-import { BsPerson, BsPersonBadge } from "react-icons/bs";
+import { Button } from "@/components/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/dialog";
+import { Input } from "@/components/input";
 import useStore from "@/z-context";
+import { BsPerson } from "react-icons/bs";
 
 export function SideBar() {
   // const user = useStore((state) => state.user);
@@ -102,13 +111,46 @@ export function SideBar() {
             </div>
             <div className="mb-5">
               <li>
-                <Link
-                  to="/auth/login"
-                  className="[&.active]:font-bold flex gap-2 items-center"
-                  onClick={logOutUser}
-                >
-                  <BsPerson /> Logout
-                </Link>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div className="w-5/6 rounded-lg py-3 mb-4 cursor-pointer">
+                      <p className="flex gap-2 items-center font-bold">
+                        <BsPerson /> Profile
+                      </p>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="text-sm">
+                    <DialogHeader className="border-b-2 py-3">
+                      <DialogTitle>Profile Store</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="flex gap-5">
+                      <img
+                        src="https://img.freepik.com/free-vector/leaf-maple-icon-logo-design_474888-2154.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1721520000&semt=sph"
+                        alt="logo"
+                        className="w-1/5"
+                      />
+
+                      <div>
+                        <p className="font-bold text-xl mb-1">Nama Store</p>
+                        <p className="font-light italic mb-1">Slogan</p>
+                        <p>Alamat</p>
+                      </div>
+                    </div>
+
+                    <p>Deskripsi toko</p>
+
+                    <Link
+                      to="/auth/login"
+                      className="[&.active]:font-bold text-lg flex justify-end gap-2 items-center"
+                      onClick={logOutUser}
+                    >
+                      <button className="bg-red-600 px-4 py-1 text-white rounded-lg">
+                        Logout
+                      </button>
+                    </Link>
+                  </DialogContent>
+                </Dialog>
               </li>
             </div>
           </div>

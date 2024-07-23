@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
+import useStore from "@/z-context";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
@@ -36,7 +37,7 @@ export function TableCart() {
         });
 
         setItems(response.data);
-        console.log("hey",response.data)
+        console.log("hey", response.data);
       } catch (error) {
         console.log(error);
       }
@@ -45,55 +46,52 @@ export function TableCart() {
     fetchItems();
   }, []);
 
-  
+  const logOutUser = useStore((state) => state.logout);
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          asChild
-          className="w-2/12 border border-black bg-slate-800 :hover"
-        >
-          <Button variant="outline">
-            <div className="flex items-center gap-3 text-xl text-white">
-              <FaShoppingCart className="text-2xl" /> Keranjang
-            </div>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[500px]">
-          <DropdownMenuLabel>List Cart Item</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className="border border-black bg-slate-800">
+        <Button className="hover:bg-slate-800">
+          <div className=" text-xl text-white">
+            <FaShoppingCart className="text-2xl" />
+          </div>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[500px]">
+        <DropdownMenuLabel>List Cart Item</DropdownMenuLabel>
+        <DropdownMenuSeparator />
 
-          {items.map((data, index) => {
-            return (
-              <DropdownMenuCheckboxItem key={index}>
-                <div className="w-full mt-3 flex justify-between items-center">
-                  <div className="w-full flex items-center gap-2">
-                    <img
-                      src={data.image}
-                      alt="image"
-                      className="w-3/12 rounded-sm"
-                    />
+        {items.map((data, index) => {
+          return (
+            <DropdownMenuCheckboxItem key={index}>
+              <div className="w-full mt-3 flex justify-between items-center">
+                <div className="w-full flex items-center gap-2">
+                  <img
+                    src={data.image}
+                    alt="image"
+                    className="w-3/12 rounded-sm"
+                  />
 
-                    <div className="text-s w-full">
-                      <p>{data.name}</p>
-                      <p>{data.quantity} item (100gr)</p>
-                      <p>Rp {data.price}</p>
-                    </div>
+                  <div className="text-s w-full">
+                    <p>{data.name}</p>
+                    <p>{data.quantity} item (100gr)</p>
+                    <p>Rp {data.price}</p>
                   </div>
+                </div>
 
-                  <Button className="w-1/4">
-                    <Link to="/buyer/checkout" search={{ id : data.id }}>
+                <div className="flex gap-3">
+                  <Button>Hapus</Button>
+                  <Button>
+                    <Link to="/buyer/checkout" search={{ id: data.id }}>
                       Bayar Sekarang
                     </Link>
-                    
                   </Button>
                 </div>
-              </DropdownMenuCheckboxItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+              </div>
+            </DropdownMenuCheckboxItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

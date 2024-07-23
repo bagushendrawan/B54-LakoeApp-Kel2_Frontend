@@ -1,6 +1,13 @@
 import { TableCart } from "@/buyer/pages/table-cart";
 import { Button } from "@/components/button";
 import { Card, CardContent, CardFooter } from "@/components/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/dialog";
 import { Input } from "@/components/input";
 import {
   Select,
@@ -10,9 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+import useStore from "@/z-context";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { BsPerson } from "react-icons/bs";
 
 interface VariantOptionValue {
   sku: string;
@@ -40,31 +49,61 @@ interface ProductDashboard {
   store_id: string;
 }
 
+interface Store {
+  name: string;
+}
+
 export function BuyerDashboardPage() {
   const [product, setProduct] = useState<ProductDashboard[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<String>("");
 
-  async function getDataProduct() {
-    try {
-      const response = await Axios({
-        method: "get",
-        url: "http://localhost:3000/buyers/products",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      setProduct(response.data);
-      // console.log("fetchproduk",response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
+  const [search, setSearch] = useState<string>("");
+  const [store, setStore] = useState<Store[]>([]);
 
   useEffect(() => {
+    async function getDataProduct() {
+      try {
+        const response = await Axios({
+          method: "get",
+          url: "http://localhost:3000/buyers/products",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        setProduct(response.data);
+        // console.log("fetchproduk",response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    async function getDataStore() {
+      try {
+        const store = await Axios({
+          method: "get",
+          url: "http://localhost:3000/buyers/store",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setStore(store.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
     getDataProduct();
+    getDataStore();
   }, []);
+
+  const filterByName = product.filter((value) => {
+    return value.name.toLowerCase().includes(search.toLowerCase());
+  });
+
+  const logOutUser = useStore((state) => state.logout);
 
   return (
     <>
@@ -72,11 +111,49 @@ export function BuyerDashboardPage() {
         <div className="flex justify-between items-center font-bold p-4 border-b-2 border-b-black bg-rose-600">
           <h1 className="font-extrabold text-2xl text-white">LAKOEBUYER</h1>
           <h1 className="text-xl text-white">Daftar Produk</h1>
-          <TableCart />
+
+          <div className="flex items-center gap-4">
+            <TableCart />
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="w-5/6 rounded-full p-1 cursor-pointer border-2 border-2-white">
+                  <p className="font-bold text-3xl text-white">
+                    <BsPerson />
+                  </p>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="text-sm">
+                <DialogHeader className="border-b-2 py-3">
+                  <DialogTitle>My Profile</DialogTitle>
+                </DialogHeader>
+
+                <div className="flex gap-5">
+                  <p className="font-bold text-xl mb-1">Nama Saya</p>
+                </div>
+
+                <Link
+                  to="/auth/login"
+                  className="[&.active]:font-bold text-lg flex justify-end gap-2 items-center"
+                  onClick={logOutUser}
+                >
+                  <button className="bg-red-600 px-4 py-1 text-white rounded-lg">
+                    Logout
+                  </button>
+                </Link>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         <div className="flex gap-3 p-3  bg-slate-800">
-          <Input type="text" placeholder="Cari Pesanan" />
+          <Input
+            type="text"
+            placeholder="Cari Pesanan"
+            value={search}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setSearch(e.target.value)
+            }
+          />
 
           <Select>
             <SelectTrigger>
@@ -92,13 +169,15 @@ export function BuyerDashboardPage() {
               <SelectValue placeholder="Toko" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="paling lama">Paling Lama</SelectItem>
+              {store.map((data) => {
+                return <SelectItem value={data.name}>{data.name}</SelectItem>;
+              })}
             </SelectContent>
           </Select>
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 p-3 rounded-lg">
-          {product.map((data, index) => {
+          {filterByName.map((data, index) => {
             return (
               <>
                 <Card key={index} className="w-1/6 border-rose-600">

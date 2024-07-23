@@ -12,6 +12,7 @@ import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { TableCart } from "./table-cart";
 
 interface Data {
   id: number;
@@ -47,7 +48,7 @@ export function AddCartPage() {
   });
 
   const [quantity, setQuantity] = useState<Number>(0);
-  const [dataCart, setDataCart] = useState<any>([])
+  const [dataCart, setDataCart] = useState<any>([]);
 
   useEffect(() => {
     async function fetchVarian() {
@@ -58,7 +59,7 @@ export function AddCartPage() {
           data: dataOrder,
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         const data = {
@@ -75,7 +76,6 @@ export function AddCartPage() {
         setQuantity(data.quantity);
         setDataOrder(data);
         console.log("ini data order", data);
-        
       } catch (error) {
         console.log(error);
       }
@@ -99,20 +99,24 @@ export function AddCartPage() {
         data,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      console.log("ini data post",response.data);
-      setDataCart(data)
+      console.log("ini data post", response.data);
+      setDataCart(data);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <>
-      <div className="bg-white m-3 rounded-lg h-screen flex justify-center">
+    <div className="bg-white m-3 rounded-lg h-screen ">
+      <div className="p-5 flex justify-end">
+        <TableCart />
+      </div>
+
+      <div className="flex justify-center items-center">
         <div className="flex items-center">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
@@ -197,6 +201,6 @@ export function AddCartPage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

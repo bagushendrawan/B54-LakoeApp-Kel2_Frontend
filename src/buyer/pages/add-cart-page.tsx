@@ -97,7 +97,7 @@ export function AddCartPage() {
 
       const response = await Axios({
         method: "post",
-        url: `${api}/cart-items/${params.product_id}`,
+        url: `${api}/cart-items/${params.product_id}/${params.varian_id}`,
         data,
         headers: {
           "Content-Type": "application/json",

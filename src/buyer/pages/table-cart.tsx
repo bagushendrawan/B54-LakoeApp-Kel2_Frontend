@@ -7,7 +7,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
-import useStore from "@/z-context";
 import { api } from "@/lib/api";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
@@ -52,13 +51,11 @@ export function TableCart() {
     console.log("items", items);
   }, []);
 
-  const logOutUser = useStore((state) => state.logout);
-
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="border border-black bg-slate-800">
-        <Button className="hover:bg-slate-800">
-          <div className=" text-xl text-white">
+      <DropdownMenuTrigger asChild className="border border-black">
+        <Button className="bg-white hover:bg-white">
+          <div className=" text-xl text-black">
             <FaShoppingCart className="text-2xl" />
           </div>
         </Button>

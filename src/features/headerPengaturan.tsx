@@ -48,7 +48,6 @@ export function TemplatePesanHeader() {
           <Button
             className={buttonVariants({
               variant: "custom",
-              borderRadius: "xl",
             })}
           >
             Buat Template

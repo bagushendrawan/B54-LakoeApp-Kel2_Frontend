@@ -7,10 +7,10 @@ export const Route = createFileRoute("/seller/dashboard")({
   component: () => (
     <ProtectedRoute>
       <ProtectedSellerRoute>
-      <Index/>
+        <Index />
       </ProtectedSellerRoute>
     </ProtectedRoute>
-  )
+  ),
 });
 
 function Index() {
@@ -20,7 +20,7 @@ function Index() {
   return (
     <div className="w-full h-auto flex bg-slate-800">
       <SideBar />
-      <div className="w-full h-screen pe-4 overflow-y-auto overflow-hidden">
+      <div className="w-full h-screen pe-4 overflow-y-auto">
         <DashboardPage />
       </div>
     </div>

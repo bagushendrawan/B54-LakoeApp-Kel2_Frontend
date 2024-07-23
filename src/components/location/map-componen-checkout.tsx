@@ -19,6 +19,7 @@ import {
 import { Label } from "../label";
 import { getAddress } from "./geoCoding";
 import { SearchControl } from "./search";
+import { api } from "@/lib/api";
 
 interface Items {
   name: string;
@@ -92,7 +93,7 @@ const MapComponentCheckout = (props: any) => {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/cart-items/${params.id}`,
+          url: `${api}/cart-items/${params.id}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -109,11 +110,11 @@ const MapComponentCheckout = (props: any) => {
     getId();
   }, []);
 
-  const [dataGetRates, setDataGetRates] = useState<RatesTypes>({
-    destination_latitude: 0,
-    destination_longitude: 0,
-    items: [],
-  });
+  // const [dataGetRates, setDataGetRates] = useState<RatesTypes>({
+  //   destination_latitude: 0,
+  //   destination_longitude: 0,
+  //   items: [],
+  // });
 
   async function hitRates() {
     try {
@@ -131,7 +132,7 @@ const MapComponentCheckout = (props: any) => {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/buyers/rates/${id}`,
+        url: `${api}/buyers/rates/${id}`,
         data: data,
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +140,7 @@ const MapComponentCheckout = (props: any) => {
         },
       });
 
-      // console.log("ini rates", response.data.courier);
+      console.log("ini rates", response.data.courier);
       setCourier(response.data.courier);
       setOpen(false);
     } catch (error) {

@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "../components/accordion";
 
+<<<<<<< HEAD
 import { Button } from "@/components/button";
 import {
   Dialog,
@@ -20,6 +21,8 @@ import {
   DialogTrigger,
 } from "@/components/dialog";
 import { Input } from "@/components/input";
+=======
+>>>>>>> origin/dev
 import useStore from "@/z-context";
 import { BsPerson } from "react-icons/bs";
 

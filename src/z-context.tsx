@@ -5,6 +5,7 @@ type courierType = {
   service: string;
   duration: string;
   price: number;
+  logo: string;
 };
 
 type User = {
@@ -15,11 +16,6 @@ type User = {
   role_id: number;
   isVerified: boolean;
   store_id: string;
-};
-
-type userType = {
-  token: string;
-  user: User;
 };
 
 type productCreated = {
@@ -46,6 +42,7 @@ const useStore = create<Store>()((set) => ({
       service: "",
       duration: "",
       price: 0,
+      logo: "",
     },
   ],
   setCourier: (newCourier: courierType[]) => set({ courier: newCourier }),
@@ -54,6 +51,7 @@ const useStore = create<Store>()((set) => ({
     service: "",
     duration: "",
     price: 0,
+    logo: "",
   },
   setSelectedCourier: (newSelectedCourier: courierType | undefined) =>
     set({ selectedCourier: newSelectedCourier }),

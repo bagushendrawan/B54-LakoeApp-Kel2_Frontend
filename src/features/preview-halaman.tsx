@@ -4,15 +4,14 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "@/components/carousel";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
-import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { api } from "@/lib/api";
+import useStore from "@/z-context";
 import Axios from "axios";
 import { useEffect, useState } from "react";
-import useStore from "@/z-context";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 interface Data {
   id: number;
@@ -54,7 +53,7 @@ export function PreviewHalaman(props: any) {
         console.log("product", product);
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/3ada8b98-d033-4dc0-8ccd-05fb7d132bb1/17415d35-170c-4f13-8519-4928e519637e`,
+          url: `${api}/form-produk/3ada8b98-d033-4dc0-8ccd-05fb7d132bb1/17415d35-170c-4f13-8519-4928e519637e`,
           data: dataOrder,
           headers: {
             "Content-Type": "application/json",
@@ -94,7 +93,7 @@ export function PreviewHalaman(props: any) {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/cart-items/17415d35-170c-4f13-8519-4928e519637e`,
+        url: `${api}/cart-items/17415d35-170c-4f13-8519-4928e519637e`,
         data,
         headers: {
           "Content-Type": "application/json",

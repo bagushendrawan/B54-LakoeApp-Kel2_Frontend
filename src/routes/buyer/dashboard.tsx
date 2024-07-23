@@ -6,7 +6,7 @@ export const Route = createFileRoute("/buyer/dashboard")({
   component: () => (
     <ProtectedRoute>
       <ProtectedBuyerRoute>
-      <Dashboard />
+        <Dashboard />
       </ProtectedBuyerRoute>
     </ProtectedRoute>
   ),

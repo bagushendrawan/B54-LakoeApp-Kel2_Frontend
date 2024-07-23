@@ -1,7 +1,6 @@
+/* eslint-disable */
 import { Button } from "@/components/button";
-
-
-
+import { useState } from "react";
 
 interface opsiPengirimanType {
   nama: string;
@@ -32,7 +31,6 @@ const opsiPengiriman: opsiPengirimanType[] = [
 ];
 
 export default function DeliveryMethodsModal() {
-
   const [open, setOpen] = useState(false);
   const { setValue } = hookForm;
   const [deliveryMethod, setDeliveryMethod] = useState<

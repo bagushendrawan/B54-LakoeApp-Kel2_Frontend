@@ -17,25 +17,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
-import useStore from "@/z-context";
-import { useEffect, useState } from "react";
-import {
-  BsBag,
-  BsCash,
-  BsCreditCard,
-  BsGift,
-  BsInfoCircle,
-  BsPlus,
-  BsQuestionDiamond,
-  BsReceipt,
-} from "react-icons/bs";
-import Axios from "axios";
-import { useForm } from "react-hook-form";
 import { useToast } from "@/components/use-toast";
-import { Chart } from "./chart";
-import WithdrawDialog from "./components/withdrawDialog";
-import { CardTransaction } from "./components/cardTransaction";
 import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
+import useStore from "@/z-context";
+import Axios from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { BsBag, BsCash, BsCreditCard, BsPlus } from "react-icons/bs";
+import { Chart } from "./chart";
+import { CardTransaction } from "./components/cardTransaction";
+import WithdrawDialog from "./components/withdrawDialog";
+import { api } from "@/lib/api";
 
 type bankData = {
   bank: string;
@@ -54,7 +46,7 @@ export function DashboardPage() {
     async function fetchBank() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/users/bank`,
+        url: `${api}/users/bank`,
         data: user.store_id,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -71,7 +63,7 @@ export function DashboardPage() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9/1`,
+          url: `${api}/form-produk/pesanan/${user.store_id}/9/1`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -92,7 +84,7 @@ export function DashboardPage() {
       try {
         const response = await Axios({
           method: "post",
-          url: `http://localhost:3000/form-produk/bulanini/${user.store_id}`,
+          url: `${api}/form-produk/bulanini/${user.store_id}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -116,7 +108,7 @@ export function DashboardPage() {
       console.log("data", data);
       const response = await Axios({
         method: "patch",
-        url: `http://localhost:3000/users/bank`,
+        url: `${api}/users/bank`,
         data: data,
         headers: {
           "Content-Type": "application/json",

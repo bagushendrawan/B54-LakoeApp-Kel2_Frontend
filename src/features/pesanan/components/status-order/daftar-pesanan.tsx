@@ -1,22 +1,3 @@
-import { Input } from "@/components/ui/input";
-import {
-  BelumDibayar,
-  DalamPengiriman,
-  Dibatalkan,
-  PesananBaru,
-  PesananSelesai,
-  Semua,
-  SiapDikirim,
-} from "./card-pesanan";
-import { DropdownKurir } from "./dropdown-kurir";
-import { DropdownUrutan } from "./dropdown-urutan";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useEffect, useState } from "react";
-import Axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import useStore from "@/z-context";
-import { CollapsibleVariant } from "./collapsible-variant";
 import {
   Select,
   SelectContent,
@@ -24,9 +5,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
+import { Input } from "@/components/ui/input";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useStore from "@/z-context";
+import Axios from "axios";
+import { useEffect, useState } from "react";
+import { Semua } from "./card-pesanan";
+import { CollapsibleVariant } from "./collapsible-variant";
+import { api } from "@/lib/api";
 
 export function DaftarPesanan() {
-  const token = localStorage.getItem("token");
   const [invoiceData, setInvoiceData] = useState<any[]>([]);
   const [invoiceOriData, setInvoiceOriData] = useState<any[]>([]);
   const [invoiceBelumData, setInvoiceBelumData] = useState<any[]>([]);
@@ -44,6 +33,7 @@ export function DaftarPesanan() {
   //9 == all
   const [status, setStatus] = useState(9);
   const [order, setOrder] = useState(1);
+<<<<<<< HEAD
 
   // useEffect(() => {
   //   async function auth() {
@@ -188,12 +178,15 @@ export function DaftarPesanan() {
   //   auth();
   // }, [searchPesanan, kurir]);
 
+=======
+
+>>>>>>> origin/dev
   useEffect(() => {
     async function auth() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/pesanan/${user.store_id}/9/${order}`,
+          url: `${api}/form-produk/pesanan/${user.store_id}/9/${order}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -209,9 +202,7 @@ export function DaftarPesanan() {
     }
 
     auth();
-
-    if (!searchPesanan) auth();
-  }, [user.store_id, token, order, searchPesanan]);
+  }, []);
 
   useEffect(() => {
     let filteredData = [...invoiceOriData];
@@ -259,7 +250,7 @@ export function DaftarPesanan() {
     setInvoiceBatalData(
       filteredData.filter((value) => value.status === "DIBATALKAN")
     );
-  }, [invoiceOriData, searchPesanan, kurir]);
+  }, [searchPesanan, kurir]);
 
   return (
     <>
@@ -269,7 +260,7 @@ export function DaftarPesanan() {
         <div className="border-b-2 pr-3 pl-3 pb-3">
           <Tabs defaultValue="9" onValueChange={(e) => setStatus(Number(e))}>
             <div className="flex justify-center">
-              <ScrollArea className=" whitespace-nowrap rounded-md border">
+              <div className="rounded-md border">
                 <TabsList className="bg-white">
                   <TabsTrigger value="9">
                     <div className="bg-blue-800 text-white w-6 h-6 rounded-full text-center leading-6 mr-1">
@@ -350,8 +341,8 @@ export function DaftarPesanan() {
                     <p>Dibatalkan</p>
                   </TabsTrigger>
                 </TabsList>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
+                {/* <ScrollBar orientation="horizontal" /> */}
+              </div>
             </div>
 
             <div className="p-3">
@@ -401,12 +392,6 @@ export function DaftarPesanan() {
                     />
                   );
                 })}
-
-              {/* <PesananBaru />
-              <SiapDikirim />
-              <DalamPengiriman />
-              <PesananSelesai />
-              <Dibatalkan /> */}
             </TabsContent>
             <TabsContent value="0">
               {invoiceBelumData &&

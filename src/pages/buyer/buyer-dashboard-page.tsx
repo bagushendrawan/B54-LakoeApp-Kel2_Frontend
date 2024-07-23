@@ -17,12 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
-<<<<<<< HEAD
 import useStore from "@/z-context";
-=======
 import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
->>>>>>> origin/dev
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -58,6 +55,12 @@ interface ProductDashboard {
   variants: Variant[];
   store_id: string;
   store: Store;
+  categories_id: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
 }
 
 interface Store {
@@ -69,60 +72,43 @@ export function BuyerDashboardPage() {
   const [category, setCategory] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState<String>("");
 
-<<<<<<< HEAD
   const [search, setSearch] = useState<string>("");
-  const [store, setStore] = useState<Store[]>([]);
-=======
-  async function getDataProduct() {
-    try {
-      const response = await Axios({
-        method: "get",
-        url: `${api}/buyers/products`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const filtered = response.data.filter((data: any) => data.is_active);
-      setProduct(filtered);
-      console.log("fetchproduk", filtered);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
+  const [searchCateg, setSearchCateg] = useState<string>("Kategori");
+  const [searchToko, setSearchToko] = useState<string>("Toko");
 
-  async function getCategoryProduct() {
-    try {
-      const response = await Axios({
-        method: "get",
-        url: `${api}/categories`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log("categ", response.data);
-      setCategory(response.data);
-      // console.log("fetchproduk",response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
->>>>>>> origin/dev
+  const [store, setStore] = useState<Store[]>([]);
 
   useEffect(() => {
     async function getDataProduct() {
       try {
         const response = await Axios({
           method: "get",
-          url: "http://localhost:3000/buyers/products",
+          url: `${api}/buyers/products`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+        const filtered = response.data.filter((data: any) => data.is_active);
+        setProduct(filtered);
+        console.log("fetchproduk", filtered);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
 
-        setProduct(response.data);
+    async function getCategoryProduct() {
+      try {
+        const response = await Axios({
+          method: "get",
+          url: `${api}/categories`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log("categ", response.data);
+        setCategory(response.data);
         // console.log("fetchproduk",response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -133,7 +119,7 @@ export function BuyerDashboardPage() {
       try {
         const store = await Axios({
           method: "get",
-          url: "http://localhost:3000/buyers/store",
+          url: `${api}/buyers/store`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -146,15 +132,22 @@ export function BuyerDashboardPage() {
     }
 
     getDataProduct();
-<<<<<<< HEAD
     getDataStore();
-=======
     getCategoryProduct();
->>>>>>> origin/dev
   }, []);
 
-  const filterByName = product.filter((value) => {
-    return value.name.toLowerCase().includes(search.toLowerCase());
+  const filterProduct = product.filter((product) => {
+    const filterByName = product.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const filterByCategory =
+      searchCateg === "Kategori" || product.categories_id === searchCateg;
+
+    const filterByStore =
+      searchToko === "Toko" || product.store_id === searchToko;
+
+    return filterByName && filterByCategory && filterByStore;
   });
 
   const logOutUser = useStore((state) => state.logout);
@@ -209,37 +202,42 @@ export function BuyerDashboardPage() {
             }
           />
 
-          <Select>
+          <Select onValueChange={(e) => setSearchCateg(e)}>
             <SelectTrigger>
               <SelectValue placeholder="Kategori" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="Kategori">Semua Kategori</SelectItem>
               {category &&
                 category.map((categ: any) => {
-                  return <SelectItem value={categ.id}>{categ.name}</SelectItem>;
+                  return (
+                    <SelectItem key={categ.id} value={categ.id}>
+                      {categ.name}
+                    </SelectItem>
+                  );
                 })}
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select onValueChange={(e) => setSearchToko(e)}>
             <SelectTrigger>
               <SelectValue placeholder="Toko" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="Toko">Semua Toko</SelectItem>
               {store.map((data) => {
-                return <SelectItem value={data.name}>{data.name}</SelectItem>;
+                return (
+                  <SelectItem key={data.id} value={data.id}>
+                    {data.name}
+                  </SelectItem>
+                );
               })}
             </SelectContent>
           </Select>
         </div>
 
-<<<<<<< HEAD
-        <div className="flex flex-wrap justify-center gap-4 p-3 rounded-lg">
-          {filterByName.map((data, index) => {
-=======
         <div className="flex flex-wrap justify-center gap-6 p-3 py-8 rounded-lg">
-          {product.map((data: any, index) => {
->>>>>>> origin/dev
+          {filterProduct.map((data: any, index) => {
             return (
               <>
                 <Card key={index} className="w-1/6 shadow-md">

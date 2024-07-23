@@ -11,8 +11,6 @@ import {
   AccordionTrigger,
 } from "../components/accordion";
 
-<<<<<<< HEAD
-import { Button } from "@/components/button";
 import {
   Dialog,
   DialogContent,
@@ -20,15 +18,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/dialog";
-import { Input } from "@/components/input";
-=======
->>>>>>> origin/dev
 import useStore from "@/z-context";
 import { BsPerson } from "react-icons/bs";
 
 export function SideBar() {
-  // const user = useStore((state) => state.user);
-  // console.log("test context =",user);
+  const user = useStore((state) => state.user);
+  console.log("test user =", user);
   const logOutUser = useStore((state) => state.logout);
 
   return (
@@ -127,21 +122,29 @@ export function SideBar() {
                       <DialogTitle>Profile Store</DialogTitle>
                     </DialogHeader>
 
+                    <div>
+                      <img src={user?.store?.banner_attachment} alt="banner" />
+                    </div>
+
                     <div className="flex gap-5">
                       <img
-                        src="https://img.freepik.com/free-vector/leaf-maple-icon-logo-design_474888-2154.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1721520000&semt=sph"
+                        src={user?.store?.logo_attachment}
                         alt="logo"
                         className="w-1/5"
                       />
 
                       <div>
-                        <p className="font-bold text-xl mb-1">Nama Store</p>
-                        <p className="font-light italic mb-1">Slogan</p>
-                        <p>Alamat</p>
+                        <p className="font-bold text-xl mb-1">
+                          {user?.store?.name}
+                        </p>
+                        <p className="font-light italic mb-1">
+                          {user?.store?.slogan}
+                        </p>
+                        <p>{user?.store?.location[0]?.address}</p>
                       </div>
                     </div>
 
-                    <p>Deskripsi toko</p>
+                    <p>{user?.store?.description}</p>
 
                     <Link
                       to="/auth/login"

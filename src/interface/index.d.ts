@@ -57,3 +57,40 @@ interface IActions {
     id: string;
     name: string;
 }
+
+interface bankData {
+    bank: string,
+    acc_name: string,
+    acc_number: string;
+}
+
+interface IBankAccount {
+    id: string;
+    bank: string;
+    acc_number: string;
+    acc_name: string;
+    store_id: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface IInvoice {
+    id: string;
+    prices: number;
+    service_charge: number;
+    status: string;
+    receiver_longitude: string;
+    receiver_latitude: string;
+    receiver_district: string;
+    receiver_phone: string;
+    receiver_address: string;
+    receiver_name: string;
+    receiver_postal_code: number;
+    invoice_number: string;
+    cart_id: string;
+    store_id: string;
+    midtrans_token_id: string;
+    user_id: string;
+    created_at: Date;
+    updated_at: date;
+}

@@ -44,13 +44,12 @@ const Product = () => {
 
   console.log(products);
 
-  // state sort status
-  const [isActive, setIsActive] = useState<number>(1);
-
   // state sort by search, category, action
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
   const [selectedAction, setSelectedAction] = useState("Terakhir Diubah");
+  // state sort status
+  const [isActive, setIsActive] = useState<number>(1);
 
   // state select product
   const [selectedProduct, setSelectedProduct] = useState<[string, boolean][]>(
@@ -191,7 +190,17 @@ const Product = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(`${api}/categories`);
+        const res = await axios.get(
+          `${api}/product/all/b0398a24-ab3c-4287-9fcc-c3fb1f707c20`,
+          {
+            params: {
+              searchTerm,
+              isActive,
+              category: selectedCategory,
+              action: selectedAction,
+            },
+          }
+        );
 
         setCategories(res.data);
       } catch (error) {
@@ -291,50 +300,114 @@ const Product = () => {
           ) : (
             <div></div>
           )}
-        </div>
-      </div>
+          {/* <div className="flex items-center gap-2">
+                    {selectedProduct.length !== 0 && (
+                        <>
+                            <BulkDeleteProductDialog selectedProduct={selectedProduct} />
+                            <BulkNonactivateProductDialog selectedProduct={selectedProduct} />
+                        </>
+                    )}
 
-      {/* result */}
-      {products?.length === 0 ? (
-        // if result 0
-        <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
-          <LuPackageX size={"4rem"} color="#909090" />
-          <div>
-            <p className="text-xl font-bold">
-              {isActive === 2
-                ? "Oops, saat ini belum ada produk yang aktif"
-                : isActive === 1
-                  ? "Oops, saat ini belum ada produk"
-                  : "Semua produk telah aktif"}
-            </p>
-            <p className="text-[#909090]">
-              {isActive === 2
-                ? "Aktifkan produk kamu atau buat produk baru"
-                : "Kamu bisa buat produk baru dan menyimpannya"}
-            </p>
+                    {products && (
+                        <div className={products?.length === 0 ? 'hidden' : 'block'}>
+                            {products?.length > 0 && (
+                                <div className="flex items-center gap-2">
+                                    <p>Pilih Semua</p>
+                                    <input
+                                        type="checkbox"
+                                        className="w-4 h-4"
+                                        checked={selectAll}
+                                        onChange={handleSelectAll}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div> */}
+        </div>
+
+        {/* result */}
+        {products?.length === 0 ? (
+          // if result 0
+          <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
+            <LuPackageX size={"4rem"} color="#909090" />
+            <div>
+              <p className="text-xl font-bold">
+                {isActive === 2
+                  ? "Oops, saat ini belum ada produk yang aktif"
+                  : isActive === 1
+                    ? "Oops, saat ini belum ada produk"
+                    : "Semua produk telah aktif"}
+              </p>
+              <p className="text-[#909090]">
+                {isActive === 2
+                  ? "Aktifkan produk kamu atau buat produk baru"
+                  : "Kamu bisa buat produk baru dan menyimpannya"}
+              </p>
+            </div>
           </div>
-        </div>
-      ) : (
-        // if result !0
-        <div className="flex flex-col gap-2">
-          {products ? (
-            products.map((product) => (
-              <ProductItem
-                key={product.id}
-                product={product}
-                onToggle={handleToggle}
-                onUpdatePrice={handleUpdatePrice}
-                onUpdateStock={handleUpdateStock}
-                onChecked={handleSelectedProduct}
-                selectedAll={selectAll}
-              />
-            ))
-          ) : (
-            <p>Belum ada produk</p>
-          )}
-        </div>
-      )}
+        ) : (
+          // if result !0
+          <div className="flex flex-col gap-2">
+            {products &&
+              products.map((product) => (
+                <ProductItem
+                  key={product.id}
+                  product={product}
+                  onToggle={handleToggle}
+                  onUpdatePrice={handleUpdatePrice}
+                  onUpdateStock={handleUpdateStock}
+                  onChecked={handleSelectedProduct}
+                  selectedAll={selectAll}
+                />
+              ))}
+          </div>
+        )}
+      </div>
     </div>
+
+    //     {/* result */}
+    //     {products?.length === 0 ? (
+    //       // if result 0
+    //       <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
+    //         <LuPackageX size={"4rem"} color="#909090" />
+    //         <div>
+    //           <p className="text-xl font-bold">
+    //             {isActive === 2
+    //               ? "Oops, saat ini belum ada produk yang aktif"
+    //               : isActive === 1
+    //                 ? "Oops, saat ini belum ada produk"
+    //                 : "Semua produk telah aktif"}
+    //           </p>
+    //           <p className="text-[#909090]">
+    //             {isActive === 2
+    //               ? "Aktifkan produk kamu atau buat produk baru"
+    //               : "Kamu bisa buat produk baru dan menyimpannya"}
+    //           </p>
+    //         </div>
+    //       </div>
+    //     ) : (
+    //       // if result !0
+    //       <div className="flex flex-col gap-2">
+    //         {products ? (
+    //           products.map((product) => (
+    //             <ProductItem
+    //               key={product.id}
+    //               product={product}
+    //               onToggle={handleToggle}
+    //               onUpdatePrice={handleUpdatePrice}
+    //               onUpdateStock={handleUpdateStock}
+    //               onChecked={handleSelectedProduct}
+    //               selectedAll={selectAll}
+    //             />
+    //           ))
+    //         ) : (
+    //           <p>Belum ada produk</p>
+    //         )}
+    //       </div>
+    //     )}
+    //   </div>
+    // );
   );
 };
 

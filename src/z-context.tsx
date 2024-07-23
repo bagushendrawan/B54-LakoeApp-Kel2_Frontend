@@ -20,13 +20,26 @@ type productCreated = {
   varian_id: string;
 };
 
+type bankAccount = {
+  id: string;
+  bank: string;
+  acc_number: string;
+  acc_name: string;
+  store_id: string;
+  created_at: Date;
+  updated_at: Date;
+};
+
 type Store = {
   user: User;
   SET_USER: (newUser: User) => void;
   logout: () => void;
   SET_PRODUCT: (newProduct: productCreated) => void;
   produk: productCreated;
+  SET_BANK: (newBank: bankAccount[]) => void;
+  bank: bankAccount[]
 };
+
 const useStore = create<Store>()((set) => ({
   user: {
     id: "",
@@ -57,6 +70,16 @@ const useStore = create<Store>()((set) => ({
     product_id: "",
     varian_id: "",
   },
+  bank: [{
+    id: '',
+    bank: '',
+    acc_number: '',
+    acc_name: '',
+    store_id: '',
+    created_at: new Date(''),
+    updated_at: new Date('')
+  }],
+  SET_BANK: (newBank: bankAccount[]) => set({ bank: newBank })
 }));
 
 export default useStore;

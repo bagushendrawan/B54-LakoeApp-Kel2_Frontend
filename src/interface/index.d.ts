@@ -58,12 +58,6 @@ interface IActions {
     name: string;
 }
 
-interface bankData {
-    bank: string,
-    acc_name: string,
-    acc_number: string;
-}
-
 interface IBankAccount {
     id: string;
     bank: string;
@@ -72,6 +66,21 @@ interface IBankAccount {
     store_id: string;
     created_at: Date;
     updated_at: Date;
+}
+
+interface IAddBank {
+    bank: string;
+    acc_number: string;
+    acc_name: string;
+    store_id: string;
+}
+
+interface IWithdraw {
+    nominal: number;
+    bank: string;
+    rekening: string;
+    name: string;
+    user_id: string;
 }
 
 interface IInvoice {

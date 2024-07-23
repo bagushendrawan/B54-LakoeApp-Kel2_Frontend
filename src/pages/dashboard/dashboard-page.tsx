@@ -16,30 +16,29 @@ import { TableTransaction } from "./components/tableTransaction";
 import { LuDownload } from "react-icons/lu";
 import { Button } from "@/components/button";
 
-type bankData = {
-  bank: string;
-  acc_name: string;
-  acc_number: string;
-};
-
 export function DashboardPage() {
   // const { toast } = useToast();
   const user = useStore((state) => state.user);
-  const [bankData, setBankData] = useState<bankData>();
+  const setBank = useStore((state) => state.SET_BANK);
+  const registedBank = useStore((state) => state.bank);
+
   useEffect(() => {
-    async function fetchBank() {
-      const response = await Axios({
-        method: "get",
-        url: `http://localhost:3000/users/bank`,
-        data: user.store_id,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-      });
-      setBankData(response.data);
-      console.log("bank", response.data);
-    }
+    const fetchBank = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await Axios({
+          method: 'get',
+          url: `http://localhost:3000/bank-account/${user.id}`,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setBank(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchBank();
   }, []);
 
@@ -59,8 +58,8 @@ export function DashboardPage() {
             <Label>Current Balance</Label>
             <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
             <div className="flex gap-2">
-              <AddBankAccountDialog />
-              <WithdrawDialog />
+              <AddBankAccountDialog banks={registedBank} />
+              <WithdrawDialog banks={registedBank} />
             </div>
           </div>
 
@@ -68,12 +67,25 @@ export function DashboardPage() {
           <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
             <div className="flex flex-1 justify-between items-center">
               <BsCreditCard size={'2rem'} color="#22C55E" />
-              <AllBankDialog />
+              <AllBankDialog banks={registedBank} />
             </div>
 
             <div className="flex flex-col">
-              <p className="text-sm text-gray-600">{bankData?.bank} - {bankData?.acc_name}</p>
-              <h2 className="text-gray-700 mb-4 font-bold text-2xl">{bankData?.acc_number}</h2>
+              {registedBank.length !== 0 ? (
+                <>
+                  <p className="text-sm text-gray-600">
+                    {registedBank[0]?.bank} - {registedBank[0]?.acc_name}
+                  </p>
+                  <h2 className="text-gray-700 mb-4 font-bold text-2xl">
+                    {registedBank[0]?.acc_number}
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <Label className="text-lg font-bold">Belum ada akun bank</Label>
+                  <label className="text-sm text-red-600">Tambahkan dulu akun bank kamu</label>
+                </>
+              )}
             </div>
           </div>
 

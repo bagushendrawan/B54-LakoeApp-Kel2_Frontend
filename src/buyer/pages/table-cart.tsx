@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
+import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
@@ -41,9 +42,9 @@ export function TableCart() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="border border-black">
+      <DropdownMenuTrigger asChild className="shadow">
         <Button className="bg-white hover:bg-white">
-          <div className=" text-xl text-black">
+          <div className=" text-xl text-slate-800">
             <FaShoppingCart className="text-2xl" />
           </div>
         </Button>
@@ -66,17 +67,23 @@ export function TableCart() {
                         className="w-3/12 rounded-sm"
                       />
 
-                      <div className="text-s w-full">
-                        <p>{data.carts_items[0].name}</p>
-                        <p>{data.carts_items[0].quantity} item (100gr)</p>
-                        <p>Rp {data.carts_items[0].price}</p>
+                      <div className="my-2 w-full">
+                        <p className="font-semibold text-lg">
+                          {data.carts_items[0]?.name}
+                        </p>
+                        <p className="text-xs">
+                          {data.carts_items[0]?.quantity} Item
+                        </p>
+                        <p className="font-bold">
+                          {formattedNumber(data.carts_items[0]?.price)}
+                        </p>
                       </div>
                     </div>
 
-                    <Button className="w-1/4">
+                    <Button className="w-1/4 bg-lime-600">
                       <Link
                         to="/buyer/checkout"
-                        search={{ id: data.carts_items[0].id }}
+                        search={{ id: data.carts_items[0]?.id }}
                       >
                         Bayar Sekarang
                       </Link>

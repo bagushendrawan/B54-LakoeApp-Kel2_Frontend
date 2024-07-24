@@ -604,18 +604,18 @@ export function FormProdukBaru() {
 
             {isVariant && (
               <div className="mt-2">
-                <h1 className="font-bold text-xl mb-2">Varian Produk</h1>
+                {/* <h1 className="font-bold text-xl mb-2">Varian Produk</h1> */}
                 <Dialog open={dialogOpen}>
                   <DialogTrigger
                     asChild
                     onClick={() => setDialogOpen(!dialogOpen)}
                   >
-                    <Button
+                    {/* <Button
                       variant="outline"
                       className="bg-blue-600 text-white"
                     >
                       Atur Sekaligus
-                    </Button>
+                    </Button> */}
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <Button
@@ -1011,10 +1011,8 @@ export function FormProdukBaru() {
             </div>
           </div>
 
-          {/*  */}
-          {!isVariant && (
+          {/* {!isVariant && (
             <div className="flex flex-col gap-4">
-              {/* harga */}
               <div
                 id="harga"
                 className="bg-white p-4 rounded shadow-sm shadow-black"
@@ -1039,7 +1037,6 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              {/* stok */}
               <div
                 id="pengelolaan-produk"
                 className="bg-white p-4 rounded shadow-sm shadow-black"
@@ -1071,7 +1068,6 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              {/* ukuran */}
               <div
                 id="ukuran"
                 className="bg-white p-4 rounded shadow-sm shadow-black"
@@ -1097,7 +1093,7 @@ export function FormProdukBaru() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/*  */}
           <div className="flex justify-between gap-4 bg-white p-4 w-full rounded shadow-sm shadow-black">

@@ -141,10 +141,10 @@ export function BuyerDashboardPage() {
 
   return (
     <>
-      <div className="bg-[#F6F7D4]">
+      <div className="bg-slate-800">
         <Navbar />
 
-        <div className="flex gap-3 bg-slate-800">
+        <div className="flex gap-3 bg-slate-800 mt-8">
           <Input
             type="text"
             value={searchTerm}
@@ -154,7 +154,7 @@ export function BuyerDashboardPage() {
             }
           />
         </div>
-        <div className="w-full h-screen bg-white">
+        {/* <div className="w-full h-screen bg-white">
           <div className="w-full h-full flex justify-center">
             <div className="w-full flex flex-col justify-center items-center">
               <h1 className="text-8xl font-bold">
@@ -172,9 +172,9 @@ export function BuyerDashboardPage() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="sticky top-14 flex gap-3 p-2 px-10 bg-[#99F3BD]">
+        <div className="sticky top-14 flex gap-3 p-2 px-10 bg-orange-500 pb-6">
           <Input
             type="text"
             placeholder="Cari Pesanan"
@@ -250,7 +250,7 @@ export function BuyerDashboardPage() {
 
                       <h1 className="text-lg">{data?.name}</h1>
 
-                      <p className="font-bold">
+                      <p className="font-bold mb-2">
                         {formattedNumber(
                           data?.variants[0].variant_option[0]
                             .variant_option_values.price
@@ -290,7 +290,7 @@ export function BuyerDashboardPage() {
                         </SelectContent>
                       </Select>
 
-                      <Button className="w-full bg-[#28DF99] hover:bg-green-300">
+                      <Button className="w-full bg-orange-500 hover:bg-orange-300">
                         {" "}
                         <Link
                           to="/buyer/add-cart"

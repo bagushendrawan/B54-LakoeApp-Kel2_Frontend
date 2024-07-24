@@ -20,11 +20,11 @@ import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 const chartConfig = {
   berhasil: {
     label: "Transaksi Sukses",
-    color: "#2563eb",
+    color: "#f97316",
   },
   gagal: {
     label: "Transaksi Gagal",
-    color: "#be123c",
+    color: "#1e293b",
   },
 } satisfies ChartConfig;
 

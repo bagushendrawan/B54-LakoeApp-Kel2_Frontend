@@ -39,7 +39,6 @@ const registerSchema = z.object({
   role_id: z.any(),
 });
 
-
 export function RegisterForm() {
   const { toast } = useToast();
   const navigate = useNavigate({ from: "/auth/register" });
@@ -268,9 +267,9 @@ export function RegisterForm() {
         </div>
 
         {/* logo */}
-        <div className="flex flex-col w-full justify-center items-center bg-red-50 rounded-sm">
-          <img src="/auth/register.png" className="w-3/4 object-cover" />
-          <img src="/Lakoe.png" className="w-2/6" />
+        <div className="flex flex-col w-full justify-center items-center bg-orange-100 rounded-sm py-12">
+          <img src="/auth/register.png" className="w-8/12 object-contain" />
+          <img src="/Lakoe.png" className="w-3/12" />
         </div>
       </div>
     </div>

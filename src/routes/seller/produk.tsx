@@ -16,7 +16,7 @@ export const Route = createFileRoute("/seller/produk")({
 function Produk() {
   return (
     <div>
-      <div className="w-full h-screen flex bg-[#F6F7D4]">
+      <div className="w-full h-screen flex bg-slate-800">
         <SideBar />
         <div className="w-full h-screen overflow-y-auto p-4">
           <Product />

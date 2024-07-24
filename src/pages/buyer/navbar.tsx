@@ -8,12 +8,11 @@ import {
 } from "@/components/dialog";
 import useStore from "@/z-context";
 import { Link } from "@tanstack/react-router";
-import { BsPerson } from "react-icons/bs";
 
 export function Navbar() {
   const logOutUser = useStore((state) => state.logout);
   return (
-    <div className="fixed right-0 left-0 top-0 z-50 flex justify-between items-center font-bold p-2 px-10 drop-shadow-sm shadow-black bg-[#28DF99]">
+    <div className="fixed right-0 left-0 top-0 z-50 flex justify-between items-center font-bold p-2 px-10 drop-shadow-sm pb-4 shadow-black bg-orange-500 ">
       <Link to="/buyer/dashboard">
         <h1 className="font-extrabold text-2xl text-white">LAKOEBUYER</h1>
       </Link>
@@ -24,11 +23,10 @@ export function Navbar() {
 
         <Dialog>
           <DialogTrigger asChild>
-            <div className="w-5/6 rounded-full p-1 cursor-pointer border border-black bg-white">
-              <p className="font-bold text-3xl text-black">
-                <BsPerson />
-              </p>
-            </div>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/4042/4042356.png"
+              className="rounded-full h-12 object-contain hover:cursor-pointer"
+            />
           </DialogTrigger>
           <DialogContent className="text-sm">
             <DialogHeader className="border-b-2 py-3">

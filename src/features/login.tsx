@@ -234,7 +234,7 @@ export function LoginForm() {
         </div>
 
         {/* logo */}
-        <div className="flex flex-col w-full bg-[#F6F7D4] justify-center items-center rounded-e-sm">
+        <div className="flex flex-col w-full bg-orange-100 justify-center items-center rounded-e-sm">
           <img src="/auth/login.png" className="w-3/4 object-cover" />
           <img src="/Lakoe.png" className="w-2/6" />
         </div>

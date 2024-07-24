@@ -150,14 +150,14 @@ export function AddCartPage() {
   }
 
   return (
-    <div className="w-full h-screen bg-white">
+    <div className="w-full h-screen bg-slate-800 p-8">
       <div className="w-full h-full flex p-4">
-        <div className="w-full flex justify-center items-center bg-gradient-to-r from-[#F6F7D4] to-[#28DF99] rounded-l-lg">
+        <div className="w-full flex justify-center items-center bg-orange-500 rounded-l-lg">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
               {dataOrder.attachments.map((data, index) => (
                 <CarouselItem key={index}>
-                  <div className="p-1">
+                  <div className="p-1 shadow">
                     <Card>
                       <CardContent className="flex aspect-square items-center justify-center p-6">
                         <img src={data} alt="" />
@@ -172,7 +172,7 @@ export function AddCartPage() {
           </Carousel>
         </div>
 
-        <div className="w-full flex justify-center bg-gradient-to-l from-[#F6F7D4] to-[#28DF99] rounded-r-lg">
+        <div className="w-full flex justify-center bg-white rounded-r-lg">
           <div className="w-full">
             <div className="p-5 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export function AddCartPage() {
               <TableCart />
             </div>
 
-            <div className="p-5 mt-10 mx-32 bg-white rounded-lg shadow-lg shadow-black">
+            <div className="p-5 mt-10 mx-32 bg-white rounded-lg border shadow-lg">
               <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
               <p>{dataOrder.description}</p>
 
@@ -238,15 +238,15 @@ export function AddCartPage() {
               </div>
 
               <div className="flex justify-between gap-3 mt-5">
-                <Button className="">
+                <Button className="bg-red-600">
                   <Link to="/buyer/checkout" search={{ id: dataCart.id }}>
                     Beli Langsung
                   </Link>
                 </Button>
 
-                <Button className="">
+                <Button className="bg-lime-600">
                   <Link
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 "
                     onClick={addCart}
                     to="/buyer/dashboard"
                   >

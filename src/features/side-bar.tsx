@@ -28,12 +28,15 @@ export function SideBar() {
 
   return (
     <>
-      <div className="bg-[#28DF99] w-[340px] h-screen">
+      <div className="bg-orange-500 w-[320px] h-screen">
         <ul>
           <div className="text-xl text-white px-10 h-screen flex flex-col justify-between">
             <div>
               {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
-              <img src="/Lakoe-w.png" className="w-32 mt-2" />
+              <div className="flex w-full justify-start items-center mt-4">
+                <img src="/mascot.png" className="w-8 object-contain" />
+                <img src="/Lakoe-w.png" className="object-contain w-5/6" />
+              </div>
               <div className="mt-2">
                 <li>
                   <Link

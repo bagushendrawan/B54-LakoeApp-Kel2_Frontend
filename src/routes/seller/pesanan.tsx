@@ -16,7 +16,7 @@ export const Route = createFileRoute("/seller/pesanan")({
 function Pesanan() {
   return (
     <div>
-      <div className="w-full h-screen flex bg-[#F6F7D4]">
+      <div className="w-full h-screen flex bg-slate-800">
         <SideBar />
         <div className="w-full p-4 h-screen overflow-y-scroll">
           <PesananPage></PesananPage>

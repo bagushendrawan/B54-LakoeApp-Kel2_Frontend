@@ -161,11 +161,11 @@ export function DashboardPage() {
   return (
     <div className=" w-full flex flex-col gap-2">
       {/* credit */}
-      <div className="bg-white rounded-sm p-4">
-        <h1 className="text-2xl font-bold text-blac my-4">Credit Dashboard</h1>
+      <div className="bg-white rounded-sm p-6 shadow flex flex-col justify-center mb-2">
+        <h1 className="text-2xl font-bold text-blac mb-4">Credit Dashboard</h1>
         <div className="flex gap-2">
           {/* credit */}
-          <div className="w-full bg-white p-4 border rounded shadow-lg">
+          <div className="w-full bg-white p-4 border rounded shadow-sm">
             <Label>Current Balance</Label>
             <h2 className="text-green-500 mb-4 font-bold text-2xl">
               {" "}
@@ -186,7 +186,7 @@ export function DashboardPage() {
           </div>
 
           {/* bank */}
-          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
+          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1 justify-between items-center">
               <BsCreditCard size={"2rem"} color="#22C55E" />
               <AllBankDialog banks={registedBank} />
@@ -216,7 +216,7 @@ export function DashboardPage() {
           </div>
 
           {/* transaksi */}
-          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
+          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1">
               <GrTransaction size={"2rem"} color="#22C55E" />
             </div>
@@ -236,7 +236,7 @@ export function DashboardPage() {
           </div>
 
           {/* penghasilan */}
-          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
+          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1">
               <BsCash size={"2rem"} color="#22C55E" />
             </div>
@@ -260,7 +260,7 @@ export function DashboardPage() {
       </div>
 
       {/* chart */}
-      <div className="w-full bg-white h-96 flex flex-col p-4 rounded-sm">
+      <div className="w-full bg-white h-96 flex flex-col p-4 rounded-sm mb-2">
         <div className="flex justify-between">
           <h1 className="font-bold text-xl text-gray-600">Reporting Period</h1>
           <div className="w-1/4 text-gray-700">

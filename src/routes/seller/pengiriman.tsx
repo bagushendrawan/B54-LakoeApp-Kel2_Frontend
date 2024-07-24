@@ -16,9 +16,9 @@ export const Route = createFileRoute("/seller/pengiriman")({
 
 function Pengiriman() {
   return (
-    <div className="flex bg-[#F6F7D4]">
+    <div className="flex bg-slate-800">
       <SideBar />
-      <div className="w-full p-2 h-screen">
+      <div className="w-full p-4 h-screen">
         <PengirimanPages />
       </div>
     </div>

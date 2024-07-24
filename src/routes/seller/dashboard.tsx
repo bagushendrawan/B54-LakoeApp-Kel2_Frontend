@@ -20,7 +20,11 @@ function Index() {
   return (
     <div className="w-full h-auto flex bg-slate-800">
       <SideBar />
+<<<<<<< HEAD
       <div className="w-full h-screen pe-4 overflow-y-auto">
+=======
+      <div className="w-full h-screen p-4 overflow-y-auto overflow-hidden">
+>>>>>>> origin/product
         <DashboardPage />
       </div>
     </div>

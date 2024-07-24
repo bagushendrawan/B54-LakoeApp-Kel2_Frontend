@@ -68,62 +68,65 @@ export function RequestPassword() {
   }
 
   return (
-    <div className="w-8/12 h-10/12 rounded-sm mt-32 m-auto flex">
-      <div className="flex bg-white h-full w-1/2 flex-col justify-start items-center pb-16 pt-8 px-4 rounded-s-sm">
-        <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">
-          Change Password
-        </h1>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-2 w-4/6"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="mt-4">
-                  <FormLabel className="font-normal mt-2">
-                    Email <Label className="text-red-600">*</Label>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Masukan email"
-                      {...field}
-                      required
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className="w-full h-screen p-12">
+      <div className="w-full h-full flex bg-slate-600 rounded-sm">
+        <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
+          <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">
+            Change Password
+          </h1>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-2 w-4/6"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="mt-4">
+                    <FormLabel className="font-bold mt-2">
+                      Email <Label className="text-red-600">*</Label>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="Masukan email"
+                        {...field}
+                        required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="flex gap-4 items-center text-sm">
-              {!form.formState.isSubmitting ? (
-                <Button type="submit" className="bg-red-600">
-                  Request
-                </Button>
-              ) : (
-                <Button type="submit" disabled className="bg-red-600">
-                  Request <LoadingSpinner></LoadingSpinner>
-                </Button>
-              )}
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-4 items-center pt-6 text-sm">
+                {!form.formState.isSubmitting ? (
+                  <Button type="submit" className="px-12 bg-red-600">
+                    Request
+                  </Button>
+                ) : (
+                  <Button type="submit" disabled className="px-12 bg-red-600">
+                    Request <LoadingSpinner />
+                  </Button>
+                )}
                 <div className="flex flex-col">
-                  <h1 className="me-1">Do you remember your account?</h1>
-                  <Link to="/auth/login" className="text-blue-500">
-                    Login
-                  </Link>
+                  <div className="flex gap-1">
+                    <h1 className="me-1">Do you remember your account?</h1>
+                    <Link to="/auth/login" className="font-bold text-blue-500">
+                      Login
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
-        </Form>
-      </div>
-      <div className="flex flex-col w-1/2 bg-red-50 justify-center items-center rounded-e-sm">
-        <img src="/auth/login.png" className="w-2/4 object-cover" />
-        <img src="/Lakoe.png" className="w-2/6" />
+            </form>
+          </Form>
+        </div>
+
+        <div className="flex flex-col w-full bg-red-50 justify-center items-center rounded-e-sm">
+          <img src="/auth/login.png" className="w-2/4 object-cover" />
+          <img src="/Lakoe.png" className="w-2/6" />
+        </div>
       </div>
     </div>
   );

@@ -58,6 +58,7 @@ const ProductItem: FC<IProductItemProps> = ({
             {/* product name */}
             <p className="flex flex-1 text-xl font-bold">{product.name}</p>
 
+<<<<<<< HEAD
             {/* checkbox */}
             <Input
               type="checkbox"
@@ -66,6 +67,16 @@ const ProductItem: FC<IProductItemProps> = ({
               onClick={handleCheck}
             />
           </div>
+=======
+                        {/* checkbox */}
+                        {/* <Input
+                            type="checkbox"
+                            className="w-4 h-4"
+                            checked={selectedAll ? selectedAll : isChecked}
+                            onClick={handleCheck}
+                        /> */}
+                    </div>
+>>>>>>> origin/product
 
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2 text-[18px]">

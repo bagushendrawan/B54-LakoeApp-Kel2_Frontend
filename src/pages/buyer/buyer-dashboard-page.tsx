@@ -15,7 +15,7 @@ import { api } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface VariantOptionValue {
   sku: string;
@@ -96,6 +96,12 @@ export function BuyerDashboardPage() {
     }
   }
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredByName: any[] = product.filter((item) => {
+    return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   useEffect(() => {
     getDataProduct();
     getCategoryProduct();
@@ -111,7 +117,14 @@ export function BuyerDashboardPage() {
         </div>
 
         <div className="flex gap-3 p-3  bg-slate-800">
-          <Input type="text" placeholder="Cari Pesanan" />
+          <Input
+            type="text"
+            value={searchTerm}
+            placeholder="Cari Pesanan"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setSearchTerm(e.target.value)
+            }
+          />
 
           <Select>
             <SelectTrigger>
@@ -135,8 +148,8 @@ export function BuyerDashboardPage() {
           </Select>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6 p-3 py-8 rounded-lg">
-          {product.map((data: any, index) => {
+        <div className="flex flex-wrap justify-center gap-4 p-3 rounded-lg">
+          {filteredByName.map((data, index) => {
             return (
               <>
                 <Card key={index} className="w-1/6 shadow-md">

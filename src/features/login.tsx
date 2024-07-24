@@ -181,7 +181,7 @@ export function LoginForm() {
                         />
                         <div
                           onClick={togglePasswordVisibility}
-                          className="absolute inset-y-0 right-0 flex items-center px-3 text-sm"
+                          className="absolute inset-y-0 right-0 flex items-center px-3 text-sm cursor-pointer"
                         >
                           {showPassword ? (
                             <VscEyeClosed size={"1.5rem"} fill="black" />

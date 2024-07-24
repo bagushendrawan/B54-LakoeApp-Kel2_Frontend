@@ -23,10 +23,21 @@ type productCreated = {
   varian_id: string;
 };
 
+<<<<<<< HEAD
 type discount = {
   id: string;
   code: string;
   amount: number;
+=======
+type bankAccount = {
+  id: string;
+  bank: string;
+  acc_number: string;
+  acc_name: string;
+  store_id: string;
+  created_at: Date;
+  updated_at: Date;
+>>>>>>> origin/product
 };
 
 type Store = {
@@ -37,6 +48,7 @@ type Store = {
   user: User;
   SET_USER: (newUser: User) => void;
   produk: productCreated;
+<<<<<<< HEAD
   SET_PRODUCT: (newProduct: productCreated) => void;
   discount: discount;
   SET_DISCOUNT: (newDisc: discount) => void;
@@ -45,6 +57,10 @@ type Store = {
   SET_TOTAL: (newTotal: number) => void;
   DELETE_TOTAL: () => void;
   logout: () => void;
+=======
+  SET_BANK: (newBank: bankAccount[]) => void;
+  bank: bankAccount[]
+>>>>>>> origin/product
 };
 
 const useStore = create<Store>()((set) => ({
@@ -117,7 +133,20 @@ const useStore = create<Store>()((set) => ({
     product_id: "",
     varian_id: "",
   },
+<<<<<<< HEAD
   SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
+=======
+  bank: [{
+    id: '',
+    bank: '',
+    acc_number: '',
+    acc_name: '',
+    store_id: '',
+    created_at: new Date(''),
+    updated_at: new Date('')
+  }],
+  SET_BANK: (newBank: bankAccount[]) => set({ bank: newBank })
+>>>>>>> origin/product
 }));
 
 export default useStore;

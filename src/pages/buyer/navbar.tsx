@@ -9,7 +9,7 @@ import {
 import useStore from "@/z-context";
 import { Link } from "@tanstack/react-router";
 
-export function Navbar() {
+export function Navbar(props: any) {
   const logOutUser = useStore((state) => state.logout);
   return (
     <div className="fixed right-0 left-0 top-0 z-50 flex justify-between items-center font-bold p-2 px-10 drop-shadow-sm pb-4 shadow-black bg-orange-500 ">
@@ -19,7 +19,7 @@ export function Navbar() {
       {/* <h1 className="text-xl text-white">Daftar Produk</h1> */}
 
       <div className="flex items-center gap-4">
-        <TableCart />
+        <TableCart refetch={props?.refetch} />
 
         <Dialog>
           <DialogTrigger asChild>

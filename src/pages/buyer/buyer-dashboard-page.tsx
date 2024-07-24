@@ -16,6 +16,7 @@ import Axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { Navbar } from "./navbar";
+import { useQuery } from "@tanstack/react-query";
 
 interface VariantOptionValue {
   sku: string;
@@ -66,6 +67,29 @@ export function BuyerDashboardPage() {
   const [store, setStore] = useState<Store[]>([]);
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { refetch: refetchProduct } = useQuery({
+    queryKey: ["productData"],
+    queryFn: getDataProduct,
+  });
+
+  async function getDataProduct() {
+    try {
+      const response = await Axios({
+        method: "get",
+        url: `${api}/buyers/products`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const filtered = response.data.filter((data: any) => data.is_active);
+      setProduct(filtered);
+      console.log("fetchproduk", filtered);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   useEffect(() => {
     async function getDataProduct() {
@@ -142,7 +166,7 @@ export function BuyerDashboardPage() {
   return (
     <>
       <div className="bg-slate-800">
-        <Navbar />
+        <Navbar refetch={refetchProduct} />
 
         <div className="flex gap-3 bg-slate-800 mt-8">
           <Input

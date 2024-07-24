@@ -9,11 +9,15 @@ export function InformasiKontak(props: any) {
 
   return (
     <>
-      <div className="p-3 bg-gradient-to-r from-[#28DF99] to-[#99F3BD] border border-black rounded-md mb-5">
+      <div className="p-3 bg-white shadow-sm shadow-black rounded-md mb-5">
         <h1 className="font-bold mt-3">Informasi Kontak</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>
-          <Input id="nama" className="border-black" defaultValue={user.name} />
+          <Input
+            id="nama"
+            className="border-[#c1c2ad]"
+            defaultValue={user.name}
+          />
         </div>
         <div className="space-y-1">
           <Label htmlFor="phone-input">Nomor Whatsapp</Label>
@@ -24,7 +28,7 @@ export function InformasiKontak(props: any) {
             <Input
               type="text"
               id="phone-input"
-              className="border border-black w-full ps-12"
+              className="border border-[#c1c2ad] w-full ps-12"
               placeholder="123-456-7890"
               defaultValue={user.phone}
             />

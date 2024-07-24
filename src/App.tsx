@@ -33,7 +33,7 @@ function App() {
   }, []);
   return (
     <>
-      <div className="w-full bg-slate-800 h-screen">
+      <div className="w-full bg-[#99F3BD] h-screen">
         {/* <img src="/bg.jpg" className="w-full h-full z-0 absolute object-cover bg-cover"></img> */}
         <QueryClientProvider client={queryClient}>
           <Outlet />

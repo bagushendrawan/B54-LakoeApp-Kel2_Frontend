@@ -46,7 +46,7 @@ export function MetodePengiriman(props: any) {
 
   return (
     <>
-      <div className="p-3 bg-gradient-to-r from-[#28DF99] to-[#99F3BD] border border-black rounded-md mb-5">
+      <div className="p-3 bg-white shadow-sm shadow-black rounded-md mb-5">
         <h1 className="font-bold mb-3">Metode Pengiriman</h1>
         <div className="space-y-1">
           <Dialog open={open} onOpenChange={setOpen}>

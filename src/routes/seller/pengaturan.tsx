@@ -15,7 +15,7 @@ export const Route = createFileRoute("/seller/pengaturan")({
 
 function Pengaturan() {
   return (
-    <div className="flex bg-slate-800">
+    <div className="flex bg-[#F6F7D4]">
       <SideBar />
       <div className="w-full p-4 h-screen overflow-y-auto">
         <Setting />

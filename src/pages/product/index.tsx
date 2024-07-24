@@ -6,8 +6,6 @@ import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { LuPackageX } from "react-icons/lu";
-import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
-import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 // import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 // import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 import { api } from "@/lib/api";
@@ -15,6 +13,8 @@ import useStore from "@/z-context";
 import DropdownSort from "./components/dropDownSort";
 import IconInput from "./components/iconInput";
 import ProductItem from "./components/productItem";
+import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
+import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 
 const Product = () => {
   const user = useStore((state) => state.user);
@@ -212,7 +212,7 @@ const Product = () => {
   }, []);
 
   return (
-    <div className="min-h-screen px-6 py-4 bg-white rounded">
+    <div className="min-h-screen px-6 py-4 bg-white shadow-sm shadow-black rounded">
       {/* header */}
       <div className="flex justify-between items-center mb-4">
         <p className="text-2xl font-bold">Daftar Produk</p>

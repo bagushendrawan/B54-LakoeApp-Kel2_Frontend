@@ -9,17 +9,15 @@ import {
 } from "@/components/ui/carousel";
 import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/add-cart";
-import { Link, Navigate, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TableCart } from "./table-cart";
 
-interface Data {
-  id: number;
+interface Store {
   name: string;
-  price: number;
-  attachments: string[];
+  logo_attachment: string;
 }
 
 interface cartItemsForm {
@@ -27,7 +25,9 @@ interface cartItemsForm {
   name: string;
   price: number;
   quantity: Number;
+  description: string;
   stock: Number;
+  store: Store;
 }
 
 type paramsCart = {
@@ -36,17 +36,18 @@ type paramsCart = {
 };
 
 export function AddCartPage() {
-  // const formAddCart = useForm<cartItemsForm>()
   const navigate = useNavigate();
   const params: paramsCart = Route.useSearch();
-  console.log("params", params);
+  // console.log("params", params);
 
   const [dataOrder, setDataOrder] = useState<cartItemsForm>({
     attachments: [],
     name: "",
     price: 0,
     quantity: 0,
+    description: "",
     stock: 0,
+    store: { name: "", logo_attachment: "" },
   });
 
   const [quantity, setQuantity] = useState<Number>(0);
@@ -71,9 +72,14 @@ export function AddCartPage() {
             response.data.variants[0].variant_option[0].variant_option_values
               .price,
           quantity: response.data.minimum_order,
+          description: response.data.description,
           stock:
             response.data.variants[0].variant_option[0].variant_option_values
               .stock,
+          store: {
+            name: response.data.store.name,
+            logo_attachment: response.data.store.logo_attachment,
+          },
         };
         setQuantity(data.quantity);
         setDataOrder(data);
@@ -146,7 +152,7 @@ export function AddCartPage() {
   return (
     <div className="w-full h-screen bg-white">
       <div className="w-full h-full flex p-4">
-        <div className="w-full flex justify-center items-center bg-gradient-to-r from-[#28DF99] to-[#F6F7D4] rounded-l-lg">
+        <div className="w-full flex justify-center items-center bg-gradient-to-r from-[#F6F7D4] to-[#28DF99] rounded-l-lg">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
               {dataOrder.attachments.map((data, index) => (
@@ -166,18 +172,23 @@ export function AddCartPage() {
           </Carousel>
         </div>
 
-        <div className="w-full flex justify-center bg-gradient-to-r from-[#F6F7D4] to-[#28DF99] rounded-r-lg">
+        <div className="w-full flex justify-center bg-gradient-to-l from-[#F6F7D4] to-[#28DF99] rounded-r-lg">
           <div className="w-full">
             <div className="p-5 flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl">Nama Toko</h1>
+              <div className="flex items-center gap-2">
+                <img
+                  src={dataOrder?.store?.logo_attachment}
+                  alt="logo"
+                  className="w-10"
+                />
+                <h1 className="text-2xl font-bold">{dataOrder?.store?.name}</h1>
               </div>
               <TableCart />
             </div>
 
-            <div className="mt-14 px-32">
+            <div className="p-5 mt-10 mx-32 bg-white rounded-lg shadow-lg shadow-black">
               <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
-              <p>Deskripsi</p>
+              <p>{dataOrder.description}</p>
 
               <div className="flex gap-10 text-xl mt-10 pb-4 border-b-2 border-b-black">
                 <p>Harga</p>
@@ -189,7 +200,7 @@ export function AddCartPage() {
                 <div className="flex items-center gap-10 text-xl">
                   {quantity <= dataOrder.quantity ? (
                     <Button
-                      className="border text-white border-black w-10 h-11 rounded-md hidden"
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       disabled
                     >
                       -
@@ -208,7 +219,7 @@ export function AddCartPage() {
                   <p>{String(quantity)}</p>
                   {quantity >= dataOrder.stock ? (
                     <Button
-                      className="border text-white border-black w-10 h-11 rounded-md hidden"
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       disabled
                     >
                       +

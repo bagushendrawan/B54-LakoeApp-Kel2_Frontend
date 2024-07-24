@@ -13,18 +13,6 @@ import Axios from "axios";
 import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 
-interface cart {
-  carts_items: CartItems[];
-}
-
-interface CartItems {
-  id: string;
-  name: string;
-  image: string;
-  price: number;
-  quantity: number;
-}
-
 export function TableCart() {
   const [items, setItems] = useState([]);
 

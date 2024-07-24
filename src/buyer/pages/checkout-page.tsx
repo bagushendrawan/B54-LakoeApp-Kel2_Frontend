@@ -1,13 +1,13 @@
-import { Textarea } from "@/components/textarea";
-import { Button } from "@/components/ui/button";
-import Axios from "axios";
-import { useEffect } from "react";
+import { Textarea } from '@/components/textarea';
+import { Button } from '@/components/ui/button';
+import Axios from 'axios';
+import { useEffect } from 'react';
 
-import { AlamatPengiriman } from "../features/checkout/alamat-pengiriman";
-import { GunakanVoucher } from "../features/checkout/gunakan-voucher";
-import { InformasiKontak } from "../features/checkout/informasi-kontak";
-import { MetodePengiriman } from "../features/checkout/metode-pengiriman";
-import { RingkasanPesanan } from "../features/checkout/ringkasan-pesanan";
+import { AlamatPengiriman } from '../features/checkout/alamat-pengiriman';
+import { GunakanVoucher } from '../features/checkout/gunakan-voucher';
+import { InformasiKontak } from '../features/checkout/informasi-kontak';
+import { MetodePengiriman } from '../features/checkout/metode-pengiriman';
+import { RingkasanPesanan } from '../features/checkout/ringkasan-pesanan';
 
 interface MidtransSnap extends Window {
   snap: {
@@ -15,12 +15,13 @@ interface MidtransSnap extends Window {
   };
 }
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { api } from "@/lib/api";
-import { LoadingSpinner } from "@/routes/__root";
-import useStore from "@/z-context";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { api } from '@/lib/api';
+import { LoadingSpinner } from '@/routes/__root';
+import { Navbar } from '@/pages/buyer/navbar';
+import useStore from '@/z-context';
 
 export type checkoutForm = {
   courier_code: string;
@@ -54,7 +55,7 @@ const checkoutSchema = z.object({
 
 export const useCheckoutForm = () => {
   const form = useForm<checkoutForm>({
-    mode: "onChange",
+    mode: 'onChange',
     resolver: zodResolver(checkoutSchema),
   });
 
@@ -67,21 +68,21 @@ export function CheckoutPage() {
 
   async function onSubmitForm(data: any) {
     try {
-      console.log("data", data);
+      console.log('data', data);
       const newData = {
         ...data,
         prices:
           data.prices + data.service_charge - data.prices * (disc.amount / 100),
         discount_id: disc.id,
       };
-      console.log("HIT SUBMIT", newData);
+      console.log('HIT SUBMIT', newData);
       const response = await Axios({
-        method: "post",
+        method: 'post',
         url: `${api}/buyers/buy`,
         data: newData,
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
 
@@ -94,13 +95,13 @@ export function CheckoutPage() {
   }
 
   useEffect(() => {
-    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
 
-    const scriptTag = document.createElement("script");
+    const scriptTag = document.createElement('script');
     scriptTag.src = midtransScriptUrl;
 
     const myMidtransClientKey = import.meta.env.PUBLIC_CLIENT;
-    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
 
     document.body.appendChild(scriptTag);
 
@@ -111,8 +112,10 @@ export function CheckoutPage() {
 
   return (
     <>
-      <div className="bg-[#F6F7D4] rounded-lg p-5">
-        <h1 className="text-xl font-bold">CHECKOUT</h1>
+      <div className="bg-[#f3f4da] rounded-lg p-5 px-10">
+        <Navbar />
+
+        <h1 className="text-xl font-bold mt-12">CHECKOUT</h1>
 
         <div className="mt-4">
           <form onSubmit={formCheckout.handleSubmit(onSubmitForm)}>
@@ -125,15 +128,15 @@ export function CheckoutPage() {
                 <MetodePengiriman form={formCheckout} />
               </div>
 
-              <div className="flex flex-col basis-2/5 items-center">
+              <div className="flex flex-col basis-2/5 items-end">
                 <GunakanVoucher />
 
                 <RingkasanPesanan form={formCheckout} />
 
-                <div className="bg-white border border-black w-5/6 rounded-lg p-3 mb-4">
+                <div className="bg-white shadow-sm shadow-black w-5/6 rounded-lg p-3 mb-4">
                   <p className="mb-3">Catatan</p>
                   <Textarea
-                    className="resize-none border-black"
+                    className="resize-none border-[#c1c2ad]"
                     placeholder="Tulis Catatan Pesananmu"
                   />
                 </div>

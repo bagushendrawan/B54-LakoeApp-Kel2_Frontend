@@ -299,9 +299,12 @@ export function FormProdukBaru() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitForm)} className="w-full">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {/* informasi produk */}
-          <div id="informasi-produk" className=" bg-white p-4 rounded">
+          <div
+            id="informasi-produk"
+            className=" bg-white p-4 rounded shadow-sm shadow-black"
+          >
             <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
             <h1 className=" text-md mb-2 mt-4">
               Nama Produk <Label className="text-red-600">*</Label>
@@ -360,7 +363,10 @@ export function FormProdukBaru() {
           </div>
 
           {/* <DetailProduk/> */}
-          <div id="detail-produk" className="bg-white p-4 rounded">
+          <div
+            id="detail-produk"
+            className="bg-white p-4 rounded shadow-sm shadow-black"
+          >
             <h1 className="font-bold text-xl mb-4">Detail Produk</h1>
             <p className="mb-2">Deskripsi</p>
             <Textarea {...register("produk_deskripsi")} className="h-32" />
@@ -537,7 +543,10 @@ export function FormProdukBaru() {
           </div>
 
           {/* variant */}
-          <div id="varian-produk" className="bg-white p-4 rounded">
+          <div
+            id="varian-produk"
+            className="bg-white p-4 rounded shadow-sm shadow-black"
+          >
             {isVariant ? (
               <div className="w-full flex flex-col">
                 <div className="flex justify-between">
@@ -935,7 +944,7 @@ export function FormProdukBaru() {
           </div>
 
           {/* minimal pembelian */}
-          <div className="bg-white p-4 rounded">
+          <div className="bg-white p-4 rounded shadow-sm shadow-black">
             <p className="mt-4">
               Minimal Pembelian <Label className="text-red-600">*</Label>
             </p>
@@ -1004,9 +1013,12 @@ export function FormProdukBaru() {
 
           {/*  */}
           {!isVariant && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
               {/* harga */}
-              <div id="harga" className="bg-white p-4 rounded">
+              <div
+                id="harga"
+                className="bg-white p-4 rounded shadow-sm shadow-black"
+              >
                 <h1 className="font-bold text-xl mb-4">Harga</h1>
                 <p>
                   Harga <Label className="text-red-600">*</Label>
@@ -1028,7 +1040,10 @@ export function FormProdukBaru() {
               </div>
 
               {/* stok */}
-              <div id="pengelolaan-produk" className="bg-white p-4 rounded">
+              <div
+                id="pengelolaan-produk"
+                className="bg-white p-4 rounded shadow-sm shadow-black"
+              >
                 <h1 className="font-bold text-xl mb-4">Pengelolaan Produk</h1>
                 <div className="flex gap-4">
                   <div>
@@ -1057,7 +1072,10 @@ export function FormProdukBaru() {
               </div>
 
               {/* ukuran */}
-              <div id="ukuran" className="bg-white p-4 rounded">
+              <div
+                id="ukuran"
+                className="bg-white p-4 rounded shadow-sm shadow-black"
+              >
                 <h1 className="font-bold text-xl mb-4"> </h1>
 
                 <p>
@@ -1082,7 +1100,7 @@ export function FormProdukBaru() {
           )}
 
           {/*  */}
-          <div className="flex justify-between gap-4 mt-4 bg-white p-4 w-full rounded">
+          <div className="flex justify-between gap-4 bg-white p-4 w-full rounded shadow-sm shadow-black">
             <div className="w-full">
               {isSubmitted && (
                 <Dialog>
@@ -1105,7 +1123,7 @@ export function FormProdukBaru() {
               )}
             </div>
 
-            <div>
+            <div className="flex ">
               <Button variant={"outline"} className="rounded-3xl me-2">
                 Batal
               </Button>

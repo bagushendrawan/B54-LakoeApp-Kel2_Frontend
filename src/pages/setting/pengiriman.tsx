@@ -129,11 +129,11 @@ export function PengirimanPages() {
 
   return (
     <>
-      <div className="bg-white rounded-lg h-full w-full m-2 p-4">
+      <div className="bg-white rounded-lg shadow-sm shadow-black h-full w-full p-4">
         <h1 className="text-2xl w-full font-bold mt-2 ms-2 mb-8">
           Pilih Pengiriman
         </h1>
-        <div className=" flex flex-wrap justify-start overflow-y-auto">
+        <div className=" flex flex-wrap justify-start">
           {kurir &&
             kurir.map((val: any, index: number) => (
               <div

@@ -130,6 +130,8 @@ const MapComponentCheckout = (props: any) => {
         items: dataItems,
       };
 
+      console.log("hit");
+
       const response = await Axios({
         method: "post",
         url: `${api}/buyers/rates/${id}`,

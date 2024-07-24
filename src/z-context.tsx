@@ -8,6 +8,19 @@ type courierType = {
   logo: string;
 };
 
+type StoreLocation = {
+  address: string;
+};
+
+type StoreUser = {
+  name: string;
+  slogan: string;
+  description: string;
+  logo_attachment: string;
+  banner_attachment: string;
+  location: StoreLocation[];
+};
+
 type User = {
   id: string;
   name: string;
@@ -16,6 +29,7 @@ type User = {
   role_id: number;
   isVerified: boolean;
   store_id: string;
+  store: StoreUser;
 };
 
 type productCreated = {
@@ -84,6 +98,14 @@ const useStore = create<Store>()((set) => ({
     role_id: NaN,
     isVerified: false,
     store_id: "",
+    store: {
+      name: "",
+      slogan: "",
+      description: "",
+      logo_attachment: "",
+      banner_attachment: "",
+      location: [{ address: "" }],
+    },
   },
   SET_USER: (newUser: User) => set({ user: newUser }),
   discount: {
@@ -111,6 +133,14 @@ const useStore = create<Store>()((set) => ({
         role_id: NaN,
         isVerified: false,
         store_id: "",
+        store: {
+          name: "",
+          slogan: "",
+          description: "",
+          logo_attachment: "",
+          banner_attachment: "",
+          location: [{ address: "" }],
+        },
       },
     });
     localStorage.removeItem("token");

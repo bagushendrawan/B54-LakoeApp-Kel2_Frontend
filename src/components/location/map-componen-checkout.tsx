@@ -153,7 +153,7 @@ const MapComponentCheckout = (props: any) => {
   return (
     <div className="w-full">
       <Label htmlFor="alamat">Pin Alamat</Label>
-      <div className="p-3 border border-blue-900 bg-blue-100 rounded-md flex justify-around items-center">
+      <div className="p-3 border border-green-900 bg-green-100 rounded-md flex justify-around items-center">
         {!address ? (
           <div className="flex gap-3 items-center">
             <IoIosPin className="text-2xl" />
@@ -168,7 +168,7 @@ const MapComponentCheckout = (props: any) => {
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-white text-blue-500 border border-blue-900 hover:bg-blue-200 hover:text-black">
+            <Button className="bg-white text-green-500 border border-green-900 hover:bg-green-200 hover:text-black">
               Ubah Pin Point
             </Button>
           </DialogTrigger>
@@ -177,7 +177,7 @@ const MapComponentCheckout = (props: any) => {
               <DialogTitle>Tandai Pin Point</DialogTitle>
             </DialogHeader>
 
-            <div className="p-3 border border-blue-900 bg-blue-100 rounded-md flex gap-3 items-center">
+            <div className="p-3 border border-green-900 bg-green-100 rounded-md flex gap-3 items-center">
               <IoWarning />
               <p>Pastikan pin point lokasi sesuai dengan alamat!</p>
             </div>
@@ -208,14 +208,14 @@ const MapComponentCheckout = (props: any) => {
               </MapContainer>
             </div>
 
-            <div className="flex gap-3 items-center text-blue-500">
+            <div className="flex gap-3 items-center text-green-500">
               <IoIosPin className="text-2xl" />
               <p>{address}</p>
             </div>
 
             <div className="flex gap-5 justify-center">
               <Button
-                className="w-5/12 bg-white text-blue-500 border border-blue-900 hover:bg-blue-200 hover:text-black"
+                className="w-5/12 bg-white text-green-500 border border-green-900 hover:bg-green-200 hover:text-black"
                 onClick={() => {
                   setOpen(false);
                 }}
@@ -223,7 +223,7 @@ const MapComponentCheckout = (props: any) => {
                 Kembali
               </Button>
               <Button
-                className="w-5/12 bg-blue-700 text-white border border-blue-900 hover:bg-blue-200 hover:text-black"
+                className="w-5/12 bg-green-700 text-white border border-green-900 hover:bg-green-200 hover:text-black"
                 onClick={hitRates}
               >
                 Pilih Lokasi

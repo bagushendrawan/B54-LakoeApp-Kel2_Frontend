@@ -46,14 +46,14 @@ export function MetodePengiriman(props: any) {
 
   return (
     <>
-      <div className="p-3 border border-black rounded-md mb-5">
+      <div className="p-3 bg-gradient-to-r from-[#28DF99] to-[#99F3BD] border border-black rounded-md mb-5">
         <h1 className="font-bold mb-3">Metode Pengiriman</h1>
         <div className="space-y-1">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               {selectedPengiriman ? (
                 <button
-                  className="w-2/4 flex justify-between gap-4 items-center border p-2 rounded-lg border-blue-800 bg-blue-100"
+                  className="w-2/4 flex justify-between gap-4 items-center border p-2 rounded-lg border-green-800 bg-green-100"
                   onClick={() => {
                     setOpen(true);
                   }}

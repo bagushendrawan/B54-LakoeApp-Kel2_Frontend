@@ -11,11 +11,15 @@ import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDia
 // import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 // import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 import { api } from "@/lib/api";
+import useStore from "@/z-context";
 import DropdownSort from "./components/dropDownSort";
 import IconInput from "./components/iconInput";
 import ProductItem from "./components/productItem";
 
 const Product = () => {
+  const user = useStore((state) => state.user);
+  //   console.log("ini user store login", user);
+
   // categories & action
   const [categories, setCategories] = useState<ICategories[]>();
   const actions = [
@@ -168,17 +172,14 @@ const Product = () => {
         const token = localStorage.getItem("token");
         console.log(token);
 
-        const res = await axios.get(
-          `${api}/product/all/5631a688-ee80-44eb-a8c5-88da82ff16fb`,
-          {
-            params: {
-              searchTerm,
-              isActive,
-              category: selectedCategory,
-              action: selectedAction,
-            },
-          }
-        );
+        const res = await axios.get(`${api}/product/all/${user.id}`, {
+          params: {
+            searchTerm,
+            isActive,
+            category: selectedCategory,
+            action: selectedAction,
+          },
+        });
 
         setProducts(res.data);
       } catch (error) {

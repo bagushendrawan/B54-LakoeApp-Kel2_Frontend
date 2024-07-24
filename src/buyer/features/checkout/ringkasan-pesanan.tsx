@@ -85,7 +85,7 @@ export function RingkasanPesanan(props: any) {
 
   return (
     <>
-      <div className="border border-blue-900 bg-blue-300 w-5/6 rounded-lg p-3 mb-4">
+      <div className="bg-white border border-blue-900 w-5/6 rounded-lg p-3 mb-4">
         <p>Ringkasan Pesanan</p>
 
         <div className="mt-3 flex gap-3 items-center">

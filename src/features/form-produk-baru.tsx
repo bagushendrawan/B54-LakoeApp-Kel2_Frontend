@@ -1111,9 +1111,6 @@ export function FormProdukBaru() {
                       </DialogDescription>
                     </DialogHeader>
                     <PreviewHalaman />
-                    <DialogFooter>
-                      <Button type="submit">Save changes</Button>
-                    </DialogFooter>
                   </DialogContent>
                 </Dialog>
               )}

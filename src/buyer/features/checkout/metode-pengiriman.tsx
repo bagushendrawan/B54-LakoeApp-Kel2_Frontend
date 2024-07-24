@@ -46,14 +46,14 @@ export function MetodePengiriman(props: any) {
 
   return (
     <>
-      <div className="p-3 bg-white shadow-sm shadow-black rounded-md mb-5">
+      <div className="p-3 bg-white shadow rounded-md mb-5">
         <h1 className="font-bold mb-3">Metode Pengiriman</h1>
         <div className="space-y-1">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               {selectedPengiriman ? (
                 <button
-                  className="w-2/4 flex justify-between gap-4 items-center border p-2 rounded-lg border-green-800 bg-green-100"
+                  className="w-2/4 flex justify-between gap-4 items-center border p-2 rounded-lg"
                   onClick={() => {
                     setOpen(true);
                   }}
@@ -76,7 +76,7 @@ export function MetodePengiriman(props: any) {
                 </button>
               ) : (
                 <Button
-                  className="px-5 w-5/12 h-12"
+                  className="px-5 w-5/12 h-12 bg-orange-500 border border-gray-300 hover:bg-orange-300"
                   onClick={() => {
                     setOpen(true);
                   }}

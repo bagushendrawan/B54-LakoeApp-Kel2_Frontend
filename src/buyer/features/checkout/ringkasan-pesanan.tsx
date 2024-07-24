@@ -22,6 +22,7 @@ interface productItemsForm {
 export function RingkasanPesanan(props: any) {
   const params: paramsTypes = Route.useSearch();
   const disc = useStore((state) => state.discount);
+  const setTotal = useStore((state) => state.SET_TOTAL);
   const selectedCourier = useStore((state) => state.selectedCourier);
   const [totalPrice, setTotalPrice] = useState(0);
   // console.log("ini kurir dipilih", selectedCourier);
@@ -79,55 +80,64 @@ export function RingkasanPesanan(props: any) {
   useEffect(() => {
     const productAmount = dataProduct.amount;
     const shippingCost = selectedCourier?.price || 0;
-    const discountAmount = disc ? dataProduct.price * (disc.amount / 100) : 0;
+    const discountAmount = disc ? dataProduct.amount * (disc.amount / 100) : 0;
     setTotalPrice(productAmount + shippingCost - discountAmount);
+    setTotal(productAmount - discountAmount);
   }, [dataProduct, selectedCourier, disc]);
 
   return (
     <>
-      <div className="bg-green-100 shadow-sm shadow-black w-5/6 rounded-lg p-3 mb-4">
-        <p>Ringkasan Pesanan</p>
+      <div className="bg-white shadow w-5/6 rounded-lg p-6 mb-4">
+        <p className="font-bold text-lg mb-4">Ringkasan Pesanan</p>
 
         <div className="mt-3 flex gap-3 items-center">
           <img
             src={dataProduct.img}
             alt="image"
-            className="w-3/12 rounded-sm"
+            className="w-3/12 rounded-sm me-4"
           />
 
-          <div className="text-s">
-            <p>{dataProduct.name}</p>
-            <p>{dataProduct.quantity} item (100gr)</p>
-            <p>{formattedNumber(dataProduct.price)}</p>
+          <div className="">
+            <p className="text-xl font-semibold">{dataProduct.name}</p>
+            <p className="">{dataProduct.quantity} Item</p>
+            <p className="font-bold text-lg">
+              {formattedNumber(dataProduct.price)}
+            </p>
           </div>
         </div>
 
         <div className="flex justify-between items-center my-4">
-          <p>Total Harga ({dataProduct.quantity})</p>
-          <p>{formattedNumber(dataProduct.amount)}</p>
+          <p className="font-semibold">Total Harga ({dataProduct.quantity})</p>
+          <p className="font-bold">{formattedNumber(dataProduct.amount)}</p>
         </div>
 
         {selectedCourier?.price ? (
           <div className="flex justify-between items-center pb-4 border-b-2">
-            <p>Biaya Pengiriman</p>
-            <p>{formattedNumber(selectedCourier?.price)}</p>
+            <p className="font-semibold">Biaya Pengiriman</p>
+            <p className="font-bold">
+              {formattedNumber(selectedCourier?.price)}
+            </p>
           </div>
         ) : (
-          <div className="flex justify-between items-center border-b-2"></div>
+          <div className="flex justify-between items-center border-b-2 border-white"></div>
         )}
 
         {disc ? (
-          <div className="flex justify-between items-center pb-4 border-b-2">
-            <p>Discount</p>
-            <p>{formattedNumber(dataProduct.price * (disc.amount / 100))}</p>
+          <div className="flex justify-between items-center pb-4 border-b-2 border-white mt-2">
+            <p className="font-semibold">Discount</p>
+            <p className="font-bold">
+              {formattedNumber(dataProduct.amount * (disc.amount / 100))}
+            </p>
           </div>
         ) : (
           <div className="flex justify-between items-center border-b-2"></div>
         )}
 
         <div className="flex justify-between items-center my-4">
-          <p>Total Pembayaran ({dataProduct.quantity})</p>
-          <p>{formattedNumber(totalPrice)}</p>
+          <p className="font-semibold text-lg">
+            Total Pembayaran ({dataProduct.quantity})
+          </p>
+          <p className="font-bold text-lg ">{formattedNumber(totalPrice)}</p>
         </div>
       </div>
     </>

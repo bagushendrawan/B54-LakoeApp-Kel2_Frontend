@@ -50,8 +50,8 @@ export function AlamatPengiriman(props: any) {
   useEffect(() => {
     if (selectedProvinsiId) {
       const kabupaten =
-        dataDaerah.find((data) => selectedProvinsiId === data.id)?.regencies ||
-        [];
+        dataDaerah.find((data: any) => selectedProvinsiId === data.id)
+          ?.regencies || [];
       // console.log(kabupaten);
       setSelectedKabupaten(kabupaten);
     }
@@ -77,13 +77,14 @@ export function AlamatPengiriman(props: any) {
 
   return (
     <>
-      <div className="p-3 bg-white shadow-sm shadow-black rounded-md mb-5">
-        <h1 className="font-bold mt-3">Alamat Pengiriman</h1>
+      <div className="p-6 bg-white shadow rounded-md mb-5">
+        <h1 className="font-bold mb-2 text-lg">Alamat Pengiriman</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>
           <Input
             id="nama"
-            className="border-[#c1c2ad]"
+            placeholder="John Doe"
+            className="border-gray-300"
             {...props.form.register("receiver_name")}
           />
         </div>
@@ -91,12 +92,12 @@ export function AlamatPengiriman(props: any) {
           <Label htmlFor="phone-input">Nomor Whatsapp</Label>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-              <p>+62</p>
+              <p className="text-gray-500">+62</p>
             </div>
             <Input
               type="text"
               id="phone-input"
-              className="border-[#c1c2ad] w-full ps-12"
+              className="border-gray-300 w-full ps-12"
               placeholder="123-456-7890"
               {...props.form.register("receiver_phone")}
             />
@@ -105,7 +106,7 @@ export function AlamatPengiriman(props: any) {
         <div className="space-y-1">
           <Label htmlFor="kecamatan">Provinsi</Label>
           <Select onValueChange={(id) => setSelectedProvinsiId(id)}>
-            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
+            <SelectTrigger className="border-gray-300 text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Provinsi" />
             </SelectTrigger>
             <SelectContent>
@@ -122,7 +123,7 @@ export function AlamatPengiriman(props: any) {
         <div className="space-y-1">
           <Label htmlFor="kecamatan">Kabupaten</Label>
           <Select onValueChange={(id) => setSelectedKabupatenId(id)}>
-            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
+            <SelectTrigger className="border-gray-300 text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Kabupaten" />
             </SelectTrigger>
             <SelectContent>
@@ -143,7 +144,7 @@ export function AlamatPengiriman(props: any) {
               setSelectedKecamatanId(id);
             }}
           >
-            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
+            <SelectTrigger className="border-gray-300 text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Kecamatan" />
             </SelectTrigger>
             <SelectContent>
@@ -162,7 +163,7 @@ export function AlamatPengiriman(props: any) {
           <Select
             onValueChange={(e) => props.form.setValue("receiver_district", e)}
           >
-            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
+            <SelectTrigger className="border-gray-300 text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Kelurahan" />
             </SelectTrigger>
             <SelectContent>
@@ -180,7 +181,7 @@ export function AlamatPengiriman(props: any) {
           <Label htmlFor="alamat">Detail Alamat</Label>
           <Textarea
             id="alamat"
-            className="border-[#c1c2ad] h-20 resize-none"
+            className="border-gray-300 h-20 resize-none"
             {...props.form.register("receiver_address")}
           ></Textarea>
         </div>

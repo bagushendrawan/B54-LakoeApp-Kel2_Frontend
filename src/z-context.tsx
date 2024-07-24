@@ -65,6 +65,9 @@ type Store = {
   discount: discount;
   SET_DISCOUNT: (newDisc: discount) => void;
   DELETE_DISCOUNT: () => void;
+  totalPrice: number;
+  SET_TOTAL: (newTotal: number) => void;
+  DELETE_TOTAL: () => void;
   logout: () => void;
   SET_BANK: (newBank: bankAccount[]) => void;
   bank: bankAccount[];
@@ -113,6 +116,13 @@ const useStore = create<Store>()((set) => ({
     code: "",
     amount: 0,
   },
+  totalPrice: 0,
+  DELETE_TOTAL: () => {
+    set({
+      totalPrice: 0,
+    });
+  },
+  SET_TOTAL: (newTotal: number) => set({ totalPrice: newTotal }),
   SET_DISCOUNT: (newDisc: discount) => set({ discount: newDisc }),
   DELETE_DISCOUNT: () => {
     set({

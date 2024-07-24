@@ -100,7 +100,7 @@ export function TableCart(props: any) {
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[500px]">
+        <DropdownMenuContent className="w-[500px] h-96 overflow-y-auto">
           <DropdownMenuLabel>List Cart Item</DropdownMenuLabel>
           <DropdownMenuSeparator />
 

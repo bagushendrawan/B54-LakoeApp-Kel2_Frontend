@@ -6,16 +6,18 @@ export const Route = createFileRoute("/buyer/checkout")({
   component: () => (
     <ProtectedRoute>
       <ProtectedBuyerRoute>
-      <Checkout/>
+        <Checkout />
       </ProtectedBuyerRoute>
     </ProtectedRoute>
-  )
+  ),
 });
 
 function Checkout() {
   return (
     <>
-      <CheckoutPage />
+      <div className="bg-slate-800">
+        <CheckoutPage />
+      </div>
     </>
   );
 }

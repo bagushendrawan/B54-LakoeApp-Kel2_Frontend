@@ -239,17 +239,13 @@ export function AddCartPage() {
 
               <div className="flex justify-between gap-3 mt-5">
                 <Button className="bg-red-600">
-                  <Link to="/buyer/checkout" search={{ id: dataCart.id }}>
+                  <Link onClick={addCartLangsung} search={{ id: dataCart.id }}>
                     Beli Langsung
                   </Link>
                 </Button>
 
                 <Button className="bg-lime-600">
-                  <Link
-                    className="flex items-center gap-2 "
-                    onClick={addCart}
-                    to="/buyer/dashboard"
-                  >
+                  <Link className="flex items-center gap-2 " onClick={addCart}>
                     Keranjang <FaArrowRightFromBracket />
                   </Link>
                 </Button>

@@ -72,6 +72,7 @@ export function CheckoutPage() {
         prices: totalPrice,
         discount_id: disc.id,
       };
+      console.log("TOTAL", totalPrice);
       console.log("HIT SUBMIT", newData);
       const response = await Axios({
         method: "post",
@@ -107,35 +108,34 @@ export function CheckoutPage() {
   }, []);
 
   return (
-    <>
-      <div className="bg-white m-3 rounded-lg p-3">
-        <h1 className="text-xl font-bold">CHECKOUT</h1>
+    <div className="bg-gray-100 m-4 rounded-lg p-6">
+      <h1 className="text-xl font-bold">CHECKOUT</h1>
 
-        <div className="mt-4">
-          <form onSubmit={formCheckout.handleSubmit(onSubmitForm)}>
-            <div className="flex ">
-              <div className="basis-3/5">
-                <InformasiKontak form={formCheckout} />
+      <div className="mt-4">
+        <form onSubmit={formCheckout.handleSubmit(onSubmitForm)}>
+          <div className="flex ">
+            <div className="basis-3/5">
+              <InformasiKontak form={formCheckout} />
 
-                <AlamatPengiriman form={formCheckout} />
+              <AlamatPengiriman form={formCheckout} />
 
-                <MetodePengiriman form={formCheckout} />
+              <MetodePengiriman form={formCheckout} />
+            </div>
+
+            <div className="flex flex-col basis-2/5 items-center">
+              <GunakanVoucher />
+
+              <RingkasanPesanan form={formCheckout} />
+
+              <div className="bg-white shadow w-5/6 rounded-lg p-3 mb-4">
+                <p className="mb-3 font-bold">Catatan</p>
+                <Textarea
+                  className="resize-none border-gray-300"
+                  placeholder="Tulis Catatan Pesananmu"
+                />
               </div>
 
-              <div className="flex flex-col basis-2/5 items-center">
-                <GunakanVoucher />
-
-                <RingkasanPesanan form={formCheckout} />
-
-                <div className="border border-black w-5/6 rounded-lg p-3 mb-4">
-                  <p className="mb-3">Catatan</p>
-                  <Textarea
-                    className="resize-none border-black"
-                    placeholder="Tulis Catatan Pesananmu"
-                  />
-                </div>
-
-                {/* <Button
+              {/* <Button
                   className="w-5/6"
                   type="submit"
                   // onClick={() => console.log("HIT")}
@@ -143,21 +143,20 @@ export function CheckoutPage() {
                   Bayar Sekarang
                 </Button> */}
 
-                {!formCheckout.formState.isSubmitting ? (
-                  <Button type="submit" className="w-5/6 bg-slate-800">
-                    Bayar Sekarang
-                  </Button>
-                ) : (
-                  <Button type="submit" disabled className="w-5/6 bg-slate-800">
-                    <LoadingSpinner />
-                    Register
-                  </Button>
-                )}
-              </div>
+              {!formCheckout.formState.isSubmitting ? (
+                <Button type="submit" className="w-5/6 bg-orange-500">
+                  Bayar Sekarang
+                </Button>
+              ) : (
+                <Button type="submit" disabled className="w-5/6 bg-orange-500">
+                  <LoadingSpinner />
+                  Register
+                </Button>
+              )}
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 }

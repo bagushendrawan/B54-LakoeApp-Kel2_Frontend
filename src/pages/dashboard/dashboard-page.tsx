@@ -32,6 +32,7 @@ import AddBankAccountDialog from "./components/addBankAccountDialog";
 import AllBankDialog from "./components/allBankDialog";
 import { TableTransaction } from "./components/tableTransaction";
 import { Chart } from "./chart";
+import { useQuery } from "@tanstack/react-query";
 
 export function DashboardPage() {
   const user = useStore((state) => state.user);
@@ -43,6 +44,24 @@ export function DashboardPage() {
   const [invoiceData, setInvoiceData] = useState([]);
   const [invoiceBulanIniData, setInvoiceBulanIniData] = useState([]);
   const token = localStorage.getItem("token");
+
+  // const { refetch: refetchBank } = useQuery({
+  //   queryKey: ["bankData"],
+  //   queryFn: fetchBank,
+  // });
+
+  async function fetchBank() {
+    const response = await Axios({
+      method: "get",
+      url: `${api}/users/bank`,
+      data: user.store_id,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setBankData(response.data);
+  }
 
   useEffect(() => {
     async function fetchBank() {
@@ -139,7 +158,7 @@ export function DashboardPage() {
         const token = localStorage.getItem("token");
         const res = await Axios({
           method: "get",
-          url: `http://localhost:3000/bank-account/${user.id}`,
+          url: `${api}/bank-account/${user.id}`,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -180,7 +199,7 @@ export function DashboardPage() {
                 )}
             </h2>
             <div className="flex gap-2">
-              <AddBankAccountDialog banks={registedBank} />
+              <AddBankAccountDialog banks={registedBank} fetch={fetchBank} />
               <WithdrawDialog banks={registedBank} />
             </div>
           </div>

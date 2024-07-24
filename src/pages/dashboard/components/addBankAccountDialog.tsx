@@ -6,71 +6,55 @@ import { useToast } from "@/components/use-toast";
 import useStore from "@/z-context";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/select';
 import { SelectGroup, SelectLabel } from '@radix-ui/react-select';
-import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsPlus } from "react-icons/bs";
 import dataBank from "../../../assets/json/dataBank.json";
-import EditBankDialog from "./editBankDialog";
+import Axios from "axios";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const AddBankAccountDialog = () => {
-    const { toast } = useToast();
+const addBankSchema = z.object({
+    bank: z.string(),
+    acc_number: z.string().min(6, { message: 'Masukan nomor rekening' }),
+    acc_name: z.string().min(1, { message: 'Masukan nama anda' })
+});
+
+const AddBankAccountDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
     const user = useStore((state) => state.user);
-    const [bankData, setBankData] = useState<bankData>();
-    useEffect(() => {
-        async function fetchBank() {
-            const response = await axios({
-                method: "get",
-                url: `http://localhost:3000/users/bank`,
-                data: user.store_id,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-            });
-            setBankData(response.data);
-            console.log("bank", response.data);
-        }
-        fetchBank();
-    }, []);
 
-    const formBank = useForm<bankData>();
-    async function onSubmit(data: bankData) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        try {
-            console.log("data", data);
-            const response = await axios({
-                method: "patch",
-                url: `http://localhost:3000/users/bank`,
-                data: data,
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-            });
-            console.log(response.data);
-            setBankData(response.data);
-            toast({
-                variant: "success",
-                title: `Bank Updated!`
-            });
-        } catch (error: any) {
-            toast({
-                variant: "destructive",
-                title: `Error!`,
-                description: `${error.message}`,
-            });
-            console.log(error);
-        }
-    }
+    const formAddBank = useForm<IAddBank>({
+        mode: 'onSubmit',
+        resolver: zodResolver(addBankSchema)
+    });
 
+    const handleAddBank = async (data: any) => {
+        const token = localStorage.getItem('token');
+        const userId = user.id;
+        const storeId = user.store_id;
+        formAddBank.setValue('store_id', storeId);
+
+        const newData = {
+            ...data
+        };
+
+        console.log(newData);
+
+        await Axios({
+            method: 'post',
+            url: `http://localhost:3000/bank-account/${userId}`,
+            data: newData,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    };
+
+    // search bank
     const [searchTerm, setSearchTerm] = useState('');
-
     const handleSearchBank = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
-
     const filteredBanks = dataBank.filter(bank =>
         bank.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -78,16 +62,23 @@ const AddBankAccountDialog = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="w-full bg-[#22C55E] hover:bg-green-600">
-                    <BsPlus size={'1.3rem'} />
-                    Tambah Bank
-                </Button>
+                {banks.length < 3 ? (
+                    <Button className="w-full bg-[#22C55E] hover:bg-green-600">
+                        <BsPlus size={'1.3rem'} />
+                        Tambah Bank
+                    </Button>
+                ) : (
+                    <Button className="w-full bg-[#22C55E] hover:bg-green-600" disabled>
+                        <BsPlus size={'1.3rem'} />
+                        Tambah Bank
+                    </Button>
+                )}
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Tambahkan Akun Bank</DialogTitle>
-                    <DialogDescription>
-                        <form className="mt-4">
+                <form onSubmit={formAddBank.handleSubmit(handleAddBank)}>
+                    <DialogHeader>
+                        <DialogTitle>Tambahkan Akun Bank</DialogTitle>
+                        <DialogDescription>
                             <div className="flex flex-col text-black gap-4">
                                 {/* bank */}
                                 <div className='flex flex-col gap-2'>
@@ -95,7 +86,7 @@ const AddBankAccountDialog = () => {
                                         Bank
                                         <span className='text-red-600'> *</span>
                                     </Label>
-                                    <Select>
+                                    <Select onValueChange={(e) => formAddBank.setValue('bank', e)}>
                                         <SelectTrigger id='bank' className="w-full">
                                             <SelectValue placeholder='Pilih Bank' />
                                         </SelectTrigger>
@@ -128,7 +119,7 @@ const AddBankAccountDialog = () => {
                                     <Input
                                         id="nomor_rekening"
                                         placeholder="Masukan Rekening"
-                                        {...formBank.register("acc_number")}
+                                        {...formAddBank.register("acc_number")}
                                         className="col-span-3"
                                     />
                                 </div>
@@ -142,34 +133,34 @@ const AddBankAccountDialog = () => {
                                     <Input
                                         id="nama_rekening"
                                         placeholder="Masukan Nama"
-                                        {...formBank.register("acc_name")}
+                                        {...formAddBank.register("acc_name")}
                                         className="col-span-3"
                                     />
                                 </div>
 
                                 <Label className="mt-2 text-red-600 italic">* Setiap user maksimal 3 akun bank</Label>
                             </div>
-                        </form>
-                    </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                    <div className="w-full flex justify-end gap-2 mt-4">
-                        <DialogClose asChild>
-                            <Button type="button" variant="outline" className='rounded-full'>
-                                Batalkan
-                            </Button>
-                        </DialogClose>
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <div className="w-full flex justify-end gap-2 mt-4">
+                            <DialogClose asChild>
+                                <Button type="button" variant="outline" className='rounded-full'>
+                                    Batalkan
+                                </Button>
+                            </DialogClose>
 
-                        <DialogClose asChild>
-                            <Button
-                                onClick={formBank.handleSubmit(onSubmit)}
-                                className="px-4 py-2 text-white bg-blue-500 rounded-full"
-                            >
-                                Tambah Bank
-                            </Button>
-                        </DialogClose>
-                    </div>
-                </DialogFooter>
+                            <DialogClose asChild>
+                                <Button
+                                    type="submit"
+                                    className="px-4 py-2 text-white bg-blue-500 rounded-full"
+                                >
+                                    Tambah Bank
+                                </Button>
+                            </DialogClose>
+                        </div>
+                    </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog>
     );

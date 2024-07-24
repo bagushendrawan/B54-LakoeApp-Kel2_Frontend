@@ -13,6 +13,7 @@ import { Link, Navigate, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { TableCart } from "./table-cart";
 
 interface Data {
   id: number;
@@ -77,6 +78,7 @@ export function AddCartPage() {
         setQuantity(data.quantity);
         setDataOrder(data);
         // console.log("ini data order", data);
+        console.log("ini data order", data);
       } catch (error) {
         console.log(error);
       }
@@ -142,9 +144,9 @@ export function AddCartPage() {
   }
 
   return (
-    <>
-      <div className="bg-white m-3 rounded-lg h-screen flex justify-center">
-        <div className="flex items-center">
+    <div className="w-full h-screen bg-white">
+      <div className="w-full h-full flex p-4">
+        <div className="w-full flex justify-center items-center bg-gradient-to-r from-[#28DF99] to-[#F6F7D4] rounded-l-lg">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
               {dataOrder.attachments.map((data, index) => (
@@ -162,12 +164,22 @@ export function AddCartPage() {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
+        </div>
 
-          <div className="ml-52">
-            <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
+        <div className="w-full flex justify-center bg-gradient-to-r from-[#F6F7D4] to-[#28DF99] rounded-r-lg">
+          <div className="w-full">
+            <div className="p-5 flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl">Nama Toko</h1>
+              </div>
+              <TableCart />
+            </div>
 
-            <div className="mt-5">
-              <div className="flex gap-10 text-xl pb-4 border-b-2 border-b-black">
+            <div className="mt-14 px-32">
+              <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
+              <p>Deskripsi</p>
+
+              <div className="flex gap-10 text-xl mt-10 pb-4 border-b-2 border-b-black">
                 <p>Harga</p>
                 <p>{dataOrder.price}</p>
               </div>
@@ -176,66 +188,65 @@ export function AddCartPage() {
                 <p>Jumlah</p>
                 <div className="flex items-center gap-10 text-xl">
                   {quantity <= dataOrder.quantity ? (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md hidden"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md hidden"
                       disabled
                     >
                       -
-                    </button>
+                    </Button>
                   ) : (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       onClick={() => {
                         setQuantity(Number(quantity) - 1);
                       }}
                     >
                       -
-                    </button>
+                    </Button>
                   )}
 
                   <p>{String(quantity)}</p>
                   {quantity >= dataOrder.stock ? (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md hidden"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md hidden"
                       disabled
                     >
                       +
-                    </button>
+                    </Button>
                   ) : (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       onClick={() => {
                         setQuantity(Number(quantity) + 1);
                       }}
                     >
                       +
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
 
-              <div className="flex justify-between mt-5">
-                <Button onClick={addCartLangsung} className="me-4">
-                  {/* <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
+              <div className="flex justify-between gap-3 mt-5">
+                <Button className="">
+                  <Link to="/buyer/checkout" search={{ id: dataCart.id }}>
                     Beli Langsung
-                  </Link> */}
-                  Beli Langsung
+                  </Link>
                 </Button>
 
-                <Button onClick={addCart} className="me-4">
-                  {/* <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
-                    Beli Langsung
-                  </Link> */}
-                  Tambahkan Ke Keranjang
+                <Button className="">
+                  <Link
+                    className="flex items-center gap-2"
+                    onClick={addCart}
+                    to="/buyer/dashboard"
+                  >
+                    Keranjang <FaArrowRightFromBracket />
+                  </Link>
                 </Button>
-                {/* <Link className="gap-2" onClick={addCart} to="/buyer/dashboard">
-                  Keranjang <FaArrowRightFromBracket />
-                </Link> */}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

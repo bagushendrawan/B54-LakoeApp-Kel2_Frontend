@@ -8,6 +8,19 @@ type courierType = {
   logo: string;
 };
 
+type StoreLocation = {
+  address: string;
+};
+
+type StoreUser = {
+  name: string;
+  slogan: string;
+  description: string;
+  logo_attachment: string;
+  banner_attachment: string;
+  location: StoreLocation[];
+};
+
 type User = {
   id: string;
   name: string;
@@ -16,6 +29,7 @@ type User = {
   role_id: number;
   isVerified: boolean;
   store_id: string;
+  store: StoreUser;
 };
 
 type productCreated = {
@@ -27,6 +41,16 @@ type discount = {
   id: string;
   code: string;
   amount: number;
+};
+
+type bankAccount = {
+  id: string;
+  bank: string;
+  acc_number: string;
+  acc_name: string;
+  store_id: string;
+  created_at: Date;
+  updated_at: Date;
 };
 
 type Store = {
@@ -42,6 +66,8 @@ type Store = {
   SET_DISCOUNT: (newDisc: discount) => void;
   DELETE_DISCOUNT: () => void;
   logout: () => void;
+  SET_BANK: (newBank: bankAccount[]) => void;
+  bank: bankAccount[];
 };
 
 const useStore = create<Store>()((set) => ({
@@ -72,6 +98,14 @@ const useStore = create<Store>()((set) => ({
     role_id: NaN,
     isVerified: false,
     store_id: "",
+    store: {
+      name: "",
+      slogan: "",
+      description: "",
+      logo_attachment: "",
+      banner_attachment: "",
+      location: [{ address: "" }],
+    },
   },
   SET_USER: (newUser: User) => set({ user: newUser }),
   discount: {
@@ -99,6 +133,14 @@ const useStore = create<Store>()((set) => ({
         role_id: NaN,
         isVerified: false,
         store_id: "",
+        store: {
+          name: "",
+          slogan: "",
+          description: "",
+          logo_attachment: "",
+          banner_attachment: "",
+          location: [{ address: "" }],
+        },
       },
     });
     localStorage.removeItem("token");
@@ -108,6 +150,18 @@ const useStore = create<Store>()((set) => ({
     varian_id: "",
   },
   SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
+  bank: [
+    {
+      id: "",
+      bank: "",
+      acc_number: "",
+      acc_name: "",
+      store_id: "",
+      created_at: new Date(""),
+      updated_at: new Date(""),
+    },
+  ],
+  SET_BANK: (newBank: bankAccount[]) => set({ bank: newBank }),
 }));
 
 export default useStore;

@@ -9,7 +9,7 @@ export function InformasiKontak(props: any) {
 
   return (
     <>
-      <div className="p-3 border border-black rounded-md mb-5">
+      <div className="p-3 bg-gradient-to-r from-[#28DF99] to-[#99F3BD] border border-black rounded-md mb-5">
         <h1 className="font-bold mt-3">Informasi Kontak</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>

@@ -90,7 +90,7 @@ export function AlamatPengiriman(props: any) {
 
   return (
     <>
-      <div className="p-3 border rounded-md border-black mb-5">
+      <div className="p-3 bg-gradient-to-r from-[#28DF99] to-[#99F3BD] border rounded-md border-black mb-5">
         <h1 className="font-bold mt-3">Alamat Pengiriman</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>

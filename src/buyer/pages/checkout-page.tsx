@@ -64,6 +64,7 @@ export const useCheckoutForm = () => {
 export function CheckoutPage() {
   const formCheckout = useCheckoutForm();
   const disc = useStore((state) => state.discount);
+
   async function onSubmitForm(data: any) {
     try {
       console.log("data", data);
@@ -110,7 +111,7 @@ export function CheckoutPage() {
 
   return (
     <>
-      <div className="bg-white m-3 rounded-lg p-3">
+      <div className="bg-[#F6F7D4] rounded-lg p-5">
         <h1 className="text-xl font-bold">CHECKOUT</h1>
 
         <div className="mt-4">
@@ -129,7 +130,7 @@ export function CheckoutPage() {
 
                 <RingkasanPesanan form={formCheckout} />
 
-                <div className="border border-black w-5/6 rounded-lg p-3 mb-4">
+                <div className="bg-white border border-black w-5/6 rounded-lg p-3 mb-4">
                   <p className="mb-3">Catatan</p>
                   <Textarea
                     className="resize-none border-black"

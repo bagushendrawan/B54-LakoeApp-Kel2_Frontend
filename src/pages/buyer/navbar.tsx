@@ -1,12 +1,12 @@
 import { TableCart } from "@/buyer/pages/table-cart";
-import { DialogHeader } from "@/components/dialog";
-import useStore from "@/z-context";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
+  DialogHeader,
   DialogTitle,
-} from "@radix-ui/react-dialog";
+  DialogTrigger,
+} from "@/components/dialog";
+import useStore from "@/z-context";
 import { Link } from "@tanstack/react-router";
 import { BsPerson } from "react-icons/bs";
 
@@ -21,6 +21,7 @@ export function Navbar() {
 
       <div className="flex items-center gap-4">
         <TableCart />
+
         <Dialog>
           <DialogTrigger asChild>
             <div className="w-5/6 rounded-full p-1 cursor-pointer border border-black bg-white">

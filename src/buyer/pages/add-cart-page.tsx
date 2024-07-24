@@ -9,18 +9,11 @@ import {
 } from "@/components/ui/carousel";
 import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/add-cart";
-import { Link, Navigate, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TableCart } from "./table-cart";
-
-interface Data {
-  id: number;
-  name: string;
-  price: number;
-  attachments: string[];
-}
 
 interface Store {
   name: string;
@@ -90,6 +83,7 @@ export function AddCartPage() {
         };
         setQuantity(data.quantity);
         setDataOrder(data);
+        // console.log("ini data order", data);
         console.log("ini data order", data);
       } catch (error) {
         console.log(error);
@@ -122,6 +116,34 @@ export function AddCartPage() {
       console.log("ini data post", response.data);
       setDataCart(data);
       navigate({ to: "/buyer/dashboard" });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addCartLangsung() {
+    try {
+      console.log("hit langsung");
+      const data = {
+        // store_id = params.store_id
+        attachments: dataOrder.attachments,
+        name: dataOrder.name,
+        price: dataOrder.price,
+        quantity: quantity,
+      };
+
+      const response = await Axios({
+        method: "post",
+        url: `${api}/cart-items/langsung/${params.product_id}/${params.varian_id}`,
+        data,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      console.log("ini data langsung", response.data);
+      navigate({ to: "/buyer/checkout", search: { id: response.data.id } });
     } catch (error) {
       console.log(error);
     }

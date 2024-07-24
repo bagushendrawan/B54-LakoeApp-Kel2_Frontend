@@ -37,6 +37,22 @@ type productCreated = {
   varian_id: string;
 };
 
+type discount = {
+  id: string;
+  code: string;
+  amount: number;
+};
+
+type bankAccount = {
+  id: string;
+  bank: string;
+  acc_number: string;
+  acc_name: string;
+  store_id: string;
+  created_at: Date;
+  updated_at: Date;
+};
+
 type Store = {
   courier: courierType[];
   setCourier: (newCourier: courierType[]) => void;
@@ -46,7 +62,12 @@ type Store = {
   SET_USER: (newUser: User) => void;
   produk: productCreated;
   SET_PRODUCT: (newProduct: productCreated) => void;
+  discount: discount;
+  SET_DISCOUNT: (newDisc: discount) => void;
+  DELETE_DISCOUNT: () => void;
   logout: () => void;
+  SET_BANK: (newBank: bankAccount[]) => void;
+  bank: bankAccount[];
 };
 
 const useStore = create<Store>()((set) => ({
@@ -87,6 +108,21 @@ const useStore = create<Store>()((set) => ({
     },
   },
   SET_USER: (newUser: User) => set({ user: newUser }),
+  discount: {
+    id: "",
+    code: "",
+    amount: 0,
+  },
+  SET_DISCOUNT: (newDisc: discount) => set({ discount: newDisc }),
+  DELETE_DISCOUNT: () => {
+    set({
+      discount: {
+        id: "",
+        code: "",
+        amount: 0,
+      },
+    });
+  },
   logout: () => {
     set({
       user: {
@@ -114,6 +150,18 @@ const useStore = create<Store>()((set) => ({
     varian_id: "",
   },
   SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
+  bank: [
+    {
+      id: "",
+      bank: "",
+      acc_number: "",
+      acc_name: "",
+      store_id: "",
+      created_at: new Date(""),
+      updated_at: new Date(""),
+    },
+  ],
+  SET_BANK: (newBank: bankAccount[]) => set({ bank: newBank }),
 }));
 
 export default useStore;

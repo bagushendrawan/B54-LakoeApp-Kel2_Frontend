@@ -1,13 +1,5 @@
-import { TableCart } from "@/buyer/pages/table-cart";
 import { Button } from "@/components/button";
 import { Card, CardContent, CardFooter } from "@/components/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/dialog";
 import { Input } from "@/components/input";
 import {
   Select,
@@ -17,15 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/select";
-import useStore from "@/z-context";
 import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
-import { BsPerson } from "react-icons/bs";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import gambar from "../../assets/image/pngtree-letter-s-in-the-green-shop-logo-and-cloud-symbol-template-png-image_4978887.jpg";
 import { Navbar } from "./navbar";
 
 interface VariantOptionValue {
@@ -61,11 +50,6 @@ interface ProductDashboard {
   categories_id: string;
 }
 
-interface Category {
-  id: string;
-  name: string;
-}
-
 interface Store {
   name: string;
 }
@@ -80,6 +64,8 @@ export function BuyerDashboardPage() {
   const [searchToko, setSearchToko] = useState<string>("Toko");
 
   const [store, setStore] = useState<Store[]>([]);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     async function getDataProduct() {
@@ -158,8 +144,18 @@ export function BuyerDashboardPage() {
       <div className="bg-[#F6F7D4]">
         <Navbar />
 
+        <div className="flex gap-3 bg-slate-800">
+          <Input
+            type="text"
+            value={searchTerm}
+            placeholder="Cari Pesanan"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setSearchTerm(e.target.value)
+            }
+          />
+        </div>
         <div className="w-full h-screen bg-white">
-          <div className="w-full h-full flex justify-center p-4">
+          <div className="w-full h-full flex justify-center">
             <div className="w-full flex flex-col justify-center items-center">
               <h1 className="text-8xl font-bold">
                 LAKOE<span className="text-[#28DF99]">BUYER</span>

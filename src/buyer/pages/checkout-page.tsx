@@ -1,13 +1,13 @@
-import { Textarea } from "@/components/textarea";
-import { Button } from "@/components/ui/button";
-import Axios from "axios";
-import { useEffect } from "react";
+import { Textarea } from '@/components/textarea';
+import { Button } from '@/components/ui/button';
+import Axios from 'axios';
+import { useEffect } from 'react';
 
-import { AlamatPengiriman } from "../features/checkout/alamat-pengiriman";
-import { GunakanVoucher } from "../features/checkout/gunakan-voucher";
-import { InformasiKontak } from "../features/checkout/informasi-kontak";
-import { MetodePengiriman } from "../features/checkout/metode-pengiriman";
-import { RingkasanPesanan } from "../features/checkout/ringkasan-pesanan";
+import { AlamatPengiriman } from '../features/checkout/alamat-pengiriman';
+import { GunakanVoucher } from '../features/checkout/gunakan-voucher';
+import { InformasiKontak } from '../features/checkout/informasi-kontak';
+import { MetodePengiriman } from '../features/checkout/metode-pengiriman';
+import { RingkasanPesanan } from '../features/checkout/ringkasan-pesanan';
 
 interface MidtransSnap extends Window {
   snap: {
@@ -15,12 +15,13 @@ interface MidtransSnap extends Window {
   };
 }
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { api } from "@/lib/api";
-import { LoadingSpinner } from "@/routes/__root";
-import { Navbar } from "@/pages/buyer/navbar";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { api } from '@/lib/api';
+import { LoadingSpinner } from '@/routes/__root';
+import { Navbar } from '@/pages/buyer/navbar';
+import useStore from '@/z-context';
 
 export type checkoutForm = {
   courier_code: string;
@@ -54,7 +55,7 @@ const checkoutSchema = z.object({
 
 export const useCheckoutForm = () => {
   const form = useForm<checkoutForm>({
-    mode: "onChange",
+    mode: 'onChange',
     resolver: zodResolver(checkoutSchema),
   });
 
@@ -63,21 +64,25 @@ export const useCheckoutForm = () => {
 
 export function CheckoutPage() {
   const formCheckout = useCheckoutForm();
+  const disc = useStore((state) => state.discount);
 
   async function onSubmitForm(data: any) {
     try {
+      console.log('data', data);
       const newData = {
         ...data,
-        prices: data.prices + data.service_charge,
+        prices:
+          data.prices + data.service_charge - data.prices * (disc.amount / 100),
+        discount_id: disc.id,
       };
-      console.log("HIT SUBMIT", newData);
+      console.log('HIT SUBMIT', newData);
       const response = await Axios({
-        method: "post",
+        method: 'post',
         url: `${api}/buyers/buy`,
         data: newData,
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
 
@@ -90,13 +95,13 @@ export function CheckoutPage() {
   }
 
   useEffect(() => {
-    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
 
-    const scriptTag = document.createElement("script");
+    const scriptTag = document.createElement('script');
     scriptTag.src = midtransScriptUrl;
 
     const myMidtransClientKey = import.meta.env.PUBLIC_CLIENT;
-    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
 
     document.body.appendChild(scriptTag);
 

@@ -6,13 +6,13 @@ import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { LuPackageX } from "react-icons/lu";
-import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
-import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
+// import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
+// import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
+import { api } from "@/lib/api";
+import useStore from "@/z-context";
 import DropdownSort from "./components/dropDownSort";
 import IconInput from "./components/iconInput";
 import ProductItem from "./components/productItem";
-import { api } from "@/lib/api";
-import useStore from "@/z-context";
 
 const Product = () => {
   const user = useStore((state) => state.user);
@@ -192,7 +192,17 @@ const Product = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(`${api}/categories`);
+        const res = await axios.get(
+          "http://localhost:3000/product/all/b0398a24-ab3c-4287-9fcc-c3fb1f707c20",
+          {
+            params: {
+              searchTerm,
+              isActive,
+              category: selectedCategory,
+              action: selectedAction,
+            },
+          }
+        );
 
         setCategories(res.data);
       } catch (error) {
@@ -204,7 +214,7 @@ const Product = () => {
   }, []);
 
   return (
-    <div className="min-h-screen px-6 py-4 bg-white rounded">
+    <div className="min-h-screen px-6 py-4 bg-white shadow-sm shadow-black rounded">
       {/* header */}
       <div className="flex justify-between items-center mb-4">
         <p className="text-2xl font-bold">Daftar Produk</p>
@@ -266,33 +276,6 @@ const Product = () => {
         <p className="flex flex-1 text-xl font-bold">
           {products?.length} Produk
         </p>
-
-        <div className="flex items-center gap-2">
-          {selectedProduct.length !== 0 && (
-            <>
-              <BulkDeleteProductDialog selectedProduct={selectedProduct} />
-              <BulkNonactivateProductDialog selectedProduct={selectedProduct} />
-            </>
-          )}
-
-          {products ? (
-            <div className={products?.length === 0 ? "hidden" : "block"}>
-              {products?.length > 0 && (
-                <div className="flex items-center gap-2">
-                  <p>Pilih Semua</p>
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                  />
-                </div>
-              )}
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
       </div>
 
       {/* result */}

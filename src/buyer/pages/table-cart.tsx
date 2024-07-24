@@ -7,10 +7,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
+import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
+import { BsTrash } from "react-icons/bs";
 import { FaShoppingCart } from "react-icons/fa";
 
 interface cart {
@@ -25,8 +28,44 @@ interface CartItems {
   quantity: number;
 }
 
-export function TableCart() {
+export function TableCart(props: any) {
   const [items, setItems] = useState([]);
+
+  const cart = useMutation({
+    mutationFn: async (cart_id) => {
+      return await Axios({
+        method: "delete",
+        url: `${api}/cart-items/${cart_id}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    },
+  });
+
+  const { refetch: refetchCart } = useQuery({
+    queryKey: ["pesananStatus"],
+    queryFn: fetchCarts,
+  });
+
+  async function fetchCarts() {
+    try {
+      const response = await Axios({
+        method: "get",
+        url: `${api}/cart-items/allUserCart`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      console.log("cart", response.data);
+      setItems(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     async function fetchItems() {
@@ -69,38 +108,65 @@ export function TableCart() {
           <DropdownMenuSeparator />
 
           {items &&
-            items
-              .filter((data: any) => !data?.invoices)
-              .map((data: any, index) => {
-                return (
-                  <DropdownMenuCheckboxItem key={index}>
-                    <div className="w-full mt-3 flex justify-between items-center">
-                      <div className="w-full flex items-center gap-2">
-                        <img
-                          src={data?.carts_items[0].image}
-                          alt="image"
-                          className="w-3/12 rounded-sm"
-                        />
+            items.map((data: any, index) => {
+              return (
+                <DropdownMenuCheckboxItem key={index}>
+                  <div className="w-full my-3 flex justify-between items-center">
+                    <div className="w-full flex items-center gap-2">
+                      <img
+                        src={data?.carts_items[0]?.img}
+                        alt="image"
+                        className="w-3/12 rounded-sm me-2"
+                      />
 
-                        <div className="text-s w-full">
-                          <p>{data.carts_items[0].name}</p>
-                          <p>{data.carts_items[0].quantity} item (100gr)</p>
-                          <p>Rp {data.carts_items[0].price}</p>
-                        </div>
+                      <div className="mb-1 w-full">
+                        <p className="text-lg">{data.carts_items[0]?.name}</p>
+                        <p className="text-xs font-semibold">
+                          {data.carts_items[0]?.quantity} item
+                        </p>
+                        <p className="font-bold">
+                          {formattedNumber(data.carts_items[0]?.price)}
+                        </p>
                       </div>
+                    </div>
 
-                      <Button className="w-1/4">
-                        <Link
-                          to="/buyer/checkout"
-                          search={{ id: data.carts_items[0].id }}
-                        >
-                          Bayar Sekarang
-                        </Link>
+                    <div className="flex gap-2 justify-center">
+                      {data.invoices ? (
+                        <Button className="w-full bg-green-800 text-white">
+                          <Link
+                            to="/buyer/checkout"
+                            search={{ id: data.carts_items[0]?.id }}
+                          >
+                            Bayar
+                          </Link>
+                        </Button>
+                      ) : (
+                        <Button className="w-full bg-slate-800">
+                          <Link
+                            to="/buyer/checkout"
+                            search={{ id: data.carts_items[0]?.id }}
+                          >
+                            Bayar Sekarang
+                          </Link>
+                        </Button>
+                      )}
+
+                      <Button
+                        variant={"outline"}
+                        className="rounded-md self-end bg-red-500 w-full"
+                        onClick={async () => {
+                          await cart.mutateAsync(data.id);
+                          refetchCart();
+                          props.refetch();
+                        }}
+                      >
+                        <BsTrash className="text-white w-4 h-4" />
                       </Button>
                     </div>
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+                  </div>
+                </DropdownMenuCheckboxItem>
+              );
+            })}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

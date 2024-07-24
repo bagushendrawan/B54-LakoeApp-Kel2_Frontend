@@ -12,6 +12,7 @@ import {
 } from "@/components/select";
 import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 import { api } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
@@ -53,6 +54,11 @@ export function BuyerDashboardPage() {
   const [category, setCategory] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState<String>("");
 
+  const { refetch: refetchProduct } = useQuery({
+    queryKey: ["product"],
+    queryFn: getDataProduct,
+  });
+
   async function getDataProduct() {
     try {
       const response = await Axios({
@@ -63,6 +69,7 @@ export function BuyerDashboardPage() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log("product", response.data);
       const filtered = response.data.filter((data: any) => data.is_active);
       setProduct(filtered);
       console.log("fetchproduk", filtered);
@@ -100,7 +107,7 @@ export function BuyerDashboardPage() {
         <div className="flex justify-between items-center font-bold p-4 border-b-2 border-b-black bg-rose-600">
           <h1 className="font-extrabold text-2xl text-white">LAKOEBUYER</h1>
           <h1 className="text-xl text-white">Daftar Produk</h1>
-          <TableCart />
+          <TableCart refetch={refetchProduct} />
         </div>
 
         <div className="flex gap-3 p-3  bg-slate-800">

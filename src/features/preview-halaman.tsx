@@ -53,7 +53,7 @@ export function PreviewHalaman(props: any) {
         console.log("product", product);
         const response = await Axios({
           method: "get",
-          url: `${api}/form-produk/3ada8b98-d033-4dc0-8ccd-05fb7d132bb1/17415d35-170c-4f13-8519-4928e519637e`,
+          url: `${api}/form-produk/${product.product_id}/${product.varian_id}`,
           data: dataOrder,
           headers: {
             "Content-Type": "application/json",

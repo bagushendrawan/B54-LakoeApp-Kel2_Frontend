@@ -595,18 +595,18 @@ export function FormProdukBaru() {
 
             {isVariant && (
               <div className="mt-2">
-                <h1 className="font-bold text-xl mb-2">Varian Produk</h1>
+                {/* <h1 className="font-bold text-xl mb-2">Varian Produk</h1> */}
                 <Dialog open={dialogOpen}>
                   <DialogTrigger
                     asChild
                     onClick={() => setDialogOpen(!dialogOpen)}
                   >
-                    <Button
+                    {/* <Button
                       variant="outline"
                       className="bg-blue-600 text-white"
                     >
                       Atur Sekaligus
-                    </Button>
+                    </Button> */}
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <Button
@@ -643,7 +643,7 @@ export function FormProdukBaru() {
                       }}
                     >
                       <DialogHeader>
-                        <DialogTitle>Atur Sekaligus</DialogTitle>
+                        {/* <DialogTitle>Atur Sekaligus</DialogTitle> */}
                         <DialogDescription>
                           Atur Seluruh Varian Disini
                         </DialogDescription>
@@ -1002,10 +1002,8 @@ export function FormProdukBaru() {
             </div>
           </div>
 
-          {/*  */}
-          {!isVariant && (
-            <div className="flex flex-col gap-2">
-              {/* harga */}
+          {/* !isVariant  */}
+          {/* <div className="flex flex-col gap-2">
               <div id="harga" className="bg-white p-4 rounded">
                 <h1 className="font-bold text-xl mb-4">Harga</h1>
                 <p>
@@ -1027,7 +1025,6 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              {/* stok */}
               <div id="pengelolaan-produk" className="bg-white p-4 rounded">
                 <h1 className="font-bold text-xl mb-4">Pengelolaan Produk</h1>
                 <div className="flex gap-4">
@@ -1056,7 +1053,6 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              {/* ukuran */}
               <div id="ukuran" className="bg-white p-4 rounded">
                 <h1 className="font-bold text-xl mb-4"> </h1>
 
@@ -1078,8 +1074,7 @@ export function FormProdukBaru() {
                   </p>
                 </div>
               </div>
-            </div>
-          )}
+            </div> */}
 
           {/*  */}
           <div className="flex justify-between gap-4 mt-4 bg-white p-4 w-full rounded">
@@ -1105,7 +1100,7 @@ export function FormProdukBaru() {
               )}
             </div>
 
-            <div>
+            <div className="flex gap-2">
               <Button variant={"outline"} className="rounded-3xl me-2">
                 Batal
               </Button>

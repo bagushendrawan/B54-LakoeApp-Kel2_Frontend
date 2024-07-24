@@ -64,13 +64,12 @@ export const useCheckoutForm = () => {
 export function CheckoutPage() {
   const formCheckout = useCheckoutForm();
   const disc = useStore((state) => state.discount);
+  const totalPrice = useStore((state) => state.totalPrice);
   async function onSubmitForm(data: any) {
     try {
-      console.log("data", data);
       const newData = {
         ...data,
-        prices:
-          data.prices + data.service_charge - data.prices * (disc.amount / 100),
+        prices: totalPrice,
         discount_id: disc.id,
       };
       console.log("HIT SUBMIT", newData);
@@ -102,7 +101,6 @@ export function CheckoutPage() {
     scriptTag.setAttribute("data-client-key", myMidtransClientKey);
 
     document.body.appendChild(scriptTag);
-
     return () => {
       document.body.removeChild(scriptTag);
     };

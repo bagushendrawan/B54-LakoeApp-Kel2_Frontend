@@ -23,6 +23,8 @@ export function RingkasanPesanan(props: any) {
   const params: paramsTypes = Route.useSearch();
   const disc = useStore((state) => state.discount);
   const selectedCourier = useStore((state) => state.selectedCourier);
+  const deleteDisc = useStore((state) => state.DELETE_DISCOUNT);
+  const setTotal = useStore((state) => state.SET_TOTAL);
   const [totalPrice, setTotalPrice] = useState(0);
   // console.log("ini kurir dipilih", selectedCourier);
 
@@ -74,13 +76,17 @@ export function RingkasanPesanan(props: any) {
       }
     }
     fetchProduct();
+    deleteDisc();
   }, []);
 
   useEffect(() => {
     const productAmount = dataProduct.amount;
     const shippingCost = selectedCourier?.price || 0;
-    const discountAmount = disc ? dataProduct.price * (disc.amount / 100) : 0;
+    const discountAmount = disc ? productAmount * (disc.amount / 100) : 0;
+
+    console.log(productAmount);
     setTotalPrice(productAmount + shippingCost - discountAmount);
+    setTotal(productAmount - discountAmount);
   }, [dataProduct, selectedCourier, disc]);
 
   return (
@@ -97,14 +103,14 @@ export function RingkasanPesanan(props: any) {
 
           <div className="text-s">
             <p>{dataProduct.name}</p>
-            <p>{dataProduct.quantity} item (100gr)</p>
-            <p>Rp {formattedNumber(dataProduct.price)}</p>
+            <p>{dataProduct.quantity} item</p>
+            <p>{formattedNumber(dataProduct.price)}</p>
           </div>
         </div>
 
         <div className="flex justify-between items-center my-4">
           <p>Total Harga ({dataProduct.quantity})</p>
-          <p>Rp {formattedNumber(dataProduct.amount)}</p>
+          <p>{formattedNumber(dataProduct.amount)}</p>
         </div>
 
         {selectedCourier?.price ? (
@@ -119,7 +125,7 @@ export function RingkasanPesanan(props: any) {
         {disc ? (
           <div className="flex justify-between items-center pb-4 border-b-2">
             <p>Discount</p>
-            <p>{formattedNumber(dataProduct.price * (disc.amount / 100))}</p>
+            <p>{formattedNumber(dataProduct.amount * (disc.amount / 100))}</p>
           </div>
         ) : (
           <div className="flex justify-between items-center border-b-2"></div>

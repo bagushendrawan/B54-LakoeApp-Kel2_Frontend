@@ -77,7 +77,7 @@ export function RingkasanPesanan(props: any) {
 
   return (
     <>
-      <div className="bg-white border border-blue-900 w-5/6 rounded-lg p-3 mb-4">
+      <div className="bg-green-100 shadow-sm shadow-black w-5/6 rounded-lg p-3 mb-4">
         <p>Ringkasan Pesanan</p>
 
         <div className="mt-3 flex gap-3 items-center">
@@ -90,19 +90,19 @@ export function RingkasanPesanan(props: any) {
           <div className="text-s">
             <p>{dataProduct.name}</p>
             <p>{dataProduct.quantity} item (100gr)</p>
-            <p>Rp {formattedNumber(dataProduct.price)}</p>
+            <p>{formattedNumber(dataProduct.price)}</p>
           </div>
         </div>
 
         <div className="flex justify-between items-center my-4">
           <p>Total Harga ({dataProduct.quantity})</p>
-          <p>Rp {formattedNumber(dataProduct.amount)}</p>
+          <p>{formattedNumber(dataProduct.amount)}</p>
         </div>
 
         {selectedCourier?.price ? (
           <div className="flex justify-between items-center pb-4 border-b-2">
             <p>Biaya Pengiriman</p>
-            <p>Rp {formattedNumber(selectedCourier?.price)}</p>
+            <p>{formattedNumber(selectedCourier?.price)}</p>
           </div>
         ) : (
           <div className="flex justify-between items-center border-b-2"></div>
@@ -112,12 +112,11 @@ export function RingkasanPesanan(props: any) {
           <p>Total Pembayaran ({dataProduct.quantity})</p>
           {selectedCourier && dataProduct.amount + selectedCourier.price ? (
             <p>
-              Rp{" "}
               {selectedCourier &&
                 formattedNumber(dataProduct.amount + selectedCourier.price)}
             </p>
           ) : (
-            <p>Rp {formattedNumber(dataProduct.amount)}</p>
+            <p>{formattedNumber(dataProduct.amount)}</p>
           )}
         </div>
       </div>

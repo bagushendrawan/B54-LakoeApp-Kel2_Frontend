@@ -39,20 +39,7 @@ interface Regencies {
   districts: Districts[];
 }
 
-// interface DataDaerah {
-//   id: string;
-//   name: string;
-//   alt_name: string;
-//   latitude: number;
-//   longitude: number;
-//   regencies: Regencies[];
-// }
-
-// const dataDaerahVar = dataDaerah
-
 export function AlamatPengiriman(props: any) {
-  // const form = useCheckoutForm();
-  // const [daerah] = useState<DataDaerah>(dataDaerah);
   const [selectedProvinsiId, setSelectedProvinsiId] = useState<string>("");
   const [selectedKabupaten, setSelectedKabupaten] = useState<Regencies[]>([]);
   const [selectedKabupatenId, setSelectedKabupatenId] = useState<string>("");
@@ -90,13 +77,13 @@ export function AlamatPengiriman(props: any) {
 
   return (
     <>
-      <div className="p-3 bg-gradient-to-r from-[#28DF99] to-[#99F3BD] border rounded-md border-black mb-5">
+      <div className="p-3 bg-white shadow-sm shadow-black rounded-md mb-5">
         <h1 className="font-bold mt-3">Alamat Pengiriman</h1>
         <div className="space-y-1">
           <Label htmlFor="nama">Nama</Label>
           <Input
             id="nama"
-            className="border-black"
+            className="border-[#c1c2ad]"
             {...props.form.register("receiver_name")}
           />
         </div>
@@ -109,7 +96,7 @@ export function AlamatPengiriman(props: any) {
             <Input
               type="text"
               id="phone-input"
-              className="border border-black w-full ps-12"
+              className="border-[#c1c2ad] w-full ps-12"
               placeholder="123-456-7890"
               {...props.form.register("receiver_phone")}
             />
@@ -118,7 +105,7 @@ export function AlamatPengiriman(props: any) {
         <div className="space-y-1">
           <Label htmlFor="kecamatan">Provinsi</Label>
           <Select onValueChange={(id) => setSelectedProvinsiId(id)}>
-            <SelectTrigger className="border-black text-gray-500">
+            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Provinsi" />
             </SelectTrigger>
             <SelectContent>
@@ -135,7 +122,7 @@ export function AlamatPengiriman(props: any) {
         <div className="space-y-1">
           <Label htmlFor="kecamatan">Kabupaten</Label>
           <Select onValueChange={(id) => setSelectedKabupatenId(id)}>
-            <SelectTrigger className="border-black text-gray-500">
+            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Kabupaten" />
             </SelectTrigger>
             <SelectContent>
@@ -156,7 +143,7 @@ export function AlamatPengiriman(props: any) {
               setSelectedKecamatanId(id);
             }}
           >
-            <SelectTrigger className="border-black text-gray-500">
+            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Kecamatan" />
             </SelectTrigger>
             <SelectContent>
@@ -175,7 +162,7 @@ export function AlamatPengiriman(props: any) {
           <Select
             onValueChange={(e) => props.form.setValue("receiver_district", e)}
           >
-            <SelectTrigger className="border-black text-gray-500">
+            <SelectTrigger className="border-[#c1c2ad] text-gray-500">
               <SelectValue placeholder="Ketik disini untuk cari Kelurahan" />
             </SelectTrigger>
             <SelectContent>
@@ -193,7 +180,7 @@ export function AlamatPengiriman(props: any) {
           <Label htmlFor="alamat">Detail Alamat</Label>
           <Textarea
             id="alamat"
-            className="border-black h-20 resize-none"
+            className="border-[#c1c2ad] h-20 resize-none"
             {...props.form.register("receiver_address")}
           ></Textarea>
         </div>

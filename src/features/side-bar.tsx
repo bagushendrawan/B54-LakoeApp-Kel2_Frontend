@@ -28,9 +28,9 @@ export function SideBar() {
 
   return (
     <>
-      <div className="bg-rose-600 w-64 h-screen">
+      <div className="bg-[#28DF99] w-[340px] h-screen">
         <ul>
-          <div className="text-xl text-white pl-5 h-screen flex flex-col justify-between">
+          <div className="text-xl text-white px-10 h-screen flex flex-col justify-between">
             <div>
               {/* <h1 className="font-bold ms-4 mt-4 text-2xl text-orange-500">Lakoe App</h1> */}
               <img src="/Lakoe-w.png" className="w-32 mt-2" />
@@ -38,7 +38,7 @@ export function SideBar() {
                 <li>
                   <Link
                     to="/seller/dashboard"
-                    className="[&.active]:font-bold flex gap-2 items-center py-3"
+                    className="[&.active]:font-bold flex gap-2 items-center py-3 hover:text-2xl duration-200"
                   >
                     <GoHome /> Dashboard
                   </Link>
@@ -46,7 +46,7 @@ export function SideBar() {
                 <li>
                   <Link
                     to="/seller/pesanan"
-                    className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    className="[&.active]:font-bold flex gap-2 items-center pb-3 hover:text-2xl duration-200"
                   >
                     <FiBox /> Pesanan
                   </Link>
@@ -54,7 +54,7 @@ export function SideBar() {
                 <li>
                   <Link
                     to="/seller/produk"
-                    className="[&.active]:font-bold flex gap-2 items-center pb-3"
+                    className="[&.active]:font-bold flex gap-2 items-center pb-3 hover:text-2xl duration-200"
                   >
                     <MdOutlineShoppingBag /> Produk
                   </Link>
@@ -72,7 +72,11 @@ export function SideBar() {
                     >
                        Form-varian
               </Link> */}
-                  <Accordion type="single" className="border-none" collapsible>
+                  <Accordion
+                    type="single"
+                    className="border-none hover:text-2xl duration-200"
+                    collapsible
+                  >
                     <AccordionItem value="item-1">
                       <AccordionTrigger className="p-0">
                         <IoSettingsOutline />

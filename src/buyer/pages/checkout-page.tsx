@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "@/lib/api";
 import { LoadingSpinner } from "@/routes/__root";
+import { Navbar } from "@/pages/buyer/navbar";
 
 export type checkoutForm = {
   courier_code: string;
@@ -106,8 +107,10 @@ export function CheckoutPage() {
 
   return (
     <>
-      <div className="bg-[#F6F7D4] rounded-lg p-5">
-        <h1 className="text-xl font-bold">CHECKOUT</h1>
+      <div className="bg-[#f3f4da] rounded-lg p-5 px-10">
+        <Navbar />
+
+        <h1 className="text-xl font-bold mt-12">CHECKOUT</h1>
 
         <div className="mt-4">
           <form onSubmit={formCheckout.handleSubmit(onSubmitForm)}>
@@ -120,15 +123,15 @@ export function CheckoutPage() {
                 <MetodePengiriman form={formCheckout} />
               </div>
 
-              <div className="flex flex-col basis-2/5 items-center">
+              <div className="flex flex-col basis-2/5 items-end">
                 <GunakanVoucher />
 
                 <RingkasanPesanan form={formCheckout} />
 
-                <div className="bg-white border border-black w-5/6 rounded-lg p-3 mb-4">
+                <div className="bg-white shadow-sm shadow-black w-5/6 rounded-lg p-3 mb-4">
                   <p className="mb-3">Catatan</p>
                   <Textarea
-                    className="resize-none border-black"
+                    className="resize-none border-[#c1c2ad]"
                     placeholder="Tulis Catatan Pesananmu"
                   />
                 </div>

@@ -6,14 +6,13 @@ import {
   SelectValue,
 } from "@/components/select";
 import { Input } from "@/components/ui/input";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { api } from "@/lib/api";
 import useStore from "@/z-context";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { Semua } from "./card-pesanan";
 import { CollapsibleVariant } from "./collapsible-variant";
-import { api } from "@/lib/api";
 
 export function DaftarPesanan() {
   const [invoiceData, setInvoiceData] = useState<any[]>([]);

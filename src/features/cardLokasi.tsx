@@ -44,7 +44,7 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
       <div className="w-full">
         <AddLocation onSave={handleAddLocation} />
         {locations?.map((location) => (
-          <div className="bg-slate-50">
+          <div className="bg-white">
             <LocationCard
               key={location.id}
               location={location}

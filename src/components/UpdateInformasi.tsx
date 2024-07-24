@@ -1,22 +1,25 @@
-import React, { useContext, useState } from 'react';
-import { InformasiContext } from '@/context/InformasiContext';
-import { Informasi } from '@/datas/type';
+import { InformasiContext } from "@/context/InformasiContext";
+import { Informasi } from "@/datas/type";
+import React, { useContext } from "react";
 
 interface UpdateInformasiProps {
-    inform: Informasi;
-    onUpdate: () => void;
+  inform: Informasi;
+  onUpdate: () => void;
 }
 
-export const UpdateInformasi: React.FC<UpdateInformasiProps> = ({ inform, onUpdate }) => {
-    const context = useContext(InformasiContext);
+export const UpdateInformasi: React.FC<UpdateInformasiProps> = ({
+  inform,
+  onUpdate,
+}) => {
+  const context = useContext(InformasiContext);
 
-    if (!context) {
-        return null;
-    }
+  if (!context) {
+    return null;
+  }
 
-    console.log("inform", inform);
-    // const { informs, setInforms } = context;
-}
+  console.log("inform", inform);
+  // const { informs, setInforms } = context;
+};
 // const [namaToko, setNamaToko] = useState(inform.namaToko);
 // const [selogan, setSelogan] = useState(inform.selogan);
 // const [deskripsi, setDeskripsi] = useState(inform.deskripsi);

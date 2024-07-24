@@ -11,11 +11,11 @@ import { Label } from "@/components/label";
 export function MainSetting() {
   return (
     <>
-      <div className="m-10 px-10 py-10 bg-slate-50 h-screen">
+      <div className="m-4 p-10 rounded-sm bg-white h-screen">
         <div className="mb-5">
           <Label className="font-bold text-2xl">Suka Suka Store</Label>
         </div>
-        <Tabs defaultValue="informasi" >
+        <Tabs defaultValue="informasi">
           <div>
             <TabsList className="border-b-2">
               <TabsTrigger value="informasi">Informasi</TabsTrigger>
@@ -29,17 +29,25 @@ export function MainSetting() {
             <FormInformasiToko />
           </TabsContent>
           <TabsContent value="lokasi">
-            <LocationContextProvider><CardLokasi onSave={function (): void {
-              throw new Error("Function not implemented.");
-            }} /></LocationContextProvider>
+            <LocationContextProvider>
+              <CardLokasi
+                onSave={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            </LocationContextProvider>
           </TabsContent>
           <TabsContent value="templatePesan">
-            <TemplateContextProvider><CardTemplate onSave={function (): void {
-              throw new Error('Function not implemented.')
-            }} /></TemplateContextProvider>
+            <TemplateContextProvider>
+              <CardTemplate
+                onSave={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            </TemplateContextProvider>
           </TabsContent>
         </Tabs>
-      </div >
+      </div>
     </>
   );
 }

@@ -1,9 +1,15 @@
-import App from '@/App';
-import { useToast } from '@/components/use-toast';
-import { cn } from '@/lib/utils';
-import { createRootRoute, ErrorComponent, Navigate } from "@tanstack/react-router";
-import Axios from 'axios';
-import { ReactNode } from 'react';
+import App from "@/App";
+import { useToast } from "@/components/use-toast";
+import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import useStore from "@/z-context";
+import {
+  createRootRoute,
+  ErrorComponent,
+  Navigate,
+} from "@tanstack/react-router";
+import Axios from "axios";
+import { ReactNode } from "react";
 
 export interface ISVGProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
@@ -38,17 +44,65 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-export const ProtectedRoute : React.FC<ProtectedRouteProps> = ({children}) => {
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const user = localStorage.getItem("token");
-  if(!user){
-    return <Navigate to='/auth/login' replace/>;
+  if (!user) {
+    return <Navigate to="/auth/login" replace />;
   }
-  return children
-}
+  return children;
+};
 
-export function throwLoginToast(){
+export const ProtectedSellerRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+}) => {
+  const { toast } = useToast();
+  const user = useStore((state) => state.user);
+  if (user.role_id !== 2) {
+    localStorage.removeItem("token");
+    toast({
+      variant: "destructive",
+      title: `You're not Authorized!`,
+    });
+    return <Navigate to="/auth/login" replace />;
+  }
+  return children;
+};
+
+export const ProtectedBuyerRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+}) => {
+  const { toast } = useToast();
+  const user = useStore((state) => state.user);
+  if (user.role_id !== 1) {
+    localStorage.removeItem("token");
+    toast({
+      variant: "destructive",
+      title: `You're not Authorized!`,
+    });
+    return <Navigate to="/auth/login" replace />;
+  }
+  return children;
+};
+
+export const ProtectedAdminRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+}) => {
+  const { toast } = useToast();
+  const user = useStore((state) => state.user);
+  if (user.role_id !== 3) {
+    localStorage.removeItem("token");
+    toast({
+      variant: "destructive",
+      title: `You're not Authorized!`,
+    });
+    return <Navigate to="/auth/login" replace />;
+  }
+  return children;
+};
+
+export function throwLoginToast() {
   console.log("throw login toast");
-  const {toast} = useToast()
+  const { toast } = useToast();
   toast({
     variant: "destructive",
     title: `Error!`,
@@ -56,23 +110,27 @@ export function throwLoginToast(){
   });
 }
 
-export async function authUser(){
+export async function authUser() {
   const token = localStorage.getItem("token");
+  const setUser = useStore((state) => state.SET_USER);
   try {
     const auth = await Axios({
       method: "get",
-      url: `http://localhost:3000/login/auth`,
-      headers: { 
-          "Content-Type": "multipart/form-data",
-          'Authorization': `Bearer ${token}`
+      url: `${api}/login/auth`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
-      })
+    });
 
-      if(auth.status === 401){
-        localStorage.removeItem("token");
-      }
-  } catch(err){
-    const {toast} = useToast()
+    if (auth.status === 401) {
+      localStorage.removeItem("token");
+    }
+
+    setUser(auth.data);
+    console.log(auth.data);
+  } catch (err) {
+    const { toast } = useToast();
     toast({
       variant: "destructive",
       title: `Error!`,
@@ -96,7 +154,7 @@ export async function authUser(){
 //     const response = await Axios({
 //       method: "get",
 //       url: `http://localhost:3000/login/auth`,
-//       headers: { 
+//       headers: {
 //           "Content-Type": "multipart/form-data",
 //           'Authorization': `Bearer ${token}`
 //       },
@@ -106,16 +164,12 @@ export async function authUser(){
 //     console.log("err",err);
 //     localStorage.removeItem("token");
 //   }
-    
+
 // }
 
 export const Route = createRootRoute({
   component: () => {
-    // if(!isAuthenticated())
-    // {
-    //   return <Login />
-    // }
-
-    return <App/>
-  }, errorComponent: ErrorComponent,
+    return <App />;
+  },
+  errorComponent: ErrorComponent,
 });

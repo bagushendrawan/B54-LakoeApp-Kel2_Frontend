@@ -16,7 +16,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({
   onEdit,
 
 }) => {
-  const { namaLokasi, alamat, kota, kodePos, pinPoint } = location
+  const { namaLokasi, alamat, selectedProvinsiId, pinPoint } = location
 
   const openStreetMap = `https://www.openstreetmap.org/directions?from=${pinPoint[0]}%2C%20${pinPoint[1]}#map=5/-6.403/99.053`
 
@@ -35,10 +35,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({
             <strong>Alamat:</strong> {alamat}
           </p>
           <p>
-            <strong>Kota/Kecamatan:</strong> {kota}
-          </p>
-          <p>
-            <strong>Kode Pos:</strong> {kodePos}
+            <strong>Kota/Kecamatan:</strong> {selectedProvinsiId}
           </p>
           <p>
             <strong>Pinpoint:</strong>{" "}
@@ -69,13 +66,13 @@ export const LocationCard: React.FC<LocationCardProps> = ({
                   <DialogClose>
                     <Button variant="outline" >No</Button>
                   </DialogClose>
-                  <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })} onClick={() => onDelete(location.id)}>
+                  <Button className={buttonVariants({ variant: 'custom', className: "rounded-xl" })} onClick={() => onDelete(location.id)}>
                     Yes, Delete
                   </Button>
                 </DialogFooter>
               </DialogContent>
               <DialogTrigger asChild>
-                <Button className={buttonVariants({ variant: 'custom', borderRadius: 'xl' })}>Delete</Button>
+                <Button className={buttonVariants({ variant: 'custom', className: "rounded-xl" })}>Delete</Button>
               </DialogTrigger>
             </Dialog>
           </div>

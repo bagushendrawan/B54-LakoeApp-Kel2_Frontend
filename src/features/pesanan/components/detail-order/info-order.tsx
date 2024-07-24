@@ -2,7 +2,7 @@ import { CgProfile } from "react-icons/cg";
 import { FaRegCalendar, FaRegCopy, FaWhatsapp } from "react-icons/fa6";
 import { TbFileInvoice } from "react-icons/tb";
 
-export function InfoOrder() {
+export function InfoOrder(props : any) {
   return (
     <>
       <div>
@@ -12,7 +12,7 @@ export function InfoOrder() {
           </div>
           <div className="w-full mr-5 flex justify-between">
             <p className="font-bold">Tanggal</p>
-            <p>9 Agustus 2024 - 19:45 WIB</p>
+            <p>{new Date(props.invoice?.created_at).toString()}</p>
           </div>
         </div>
 
@@ -23,7 +23,7 @@ export function InfoOrder() {
           <div className="w-full mr-5 flex justify-between">
             <p className="font-bold">Invoice</p>
             <p className="flex gap-2 items-center">
-              <FaRegCopy /> INV/20240708/MPL/000004235
+              <FaRegCopy /> {props.invoice?.id}
             </p>
           </div>
         </div>
@@ -35,7 +35,7 @@ export function InfoOrder() {
           <div className="w-full mr-5 flex justify-between">
             <p className="font-bold">Pembeli</p>
             <p className="flex gap-2 items-center">
-              <FaWhatsapp /> Agik Gigih Sulistyo
+              <FaWhatsapp /> {props.user?.name}
             </p>
           </div>
         </div>

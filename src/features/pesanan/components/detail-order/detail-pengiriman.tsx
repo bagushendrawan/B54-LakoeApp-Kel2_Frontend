@@ -1,5 +1,3 @@
-import { FaRegCopy } from "react-icons/fa6";
-import { TbTruckDelivery } from "react-icons/tb";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { RiwayatPesanan } from "./riwayat-pesanan";
+import { FaRegCopy } from "react-icons/fa6";
+import { TbTruckDelivery } from "react-icons/tb";
 import { ListRiwayatPesanan } from "./list-riwayat-pesanan";
 
-export function DetailPengiriman() {
+export function DetailPengiriman(props: any) {
   return (
     <>
       <div className="py-4 px-3 text-2xl">
@@ -37,32 +36,40 @@ export function DetailPengiriman() {
                     <div className="text-xs text-black">
                       <div className="mb-2">
                         <p>Kurir</p>
-                        <p className="font-bold">JNE</p>
+                        <p className="font-bold">
+                          {props.courier?.courier_code}{" "}
+                          {props.courier?.courier_service_name}
+                        </p>
                       </div>
 
                       <div className="mb-2">
                         <p className="flex gap-2 items-center">
                           No. Resi <FaRegCopy />
                         </p>
-                        <p className="font-bold">-</p>
+                        <p className="font-bold">
+                          {props.courier?.tracking_id}
+                        </p>
                       </div>
 
                       <div>
                         <p>Pengirim</p>
-                        <p className="font-bold">Agik Gigih</p>
+                        <p className="font-bold">{props.user?.name}</p>
                       </div>
                     </div>
 
                     <div className="text-xs text-black">
                       <p>Penerima</p>
-                      <p className="font-bold">Agik Gigih</p>
-                      <p>Karang Semut, Trimulya, Jetis, Bantul, Yogyakarta</p>
-                      <p>085798324931</p>
-                    </div>  
+                      <p className="font-bold">{props.user?.name}</p>
+                      <p>{props.invoice?.receiver_district}</p>
+                      <p>{props.user?.phone}</p>
+                    </div>
                   </div>
 
                   <div className="text-xs text-black my-3">
-                    <p>Status: <span className="font-bold">Dalam Proses Pengiriman</span></p>
+                    <p>
+                      Status:{" "}
+                      <span className="font-bold">{props.invoice?.status}</span>
+                    </p>
 
                     <div className="w-full">
                       <ListRiwayatPesanan />
@@ -78,14 +85,17 @@ export function DetailPengiriman() {
         <div className="pb-3">
           <div className="flex">
             <p className="w-60">Kurir</p>
-            <p>J&T Reguler</p>
+            <p>
+              {props.courier?.courier_code}{" "}
+              {props.courier?.courier_service_name}
+            </p>
           </div>
 
           <div className="flex">
             <p className="w-60 flex gap-2 items-center">
               No. Resi <FaRegCopy />
             </p>
-            <p>-</p>
+            <p>{props.courier?.tracking_id}</p>
           </div>
 
           <div className="flex">
@@ -95,9 +105,9 @@ export function DetailPengiriman() {
               </div>
             </p>
             <div>
-              <p>Karang Semut, Trimulya, Jetis, Bantul, Yogyakarta</p>
-              <p>085798324931</p>
-              <p>Agik Gigih Sulistyo</p>
+              <p>{props.invoice?.receiver_district}</p>
+              <p>{props.user?.receiver_address}</p>
+              <p>{props.user?.phone}</p>
             </div>
           </div>
         </div>

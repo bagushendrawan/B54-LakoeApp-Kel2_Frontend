@@ -16,12 +16,13 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
 import useStore from "../z-context";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { api } from "@/lib/api";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -54,15 +55,23 @@ export function LoginForm() {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/login`,
+        url: `${api}/login`,
         data: data,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       });
 
       const user = response.data.user;
       const token = response.data.token;
+      const checkAuth = await Axios({
+        method: "get",
+        url: `${api}/login/auth`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!token) {
         throw new Error("Token Not Found");
@@ -73,7 +82,7 @@ export function LoginForm() {
       }
 
       localStorage.setItem("token", token);
-      setUser(response.data);
+      setUser(checkAuth.data);
       toast({
         variant: "success",
         title: `Welcome ${user.name}!`,
@@ -92,7 +101,6 @@ export function LoginForm() {
         default:
           break;
       }
-
     } catch (error: any) {
       console.log("error", error);
       toast({
@@ -109,7 +117,7 @@ export function LoginForm() {
         variant: "destructive",
         title: `Error!`,
         description: `Please login to continue`,
-        action: <ToastAction altText="Try again">Try again</ToastAction>
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   }, []);
@@ -126,7 +134,9 @@ export function LoginForm() {
       <div className="w-full h-full flex bg-slate-600 rounded-sm">
         {/* form */}
         <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
-          <h1 className="font-bold text-2xl text-red-600 mb-8">Welcome Back!</h1>
+          <h1 className="font-bold text-2xl text-red-600 mb-8">
+            Welcome Back!
+          </h1>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -141,7 +151,12 @@ export function LoginForm() {
                       Email <Label className="text-red-600">*</Label>
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Masukan email" {...field} required />
+                      <Input
+                        type="email"
+                        placeholder="Masukan email"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -159,7 +174,7 @@ export function LoginForm() {
                     <FormControl>
                       <div className="relative">
                         <Input
-                          type={showPassword ? 'text' : 'password'}
+                          type={showPassword ? "text" : "password"}
                           placeholder="Masukan password"
                           {...field}
                           required
@@ -168,7 +183,11 @@ export function LoginForm() {
                           onClick={togglePasswordVisibility}
                           className="absolute inset-y-0 right-0 flex items-center px-3 text-sm"
                         >
-                          {showPassword ? <VscEyeClosed size={'1.5rem'} fill="black" /> : <VscEye size={'1.5rem'} fill="black" />}
+                          {showPassword ? (
+                            <VscEyeClosed size={"1.5rem"} fill="black" />
+                          ) : (
+                            <VscEye size={"1.5rem"} fill="black" />
+                          )}
                         </div>
                       </div>
                     </FormControl>
@@ -179,22 +198,29 @@ export function LoginForm() {
 
               <div className="w-full flex justify-end gap-1 mb-8 text-sm">
                 <h1>Forgot Your Password?</h1>
-                <Link to="/auth/request-password" className="font-bold text-blue-500">
+                <Link
+                  to="/auth/request-password"
+                  className="font-bold text-blue-500"
+                >
                   Click Here
                 </Link>
               </div>
 
               <div className="w-full flex flex-col gap-4 items-center text-sm">
-                {!form.formState.isSubmitting ?
+                {!form.formState.isSubmitting ? (
                   <Button type="submit" className="px-12 bg-red-600">
                     Login
                   </Button>
-                  :
-                  <Button type="submit" disabled className="px-12 bg-red-600 gap-2">
+                ) : (
+                  <Button
+                    type="submit"
+                    disabled
+                    className="px-12 bg-red-600 gap-2"
+                  >
                     <LoadingSpinner />
                     Login
                   </Button>
-                }
+                )}
 
                 <div className="flex justify-center gap-1 mt-8">
                   <h1>Do you have an account?</h1>

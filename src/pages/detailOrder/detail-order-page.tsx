@@ -6,49 +6,53 @@ import { StatusOrder } from "@/features/pesanan/components/detail-order/status-o
 import { SubmitOrder } from "@/features/pesanan/components/detail-order/submit-order";
 import { IoIosArrowForward } from "react-icons/io";
 
-export function DetailOrderPage() {
+export function DetailOrderPage(props: any) {
   return (
     <>
-      <div className="flex w-full">
+      <div className="flex">
         <div>
           <div className="flex items-center">
-            <h1 className="font-bold text-blue-500 text-l p-3 pr-0">
+            <h1 className="font-bold text-white text-l p-3 pr-0">
               Daftar Pesanan
             </h1>{" "}
-            <IoIosArrowForward />
-            <h1 className="font-bold">T-SHIRT BASIC - BLACK WHITE</h1>
+            <IoIosArrowForward className="text-white text-xs mt-1" />
+            <h1 className="font-bold text-white">{props.item?.name}</h1>
           </div>
 
           <div className="mx-4 bg-white rounded-lg">
             <div className="flex">
-              <StatusOrder />
+              <StatusOrder invoice={props.invoice} />
             </div>
           </div>
 
           <div className="m-4 bg-white rounded-lg">
-            <InfoOrder />
+            <InfoOrder invoice={props.invoice} user={props.user} />
           </div>
 
           <div className="m-4 bg-white rounded-lg">
             <div className="flex">
-              <DetailProduk />
-            </div>
-          </div>
-
-          <div className="m-4 bg-white rounded-lg">
-            <div className="flex">
-              <DetailPengiriman />
+              <DetailProduk item={props.item} />
             </div>
           </div>
 
           <div className="m-4 bg-white rounded-lg">
             <div className="flex">
-              <DetailPembayaran />
+              <DetailPengiriman
+                user={props.user}
+                courier={props.courier}
+                invoice={props.invoice}
+              />
             </div>
           </div>
 
           <div className="m-4 bg-white rounded-lg">
-            <SubmitOrder />
+            <div className="flex">
+              <DetailPembayaran item={props.item} courier={props.courier} />
+            </div>
+          </div>
+
+          <div className="m-4 bg-white rounded-lg">
+            <SubmitOrder invoice={props.invoice} />
           </div>
         </div>
       </div>

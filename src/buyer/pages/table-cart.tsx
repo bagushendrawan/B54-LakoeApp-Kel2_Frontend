@@ -77,22 +77,22 @@ export function TableCart() {
                     <div className="w-full mt-3 flex justify-between items-center">
                       <div className="w-full flex items-center gap-2">
                         <img
-                          src={data?.carts_items[0].image}
+                          src={data?.carts_items[0]?.image}
                           alt="image"
                           className="w-3/12 rounded-sm"
                         />
 
                         <div className="text-s w-full">
-                          <p>{data.carts_items[0].name}</p>
-                          <p>{data.carts_items[0].quantity} item (100gr)</p>
-                          <p>Rp {data.carts_items[0].price}</p>
+                          <p>{data.carts_items[0]?.name}</p>
+                          <p>{data.carts_items[0]?.quantity} item (100gr)</p>
+                          <p>Rp {data.carts_items[0]?.price}</p>
                         </div>
                       </div>
 
                       <Button className="w-1/4">
                         <Link
                           to="/buyer/checkout"
-                          search={{ id: data.carts_items[0].id }}
+                          search={{ id: data.carts_items[0]?.id }}
                         >
                           Bayar Sekarang
                         </Link>

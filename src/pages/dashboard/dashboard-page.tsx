@@ -31,6 +31,7 @@ import { LuDownload } from "react-icons/lu";
 import AddBankAccountDialog from "./components/addBankAccountDialog";
 import AllBankDialog from "./components/allBankDialog";
 import { TableTransaction } from "./components/tableTransaction";
+import { Chart } from "./chart";
 
 export function DashboardPage() {
   const user = useStore((state) => state.user);
@@ -275,7 +276,7 @@ export function DashboardPage() {
             </Select>
           </div>
         </div>
-        {/* <Chart /> */}
+        <Chart />
       </div>
 
       {/* transaction */}

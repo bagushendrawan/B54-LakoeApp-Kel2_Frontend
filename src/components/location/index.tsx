@@ -5,7 +5,7 @@ import { IoIosPin } from "react-icons/io";
 import { IoWarning } from "react-icons/io5";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "tailwindcss/tailwind.css";
-import { Button } from "../button";
+import { Button, buttonVariants } from "../button";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,7 @@ import {
 import { Label } from "../label";
 import { getAddress } from "./geoCoding";
 import { SearchControl } from "./search";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 // const ChangeView = ({ center }: { center: [number, number] }) => {
 //   const map = useMap();
@@ -127,12 +128,22 @@ const MapComponent = (props: any) => {
             </div>
 
             <div className="flex gap-5 justify-center">
-              <Button className="w-5/12 bg-white text-blue-500 border border-blue-900 hover:bg-blue-200 hover:text-black">
-                Kembali
-              </Button>
-              <Button className="w-5/12 bg-blue-700 text-white border border-blue-900 hover:bg-blue-200 hover:text-black">
-                Pilih Lokasi
-              </Button>
+              <DialogClose>
+                <Button className={buttonVariants({
+                  variant: "custom",
+                  className: "rounded-xl",
+                })}>
+                  Kembali
+                </Button>
+              </DialogClose>
+              <DialogClose>
+                <Button className={buttonVariants({
+                  variant: "custom",
+                  className: "rounded-xl",
+                })}>
+                  Pilih Lokasi
+                </Button>
+              </DialogClose>
             </div>
           </DialogContent>
         </Dialog>

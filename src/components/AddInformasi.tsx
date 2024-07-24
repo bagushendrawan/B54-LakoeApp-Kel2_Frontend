@@ -6,6 +6,7 @@ import { Button, buttonVariants } from "./button";
 import { Input } from "./input";
 import { Label } from "./label";
 import { Textarea } from "./textarea";
+import { v4 as uuidv4 } from 'uuid';
 
 export const AddInformasi: React.FC = () => {
   const context = useContext(InformasiContext);
@@ -17,11 +18,12 @@ export const AddInformasi: React.FC = () => {
     return null;
   }
 
+  const uuid = uuidv4()
   const { informs, setInforms } = context;
 
   const handleAdd = () => {
     const newInformasi: Informasi = {
-      id: informs.length + 1,
+      id: uuid,
       namaToko,
       selogan,
       deskripsi,
@@ -62,7 +64,7 @@ export const AddInformasi: React.FC = () => {
       </div>
       <div className="flex justify-end mr-10 border-b pb-5">
         <Button
-          className={buttonVariants({ variant: "custom" })}
+          className={buttonVariants({ variant: "customRGBA" })}
           onClick={handleAdd}
           type="submit"
         >
@@ -75,35 +77,11 @@ export const AddInformasi: React.FC = () => {
                     <Input
                         id="picture"
                         type="file"
-                        // value={image}
-                        onChange={"handleFileChange"}
+                        value={image}
+                    // onChange={"handleFileChange"}
                     />
                 </div> */}
       </div>
     </div>
-
-    // // ================================
-    // <div>
-    //     <h2>Add Location</h2>
-    //     <input
-    //         type="text"
-    //         placeholder="Name"
-    //         value={namaToko}
-    //         onChange={(e) => setNamaToko(e.target.value)}
-    //     />
-    //     <input
-    //         type="text"
-    //         placeholder="Description"
-    //         value={selogan}
-    //         onChange={(e) => setSelogan(e.target.value)}
-    //     />
-    //     <input
-    //         type="text"
-    //         placeholder="Description"
-    //         value={deskripsi}
-    //         onChange={(e) => setDeskripsi(e.target.value)}
-    //     />
-    //     <button onClick={handleAdd}>Add</button>
-    // </div>
   );
 };

@@ -13,6 +13,8 @@ export const Route = createFileRoute("/seller/pengaturan")({
   ),
 });
 
+
+
 function Pengaturan() {
   return (
     <div className="flex bg-[#F6F7D4]">

@@ -1,6 +1,6 @@
 import { LocationContext } from "@/context/LocationContext";
 import { Location } from "@/datas/type";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, buttonVariants } from "./button";
 import {
   Dialog,
@@ -24,8 +24,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
+import dataDaerah from "../assets/data-daerah/data-daerah.json";
+
 interface DialogProps {
   onSave: (location: Location) => void;
+}
+
+interface Regencies {
+  id: string;
+  province_id: string;
+  name: string;
+  alt_name: string;
+  latitude: number;
+  longitude: number;
+  // districts?: Districts[];
 }
 
 export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
@@ -33,15 +45,17 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
 
   const [namaLokasi, setNamaLokasi] = useState("");
   const [alamat, setAlamat] = useState("");
-  const [kota, setKota] = useState("");
-  const [kodePos, setKodePos] = useState("");
+  // const [kota, setKota] = useState("");
+  // const [kodePos, setKodePos] = useState("");
   const [pinPoint, setPinPoint] = useState<[number, number]>([
     -6.381870411756581, 106.74959499999997,
   ]);
+  const [selectedProvinsiId, setSelectedProvinsiId] = useState<string>("");
 
   if (!context) {
     return null;
   }
+
   const { locations, setLocations } = context;
 
   const handleSave = () => {
@@ -49,18 +63,27 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
       id: Date.now(),
       namaLokasi,
       alamat,
-      kota,
-      kodePos,
+      selectedProvinsiId,
+      // kodePos,
       pinPoint: pinPoint,
     };
+    // useEffect(() => {
+    //   if (selectedProvinsiId) {
+    //     const provinsi =
+    //       dataDaerah.find((data) => selectedProvinsiId === data.id)?.regencies ||
+    //       [];
+    //     console.log(provinsi);
+    //     setSelectedProvinsiId(provinsi);
+    //   }
+    // }, [selectedProvinsiId])
 
     console.log(newLocation);
 
     setLocations([...locations, newLocation]);
     setNamaLokasi("");
     setAlamat("");
-    setKota("");
-    setKodePos("");
+    setSelectedProvinsiId("");
+    // setKodePos("");
     setPinPoint([-6.381870411756581, 106.74959499999997]);
     onSave(newLocation);
   };
@@ -80,7 +103,7 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
               <DialogTrigger>
                 <Button
                   className={buttonVariants({
-                    variant: "custom",
+                    variant: "customRGBA",
                     className: "rounded-xl",
                   })}
                 >
@@ -126,17 +149,18 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
                   </Label>
                 </div>
                 <div className="flex w-64">
-                  <Select>
+                  <Select onValueChange={(id) => setSelectedProvinsiId(id)}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select Your Kota/Kecamatan" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Kota/Kecamatan</SelectLabel>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
-                      </SelectGroup>
+                      {dataDaerah.map((provinsi) => {
+                        return (
+                          <SelectItem key={provinsi.id} value={provinsi.name}>
+                            <p className="text-black">{provinsi.name}</p>
+                          </SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
                 </div>
@@ -148,39 +172,36 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
                   onChange={(e) => setKota(e.target.value)}
                   className="flex w-64"
                 /> */}
-              <div className="flex justify-between items-center">
-                <div>
-                  <Label htmlFor="kodePos" className="text-left">
-                    Kode Pos
-                  </Label>
-                </div>
-                <div className="flex w-64">
-                  <Select>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Your Kode Pos" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Kode Pos</SelectLabel>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                {/* <Input
+              {/* <div className="flex justify-between items-center">
+                  <div>
+                    <Label htmlFor="kodePos" className="text-left">
+                      Kode Pos
+                    </Label>
+                  </div>
+                  <div className="flex w-64">
+                    <Select>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select Your Kode Pos" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Kode Pos</SelectLabel>
+                          <SelectItem value="light">Light</SelectItem>
+                          <SelectItem value="dark">Dark</SelectItem>
+                          <SelectItem value="system">System</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Input
                   id="kodePos"
                   name="kodePos"
                   value={kodePos}
                   onChange={(e) => setKodePos(e.target.value)}
                   className="flex w-64"
-                /> */}
-              </div>
+                />
+                </div> */}
               <div className="flex-col justify-between items-center">
-                <Label htmlFor="pinpoint" className="text-left">
-                  Pinpoint Lokasi
-                </Label>
                 <MapComponent
                   markerPosition={pinPoint}
                   setMarkerPosition={setPinPoint}
@@ -191,7 +212,7 @@ export const AddLocation: React.FC<DialogProps> = ({ onSave }) => {
               <DialogClose>
                 <Button
                   className={buttonVariants({
-                    variant: "custom",
+                    variant: "customRGBA",
                     className: "rounded-xl",
                   })}
                   onClick={handleSave}

@@ -36,6 +36,10 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
 
   const { templates, setTemplates } = context;
 
+  const handleButtonClick = (text: string) => {
+    setDaftarIsiPesan([daftarIsiPesan + text]);
+  };
+
   const handleSave = () => {
     const newTemplate: TemplatePesan = {
       id: Date.now(),
@@ -48,13 +52,13 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
         arg0: (temp: { id: number }) =>
           | { id: number }
           | {
-              judulPesan: string;
-              daftarIsiPesan: string[];
-              namaPembeli: string;
-              namaProduk: string;
-              namaToko: string;
-              id: number;
-            }
+            judulPesan: string;
+            daftarIsiPesan: string[];
+            namaPembeli: string;
+            namaProduk: string;
+            namaToko: string;
+            id: number;
+          }
       ): unknown {
         throw new Error("Function not implemented.");
       },
@@ -83,7 +87,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
             <DialogTrigger>
               <Button
                 className={buttonVariants({
-                  variant: "custom",
+                  variant: "customRGBA",
                   className: "rounded-xl",
                 })}
               >
@@ -106,15 +110,13 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
                   name="judulPesan"
                   value={judulPesan}
                   onChange={(e) => setJudulPesan(e.target.value)}
-                  className="flex w-full mt-4"
-                />
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md" />
               </div>
-
               <div className="flex justify-between items-center">
                 <div className="flex">
-                  <Button
+                  <Button onClick={() => handleButtonClick("[Nama Customer]")}
                     className={buttonVariants({
-                      variant: "custom",
+                      variant: "customRGBA",
                       className: "rounded-xl",
                     })}
                   >
@@ -122,9 +124,9 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
                   </Button>
                 </div>
                 <div className="flex">
-                  <Button
+                  <Button onClick={() => handleButtonClick("[Nama Produk]")}
                     className={buttonVariants({
-                      variant: "custom",
+                      variant: "customRGBA",
                       className: "rounded-xl",
                     })}
                   >
@@ -132,9 +134,9 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
                   </Button>
                 </div>
                 <div className="flex">
-                  <Button
+                  <Button onClick={() => handleButtonClick("[Nama Toko]")}
                     className={buttonVariants({
-                      variant: "custom",
+                      variant: "customRGBA",
                       className: "rounded-xl",
                     })}
                   >
@@ -160,7 +162,7 @@ export const AddTemplatePesan: React.FC<DialogProps> = () => {
               <DialogClose asChild>
                 <Button
                   className={buttonVariants({
-                    variant: "custom",
+                    variant: "customRGBA",
                     className: "rounded-xl",
                   })}
                   onClick={handleSave}

@@ -8,10 +8,12 @@ import { CiCirclePlus } from "react-icons/ci";
 import { LuPackageX } from "react-icons/lu";
 import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
+// import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
+// import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
+import { api } from "@/lib/api";
 import DropdownSort from "./components/dropDownSort";
 import IconInput from "./components/iconInput";
 import ProductItem from "./components/productItem";
-import { api } from "@/lib/api";
 
 const Product = () => {
   // categories & action
@@ -191,7 +193,17 @@ const Product = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(`${api}/categories`);
+        const res = await axios.get(
+          "http://localhost:3000/product/all/b0398a24-ab3c-4287-9fcc-c3fb1f707c20",
+          {
+            params: {
+              searchTerm,
+              isActive,
+              category: selectedCategory,
+              action: selectedAction,
+            },
+          }
+        );
 
         setCategories(res.data);
       } catch (error) {
@@ -274,22 +286,42 @@ const Product = () => {
             </>
           )}
 
-          {products ? (
-            <div className={products?.length === 0 ? "hidden" : "block"}>
-              {products?.length > 0 && (
-                <div className="flex items-center gap-2">
-                  <p>Pilih Semua</p>
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                  />
-                </div>
-              )}
+          {/* result */}
+          {products?.length === 0 ? (
+            // if result 0
+            <div className="w-full flex justify-center items-center gap-4 border p-4 rounded shadow-md">
+              <LuPackageX size={"4rem"} color="#909090" />
+              <div>
+                <p className="text-xl font-bold">
+                  {isActive === 2
+                    ? "Oops, saat ini belum ada produk yang aktif"
+                    : isActive === 1
+                      ? "Oops, saat ini belum ada produk"
+                      : "Semua produk telah aktif"}
+                </p>
+                <p className="text-[#909090]">
+                  {isActive === 2
+                    ? "Aktifkan produk kamu atau buat produk baru"
+                    : "Kamu bisa buat produk baru dan menyimpannya"}
+                </p>
+              </div>
             </div>
           ) : (
-            <div></div>
+            // if result !0
+            <div className="flex flex-col gap-2">
+              {products &&
+                products.map((product) => (
+                  <ProductItem
+                    key={product.id}
+                    product={product}
+                    onToggle={handleToggle}
+                    onUpdatePrice={handleUpdatePrice}
+                    onUpdateStock={handleUpdateStock}
+                    onChecked={handleSelectedProduct}
+                    selectedAll={selectAll}
+                  />
+                ))}
+            </div>
           )}
         </div>
       </div>

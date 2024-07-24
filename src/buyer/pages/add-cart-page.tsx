@@ -77,6 +77,7 @@ export function AddCartPage() {
         setQuantity(data.quantity);
         setDataOrder(data);
         // console.log("ini data order", data);
+        console.log("ini data order", data);
       } catch (error) {
         console.log(error);
       }

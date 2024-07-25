@@ -32,7 +32,7 @@ import { api } from "@/lib/api";
 const withdrawSchema = z.object({
   nominal: z.preprocess(
     (val) => parseInt(val as string, 10),
-    z.number().min(50000, { message: "Minimal withdraw Rp500.000" })
+    z.number().min(10000, { message: "Minimal withdraw Rp500.000" })
   ),
 });
 
@@ -95,7 +95,7 @@ const WithdrawDialog: FC<IWithdrawProps> = ({ banks, currentBalance }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {banks.length !== 0 && currentBalance >= 100000 ? (
+        {banks.length !== 0 && currentBalance >= 10000 ? (
           <Button className="w-full gap-1 bg-[#22C55E] hover:bg-green-600">
             <BiMoneyWithdraw size={"1.3rem"} />
             Tarik Saldo

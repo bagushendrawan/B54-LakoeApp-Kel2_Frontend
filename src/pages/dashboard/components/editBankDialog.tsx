@@ -18,6 +18,7 @@ import Axios from "axios";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import DeleteBankDialog from "./deleteBankDialog";
 
 const editBankSchema = z.object({
   bank: z.string(),

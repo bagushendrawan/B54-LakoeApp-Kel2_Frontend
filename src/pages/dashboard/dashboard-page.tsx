@@ -1,157 +1,41 @@
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/select";
-import { useToast } from "@/components/use-toast";
-import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
-import { api } from "@/lib/api";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import useStore from "@/z-context";
 import Axios from "axios";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { BsCash, BsCreditCard } from "react-icons/bs";
-// import { Chart } from "./chart";
+import { Chart } from "./components/chart";
 import WithdrawDialog from "./components/withdrawDialog";
-
-type bankData = {
-  bank: string;
-  acc_name: string;
-  acc_number: string;
-};
-// import { useForm } from "react-hook-form";
-// import { useToast } from "@/components/use-toast";
-import { Button } from "@/components/button";
-import { GrTransaction } from "react-icons/gr";
-import { LuDownload } from "react-icons/lu";
 import AddBankAccountDialog from "./components/addBankAccountDialog";
+import { Label } from "@/components/label";
+import { GrTransaction } from "react-icons/gr";
 import AllBankDialog from "./components/allBankDialog";
-import { TableTransaction } from "./components/tableTransaction";
-import { Chart } from "./chart";
-import { useQuery } from "@tanstack/react-query";
+import TableWithdraw from "./components/tableWithdraw";
+import ExportTable from "./components/exportDoc";
+import { BsCash, BsCreditCard } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 
 export function DashboardPage() {
   const user = useStore((state) => state.user);
   const setBank = useStore((state) => state.SET_BANK);
   const registedBank = useStore((state) => state.bank);
 
-  const { toast } = useToast();
-  const [bankData, setBankData] = useState<bankData>();
+  const setWithdraw = useStore((state) => state.SET_WITHDRAW);
+  const dataWithdraw = useStore((state) => state.withdraw);
+  const [sort, setSort] = useState<string>();
+
   const [invoiceData, setInvoiceData] = useState([]);
   const [invoiceBulanIniData, setInvoiceBulanIniData] = useState([]);
-  const token = localStorage.getItem("token");
 
-  // const { refetch: refetchBank } = useQuery({
-  //   queryKey: ["bankData"],
-  //   queryFn: fetchBank,
-  // });
-
-  async function fetchBank() {
-    const response = await Axios({
-      method: "get",
-      url: `${api}/users/bank`,
-      data: user.store_id,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    setBankData(response.data);
-  }
-
-  useEffect(() => {
-    async function fetchBank() {
-      const response = await Axios({
-        method: "get",
-        url: `${api}/users/bank`,
-        data: user.store_id,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setBankData(response.data);
-    }
-    fetchBank();
-  }, []);
-
-  useEffect(() => {
-    async function auth() {
-      try {
-        const response = await Axios({
-          method: "get",
-          url: `${api}/form-produk/pesanan/${user.store_id}/9/1`,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        const data = response.data;
-        setInvoiceData(data);
-      } catch (error) {
-        console.log(error);
+  const currentBalance = formattedNumber(
+    invoiceData.reduce((total: any, inv: any) => {
+      if (inv.status === "PESANAN_SELESAI") {
+        return total + inv.prices + inv.service_charge;
       }
-    }
+      return total;
+    }, 0)
+  );
 
-    auth();
-  }, [user.store_id]);
-
-  useEffect(() => {
-    async function bulanIni() {
-      try {
-        const response = await Axios({
-          method: "post",
-          url: `${api}/form-produk/bulanini/${user.store_id}`,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        const data = response.data;
-        console.log("bulan ini", data);
-        setInvoiceBulanIniData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    bulanIni();
-  }, []);
-
-  const formBank = useForm<bankData>();
-  async function onSubmit(data: bankData) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    try {
-      console.log("data", data);
-      const response = await Axios({
-        method: "patch",
-        url: `${api}/users/bank`,
-        data: data,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log(response.data);
-      setBankData(response.data);
-      toast({
-        variant: "success",
-        title: `Bank Updated!`,
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: `Error!`,
-        description: `${error.message}`,
-      });
-      console.log(error);
-    }
-  }
-
+  // fetch bank
   useEffect(() => {
     const fetchBank = async () => {
       try {
@@ -170,18 +54,53 @@ export function DashboardPage() {
       }
     };
     fetchBank();
-  }, []);
+  }, [registedBank]);
 
-  const [selectedEkspor, setSelectedEkspor] = useState<string>("");
-  const handleSelectEkspor = (option: string) => {
-    setSelectedEkspor(option);
+  // fetch withdraw
+  useEffect(() => {
+    const fetchWithdraw = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await Axios({
+          method: 'get',
+          url: `http://localhost:3000/withdraw/${user.id}`,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setWithdraw(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchWithdraw();
+  }, [dataWithdraw]);
+
+  // sort data withdraw
+  const sortDataWithdraw = (data: IDataWithdraw[]) => {
+    switch (sort) {
+      case 'desc':
+        return data.sort((a, b) => new Date(b.createdAt).getDate() - new Date(a.createdAt).getDate());
+      case 'asc':
+        return data.sort((a, b) => new Date(a.createdAt).getDate() - new Date(b.createdAt).getMinutes());
+      default:
+        return data;
+    }
   };
 
+  useEffect(() => {
+    sortDataWithdraw(dataWithdraw);
+  }, [sort]);
+
+  // ekspor dokumen
+  const [selectedEkspor, setSelectedEkspor] = useState<string>('');
+
   return (
-    <div className=" w-full flex flex-col gap-2">
+    <div className=" w-full flex flex-col gap-4">
       {/* credit */}
-      <div className="bg-white rounded-sm p-6 shadow flex flex-col justify-center mb-2">
-        <h1 className="text-2xl font-bold text-blac mb-4">Credit Dashboard</h1>
+      <div className="bg-white rounded-sm p-4 shadow-lg">
+        <h1 className="text-2xl font-bold text-blac my-4">Credit Dashboard</h1>
         <div className="flex gap-2">
           {/* credit */}
           <div className="w-full bg-white p-4 border rounded shadow-sm">
@@ -199,8 +118,8 @@ export function DashboardPage() {
                 )}
             </h2>
             <div className="flex gap-2">
-              <AddBankAccountDialog banks={registedBank} fetch={fetchBank} />
-              <WithdrawDialog banks={registedBank} />
+              <AddBankAccountDialog banks={registedBank} />
+              <WithdrawDialog banks={registedBank} currentBalance={parseInt(currentBalance)} />
             </div>
           </div>
 
@@ -288,9 +207,9 @@ export function DashboardPage() {
                 <SelectValue placeholder="Pilih Jangka Waktu" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">30 Hari</SelectItem>
-                <SelectItem value="dark">1 Minggu</SelectItem>
-                <SelectItem value="system">1 Hari</SelectItem>
+                <SelectItem value="light">6 Hari Terakhir</SelectItem>
+                <SelectItem value="dark">6 Minggu Terakhir</SelectItem>
+                <SelectItem value="system">6 Bulan Terakhir</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -298,36 +217,31 @@ export function DashboardPage() {
         <Chart />
       </div>
 
-      {/* transaction */}
-      <div className="w-full flex flex-col gap-2">
+      {/* withdraw */}
+      <div className="w-full flex flex-col gap-2 shadow-lg">
         <div className="flex w-full">
           {/* ekspor */}
           <div className="flex flex-1">
             <div className="flex gap-2">
-              <Select onValueChange={handleSelectEkspor}>
+              <Select onValueChange={(option: string) => setSelectedEkspor(option)}>
                 <SelectTrigger className="text-gray-150 w-32">
                   <SelectValue placeholder="Ekspor" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pdf">PDF</SelectItem>
-                  <SelectItem value="docx">DOCX</SelectItem>
                   <SelectItem value="xlsx">XLSX</SelectItem>
                 </SelectContent>
               </Select>
 
-              {selectedEkspor !== "" && (
-                <a href="../../../index.html" download>
-                  <Button className="bg-white hover:bg-slate-200">
-                    <LuDownload size={"1.3rem"} color="black" />
-                  </Button>
-                </a>
+              {selectedEkspor !== '' && (
+                <ExportTable dataWithdraw={dataWithdraw} selectedType={selectedEkspor} />
               )}
             </div>
           </div>
 
           {/* sort */}
-          <div className="flex gap-2">
-            <Select>
+          <div className="w-48 flex gap-2">
+            <Select onValueChange={(option: string) => setSort(option)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Urutkan" />
               </SelectTrigger>
@@ -336,14 +250,12 @@ export function DashboardPage() {
                 <SelectItem value="asc">Terlama ke Terbaru</SelectItem>
               </SelectContent>
             </Select>
-
-            <Input className="w-full" placeholder="Invoice" />
           </div>
         </div>
 
         {/* result */}
         <div className="w-full max-h-96 rounded-sm overflow-y-auto">
-          <TableTransaction />
+          <TableWithdraw dataWithdraw={dataWithdraw} />
         </div>
       </div>
     </div>

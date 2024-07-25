@@ -1,80 +1,74 @@
-import { FC } from "react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/dialog";
-import { Button } from "@/components/button";
-import { MdOutlineDelete } from "react-icons/md";
-import axios from "axios";
-import { api } from "@/lib/api";
+import { FC } from 'react';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
+import { Button } from '@/components/button';
+import Axios from 'axios';
+import { FaTrash } from 'react-icons/fa';
+import useStore from '@/z-context';
 
 interface IUpdatePriceProps {
   product: IProduct;
 }
 
 const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
-  // delete product
-  const deleteProduct = async (id: string) => {
-    try {
-      const res = await axios.delete(`${api}/product/${id}`);
-      return res.data;
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
+    const user = useStore((state) => state.user);
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="w-full gap-2">
-          <MdOutlineDelete size={"1.3rem"} />
-          Hapus Produk
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="text-lg font-bold">Hapus Produk?</DialogTitle>
-          <DialogDescription>
-            <p className="text-xl text-black">
-              Produk <span className="font-bold">{product.name}</span> akan
-              dihapus
-            </p>
+    const handleDeleteProduct = async () => {
+        const token = localStorage.getItem('token');
+        const userId = user.id;
 
-            <p className="mt-6">
-              Produk yang dihapus tidak akan bisa dibatalkan. Pastikan produk
-              yang kamu pilih itu sudah benar.
-            </p>
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <div className="flex justify-end space-x-2 mt-4">
-            <DialogClose asChild>
-              <Button type="button" variant="outline" className="rounded-full">
-                Batalkan
-              </Button>
-            </DialogClose>
+        const res = await Axios({
+            method: 'delete',
+            url: `http://localhost:3000/product/${product.id}`,
+            params: {
+                userId: userId
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
 
-            <DialogClose>
-              <Button
-                className="px-4 py-2 text-white bg-blue-500 rounded-full"
-                onClick={() => {
-                  deleteProduct(product.id);
-                }}
-              >
-                Ya, Hapus
-              </Button>
-            </DialogClose>
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+        console.log(res.data);
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant={'outline'} className="rounded-full bg-transparent hover:bg-slate-200">
+                    <FaTrash size={'1.2rem'} color="red" />
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle className="text-lg font-bold">Hapus Produk?</DialogTitle>
+                    <DialogDescription>
+                        <p className="text-xl text-black">Produk <span className="font-bold">{product.name}</span> akan dihapus</p>
+
+                        <p className="mt-6">
+                            Produk yang dihapus tidak akan bisa dibatalkan. Pastikan produk yang kamu pilih itu sudah benar.
+                        </p>
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                    <div className="flex justify-end space-x-2 mt-4">
+                        <DialogClose asChild>
+                            <Button type="button" variant="outline" className='rounded-full'>
+                                Batalkan
+                            </Button>
+                        </DialogClose>
+
+                        <DialogClose>
+                            <Button
+                                className="px-4 py-2 text-white bg-blue-500 rounded-full"
+                                onClick={handleDeleteProduct}
+                            >
+                                Ya, Hapus
+                            </Button>
+                        </DialogClose>
+                    </div>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 };
 
 export default DeleteProductDialog;

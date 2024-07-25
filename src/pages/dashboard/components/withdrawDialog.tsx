@@ -30,15 +30,16 @@ import useStore from "@/z-context";
 import { api } from "@/lib/api";
 
 const withdrawSchema = z.object({
-  nominal: z.number().min(500000, { message: "Minimal withdraw Rp500.000" }),
-  bank: z.string(),
-  rekening: z.string(),
-  name: z.string(),
+    nominal: z.preprocess((val) => parseInt(val as string, 10), z.number().min(500000, { message: 'Minimal withdraw Rp500.000' }))
 });
 
-const WithdrawDialog: FC<{ banks: IBankAccount[] }> = ({ banks }) => {
-  const [selectedBankDetail, setSelectedBankDetail] =
-    useState<IBankAccount | null>();
+interface IWithdrawProps {
+    banks: IBankAccount[];
+    currentBalance: number;
+}
+
+const WithdrawDialog: FC<IWithdrawProps> = ({ banks, currentBalance }) => {
+    const [selectedBankDetail, setSelectedBankDetail] = useState<IBankAccount | null>();
 
   const handleSelectBank = (value: string) => {
     const selectedBank = banks.find((bank) => bank.bank === value);
@@ -47,30 +48,76 @@ const WithdrawDialog: FC<{ banks: IBankAccount[] }> = ({ banks }) => {
 
   const user = useStore((state) => state.user);
 
-  const formWithdraw = useForm<IWithdraw>({
-    mode: "onSubmit",
-    resolver: zodResolver(withdrawSchema),
-  });
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<IWithdraw>({
+        mode: 'onSubmit',
+        resolver: zodResolver(withdrawSchema)
+    });
 
   const handleWithdraw = async (data: any) => {
     const token = localStorage.getItem("token");
     const userId = user.id;
 
-    if (!selectedBankDetail) {
-      return "Pilih akun bank terlebih dahulu";
-    }
+        if (!selectedBankDetail) {
+            return console.log('Pilih akun bank terlebih dahulu');
+        }
 
-    formWithdraw.setValue("bank", selectedBankDetail.bank);
-    formWithdraw.setValue("rekening", selectedBankDetail.acc_number);
-    formWithdraw.setValue("name", selectedBankDetail.acc_name);
-    formWithdraw.setValue("user_id", userId);
+        const newData = {
+            ...data
+        };
 
-    const newData = {
-      ...data,
+        await Axios({
+            method: 'post',
+            url: `http://localhost:3000/withdraw/${userId}`,
+            data: newData,
+            params: {
+                "bankId": selectedBankDetail.id
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        setSelectedBankDetail(null);
+        reset();
     };
 
-    console.log(newData);
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                {banks.length !== 0 && currentBalance >= 500000 ? (
+                    <Button className="w-full gap-1 bg-[#22C55E] hover:bg-green-600">
+                        <BiMoneyWithdraw size={'1.3rem'} />
+                        Tarik Saldo
+                    </Button>
+                ) : (
+                    <Button className="w-full gap-1 bg-[#22C55E] hover:bg-green-600" disabled>
+                        <BiMoneyWithdraw size={'1.3rem'} />
+                        Tarik Saldo
+                    </Button>
+                )}
+            </DialogTrigger>
+            <DialogContent>
+                <form onSubmit={handleSubmit(handleWithdraw)}>
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold mb-4">Mau Tarik Saldo?</DialogTitle>
+                        <DialogDescription className='flex flex-col gap-4 text-black'>
+                            <div className='flex flex-col gap-2'>
+                                <Label htmlFor='nominal'>
+                                    Berapa nominal yang mau ditarik?
+                                    <span className='text-red-600'> *</span>
+                                </Label>
+                                <Input
+                                    id='nominal'
+                                    placeholder='Masukan Nominal'
+                                    type="text"
+                                    {...register("nominal")}
+                                />
+                                {errors.nominal && (
+                                    <span className='text-red-600'>{errors.nominal.message}</span>
+                                )}
+                            </div>
 
+<<<<<<< HEAD
     await Axios({
       method: "post",
       url: `${api}/withdraw/${userId}`,
@@ -146,6 +193,35 @@ const WithdrawDialog: FC<{ banks: IBankAccount[] }> = ({ banks }) => {
                   </SelectContent>
                 </Select>
               </div>
+=======
+                            <div className='flex flex-col gap-2'>
+                                <Label htmlFor='bank'>
+                                    Pilih Akun Bank
+                                    <span className='text-red-600'> *</span>
+                                </Label>
+                                <Select onValueChange={handleSelectBank}>
+                                    <SelectTrigger id='bank' className="w-full">
+                                        <SelectValue placeholder='Pilih Akun Bank' />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                        <SelectGroup>
+                                            <SelectLabel>
+                                                {banks.length !== 0 ? (
+                                                    <Label>Akun Bank Terdaftar</Label>
+                                                ) : (
+                                                    <Label>Belum ada akun bank yang terdaftar</Label>
+                                                )}
+                                            </SelectLabel>
+                                            {banks.map((bank) => (
+                                                <SelectItem key={bank.bank} value={bank.bank}>
+                                                    {bank.bank}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+>>>>>>> origin/product
 
               {selectedBankDetail ? (
                 <div className="flex flex-col gap-2">
@@ -181,20 +257,15 @@ const WithdrawDialog: FC<{ banks: IBankAccount[] }> = ({ banks }) => {
                 </Button>
               </DialogClose>
 
-              <DialogClose>
-                <Button
-                  type="submit"
-                  className="px-4 py-2 text-white bg-blue-500 rounded-full"
-                >
-                  Tarik Saldo
-                </Button>
-              </DialogClose>
-            </div>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
+                            <Button type="submit" className="px-4 py-2 text-white bg-blue-500 rounded-full">
+                                Tarik Saldo
+                            </Button>
+                        </div>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
 };
 
 export default WithdrawDialog;

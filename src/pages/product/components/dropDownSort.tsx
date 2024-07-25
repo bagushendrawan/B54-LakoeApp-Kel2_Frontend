@@ -25,7 +25,7 @@ const DropdownSort: FC<IDropDownProps> = ({ options, selectedOption, onSelect })
                 <SelectValue placeholder={selectedOption} />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="Semua Kategori">Semua Kategori</SelectItem>
+                <SelectItem value="Semua">Semua</SelectItem>
                 {options ? (
                     options.map((option) => (
                         <SelectItem key={option.id} value={option.id}>

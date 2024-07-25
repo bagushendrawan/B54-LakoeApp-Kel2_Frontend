@@ -1,69 +1,54 @@
-import { Button } from '@/components/button';
 import { FC } from 'react';
 import { GoDotFill } from 'react-icons/go';
-
-interface ITransaction {
-    id: number;
-    store_name: string;
-    store_logo: string;
-    nominal: number;
-    status: string;
-    metode: string;
-    rek: string;
-    created: number;
-}
+import ProcessDialog from './processDialog';
+import RejectDialog from './rejectDialog';
+import DoneDialog from './doneDialog';
 
 interface ICardItemProps {
-    transaction: ITransaction;
+    dataWithdraw: IDataWithdraw;
 }
 
-const CardItem: FC<ICardItemProps> = ({ transaction }) => {
+const CardItem: FC<ICardItemProps> = ({ dataWithdraw }) => {
     return (
         <div className="w-full border p-4 rounded shadow-md">
             <div className="w-full flex items-center gap-4">
                 <img
-                    src={transaction.store_logo}
-                    alt={transaction.store_name}
+                    src='https://cdn-icons-png.freepik.com/512/10074/10074041.png'
+                    alt={dataWithdraw.name}
                     width={'90rem'}
                 />
 
                 <div className="w-full">
                     <div className="flex flex-col">
                         <p className="flex flex-1 text-2xl font-bold">
-                            {transaction.store_name}
+                            {dataWithdraw.name}
                         </p>
 
                         <div className="flex">
                             <div className="flex flex-1 items-center gap-2">
-                                <p className="text-xl">Rp{transaction.nominal}</p>
+                                <p className="text-xl">Rp{dataWithdraw.nominal}</p>
                                 <GoDotFill color="#909090" />
-                                <p className="text-xl">{transaction.metode}</p>
+                                <p className="text-xl">{dataWithdraw.bank}</p>
                                 <GoDotFill color="#909090" />
-                                <p className="text-xl">{transaction.rek}</p>
+                                <p className="text-xl">{dataWithdraw.rekening}</p>
                             </div>
-                            {transaction.status === 'waiting' && (
-                                <Button variant={'outline'} className="rounded-full">
-                                    Proses Permintaan
-                                </Button>
-                            )}
-
-                            {transaction.status === 'process' && (
+                            {dataWithdraw.status === 'Menunggu' && (
                                 <div className="flex gap-2">
-                                    <Button variant={'outline'} className="rounded-full">
-                                        Batalkan Permintaan
-                                    </Button>
+                                    <RejectDialog dataWithdraw={dataWithdraw} />
 
-                                    <Button variant={'outline'} className="rounded-full">
-                                        Selesaikan Permintaan
-                                    </Button>
+                                    <ProcessDialog dataWithdraw={dataWithdraw} />
                                 </div>
                             )}
 
-                            {transaction.status === 'rejected' && (
-                                <p className="text-red-600">* Permintaan dibatalkan karena nominal kurang dari Rp500.000</p>
+                            {dataWithdraw.status === 'Diproses' && (
+                                <DoneDialog dataWithdraw={dataWithdraw} />
                             )}
 
-                            {transaction.status === 'done' && (
+                            {dataWithdraw.status === 'Ditolak' && (
+                                <p className="text-red-600">* Permintaan ditolak</p>
+                            )}
+
+                            {dataWithdraw.status === 'Selesai' && (
                                 <p className="text-green-600">* Permintaan selesai</p>
                             )}
                         </div>

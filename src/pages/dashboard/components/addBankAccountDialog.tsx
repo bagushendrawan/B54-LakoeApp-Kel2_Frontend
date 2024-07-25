@@ -11,7 +11,6 @@ import {
 } from "@/components/dialog";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { useToast } from "@/components/use-toast";
 import useStore from "@/z-context";
 import {
   Select,
@@ -28,7 +27,6 @@ import dataBank from "../../../assets/json/dataBank.json";
 import Axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QueryObserverResult, useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 
 const addBankSchema = z.object({
@@ -37,30 +35,13 @@ const addBankSchema = z.object({
   acc_name: z.string().min(1, { message: "Masukan nama anda" }),
 });
 
-const AddBankAccountDialog: FC<{
-  banks: IBankAccount[];
-  fetch: any;
-}> = ({ banks, fetch }) => {
+const AddBankAccountDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
   const user = useStore((state) => state.user);
 
   const formAddBank = useForm<IAddBank>({
     mode: "onSubmit",
     resolver: zodResolver(addBankSchema),
   });
-
-  // const mutateBank = useMutation({
-  //   mutationFn: async (data: any) => {
-  //     const response = await Axios({
-  //       method: "post",
-  //       url: `http://localhost:3000/bank-account/${data.userId}`,
-  //       data: data.newData,
-  //       headers: {
-  //         Authorization: `Bearer ${data.token}`,
-  //       },
-  //     });
-  //     //   if (response.data) refetch();
-  //   },
-  // });
 
   const handleAddBank = async (data: any) => {
     const token = localStorage.getItem("token");
@@ -70,12 +51,6 @@ const AddBankAccountDialog: FC<{
 
     const newData = {
       ...data,
-    };
-
-    const dataMutate = {
-      newData,
-      token,
-      userId,
     };
 
     console.log(newData);
@@ -88,8 +63,6 @@ const AddBankAccountDialog: FC<{
         Authorization: `Bearer ${token}`,
       },
     });
-
-    await fetch();
   };
 
   // search bank

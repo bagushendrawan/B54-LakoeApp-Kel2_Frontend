@@ -71,7 +71,7 @@ type categories = {
 
 type voucher = {
   id: string;
-  nominal: number;
+  amount: number;
   code: string;
   createdAt: Date;
 };
@@ -98,12 +98,15 @@ type Store = {
   setSelectedCourier: (newCourier: courierType | undefined) => void;
   user: User;
   SET_USER: (newUser: User) => void;
-
-  logout: () => void;
-
-  SET_PRODUCT: (newProduct: productCreated) => void;
   produk: productCreated;
-
+  SET_PRODUCT: (newProduct: productCreated) => void;
+  discount: discount;
+  SET_DISCOUNT: (newDisc: discount) => void;
+  DELETE_DISCOUNT: () => void;
+  totalPrice: number;
+  SET_TOTAL: (newTotal: number) => void;
+  DELETE_TOTAL: () => void;
+  logout: () => void;
   SET_BANK: (newBank: bankAccount[]) => void;
   bank: bankAccount[];
 
@@ -207,81 +210,95 @@ const useStore = create<Store>()((set) => ({
     varian_id: "",
   },
   SET_PRODUCT: (newProduk: productCreated) => set({ produk: newProduk }),
-  bank: [{
-    id: '',
-    bank: '',
-    acc_number: '',
-    acc_name: '',
-    store_id: '',
-    created_at: new Date(''),
-    updated_at: new Date('')
-  }],
+  bank: [
+    {
+      id: "",
+      bank: "",
+      acc_number: "",
+      acc_name: "",
+      store_id: "",
+      created_at: new Date(""),
+      updated_at: new Date(""),
+    },
+  ],
   SET_BANK: (newBank: bankAccount[]) => set({ bank: newBank }),
-  withdraw: [{
-    id: '',
-    nominal: 0,
-    bank: '',
-    rekening: '',
-    name: '',
-    status: '',
-    user_id: '',
-    createdAt: new Date('')
-  }],
+  withdraw: [
+    {
+      id: "",
+      nominal: 0,
+      bank: "",
+      rekening: "",
+      name: "",
+      status: "",
+      user_id: "",
+      createdAt: new Date(""),
+    },
+  ],
   SET_WITHDRAW: (newWithdraw: withdraw[]) => set({ withdraw: newWithdraw }),
-  categories: [{
-    id: '',
-    name: ''
-  }],
-  SET_CATEGORIES: (newCategories: categories[]) => set({ categories: newCategories }),
-  voucher: [{
-    id: '',
-    nominal: 0,
-    code: '',
-    createdAt: new Date('')
-  }],
+  categories: [
+    {
+      id: "",
+      name: "",
+    },
+  ],
+  SET_CATEGORIES: (newCategories: categories[]) =>
+    set({ categories: newCategories }),
+  voucher: [
+    {
+      id: "",
+      amount: 0,
+      code: "",
+      createdAt: new Date(""),
+    },
+  ],
   SET_VOUCHER: (newVoucher: voucher[]) => set({ voucher: newVoucher }),
-  products: [{
-    id: '',
-    name: '',
-    description: '',
-    attachments: [],
-    is_active: false,
-    variants: [{
-      id: '',
-      name: '',
+  products: [
+    {
+      id: "",
+      name: "",
+      description: "",
+      attachments: [],
       is_active: false,
-      product_id: '',
-      variant_option: [{
-        id: '',
-        name: '',
-        variant_id: '',
-        variant_option_values: {
-          id: '',
-          variant_option_id: '',
-          sku: '',
-          weight: 0,
-          stock: 0,
-          price: 0,
+      variants: [
+        {
+          id: "",
+          name: "",
           is_active: false,
-          img: '',
-          created_at: new Date(''),
-          updated_at: new Date('')
+          product_id: "",
+          variant_option: [
+            {
+              id: "",
+              name: "",
+              variant_id: "",
+              variant_option_values: {
+                id: "",
+                variant_option_id: "",
+                sku: "",
+                weight: 0,
+                stock: 0,
+                price: 0,
+                is_active: false,
+                img: "",
+                created_at: new Date(""),
+                updated_at: new Date(""),
+              },
+              created_at: new Date(""),
+              updated_at: new Date(""),
+            },
+          ],
+          created_at: new Date(""),
+          updated_at: new Date(""),
         },
-        created_at: new Date(''),
-        updated_at: new Date('')
-      }],
-      created_at: new Date(''),
-      updated_at: new Date('')
-    }],
-    size: '',
-    minimum_order: '',
-    store_id: '',
-    categories_id: '',
-    created_at: new Date(''),
-    updated_at: new Date('')
-  }],
-  SET_PRODUCTS: (newProducts: products[]) => set({ products: newProducts })
-
+      ],
+      size: "",
+      minimum_order: "",
+      store_id: "",
+      categories_id: "",
+      created_at: new Date(""),
+      updated_at: new Date(""),
+    },
+  ],
+  SET_PRODUCTS: (newProducts: products[]) => set({ products: newProducts }),
 }));
 
 export default useStore;

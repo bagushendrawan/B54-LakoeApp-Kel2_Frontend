@@ -96,13 +96,13 @@ interface IAddCategories {
 
 interface IDataVoucher {
     id: string;
-    nominal: number;
+    amount: number;
     code: string;
     createdAt: Date;
 }
 
 interface IAddVoucher {
-    nominal: number;
+    amount: number;
     code: string;
 }
 

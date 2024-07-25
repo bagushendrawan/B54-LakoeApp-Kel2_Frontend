@@ -7,17 +7,24 @@ const chartData = [
   { month: "June", berhasil: 214, gagal: 140 },
 ];
 
-import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/chart";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 const chartConfig = {
   berhasil: {
     label: "Transaksi Sukses",
-    color: "#28DF99",
+    color: "#ea580c",
   },
   gagal: {
     label: "Transaksi Gagal",
-    color: "#686D76",
+    color: "#1e293b",
   },
 } satisfies ChartConfig;
 

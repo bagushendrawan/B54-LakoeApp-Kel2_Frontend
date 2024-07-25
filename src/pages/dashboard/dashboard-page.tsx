@@ -1,4 +1,10 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/select";
 import useStore from "@/z-context";
 import Axios from "axios";
 import { Chart } from "./components/chart";
@@ -22,19 +28,59 @@ export function DashboardPage() {
   const setWithdraw = useStore((state) => state.SET_WITHDRAW);
   const dataWithdraw = useStore((state) => state.withdraw);
   const [sort, setSort] = useState<string>();
+  const [balance, setBalance] = useState(0);
 
   const [invoiceData, setInvoiceData] = useState([]);
   const [invoiceBulanIniData, setInvoiceBulanIniData] = useState([]);
 
-  const currentBalance = formattedNumber(
-    invoiceData.reduce((total: any, inv: any) => {
-      if (inv.status === "PESANAN_SELESAI") {
-        return total + inv.prices + inv.service_charge;
+  useEffect(() => {
+    async function auth() {
+      try {
+        const response = await Axios({
+          method: "get",
+          url: `${api}/form-produk/pesanan/${user.store_id}/9/1`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = response.data;
+        setInvoiceData(data);
+      } catch (error) {
+        console.log(error);
       }
-      return total;
-    }, 0)
-  );
+    }
 
+    auth();
+  }, [user.store_id]);
+
+  useEffect(() => {
+    async function bulanIni() {
+      try {
+        const response = await Axios({
+          method: "post",
+          url: `${api}/form-produk/bulanini/${user.store_id}`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = response.data;
+        console.log("bulan ini", data);
+        setInvoiceBulanIniData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    bulanIni();
+  }, []);
+
+  const currentBalance = invoiceData.reduce((total: any, inv: any) => {
+    if (inv.status === "PESANAN_SELESAI") {
+      return total + inv.prices;
+    }
+    return total;
+  }, 0);
   // fetch bank
   useEffect(() => {
     const fetchBank = async () => {
@@ -54,48 +100,76 @@ export function DashboardPage() {
       }
     };
     fetchBank();
-  }, [registedBank]);
+  }, []);
 
   // fetch withdraw
   useEffect(() => {
     const fetchWithdraw = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         const res = await Axios({
-          method: 'get',
-          url: `http://localhost:3000/withdraw/${user.id}`,
+          method: "get",
+          url: `${api}/withdraw/${user.id}`,
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-
+        console.log("withdraw", res.data);
         setWithdraw(res.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchWithdraw();
-  }, [dataWithdraw]);
+  }, []);
 
   // sort data withdraw
   const sortDataWithdraw = (data: IDataWithdraw[]) => {
     switch (sort) {
-      case 'desc':
-        return data.sort((a, b) => new Date(b.createdAt).getDate() - new Date(a.createdAt).getDate());
-      case 'asc':
-        return data.sort((a, b) => new Date(a.createdAt).getDate() - new Date(b.createdAt).getMinutes());
+      case "desc":
+        return data.sort(
+          (a, b) =>
+            new Date(b.createdAt).getDate() - new Date(a.createdAt).getDate()
+        );
+      case "asc":
+        return data.sort(
+          (a, b) =>
+            new Date(a.createdAt).getDate() - new Date(b.createdAt).getMinutes()
+        );
       default:
         return data;
     }
   };
 
   useEffect(() => {
+    if (invoiceData) {
+      const invoiceTotal = invoiceData.reduce((total: number, inv: any) => {
+        if (inv.status === "PESANAN_SELESAI") {
+          return total + inv.prices;
+        }
+        return total;
+      }, 0);
+
+      const totalAfterWithdrawals = dataWithdraw.reduce(
+        (total: number, withdraw: any) => {
+          console.log("jj");
+          return total - withdraw.nominal;
+        },
+        invoiceTotal
+      );
+
+      console.log(totalAfterWithdrawals);
+      setBalance(totalAfterWithdrawals);
+    }
+  }, [invoiceData]);
+
+  useEffect(() => {
     sortDataWithdraw(dataWithdraw);
   }, [sort]);
 
   // ekspor dokumen
-  const [selectedEkspor, setSelectedEkspor] = useState<string>('');
-
+  const [selectedEkspor, setSelectedEkspor] = useState<string>("");
+  console.log("bballance", currentBalance);
   return (
     <div className=" w-full flex flex-col gap-4">
       {/* credit */}
@@ -107,19 +181,14 @@ export function DashboardPage() {
             <Label>Current Balance</Label>
             <h2 className="text-orange-500 mb-4 font-bold text-2xl">
               {" "}
-              {invoiceData &&
-                formattedNumber(
-                  invoiceData.reduce((total: any, inv: any) => {
-                    if (inv.status === "PESANAN_SELESAI") {
-                      return total + inv.prices + inv.service_charge;
-                    }
-                    return total;
-                  }, 0)
-                )}
+              {balance && formattedNumber(balance)}
             </h2>
             <div className="flex gap-2">
               <AddBankAccountDialog banks={registedBank} />
-              <WithdrawDialog banks={registedBank} currentBalance={parseInt(currentBalance)} />
+              <WithdrawDialog
+                banks={registedBank}
+                currentBalance={parseInt(currentBalance)}
+              />
             </div>
           </div>
 
@@ -186,7 +255,7 @@ export function DashboardPage() {
                   formattedNumber(
                     invoiceBulanIniData.reduce((total: any, inv: any) => {
                       if (inv.status === "PESANAN_SELESAI") {
-                        return total + inv.prices + inv.service_charge;
+                        return total + inv.prices;
                       }
                       return total;
                     }, 0)
@@ -223,7 +292,9 @@ export function DashboardPage() {
           {/* ekspor */}
           <div className="flex flex-1">
             <div className="flex gap-2">
-              <Select onValueChange={(option: string) => setSelectedEkspor(option)}>
+              <Select
+                onValueChange={(option: string) => setSelectedEkspor(option)}
+              >
                 <SelectTrigger className="text-gray-150 w-32">
                   <SelectValue placeholder="Ekspor" />
                 </SelectTrigger>
@@ -233,8 +304,11 @@ export function DashboardPage() {
                 </SelectContent>
               </Select>
 
-              {selectedEkspor !== '' && (
-                <ExportTable dataWithdraw={dataWithdraw} selectedType={selectedEkspor} />
+              {selectedEkspor !== "" && (
+                <ExportTable
+                  dataWithdraw={dataWithdraw}
+                  selectedType={selectedEkspor}
+                />
               )}
             </div>
           </div>

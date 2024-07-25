@@ -11,11 +11,6 @@
     "generate-routes": "tsr generate",
     "watch-routes": "tsr watch"
   },
-  "overrides": {
-    "vite": {
-      "rollup": "npm:@rollup/wasm-node"
-    }
-  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",

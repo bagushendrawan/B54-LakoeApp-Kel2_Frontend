@@ -18,7 +18,7 @@ function Index() {
   //   authUser();
   // },[])
   return (
-    <div className="w-full h-auto flex bg-[#F6F7D4]">
+    <div className="w-full h-auto flex bg-slate-800">
       <SideBar />
       <div className="w-full h-screen p-4 overflow-y-auto overflow-hidden">
         <DashboardPage />

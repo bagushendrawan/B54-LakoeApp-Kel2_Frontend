@@ -21,7 +21,6 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
 
   const handleAddLocation = (location: Location) => {
     setLocations([...locations, location]);
-
   };
 
   const handleEditLocation = (updatedLocation: Location) => {
@@ -59,7 +58,7 @@ export const CardLokasi: React.FC<DialogProps> = ({ onSave }) => {
             onUpdate={handleEditLocation}
           />
         )}
-      </div >
+      </div>
     </>
   );
 };

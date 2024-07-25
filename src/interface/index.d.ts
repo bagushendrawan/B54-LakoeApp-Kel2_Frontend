@@ -77,10 +77,33 @@ interface IAddBank {
 
 interface IWithdraw {
     nominal: number;
+}
+
+interface IDataWithdraw {
+    id: string;
+    nominal: number;
     bank: string;
     rekening: string;
     name: string;
+    status: string;
     user_id: string;
+    createdAt: Date;
+}
+
+interface IAddCategories {
+    name: string;
+}
+
+interface IDataVoucher {
+    id: string;
+    nominal: number;
+    code: string;
+    createdAt: Date;
+}
+
+interface IAddVoucher {
+    nominal: number;
+    code: string;
 }
 
 interface IInvoice {

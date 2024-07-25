@@ -14,13 +14,15 @@ import { useForm } from 'react-hook-form';
 import useStore from '@/z-context';
 
 const withdrawSchema = z.object({
-    nominal: z.number().min(500000, { message: 'Minimal withdraw Rp500.000' }),
-    bank: z.string(),
-    rekening: z.string(),
-    name: z.string()
+    nominal: z.preprocess((val) => parseInt(val as string, 10), z.number().min(500000, { message: 'Minimal withdraw Rp500.000' }))
 });
 
-const WithdrawDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
+interface IWithdrawProps {
+    banks: IBankAccount[];
+    currentBalance: number;
+}
+
+const WithdrawDialog: FC<IWithdrawProps> = ({ banks, currentBalance }) => {
     const [selectedBankDetail, setSelectedBankDetail] = useState<IBankAccount | null>();
 
     const handleSelectBank = (value: string) => {
@@ -30,7 +32,7 @@ const WithdrawDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
 
     const user = useStore((state) => state.user);
 
-    const formWithdraw = useForm<IWithdraw>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<IWithdraw>({
         mode: 'onSubmit',
         resolver: zodResolver(withdrawSchema)
     });
@@ -40,34 +42,33 @@ const WithdrawDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
         const userId = user.id;
 
         if (!selectedBankDetail) {
-            return 'Pilih akun bank terlebih dahulu';
+            return console.log('Pilih akun bank terlebih dahulu');
         }
-
-        formWithdraw.setValue('bank', selectedBankDetail.bank);
-        formWithdraw.setValue('rekening', selectedBankDetail.acc_number);
-        formWithdraw.setValue('name', selectedBankDetail.acc_name);
-        formWithdraw.setValue('user_id', userId);
 
         const newData = {
             ...data
         };
 
-        console.log(newData);
-
         await Axios({
             method: 'post',
             url: `http://localhost:3000/withdraw/${userId}`,
             data: newData,
+            params: {
+                "bankId": selectedBankDetail.id
+            },
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
+
+        setSelectedBankDetail(null);
+        reset();
     };
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                {banks.length !== 0 ? (
+                {banks.length !== 0 && currentBalance >= 500000 ? (
                     <Button className="w-full gap-1 bg-[#22C55E] hover:bg-green-600">
                         <BiMoneyWithdraw size={'1.3rem'} />
                         Tarik Saldo
@@ -80,27 +81,28 @@ const WithdrawDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
                 )}
             </DialogTrigger>
             <DialogContent>
-                <form onSubmit={formWithdraw.handleSubmit(handleWithdraw)}>
+                <form onSubmit={handleSubmit(handleWithdraw)}>
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold mb-4">Mau Tarik Saldo?</DialogTitle>
                         <DialogDescription className='flex flex-col gap-4 text-black'>
-                            {/* nominal */}
                             <div className='flex flex-col gap-2'>
                                 <Label htmlFor='nominal'>
                                     Berapa nominal yang mau ditarik?
                                     <span className='text-red-600'> *</span>
                                 </Label>
                                 <Input
-                                    type='number'
                                     id='nominal'
                                     placeholder='Masukan Nominal'
-                                    {...formWithdraw.register('nominal')}
+                                    type="text"
+                                    {...register("nominal")}
                                 />
+                                {errors.nominal && (
+                                    <span className='text-red-600'>{errors.nominal.message}</span>
+                                )}
                             </div>
 
-                            {/* bank */}
                             <div className='flex flex-col gap-2'>
-                                <Label htmlFor='nominal'>
+                                <Label htmlFor='bank'>
                                     Pilih Akun Bank
                                     <span className='text-red-600'> *</span>
                                 </Label>
@@ -118,7 +120,7 @@ const WithdrawDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
                                                 )}
                                             </SelectLabel>
                                             {banks.map((bank) => (
-                                                <SelectItem value={bank.bank}>
+                                                <SelectItem key={bank.bank} value={bank.bank}>
                                                     {bank.bank}
                                                 </SelectItem>
                                             ))}
@@ -153,14 +155,9 @@ const WithdrawDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
                                 </Button>
                             </DialogClose>
 
-                            <DialogClose>
-                                <Button
-                                    type="submit"
-                                    className="px-4 py-2 text-white bg-blue-500 rounded-full"
-                                >
-                                    Tarik Saldo
-                                </Button>
-                            </DialogClose>
+                            <Button type="submit" className="px-4 py-2 text-white bg-blue-500 rounded-full">
+                                Tarik Saldo
+                            </Button>
                         </div>
                     </DialogFooter>
                 </form>

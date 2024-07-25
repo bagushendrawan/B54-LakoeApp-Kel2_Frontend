@@ -8,17 +8,17 @@ import { LuPackageX } from "react-icons/lu";
 // import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
 // import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
 import { Link } from "@tanstack/react-router";
-import axios from "axios";
+import Axios from "axios";
 import DropdownSort from "./components/dropDownSort";
+import useStore from "@/z-context";
 
 const Product = () => {
+    const user = useStore((state) => state.user);
+
     // categories & action
-    const [categories, setCategories] = useState<ICategories[]>();
+    const setCategories = useStore((state) => state.SET_CATEGORIES);
+    const categories = useStore((state) => state.categories);
     const actions = [
-        {
-            id: '1',
-            name: "Terakhir Diubah"
-        },
         {
             id: '2',
             name: "Harga Tertinggi"
@@ -38,158 +38,59 @@ const Product = () => {
     ];
 
     // data product
-    const [products, setProducts] = useState<IProduct[]>();
+    const setProducts = useStore((state) => state.SET_PRODUCTS);
+    const products = useStore((state) => state.products);
 
     // state sort status
     const [isActive, setIsActive] = useState<number>(1);
 
     // state sort by search, category, action
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
-    const [selectedAction, setSelectedAction] = useState("Terakhir Diubah");
-
-    // state select product
-    const [selectedProduct, setSelectedProduct] = useState<[string, boolean][]>([]);
-    const [selectAll, setSelectAll] = useState(false);
-
-    // function sort status
-    const handleSortIsActive = (status: number) => {
-        setIsActive(status);
-    };
-
-    // function search
-    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
-
-    // function sort category
-    const handleSortCategory = (category: string) => {
-        setSelectedCategory(category);
-    };
-
-    // function sort action
-    const handleSortAction = (action: string) => {
-        setSelectedAction(action);
-    };
-
-    // function update status product
-    const handleToggle = (id: string) => {
-        // setProducts((prevProducts) =>
-        //     prevProducts.map((product) =>
-        //         product.id === id ? { ...product, active: !product.is_active } : product
-        //     )
-        // );
-    };
-
-    // const sortProducts = (products: any[]) => {
-    //     switch (selectedAction) {
-    //         case "Terakhir Diubah":
-    //             return products; // Implement sorting logic here if you have the last modified date
-    //         case "Terlaris":
-    //             return products; // Implement sorting logic here if you have sales data
-    //         case "Kurang Diminati":
-    //             return products; // Implement sorting logic here if you have sales data
-    //         case "Harga Tertinggi":
-    //             return [...products].sort((a, b) => b.price - a.price);
-    //         case "Harga Terendah":
-    //             return [...products].sort((a, b) => a.price - b.price);
-    //         case "Stok Terbanyak":
-    //             return [...products].sort((a, b) => b.stock - a.stock);
-    //         case "Stok Tersedikit":
-    //             return [...products].sort((a, b) => a.stock - b.stock);
-    //         default:
-    //             return products;
-    //     }
-    // };
-
-    // function update price
-    const handleUpdatePrice = (id: string, newPrice: string) => {
-        // setProducts(products.map(product =>
-        //     product.id === id ? { ...product, price: newPrice } : product
-        // ));
-    };
-
-    // function update stock
-    const handleUpdateStock = (id: string, newStock: string) => {
-        // setProducts(products.map(product =>
-        //     product.id === id ? { ...product, stock: newStock } : product
-        // ));
-    };
-
-    // function select product
-    const handleSelectedProduct = (id: string, isChecked: boolean) => {
-        setSelectedProduct(prevSelected => {
-            const existingProductIndex = prevSelected.findIndex(product => product[0] === id);
-
-            if (isChecked) {
-                if (existingProductIndex !== -1) {
-                    // Update the existing product
-                    const updatedSelected = [...prevSelected];
-                    updatedSelected[existingProductIndex] = [id, isChecked];
-                    return updatedSelected;
-                } else {
-                    // Add new product
-                    return [...prevSelected, [id, isChecked]];
-                }
-            } else {
-                // Remove the product if isChecked is false
-                return prevSelected.filter(product => product[0] !== id);
-            }
-        });
-    };
-
-    // function select product all
-    const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
-        const isChecked = e.target.checked;
-
-        if (isChecked) {
-            // setSelectedProduct(products.map(product => [product.id, true]));
-            setSelectAll(!selectAll);
-        } else {
-            setSelectedProduct([]);
-            setSelectAll(false);
-        }
-    };
+    const [selectedCategory, setSelectedCategory] = useState("Semua");
+    const [selectedAction, setSelectedAction] = useState("Semua");
 
     // fetch product
     useEffect(() => {
         const fetchProducts = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                console.log(token);
+            const token = localStorage.getItem('token');
+            const userId = user.id;
 
-                const res = await axios.get('http://localhost:3000/product/all/b0398a24-ab3c-4287-9fcc-c3fb1f707c20', {
-                    params: {
-                        searchTerm,
-                        isActive,
-                        category: selectedCategory,
-                        action: selectedAction
-                    }
-                });
+            const res = await Axios({
+                method: 'get',
+                url: `http://localhost:3000/product/all/${userId}`,
+                params: {
+                    searchTerm,
+                    isActive,
+                    category: selectedCategory,
+                    action: selectedAction
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-                setProducts(res.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+            setProducts(res.data);
         };
 
         fetchProducts();
-    }, [searchTerm, isActive, selectedCategory, selectedAction]);
+    }, [products, searchTerm, isActive, selectedCategory, selectedAction]);
 
     // fetch categories
     useEffect(() => {
         const fetchCategories = async () => {
-            try {
-                const res = await axios.get('http://localhost:3000/categories');
+            const token = localStorage.getItem('token');
+            const res = await Axios({
+                method: 'get',
+                url: 'http://localhost:3000/categories',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-                setCategories(res.data);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
+            setCategories(res.data);
         };
-
         fetchCategories();
-    }, []);
+    }, [categories]);
 
     return (
         <div className="min-h-screen px-6 py-4 bg-white rounded">
@@ -209,51 +110,26 @@ const Product = () => {
 
             {/* sort status */}
             <div className="flex space-x-4 mb-4 border-b">
-                <button onClick={() => handleSortIsActive(1)} className={`pb-2 ${isActive === 1 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Semua</button>
-                <button onClick={() => handleSortIsActive(2)} className={`pb-2 ${isActive === 2 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Aktif</button>
-                <button onClick={() => handleSortIsActive(3)} className={`pb-2 ${isActive === 3 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Nonaktif</button>
+                <button onClick={() => setIsActive(1)} className={`pb-2 ${isActive === 1 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Semua</button>
+                <button onClick={() => setIsActive(2)} className={`pb-2 ${isActive === 2 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Aktif</button>
+                <button onClick={() => setIsActive(3)} className={`pb-2 ${isActive === 3 ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}>Nonaktif</button>
             </div>
 
             {/* sort comp */}
             <div className="flex gap-2 mb-4">
                 {/* search sort */}
-                <IconInput value={searchTerm} onChange={handleSearchChange} />
+                <IconInput value={searchTerm} onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)} />
 
                 {/* category sort */}
-                <DropdownSort options={categories} selectedOption={selectedCategory} onSelect={handleSortCategory} />
+                <DropdownSort options={categories} selectedOption={selectedCategory} onSelect={(category: string) => setSelectedCategory(category)} />
 
                 {/* action sort */}
-                <DropdownSort options={actions} selectedOption={selectedAction} onSelect={handleSortAction} />
+                <DropdownSort options={actions} selectedOption={selectedAction} onSelect={(action: string) => setSelectedAction(action)} />
             </div>
 
             {/* header and action */}
             <div className="flex items-center mb-2">
                 <p className="flex flex-1 text-xl font-bold">{products?.length} Produk</p>
-
-                {/* <div className="flex items-center gap-2">
-                    {selectedProduct.length !== 0 && (
-                        <>
-                            <BulkDeleteProductDialog selectedProduct={selectedProduct} />
-                            <BulkNonactivateProductDialog selectedProduct={selectedProduct} />
-                        </>
-                    )}
-
-                    {products && (
-                        <div className={products?.length === 0 ? 'hidden' : 'block'}>
-                            {products?.length > 0 && (
-                                <div className="flex items-center gap-2">
-                                    <p>Pilih Semua</p>
-                                    <input
-                                        type="checkbox"
-                                        className="w-4 h-4"
-                                        checked={selectAll}
-                                        onChange={handleSelectAll}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div> */}
             </div>
 
             {/* result */}
@@ -274,11 +150,6 @@ const Product = () => {
                             <ProductItem
                                 key={product.id}
                                 product={product}
-                                onToggle={handleToggle}
-                                onUpdatePrice={handleUpdatePrice}
-                                onUpdateStock={handleUpdateStock}
-                                onChecked={handleSelectedProduct}
-                                selectedAll={selectAll}
                             />
                         ))
                     )}

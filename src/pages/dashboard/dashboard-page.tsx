@@ -1,27 +1,28 @@
-import { Input } from "@/components/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import useStore from "@/z-context";
 import { useEffect, useState } from "react";
 import { BsCash, BsCreditCard } from "react-icons/bs";
 import Axios from "axios";
-// import { useForm } from "react-hook-form";
-// import { useToast } from "@/components/use-toast";
 import { Chart } from "./components/chart";
 import WithdrawDialog from "./components/withdrawDialog";
 import AddBankAccountDialog from "./components/addBankAccountDialog";
 import { Label } from "@/components/label";
 import { GrTransaction } from "react-icons/gr";
 import AllBankDialog from "./components/allBankDialog";
-import { TableTransaction } from "./components/tableTransaction";
-import { LuDownload } from "react-icons/lu";
-import { Button } from "@/components/button";
+import TableWithdraw from "./components/tableWithdraw";
+import ExportTable from "./components/exportDoc";
 
 export function DashboardPage() {
-  // const { toast } = useToast();
   const user = useStore((state) => state.user);
   const setBank = useStore((state) => state.SET_BANK);
   const registedBank = useStore((state) => state.bank);
+  const currentBalance = 500000;
 
+  const setWithdraw = useStore((state) => state.SET_WITHDRAW);
+  const dataWithdraw = useStore((state) => state.withdraw);
+  const [sort, setSort] = useState<string>();
+
+  // fetch bank
   useEffect(() => {
     const fetchBank = async () => {
       try {
@@ -40,26 +41,61 @@ export function DashboardPage() {
       }
     };
     fetchBank();
-  }, []);
+  }, [registedBank]);
 
-  const [selectedEkspor, setSelectedEkspor] = useState<string>('');
-  const handleSelectEkspor = (option: string) => {
-    setSelectedEkspor(option);
+  // fetch withdraw
+  useEffect(() => {
+    const fetchWithdraw = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await Axios({
+          method: 'get',
+          url: `http://localhost:3000/withdraw/${user.id}`,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setWithdraw(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchWithdraw();
+  }, [dataWithdraw]);
+
+  // sort data withdraw
+  const sortDataWithdraw = (data: IDataWithdraw[]) => {
+    switch (sort) {
+      case 'desc':
+        return data.sort((a, b) => new Date(b.createdAt).getDate() - new Date(a.createdAt).getDate());
+      case 'asc':
+        return data.sort((a, b) => new Date(a.createdAt).getDate() - new Date(b.createdAt).getMinutes());
+      default:
+        return data;
+    }
   };
 
+  useEffect(() => {
+    sortDataWithdraw(dataWithdraw);
+  }, [sort]);
+
+  // ekspor dokumen
+  const [selectedEkspor, setSelectedEkspor] = useState<string>('');
+
   return (
-    <div className=" w-full flex flex-col gap-2">
+    <div className=" w-full flex flex-col gap-4">
       {/* credit */}
-      <div className="bg-white rounded-sm p-4">
+      <div className="bg-white rounded-sm p-4 shadow-lg">
         <h1 className="text-2xl font-bold text-blac my-4">Credit Dashboard</h1>
         <div className="flex gap-2">
           {/* credit */}
           <div className="w-full bg-white p-4 border rounded shadow-lg">
             <Label>Current Balance</Label>
-            <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp. 23.321.000</h2>
+            <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp{currentBalance}</h2>
             <div className="flex gap-2">
               <AddBankAccountDialog banks={registedBank} />
-              <WithdrawDialog banks={registedBank} />
+              <WithdrawDialog banks={registedBank} currentBalance={currentBalance} />
             </div>
           </div>
 
@@ -116,7 +152,7 @@ export function DashboardPage() {
       </div>
 
       {/* chart */}
-      <div className="w-full bg-white h-96 flex flex-col p-4 rounded-sm">
+      <div className="w-full bg-white h-96 flex flex-col p-4 rounded-sm shadow-lg">
         <div className="flex justify-between">
           <h1 className="font-bold text-xl text-gray-600">Reporting Period</h1>
           <div className="w-1/4 text-gray-700">
@@ -125,9 +161,9 @@ export function DashboardPage() {
                 <SelectValue placeholder="Pilih Jangka Waktu" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">30 Hari</SelectItem>
-                <SelectItem value="dark">1 Minggu</SelectItem>
-                <SelectItem value="system">1 Hari</SelectItem>
+                <SelectItem value="light">6 Hari Terakhir</SelectItem>
+                <SelectItem value="dark">6 Minggu Terakhir</SelectItem>
+                <SelectItem value="system">6 Bulan Terakhir</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -135,36 +171,31 @@ export function DashboardPage() {
         <Chart />
       </div>
 
-      {/* transaction */}
-      <div className="w-full flex flex-col gap-2">
+      {/* withdraw */}
+      <div className="w-full flex flex-col gap-2 shadow-lg">
         <div className="flex w-full">
           {/* ekspor */}
           <div className="flex flex-1">
             <div className="flex gap-2">
-              <Select onValueChange={handleSelectEkspor}>
+              <Select onValueChange={(option: string) => setSelectedEkspor(option)}>
                 <SelectTrigger className="text-gray-150 w-32">
                   <SelectValue placeholder="Ekspor" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pdf">PDF</SelectItem>
-                  <SelectItem value="docx">DOCX</SelectItem>
                   <SelectItem value="xlsx">XLSX</SelectItem>
                 </SelectContent>
               </Select>
 
               {selectedEkspor !== '' && (
-                <a href="../../../index.html" download>
-                  <Button className="bg-white hover:bg-slate-200">
-                    <LuDownload size={'1.3rem'} color="black" />
-                  </Button>
-                </a>
+                <ExportTable dataWithdraw={dataWithdraw} selectedType={selectedEkspor} />
               )}
             </div>
           </div>
 
           {/* sort */}
-          <div className="flex gap-2">
-            <Select>
+          <div className="w-48 flex gap-2">
+            <Select onValueChange={(option: string) => setSort(option)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Urutkan" />
               </SelectTrigger>
@@ -173,14 +204,12 @@ export function DashboardPage() {
                 <SelectItem value="asc">Terlama ke Terbaru</SelectItem>
               </SelectContent>
             </Select>
-
-            <Input className="w-full" placeholder="Invoice" />
           </div>
         </div>
 
         {/* result */}
         <div className="w-full max-h-96 rounded-sm overflow-y-auto">
-          <TableTransaction />
+          <TableWithdraw dataWithdraw={dataWithdraw} />
         </div>
       </div>
     </div>

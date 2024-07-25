@@ -2,71 +2,28 @@ import { ChangeEvent, FC, useRef, useState } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
-
-interface IVariantOptionValues {
-    id: string;
-    variant_option_id: string;
-    sku: string;
-    weight: number;
-    stock: number;
-    price: number;
-    is_active: boolean;
-    img?: string;
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IVariantOptions {
-    id: string;
-    name: string;
-    variant_id: string;
-    variant_option_values: IVariantOptionValues;
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IVariants {
-    id: string;
-    name: string;
-    is_active: boolean;
-    product_id: string;
-    variant_option: IVariantOptions[];
-    created_at: Date;
-    updated_at: Date;
-}
-
-interface IProduct {
-    id: string;
-    name: string;
-    description?: string;
-    attachments: string[];
-    is_active: boolean;
-    variants: IVariants[];
-    size: string;
-    minimum_order: string;
-    store_id?: string;
-    categories_id?: string;
-    created_at: Date;
-    updated_at: Date;
-}
+import Axios from 'axios';
 
 interface IUpdatePriceProps {
-    product: IProduct;
-    updatePrice: (id: string, newPrice: string) => void;
+    productVariant: IVariantOptions;
 }
 
-const UpdateStockDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
-    // const [stock, setStock] = useState<string>(product.stock.toString());
-    const dialogRef = useRef<HTMLDialogElement>(null);
+const UpdateStockDialog: FC<IUpdatePriceProps> = ({ productVariant }) => {
+    const [newStock, setNewStock] = useState<number>();
 
-    const handleSave = () => {
-        // const numericStock = parseFloat(stock.replace(/,/g, ''));
-        // if (!isNaN(numericStock)) {
-        //     updatePrice(product.id, numericStock);
-        //     if (dialogRef.current) {
-        //         dialogRef.current.close();
-        //     }
-        // }
+    const handleUpdate = async () => {
+        const token = localStorage.getItem('token');
+
+        const res = await Axios({
+            method: 'patch',
+            url: `http://localhost:3000/product/stock/${productVariant.variant_option_values.id}`,
+            data: newStock,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        console.log(res.data);
     };
 
     return (
@@ -78,14 +35,14 @@ const UpdateStockDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
                 <DialogHeader>
                     <DialogTitle className="text-lg font-bold">Ubah Stok</DialogTitle>
                     <DialogDescription className="text-sm">
-                        Ubah stok untuk produk <span className="font-bold">{product.name}</span>
+                        Ubah stok untuk varian <span className="font-bold">{productVariant.name}</span>
                     </DialogDescription>
                     <Input
                         type="text"
                         className="border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder='Cari Produk'
-                        // value={stock}
-                        // onChange={(e: ChangeEvent<HTMLInputElement>) => setStock(e.target.value)}
+                        value={newStock}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setNewStock(parseInt(e.target.value))}
                     />
                 </DialogHeader>
                 <DialogFooter>
@@ -99,7 +56,7 @@ const UpdateStockDialog: FC<IUpdatePriceProps> = ({ product, updatePrice }) => {
                         <DialogClose asChild>
                             <Button
                                 type="submit"
-                                onClick={handleSave}
+                                onClick={handleUpdate}
                                 className="px-4 py-2 text-white bg-blue-500 rounded-full"
                             >
                                 Simpan

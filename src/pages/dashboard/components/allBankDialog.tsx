@@ -17,7 +17,7 @@ const AllBankDialog: FC<{ banks: IBankAccount[] }> = ({ banks }) => {
                         <div className="w-full flex flex-col gap-2 mt-4">
                             {banks.length !== 0 ? (
                                 banks.map((bank) => (
-                                    <div className="relative w-full p-4 border rounded">
+                                    <div className="relative w-full p-4 border rounded shadow-lg">
                                         <div className="flex flex-col gap-4 text-black ">
                                             <Label className="text-xl">{bank.bank}</Label>
                                             <Label className="">{bank.acc_number}</Label>

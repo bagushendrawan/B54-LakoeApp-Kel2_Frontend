@@ -8,6 +8,7 @@ import Axios from "axios";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import DeleteBankDialog from "./deleteBankDialog";
 
 const editBankSchema = z.object({
     bank: z.string(),
@@ -41,19 +42,8 @@ const EditBankDialog: FC<{ bank: IBankAccount; }> = ({ bank }) => {
                 Authorization: `Bearer ${token}`
             }
         });
-    };
 
-    const handleDeleteBank = async () => {
-        const token = localStorage.getItem('token');
-        const userId = user.id;
-
-        await Axios({
-            method: 'delete',
-            url: `http://localhost:3000/bank-account/${userId}/${bank.id}`,
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        formEditBank.reset();
     };
 
     return (
@@ -119,15 +109,7 @@ const EditBankDialog: FC<{ bank: IBankAccount; }> = ({ bank }) => {
                     <DialogFooter>
                         <div className="w-full flex items-center mt-4">
                             <div className="flex flex-1">
-                                <DialogClose>
-                                    <Button
-                                        type="button"
-                                        onClick={handleDeleteBank}
-                                        className='bg-red-600 hover:bg-red-700 rounded-full'
-                                    >
-                                        Hapus Bank
-                                    </Button>
-                                </DialogClose>
+                                <DeleteBankDialog bank={bank} />
                             </div>
 
                             <div className="w-full flex justify-end gap-2">

@@ -2,7 +2,6 @@ import { Button } from "@/components/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/dialog";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { useToast } from "@/components/use-toast";
 import useStore from "@/z-context";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/select';
 import { SelectGroup, SelectLabel } from '@radix-ui/react-select';
@@ -38,8 +37,6 @@ const AddBankAccountDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
             ...data
         };
 
-        console.log(newData);
-
         await Axios({
             method: 'post',
             url: `http://localhost:3000/bank-account/${userId}`,
@@ -48,13 +45,17 @@ const AddBankAccountDialog: FC<{ banks: IBankAccount[]; }> = ({ banks }) => {
                 Authorization: `Bearer ${token}`
             }
         });
+
+        formAddBank.reset();
     };
 
     // search bank
     const [searchTerm, setSearchTerm] = useState('');
+    
     const handleSearchBank = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
+
     const filteredBanks = dataBank.filter(bank =>
         bank.name.toLowerCase().includes(searchTerm.toLowerCase())
     );

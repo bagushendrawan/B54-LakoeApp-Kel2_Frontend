@@ -6,22 +6,16 @@ import { FaTrash } from 'react-icons/fa';
 import useStore from '@/z-context';
 
 interface IUpdatePriceProps {
-    product: IProduct;
+    productVariant: IVariantOptions;
 }
 
-const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
-    const user = useStore((state) => state.user);
-
-    const handleDeleteProduct = async () => {
+const DeleteVariantDialog: FC<IUpdatePriceProps> = ({ productVariant }) => {
+    const handleDelete = async () => {
         const token = localStorage.getItem('token');
-        const userId = user.id;
 
         const res = await Axios({
             method: 'delete',
-            url: `http://localhost:3000/product/${product.id}`,
-            params: {
-                userId: userId
-            },
+            url: `http://localhost:3000/product/variant/${productVariant.variant_option_values.id}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -41,10 +35,10 @@ const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
                 <DialogHeader>
                     <DialogTitle className="text-lg font-bold">Hapus Produk?</DialogTitle>
                     <DialogDescription>
-                        <p className="text-xl text-black">Produk <span className="font-bold">{product.name}</span> akan dihapus</p>
+                        <p className="text-xl text-black">Varian <span className="font-bold">{productVariant.name}</span> akan dihapus</p>
 
                         <p className="mt-6">
-                            Produk yang dihapus tidak akan bisa dibatalkan. Pastikan produk yang kamu pilih itu sudah benar.
+                            Varian yang dihapus tidak akan bisa dibatalkan. Pastikan varian yang kamu pilih itu sudah benar.
                         </p>
                     </DialogDescription>
                 </DialogHeader>
@@ -59,7 +53,7 @@ const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
                         <DialogClose>
                             <Button
                                 className="px-4 py-2 text-white bg-blue-500 rounded-full"
-                                onClick={handleDeleteProduct}
+                                onClick={handleDelete}
                             >
                                 Ya, Hapus
                             </Button>
@@ -71,4 +65,4 @@ const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {
     );
 };
 
-export default DeleteProductDialog;
+export default DeleteVariantDialog;

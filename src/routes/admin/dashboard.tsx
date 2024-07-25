@@ -16,8 +16,6 @@ export const Route = createFileRoute('/admin/dashboard')({
 
 function AdminPages() {
   return (
-    <div className='w-full p-2'>
-      <AdminPage />
-    </div>
+    <AdminPage />
   )
 }

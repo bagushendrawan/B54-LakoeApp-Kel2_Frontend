@@ -2,11 +2,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
 import { HeaderInformasiToko } from "./headerPengaturan";
 import { FormInformasiToko } from "./informasi";
 // import { TemplatePesan } from "./templatePesan";
-import { LocationContextProvider } from "@/context/LocationContext";
-import { CardLokasi } from "./cardLokasi";
-import { TemplateContextProvider } from "@/context/TemplateContext";
-import { CardTemplate } from "./cardTemplatePesan";
 import { Label } from "@/components/label";
+import { TemplateContextProvider } from "@/context/TemplateContext";
+import { CardLokasi } from "./cardLokasi copy";
+import { CardTemplate } from "./cardTemplatePesan";
 
 export function MainSetting() {
   return (
@@ -29,13 +28,9 @@ export function MainSetting() {
             <FormInformasiToko />
           </TabsContent>
           <TabsContent value="lokasi">
-            <LocationContextProvider>
-              <CardLokasi
-                onSave={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-              />
-            </LocationContextProvider>
+            {/* <LocationContextProvider> */}
+            <CardLokasi />
+            {/* </LocationContextProvider> */}
           </TabsContent>
           <TabsContent value="templatePesan">
             <TemplateContextProvider>

@@ -21,7 +21,13 @@ const AdminPage = () => {
     const user = useStore((state) => state.user);
     const [activeTab, setActiveTab] = useState('all');
 
-    const action = ["Terakhir Diubah", "Permintaan Terbaru", "Permintaan Terlama", "Nominal Tertinggi", "Nominal Terendah"];
+  const action = [
+    "Terakhir Diubah",
+    "Permintaan Terbaru",
+    "Permintaan Terlama",
+    "Nominal Tertinggi",
+    "Nominal Terendah",
+  ];
 
     const setWithdraw = useStore((state) => state.SET_WITHDRAW);
     const dataWithdraw = useStore((state) => state.withdraw);
@@ -48,13 +54,13 @@ const AdminPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedAction, setSelectedAction] = useState("Terakhir Diubah");
 
-    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
-    const handleSortAction = (action: string) => {
-        setSelectedAction(action);
-    };
+  const handleSortAction = (action: string) => {
+    setSelectedAction(action);
+  };
 
     const matchTab = (data: IDataWithdraw) => {
         switch (activeTab) {

@@ -7,10 +7,10 @@ export const Route = createFileRoute("/seller/dashboard")({
   component: () => (
     <ProtectedRoute>
       <ProtectedSellerRoute>
-      <Index/>
+        <Index />
       </ProtectedSellerRoute>
     </ProtectedRoute>
-  )
+  ),
 });
 
 function Index() {

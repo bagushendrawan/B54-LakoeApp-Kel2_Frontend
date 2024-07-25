@@ -1,17 +1,33 @@
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/dialog';
-import { Button } from '@/components/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/dialog";
+import { Button } from "@/components/button";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { Input } from '@/components/input';
-import { Label } from '@/components/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/select';
-import { SelectGroup, SelectLabel } from '@radix-ui/react-select';
-import { FC, useState } from 'react';
-import { GoDotFill } from 'react-icons/go';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Axios from 'axios';
-import { useForm } from 'react-hook-form';
-import useStore from '@/z-context';
+import { Input } from "@/components/input";
+import { Label } from "@/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/select";
+import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
+import { FC, useState } from "react";
+import { GoDotFill } from "react-icons/go";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Axios from "axios";
+import { useForm } from "react-hook-form";
+import useStore from "@/z-context";
+import { api } from "@/lib/api";
 
 const withdrawSchema = z.object({
     nominal: z.preprocess((val) => parseInt(val as string, 10), z.number().min(500000, { message: 'Minimal withdraw Rp500.000' }))
@@ -25,21 +41,21 @@ interface IWithdrawProps {
 const WithdrawDialog: FC<IWithdrawProps> = ({ banks, currentBalance }) => {
     const [selectedBankDetail, setSelectedBankDetail] = useState<IBankAccount | null>();
 
-    const handleSelectBank = (value: string) => {
-        const selectedBank = banks.find(bank => bank.bank === value);
-        setSelectedBankDetail(selectedBank || null);
-    };
+  const handleSelectBank = (value: string) => {
+    const selectedBank = banks.find((bank) => bank.bank === value);
+    setSelectedBankDetail(selectedBank || null);
+  };
 
-    const user = useStore((state) => state.user);
+  const user = useStore((state) => state.user);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IWithdraw>({
         mode: 'onSubmit',
         resolver: zodResolver(withdrawSchema)
     });
 
-    const handleWithdraw = async (data: any) => {
-        const token = localStorage.getItem('token');
-        const userId = user.id;
+  const handleWithdraw = async (data: any) => {
+    const token = localStorage.getItem("token");
+    const userId = user.id;
 
         if (!selectedBankDetail) {
             return console.log('Pilih akun bank terlebih dahulu');
@@ -129,31 +145,39 @@ const WithdrawDialog: FC<IWithdrawProps> = ({ banks, currentBalance }) => {
                                 </Select>
                             </div>
 
-                            {selectedBankDetail ? (
-                                <div className='flex flex-col gap-2'>
-                                    <Label>Detail Bank</Label>
-                                    <div className='flex items-center gap-2 border rounded-md p-2 px-4'>
-                                        <p className='italic'>{selectedBankDetail.bank}</p>
-                                        <GoDotFill />
-                                        <p className='italic'>{selectedBankDetail.acc_number}</p>
-                                        <GoDotFill />
-                                        <p className='italic'>{selectedBankDetail.acc_name}</p>
-                                    </div>
+              {selectedBankDetail ? (
+                <div className="flex flex-col gap-2">
+                  <Label>Detail Bank</Label>
+                  <div className="flex items-center gap-2 border rounded-md p-2 px-4">
+                    <p className="italic">{selectedBankDetail.bank}</p>
+                    <GoDotFill />
+                    <p className="italic">{selectedBankDetail.acc_number}</p>
+                    <GoDotFill />
+                    <p className="italic">{selectedBankDetail.acc_name}</p>
+                  </div>
 
-                                    <Label className='text-red-600 italic'>* Pastikan data bank sudah sesuai sebelum melanjutkan</Label>
-                                </div>
-                            ) : (
-                                <Label className='text-red-600 italic'>* Silahkan pilih akun bank terlebih dahulu</Label>
-                            )}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <div className="flex justify-end space-x-2 mt-4">
-                            <DialogClose asChild>
-                                <Button type="button" variant="outline" className='rounded-full'>
-                                    Batalkan
-                                </Button>
-                            </DialogClose>
+                  <Label className="text-red-600 italic">
+                    * Pastikan data bank sudah sesuai sebelum melanjutkan
+                  </Label>
+                </div>
+              ) : (
+                <Label className="text-red-600 italic">
+                  * Silahkan pilih akun bank terlebih dahulu
+                </Label>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <div className="flex justify-end space-x-2 mt-4">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-full"
+                >
+                  Batalkan
+                </Button>
+              </DialogClose>
 
                             <Button type="submit" className="px-4 py-2 text-white bg-blue-500 rounded-full">
                                 Tarik Saldo

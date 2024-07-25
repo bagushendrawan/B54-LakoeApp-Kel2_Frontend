@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Location } from "@/datas/type";
 
 const LOCAL_STORAGE_KEY = "datas";
@@ -15,7 +16,7 @@ export const LocationService = {
     alamat: string,
     kota: string,
     kodePos: string,
-    pinpoint: string
+    pinPoint: string
   ): Location => {
     const datas = LocationService.getStore();
     const newLocation: Location = {
@@ -24,7 +25,7 @@ export const LocationService = {
       alamat,
       kota,
       kodePos,
-      pinpoint,
+      pinPoint,
       completed: false,
     };
     const updateLocation = [...datas, newLocation];

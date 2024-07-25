@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Link, redirect } from "@tanstack/react-router";
-import { JSXElementConstructor, useEffect, useState } from "react";
-import Axios from "axios";
-import { formCourier } from "./hooks/order";
+import { api } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import Axios from "axios";
+import { useEffect, useState } from "react";
 
 export const formattedNumber = (num: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -21,7 +21,7 @@ export function Semua(props: any) {
       console.log("props", props.invoice?.id);
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/form-produk/${props.invoice?.id}`,
+        url: `${api}/form-produk/${props.invoice?.id}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -42,7 +42,7 @@ export function Semua(props: any) {
     mutationFn: async () => {
       return await Axios({
         method: "post",
-        url: `http://localhost:3000/form-produk/order-couriers/${props.invoice?.id}`,
+        url: `${api}/form-produk/order-couriers/${props.invoice?.id}`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -52,7 +52,7 @@ export function Semua(props: any) {
   });
 
   function switchColor(status: any) {
-    const stats = status.toString();
+    const stats = status?.toString();
     console.log(stats);
     switch (stats) {
       case "BELUM_DIBAYAR":
@@ -73,6 +73,8 @@ export function Semua(props: any) {
               onClick={async () => {
                 await mutateAsync();
                 refetchPesanan();
+                // setStatus(invoiceFetchData?.status);
+                // switchColor(invoiceFetchData?.status);
               }}
               className="border bg-blue-500 text-white font-semibold px-4 rounded-full p-4 mt-3 me-2"
             >
@@ -127,17 +129,20 @@ export function Semua(props: any) {
   useEffect(() => {
     const fetchAndSwitch = async () => {
       const invoiceData = await fetchInvoice();
-      setStatus(invoiceData.status);
-      switchColor(invoiceData.status);
+      if (invoiceData) {
+        setStatus(invoiceData.status);
+        switchColor(invoiceData.status);
+      }
     };
-
+    console.log("props ", props?.invoice);
     fetchAndSwitch();
-  }, [props.invoice?.id]);
+  }, [props.invoice?.id, invoiceFetchData]);
 
-  useEffect(() => {
-    setStatus(invoiceFetchData?.status);
-    switchColor(invoiceFetchData?.status);
-  }, [invoiceFetchData]);
+  // useEffect(() => {
+  //   console.log("refetch pesanan");
+  //   setStatus(invoiceFetchData?.status);
+  //   switchColor(invoiceFetchData?.status);
+  // }, [invoiceFetchData]);
   return (
     <>
       <div className="border rounded-lg mb-3">
@@ -178,7 +183,9 @@ export function Semua(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -235,7 +242,9 @@ export function BelumDibayar(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -291,7 +300,9 @@ export function PesananBaru(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -347,7 +358,9 @@ export function SiapDikirim(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -403,7 +416,9 @@ export function DalamPengiriman(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -459,7 +474,9 @@ export function PesananSelesai(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -512,7 +529,9 @@ export function Dibatalkan(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>

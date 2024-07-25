@@ -27,14 +27,14 @@ import { Input } from "../components/input";
 import { Label } from "@/components/label";
 import { Switch } from "@/components/switch";
 import { Textarea } from "@/components/textarea";
+import { Toggle } from "@/components/toggle";
 import { LoadingSpinner } from "@/routes/__root";
+import Axios from "axios";
 import { useForm } from "react-hook-form";
 import { Form } from "../components/form";
 import { useProdukForm } from "./hooks/form-produk";
-import { Toggle } from "@/components/toggle";
-import { DialogClose } from "@/components/dialog";
-import Axios from "axios";
 import { PreviewHalaman } from "./preview-halaman";
+import { api } from "@/lib/api";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   const dataTransfer = new DataTransfer();
@@ -119,7 +119,7 @@ export function FormProdukBaru() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/categories`,
+          url: `${api}/categories`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -299,9 +299,12 @@ export function FormProdukBaru() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmitForm)} className="w-full">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {/* informasi produk */}
-          <div id="informasi-produk" className=" bg-white p-4 rounded">
+          <div
+            id="informasi-produk"
+            className=" bg-white p-4 rounded shadow-sm shadow-black"
+          >
             <h1 className="font-bold text-xl mb-4">Informasi Produk</h1>
             <h1 className=" text-md mb-2 mt-4">
               Nama Produk <Label className="text-red-600">*</Label>
@@ -360,12 +363,15 @@ export function FormProdukBaru() {
           </div>
 
           {/* <DetailProduk/> */}
-          <div id="detail-produk" className="bg-white p-4 rounded">
+          <div
+            id="detail-produk"
+            className="bg-white p-4 rounded shadow-sm shadow-black"
+          >
             <h1 className="font-bold text-xl mb-4">Detail Produk</h1>
             <p className="mb-2">Deskripsi</p>
             <Textarea {...register("produk_deskripsi")} className="h-32" />
             <p className="mt-4 mb-2">
-              Foto Produk <Label className="text-red-600">*</Label>
+              Foto Produks <Label className="text-red-600">*</Label>
             </p>
             <div id="produk-foto" className="flex gap-2">
               <label
@@ -537,7 +543,10 @@ export function FormProdukBaru() {
           </div>
 
           {/* variant */}
-          <div id="varian-produk" className="bg-white p-4 rounded">
+          <div
+            id="varian-produk"
+            className="bg-white p-4 rounded shadow-sm shadow-black"
+          >
             {isVariant ? (
               <div className="w-full flex flex-col">
                 <div className="flex justify-between">
@@ -595,18 +604,18 @@ export function FormProdukBaru() {
 
             {isVariant && (
               <div className="mt-2">
-                <h1 className="font-bold text-xl mb-2">Varian Produk</h1>
+                {/* <h1 className="font-bold text-xl mb-2">Varian Produk</h1> */}
                 <Dialog open={dialogOpen}>
                   <DialogTrigger
                     asChild
                     onClick={() => setDialogOpen(!dialogOpen)}
                   >
-                    <Button
+                    {/* <Button
                       variant="outline"
                       className="bg-blue-600 text-white"
                     >
                       Atur Sekaligus
-                    </Button>
+                    </Button> */}
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <Button
@@ -935,7 +944,7 @@ export function FormProdukBaru() {
           </div>
 
           {/* minimal pembelian */}
-          <div className="bg-white p-4 rounded">
+          <div className="bg-white p-4 rounded shadow-sm shadow-black">
             <p className="mt-4">
               Minimal Pembelian <Label className="text-red-600">*</Label>
             </p>
@@ -1002,11 +1011,12 @@ export function FormProdukBaru() {
             </div>
           </div>
 
-          {/*  */}
-          {!isVariant && (
-            <div className="flex flex-col gap-2">
-              {/* harga */}
-              <div id="harga" className="bg-white p-4 rounded">
+          {/* {!isVariant && (
+            <div className="flex flex-col gap-4">
+              <div
+                id="harga"
+                className="bg-white p-4 rounded shadow-sm shadow-black"
+              >
                 <h1 className="font-bold text-xl mb-4">Harga</h1>
                 <p>
                   Harga <Label className="text-red-600">*</Label>
@@ -1027,8 +1037,10 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              {/* stok */}
-              <div id="pengelolaan-produk" className="bg-white p-4 rounded">
+              <div
+                id="pengelolaan-produk"
+                className="bg-white p-4 rounded shadow-sm shadow-black"
+              >
                 <h1 className="font-bold text-xl mb-4">Pengelolaan Produk</h1>
                 <div className="flex gap-4">
                   <div>
@@ -1056,8 +1068,10 @@ export function FormProdukBaru() {
                 </div>
               </div>
 
-              {/* ukuran */}
-              <div id="ukuran" className="bg-white p-4 rounded">
+              <div
+                id="ukuran"
+                className="bg-white p-4 rounded shadow-sm shadow-black"
+              >
                 <h1 className="font-bold text-xl mb-4"> </h1>
 
                 <p>
@@ -1079,10 +1093,10 @@ export function FormProdukBaru() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/*  */}
-          <div className="flex justify-between gap-4 mt-4 bg-white p-4 w-full rounded">
+          <div className="flex justify-between gap-4 bg-white p-4 w-full rounded shadow-sm shadow-black">
             <div className="w-full">
               {isSubmitted && (
                 <Dialog>
@@ -1097,15 +1111,12 @@ export function FormProdukBaru() {
                       </DialogDescription>
                     </DialogHeader>
                     <PreviewHalaman />
-                    <DialogFooter>
-                      <Button type="submit">Save changes</Button>
-                    </DialogFooter>
                   </DialogContent>
                 </Dialog>
               )}
             </div>
 
-            <div>
+            <div className="flex ">
               <Button variant={"outline"} className="rounded-3xl me-2">
                 Batal
               </Button>

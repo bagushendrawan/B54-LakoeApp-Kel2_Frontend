@@ -7,17 +7,17 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { api } from "@/lib/api";
 import { Route } from "@/routes/buyer/add-cart";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { TableCart } from "./table-cart";
 
-interface Data {
-  id: number;
+interface Store {
   name: string;
-  price: number;
-  attachments: string[];
+  logo_attachment: string;
 }
 
 interface cartItemsForm {
@@ -25,7 +25,9 @@ interface cartItemsForm {
   name: string;
   price: number;
   quantity: Number;
+  description: string;
   stock: Number;
+  store: Store;
 }
 
 type paramsCart = {
@@ -34,31 +36,33 @@ type paramsCart = {
 };
 
 export function AddCartPage() {
-  // const formAddCart = useForm<cartItemsForm>()
+  const navigate = useNavigate();
   const params: paramsCart = Route.useSearch();
-  console.log("params", params);
+  // console.log("params", params);
 
   const [dataOrder, setDataOrder] = useState<cartItemsForm>({
     attachments: [],
     name: "",
     price: 0,
     quantity: 0,
+    description: "",
     stock: 0,
+    store: { name: "", logo_attachment: "" },
   });
 
   const [quantity, setQuantity] = useState<Number>(0);
-  const [dataCart, setDataCart] = useState<any>([])
+  const [dataCart, setDataCart] = useState<any>([]);
 
   useEffect(() => {
     async function fetchVarian() {
       try {
         const response = await Axios({
           method: "get",
-          url: `http://localhost:3000/form-produk/${params.product_id}/${params.varian_id}`,
+          url: `${api}/form-produk/${params.product_id}/${params.varian_id}`,
           data: dataOrder,
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         const data = {
@@ -68,14 +72,19 @@ export function AddCartPage() {
             response.data.variants[0].variant_option[0].variant_option_values
               .price,
           quantity: response.data.minimum_order,
+          description: response.data.description,
           stock:
             response.data.variants[0].variant_option[0].variant_option_values
               .stock,
+          store: {
+            name: response.data.store.name,
+            logo_attachment: response.data.store.logo_attachment,
+          },
         };
         setQuantity(data.quantity);
         setDataOrder(data);
+        // console.log("ini data order", data);
         console.log("ini data order", data);
-
       } catch (error) {
         console.log(error);
       }
@@ -85,6 +94,7 @@ export function AddCartPage() {
 
   async function addCart() {
     try {
+      console.log("hit add");
       const data = {
         // store_id = params.store_id
         attachments: dataOrder.attachments,
@@ -95,30 +105,59 @@ export function AddCartPage() {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/cart-items/${params.product_id}`,
+        url: `${api}/cart-items/${params.product_id}/${params.varian_id}`,
         data,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      console.log("ini data post",response.data);
-      setDataCart(data)
+      console.log("ini data post", response.data);
+      setDataCart(data);
+      navigate({ to: "/buyer/dashboard" });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addCartLangsung() {
+    try {
+      console.log("hit langsung");
+      const data = {
+        // store_id = params.store_id
+        attachments: dataOrder.attachments,
+        name: dataOrder.name,
+        price: dataOrder.price,
+        quantity: quantity,
+      };
+
+      const response = await Axios({
+        method: "post",
+        url: `${api}/cart-items/langsung/${params.product_id}/${params.varian_id}`,
+        data,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      console.log("ini data langsung", response.data);
+      navigate({ to: "/buyer/checkout", search: { id: response.data.id } });
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <>
-      <div className="bg-white m-3 rounded-lg h-screen flex justify-center">
-        <div className="flex items-center">
+    <div className="w-full h-screen bg-slate-800 p-8">
+      <div className="w-full h-full flex p-4">
+        <div className="w-full flex justify-center items-center bg-orange-500 rounded-l-lg">
           <Carousel className="w-full max-w-md">
             <CarouselContent>
               {dataOrder.attachments.map((data, index) => (
                 <CarouselItem key={index}>
-                  <div className="p-1">
+                  <div className="p-1 shadow">
                     <Card>
                       <CardContent className="flex aspect-square items-center justify-center p-6">
                         <img src={data} alt="" />
@@ -131,12 +170,27 @@ export function AddCartPage() {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
+        </div>
 
-          <div className="ml-52">
-            <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
+        <div className="w-full flex justify-center bg-white rounded-r-lg">
+          <div className="w-full">
+            <div className="p-5 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img
+                  src={dataOrder?.store?.logo_attachment}
+                  alt="logo"
+                  className="w-10"
+                />
+                <h1 className="text-2xl font-bold">{dataOrder?.store?.name}</h1>
+              </div>
+              <TableCart />
+            </div>
 
-            <div className="mt-5">
-              <div className="flex gap-10 text-xl pb-4 border-b-2 border-b-black">
+            <div className="p-5 mt-10 mx-32 bg-white rounded-lg border shadow-lg">
+              <h1 className="font-bold text-2xl">{dataOrder.name}</h1>
+              <p>{dataOrder.description}</p>
+
+              <div className="flex gap-10 text-xl mt-10 pb-4 border-b-2 border-b-black">
                 <p>Harga</p>
                 <p>{dataOrder.price}</p>
               </div>
@@ -145,58 +199,61 @@ export function AddCartPage() {
                 <p>Jumlah</p>
                 <div className="flex items-center gap-10 text-xl">
                   {quantity <= dataOrder.quantity ? (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md hidden"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       disabled
                     >
                       -
-                    </button>
+                    </Button>
                   ) : (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       onClick={() => {
                         setQuantity(Number(quantity) - 1);
                       }}
                     >
                       -
-                    </button>
+                    </Button>
                   )}
 
                   <p>{String(quantity)}</p>
                   {quantity >= dataOrder.stock ? (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md hidden"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       disabled
                     >
                       +
-                    </button>
+                    </Button>
                   ) : (
-                    <button
-                      className="border border-black w-10 h-11 rounded-md"
+                    <Button
+                      className="border text-white border-black w-10 h-11 rounded-md"
                       onClick={() => {
                         setQuantity(Number(quantity) + 1);
                       }}
                     >
                       +
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
 
-              <div className="flex justify-between mt-5">
-                <Button>
-                  {/* <Link to="/buyer/checkout" onClick={() => addCart()} search={{id: dataCart.id}}>
+              <div className="flex justify-between gap-3 mt-5">
+                <Button className="bg-red-600">
+                  <Link onClick={addCartLangsung} search={{ id: dataCart.id }}>
                     Beli Langsung
-                  </Link> */}
+                  </Link>
                 </Button>
-                <Button className="gap-2" onClick={() => addCart()}>
-                  Keranjang <FaArrowRightFromBracket />
+
+                <Button className="bg-lime-600">
+                  <Link className="flex items-center gap-2 " onClick={addCart}>
+                    Keranjang <FaArrowRightFromBracket />
+                  </Link>
                 </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

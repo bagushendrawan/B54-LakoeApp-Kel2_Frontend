@@ -1,13 +1,11 @@
 "use client";
 
 import { Label } from "@/components/label";
-import { ToastAction } from "@/components/toast";
 import { useToast } from "@/components/use-toast";
 import { LoadingSpinner } from "@/routes/__root";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import Axios from "axios";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -16,11 +14,11 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
-import useStore from "../z-context";
+import { api } from "@/lib/api";
 
 const loginSchema = z.object({
   email: z.string({ message: "email harus diisi" }).min(2).max(50),
@@ -48,10 +46,10 @@ export function RequestPassword() {
 
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/users/request-password`,
+        url: `${api}/users/request-password`,
         data: data,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       });
 
@@ -59,8 +57,6 @@ export function RequestPassword() {
         variant: "success",
         title: `Please Check Your Email!`,
       });
-
-
     } catch (error: any) {
       console.log("error", error);
       toast({
@@ -75,7 +71,9 @@ export function RequestPassword() {
     <div className="w-full h-screen p-12">
       <div className="w-full h-full flex bg-slate-600 rounded-sm">
         <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
-          <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">Change Password</h1>
+          <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">
+            Change Password
+          </h1>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -90,7 +88,12 @@ export function RequestPassword() {
                       Email <Label className="text-red-600">*</Label>
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Masukan email" {...field} required />
+                      <Input
+                        type="email"
+                        placeholder="Masukan email"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,13 +101,15 @@ export function RequestPassword() {
               />
 
               <div className="flex flex-col gap-4 items-center pt-6 text-sm">
-                {!form.formState.isSubmitting ?
-                  <Button type="submit" className="px-12 bg-red-600">Request</Button>
-                  :
+                {!form.formState.isSubmitting ? (
+                  <Button type="submit" className="px-12 bg-red-600">
+                    Request
+                  </Button>
+                ) : (
                   <Button type="submit" disabled className="px-12 bg-red-600">
                     Request <LoadingSpinner />
                   </Button>
-                }
+                )}
                 <div className="flex flex-col">
                   <div className="flex gap-1">
                     <h1 className="me-1">Do you remember your account?</h1>

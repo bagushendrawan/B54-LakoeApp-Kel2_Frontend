@@ -1,7 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
 import useStore from "@/z-context";
-import { useEffect, useState } from "react";
-import { BsCash, BsCreditCard } from "react-icons/bs";
 import Axios from "axios";
 import { Chart } from "./components/chart";
 import WithdrawDialog from "./components/withdrawDialog";
@@ -11,28 +9,43 @@ import { GrTransaction } from "react-icons/gr";
 import AllBankDialog from "./components/allBankDialog";
 import TableWithdraw from "./components/tableWithdraw";
 import ExportTable from "./components/exportDoc";
+import { BsCash, BsCreditCard } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import { formattedNumber } from "@/features/pesanan/components/status-order/card-pesanan";
 
 export function DashboardPage() {
   const user = useStore((state) => state.user);
   const setBank = useStore((state) => state.SET_BANK);
   const registedBank = useStore((state) => state.bank);
-  const currentBalance = 500000;
 
   const setWithdraw = useStore((state) => state.SET_WITHDRAW);
   const dataWithdraw = useStore((state) => state.withdraw);
   const [sort, setSort] = useState<string>();
 
+  const [invoiceData, setInvoiceData] = useState([]);
+  const [invoiceBulanIniData, setInvoiceBulanIniData] = useState([]);
+
+  const currentBalance = formattedNumber(
+    invoiceData.reduce((total: any, inv: any) => {
+      if (inv.status === "PESANAN_SELESAI") {
+        return total + inv.prices + inv.service_charge;
+      }
+      return total;
+    }, 0)
+  );
+
   // fetch bank
   useEffect(() => {
     const fetchBank = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         const res = await Axios({
-          method: 'get',
-          url: `http://localhost:3000/bank-account/${user.id}`,
+          method: "get",
+          url: `${api}/bank-account/${user.id}`,
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         setBank(res.data);
@@ -90,19 +103,30 @@ export function DashboardPage() {
         <h1 className="text-2xl font-bold text-blac my-4">Credit Dashboard</h1>
         <div className="flex gap-2">
           {/* credit */}
-          <div className="w-full bg-white p-4 border rounded shadow-lg">
+          <div className="w-full bg-white p-4 border rounded shadow-sm">
             <Label>Current Balance</Label>
-            <h2 className="text-green-500 mb-4 font-bold text-2xl">Rp{currentBalance}</h2>
+            <h2 className="text-green-500 mb-4 font-bold text-2xl">
+              {" "}
+              {invoiceData &&
+                formattedNumber(
+                  invoiceData.reduce((total: any, inv: any) => {
+                    if (inv.status === "PESANAN_SELESAI") {
+                      return total + inv.prices + inv.service_charge;
+                    }
+                    return total;
+                  }, 0)
+                )}
+            </h2>
             <div className="flex gap-2">
               <AddBankAccountDialog banks={registedBank} />
-              <WithdrawDialog banks={registedBank} currentBalance={currentBalance} />
+              <WithdrawDialog banks={registedBank} currentBalance={parseInt(currentBalance)} />
             </div>
           </div>
 
           {/* bank */}
-          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
+          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1 justify-between items-center">
-              <BsCreditCard size={'2rem'} color="#22C55E" />
+              <BsCreditCard size={"2rem"} color="#22C55E" />
               <AllBankDialog banks={registedBank} />
             </div>
 
@@ -118,41 +142,63 @@ export function DashboardPage() {
                 </>
               ) : (
                 <>
-                  <Label className="text-lg font-bold">Belum ada akun bank</Label>
-                  <label className="text-sm text-red-600">Tambahkan dulu akun bank kamu</label>
+                  <Label className="text-lg font-bold">
+                    Belum ada akun bank
+                  </Label>
+                  <label className="text-sm text-red-600">
+                    Tambahkan dulu akun bank kamu
+                  </label>
                 </>
               )}
             </div>
           </div>
 
           {/* transaksi */}
-          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
+          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1">
-              <GrTransaction size={'2rem'} color="#22C55E" />
+              <GrTransaction size={"2rem"} color="#22C55E" />
             </div>
 
             <div className="flex flex-col">
               <p className="text-sm text-gray-600">Transaksi Berhasil</p>
-              <h2 className="text-gray-700 mb-4 font-bold text-2xl">45 Transaksi</h2>
+              <h2 className="text-gray-700 mb-4 font-bold text-2xl">
+                {invoiceData &&
+                  invoiceData.reduce((total: any, inv: any) => {
+                    if (inv.status === "PESANAN_SELESAI") {
+                      return (total += 1);
+                    }
+                    return total;
+                  }, 0)}
+              </h2>
             </div>
           </div>
 
           {/* penghasilan */}
-          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-lg">
+          <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1">
-              <BsCash size={'2rem'} color="#22C55E" />
+              <BsCash size={"2rem"} color="#22C55E" />
             </div>
 
             <div className="flex flex-col">
               <p className="text-sm text-gray-600">Penghasilan Bulan Ini</p>
-              <h2 className="text-gray-700 mb-4 font-bold text-2xl">Rp 7.800.000</h2>
+              <h2 className="text-gray-700 mb-4 font-bold text-2xl">
+                {invoiceBulanIniData &&
+                  formattedNumber(
+                    invoiceBulanIniData.reduce((total: any, inv: any) => {
+                      if (inv.status === "PESANAN_SELESAI") {
+                        return total + inv.prices + inv.service_charge;
+                      }
+                      return total;
+                    }, 0)
+                  )}
+              </h2>
             </div>
           </div>
         </div>
       </div>
 
       {/* chart */}
-      <div className="w-full bg-white h-96 flex flex-col p-4 rounded-sm shadow-lg">
+      <div className="w-full bg-white h-96 flex flex-col p-4 rounded-sm mb-2">
         <div className="flex justify-between">
           <h1 className="font-bold text-xl text-gray-600">Reporting Period</h1>
           <div className="w-1/4 text-gray-700">

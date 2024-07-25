@@ -1,5 +1,26 @@
 import { create } from "zustand";
 
+type courierType = {
+  name: string;
+  service: string;
+  duration: string;
+  price: number;
+  logo: string;
+};
+
+type StoreLocation = {
+  address: string;
+};
+
+type StoreUser = {
+  name: string;
+  slogan: string;
+  description: string;
+  logo_attachment: string;
+  banner_attachment: string;
+  location: StoreLocation[];
+};
+
 type User = {
   id: string;
   name: string;
@@ -8,16 +29,18 @@ type User = {
   role_id: number;
   isVerified: boolean;
   store_id: string;
-};
-
-type userType = {
-  token: string;
-  user: User;
+  store: StoreUser;
 };
 
 type productCreated = {
   product_id: string;
   varian_id: string;
+};
+
+type discount = {
+  id: string;
+  code: string;
+  amount: number;
 };
 
 type bankAccount = {
@@ -69,6 +92,10 @@ type products = {
 };
 
 type Store = {
+  courier: courierType[];
+  setCourier: (newCourier: courierType[]) => void;
+  selectedCourier: courierType | undefined;
+  setSelectedCourier: (newCourier: courierType | undefined) => void;
   user: User;
   SET_USER: (newUser: User) => void;
 
@@ -94,6 +121,25 @@ type Store = {
 };
 
 const useStore = create<Store>()((set) => ({
+  courier: [
+    {
+      name: "",
+      service: "",
+      duration: "",
+      price: 0,
+      logo: "",
+    },
+  ],
+  setCourier: (newCourier: courierType[]) => set({ courier: newCourier }),
+  selectedCourier: {
+    name: "",
+    service: "",
+    duration: "",
+    price: 0,
+    logo: "",
+  },
+  setSelectedCourier: (newSelectedCourier: courierType | undefined) =>
+    set({ selectedCourier: newSelectedCourier }),
   user: {
     id: "",
     name: "",
@@ -102,8 +148,38 @@ const useStore = create<Store>()((set) => ({
     role_id: NaN,
     isVerified: false,
     store_id: "",
+    store: {
+      name: "",
+      slogan: "",
+      description: "",
+      logo_attachment: "",
+      banner_attachment: "",
+      location: [{ address: "" }],
+    },
   },
   SET_USER: (newUser: User) => set({ user: newUser }),
+  discount: {
+    id: "",
+    code: "",
+    amount: 0,
+  },
+  totalPrice: 0,
+  DELETE_TOTAL: () => {
+    set({
+      totalPrice: 0,
+    });
+  },
+  SET_TOTAL: (newTotal: number) => set({ totalPrice: newTotal }),
+  SET_DISCOUNT: (newDisc: discount) => set({ discount: newDisc }),
+  DELETE_DISCOUNT: () => {
+    set({
+      discount: {
+        id: "",
+        code: "",
+        amount: 0,
+      },
+    });
+  },
   logout: () => {
     set({
       user: {
@@ -114,15 +190,23 @@ const useStore = create<Store>()((set) => ({
         role_id: NaN,
         isVerified: false,
         store_id: "",
+        store: {
+          name: "",
+          slogan: "",
+          description: "",
+          logo_attachment: "",
+          banner_attachment: "",
+          location: [{ address: "" }],
+        },
       },
     });
     localStorage.removeItem("token");
   },
-  SET_PRODUCT: (newProduct: productCreated) => set({ produk: newProduct }),
   produk: {
     product_id: "",
     varian_id: "",
   },
+  SET_PRODUCT: (newProduk: productCreated) => set({ produk: newProduk }),
   bank: [{
     id: '',
     bank: '',

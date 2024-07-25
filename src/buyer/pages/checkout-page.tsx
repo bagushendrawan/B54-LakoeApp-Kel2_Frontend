@@ -1,7 +1,7 @@
 import { Textarea } from "@/components/textarea";
 import { Button } from "@/components/ui/button";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { AlamatPengiriman } from "../features/checkout/alamat-pengiriman";
 import { GunakanVoucher } from "../features/checkout/gunakan-voucher";
@@ -15,49 +15,78 @@ interface MidtransSnap extends Window {
   };
 }
 
-interface checkoutForm {
-  name: string;
-  phone: string;
-  receiver_name: string;
-  receiver_phone: string;
-  receiver_district: string;
-  receiver_address: string;
-  // courier_id: string,
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { api } from "@/lib/api";
+import { LoadingSpinner } from "@/routes/__root";
+import useStore from "@/z-context";
 
-export function CheckoutPage() {
-  const [dataOrder, setDataOrder] = useState<checkoutForm>({
-    name: "",
-    phone: "",
-    receiver_name: "",
-    receiver_phone: "",
-    receiver_district: "",
-    receiver_address: "",
-    // courier_id: "",
+export type checkoutForm = {
+  courier_code: string;
+  courier_service: string;
+  service_charge: number;
+  receiver_longitude: string;
+  receiver_latitude: string;
+  receiver_district: string;
+  receiver_phone: string;
+  receiver_address: string;
+  receiver_name: string;
+  prices: number;
+  user_id: string;
+  store_id: string;
+};
+
+const checkoutSchema = z.object({
+  courier_code: z.any(),
+  courier_service: z.any(),
+  service_charge: z.any(),
+  receiver_name: z.any(),
+  receiver_phone: z.any(),
+  receiver_district: z.any(),
+  receiver_address: z.any(),
+  receiver_latitude: z.any(),
+  receiver_longitude: z.any(),
+  prices: z.any(),
+  user_id: z.any(),
+  store_id: z.any(),
+});
+
+export const useCheckoutForm = () => {
+  const form = useForm<checkoutForm>({
+    mode: "onChange",
+    resolver: zodResolver(checkoutSchema),
   });
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const name = event.target.name;
-    const value = event.target.value;
+  return form;
+};
 
-    setDataOrder({
-      ...dataOrder,
-      [name]: value,
-    });
-  }
-
-  async function handleSubmit() {
+export function CheckoutPage() {
+  const formCheckout = useCheckoutForm();
+  const disc = useStore((state) => state.discount);
+  const totalPrice = useStore((state) => state.totalPrice);
+  async function onSubmitForm(data: any) {
     try {
+      const newData = {
+        ...data,
+        prices: totalPrice,
+        discount_id: disc.id,
+      };
+      console.log("TOTAL", totalPrice);
+      console.log("HIT SUBMIT", newData);
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/invoices`,
-        data: dataOrder,
+        url: `${api}/buyers/buy`,
+        data: newData,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(response.data);
+
+      // console.log("hit", response.data);
+
+      (window as unknown as MidtransSnap).snap.pay(response.data.token);
     } catch (error) {
       console.log(error);
     }
@@ -73,61 +102,61 @@ export function CheckoutPage() {
     scriptTag.setAttribute("data-client-key", myMidtransClientKey);
 
     document.body.appendChild(scriptTag);
-
     return () => {
       document.body.removeChild(scriptTag);
     };
   }, []);
 
   return (
-    <>
-      <div className="bg-white m-3 rounded-lg p-3">
-        <h1 className="text-xl font-bold">CHECKOUT</h1>
+    <div className="bg-gray-100 rounded-lg p-6">
+      <h1 className="text-xl font-bold">CHECKOUT</h1>
 
-        <div className="mt-4">
-          <form>
-            <div className="flex ">
-              <div className="basis-3/5">
-                <InformasiKontak/>
+      <div className="mt-4">
+        <form onSubmit={formCheckout.handleSubmit(onSubmitForm)}>
+          <div className="flex ">
+            <div className="basis-3/5">
+              <InformasiKontak form={formCheckout} />
 
-                <AlamatPengiriman/>
+              <AlamatPengiriman form={formCheckout} />
 
-                <MetodePengiriman/>
+              <MetodePengiriman form={formCheckout} />
+            </div>
+
+            <div className="flex flex-col basis-2/5 items-center">
+              <GunakanVoucher />
+
+              <RingkasanPesanan form={formCheckout} />
+
+              <div className="bg-white shadow w-5/6 rounded-lg p-3 mb-4">
+                <p className="mb-3 font-bold">Catatan</p>
+                <Textarea
+                  className="resize-none border-gray-300"
+                  placeholder="Tulis Catatan Pesananmu"
+                />
               </div>
 
-              <div className="flex flex-col basis-2/5 items-center">
-                <GunakanVoucher/>
-
-                <RingkasanPesanan/>
-
-                <div className="border border-black w-5/6 rounded-lg p-3 mb-4">
-                  <p className="mb-3">Catatan</p>
-                  <Textarea
-                    className="resize-none border-black"
-                    placeholder="Tulis Catatan Pesananmu"
-                  />
-                </div>
-
-                <Button
+              {/* <Button
                   className="w-5/6"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    const response = await Axios.post(
-                      "http://localhost:3000/payment"
-                    );
-                    console.log(response);
-
-                    const token: string = response.data as string;
-                    (window as unknown as MidtransSnap).snap.pay(token);
-                  }}
+                  type="submit"
+                  // onClick={() => console.log("HIT")}
                 >
                   Bayar Sekarang
+                </Button> */}
+
+              {!formCheckout.formState.isSubmitting ? (
+                <Button type="submit" className="w-5/6 bg-orange-500">
+                  Bayar Sekarang
                 </Button>
-              </div>
+              ) : (
+                <Button type="submit" disabled className="w-5/6 bg-orange-500">
+                  <LoadingSpinner />
+                  Register
+                </Button>
+              )}
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 }

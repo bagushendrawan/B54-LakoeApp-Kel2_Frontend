@@ -6,7 +6,7 @@ import { FaTrash } from 'react-icons/fa';
 import useStore from '@/z-context';
 
 interface IUpdatePriceProps {
-    product: IProduct;
+  product: IProduct;
 }
 
 const DeleteProductDialog: FC<IUpdatePriceProps> = ({ product }) => {

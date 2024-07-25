@@ -1,7 +1,15 @@
 "use client";
 
 import { Label } from "@/components/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/select";
 import { useToast } from "@/components/use-toast";
 import { LoadingSpinner } from "@/routes/__root";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,12 +23,13 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "../components/form";
 import { Input } from "../components/input";
 import { Button } from "../components/ui/button";
 import { useState } from "react";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { api } from "@/lib/api";
 
 const registerSchema = z.object({
   name: z.string({ message: "username tidak boleh kosong" }).max(50),
@@ -56,16 +65,15 @@ export function RegisterForm() {
         email: values.email,
         password: values.password,
         phone: values.phone,
-        role_id: values.role_id
+        role_id: values.role_id,
       };
       const response = await Axios({
         method: "post",
-        url: `http://localhost:3000/users`,
+        url: `${api}/users`,
         data: data,
         headers: { "Content-Type": "application/json" },
       });
-      if (response.status === 201)
-        navigate({ to: "/auth/login" });
+      if (response.status === 201) navigate({ to: "/auth/login" });
       toast({
         variant: "success",
         title: `User Created! ${response.data.name}`,
@@ -109,7 +117,11 @@ export function RegisterForm() {
                       <Label className="text-red-600">*</Label>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Masukan username" {...field} required />
+                      <Input
+                        placeholder="Masukan username"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -126,7 +138,12 @@ export function RegisterForm() {
                       <Label className="text-red-600">*</Label>
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Masukan email" {...field} required />
+                      <Input
+                        type="email"
+                        placeholder="Masukan email"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -143,7 +160,12 @@ export function RegisterForm() {
                       <Label className="text-red-600">*</Label>
                     </FormLabel>
                     <FormControl>
-                      <Input type="string" placeholder="Masukan phone" {...field} required />
+                      <Input
+                        type="string"
+                        placeholder="Masukan phone"
+                        {...field}
+                        required
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,7 +183,7 @@ export function RegisterForm() {
                     <FormControl>
                       <div className="relative">
                         <Input
-                          type={showPassword ? 'text' : 'password'}
+                          type={showPassword ? "text" : "password"}
                           placeholder="Masukan password"
                           {...field}
                           required
@@ -170,7 +192,11 @@ export function RegisterForm() {
                           onClick={togglePasswordVisibility}
                           className="absolute inset-y-0 right-0 flex items-center px-3 text-sm cursor-pointer"
                         >
-                          {showPassword ? <VscEyeClosed size={'1.5rem'} fill="black" /> : <VscEye size={'1.5rem'} fill="black" />}
+                          {showPassword ? (
+                            <VscEyeClosed size={"1.5rem"} fill="black" />
+                          ) : (
+                            <VscEye size={"1.5rem"} fill="black" />
+                          )}
                         </div>
                       </div>
                     </FormControl>
@@ -183,9 +209,11 @@ export function RegisterForm() {
                 Role
                 <Label className="text-red-600">*</Label>
               </p>
-              <Select onValueChange={(e) => {
-                form.setValue("role_id", parseInt(e));
-              }}>
+              <Select
+                onValueChange={(e) => {
+                  form.setValue("role_id", parseInt(e));
+                }}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Pilih role" />
                 </SelectTrigger>
@@ -200,25 +228,37 @@ export function RegisterForm() {
               </Select>
 
               <div className="flex flex-col items-center mt-4 text-sm">
-                {!form.formState.isSubmitting ?
+                {!form.formState.isSubmitting ? (
                   <Button type="submit" className="px-12 bg-red-600">
                     Register
                   </Button>
-                  :
-                  <Button type="submit" disabled className="px-12 bg-red-600 gap-2">
+                ) : (
+                  <Button
+                    type="submit"
+                    disabled
+                    className="px-12 bg-red-600 gap-2"
+                  >
                     <LoadingSpinner />
                     Register
-                  </Button>}
+                  </Button>
+                )}
 
                 <div className="flex flex-col items-center mt-4">
                   <div className="flex">
                     <h1 className="me-1">Are you a buyer?</h1>
-                    <Link to="/buyer/dashboard" className="font-bold text-blue-500">Click Here</Link>
+                    <Link
+                      to="/buyer/dashboard"
+                      className="font-bold text-blue-500"
+                    >
+                      Click Here
+                    </Link>
                   </div>
 
                   <div className="flex">
                     <h1 className="me-1">Do you have an account?</h1>
-                    <Link to="/auth/login" className="font-bold text-blue-500">Login</Link>
+                    <Link to="/auth/login" className="font-bold text-blue-500">
+                      Login
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -227,9 +267,9 @@ export function RegisterForm() {
         </div>
 
         {/* logo */}
-        <div className="flex flex-col w-full justify-center items-center bg-red-50 rounded-sm">
-          <img src="/auth/register.png" className="w-3/4 object-cover" />
-          <img src="/Lakoe.png" className="w-2/6" />
+        <div className="flex flex-col w-full justify-center items-center bg-orange-100 rounded-sm py-12">
+          <img src="/auth/register.png" className="w-8/12 object-contain" />
+          <img src="/Lakoe.png" className="w-3/12" />
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({
   onEdit,
 
 }) => {
-  const { namaLokasi, alamat, kota, kodePos, pinPoint } = location
+  const { namaLokasi, alamat, selectedProvinsiId, pinPoint } = location
 
   const openStreetMap = `https://www.openstreetmap.org/directions?from=${pinPoint[0]}%2C%20${pinPoint[1]}#map=5/-6.403/99.053`
 
@@ -35,10 +35,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({
             <strong>Alamat:</strong> {alamat}
           </p>
           <p>
-            <strong>Kota/Kecamatan:</strong> {kota}
-          </p>
-          <p>
-            <strong>Kode Pos:</strong> {kodePos}
+            <strong>Kota/Kecamatan:</strong> {selectedProvinsiId}
           </p>
           <p>
             <strong>Pinpoint:</strong>{" "}

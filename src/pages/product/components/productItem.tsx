@@ -1,3 +1,5 @@
+/* eslint-disable */
+import { Input } from "@/components/input";
 import { Button } from "@/components/ui/button";
 import { FC } from "react";
 import { LuLink } from "react-icons/lu";
@@ -18,7 +20,7 @@ const ProductItem: FC<IProductItemProps> = ({ product }) => {
                 <img
                     src={product.variants[0].variant_option[0].variant_option_values.img}
                     alt={product.name}
-                    width={'90rem'}
+                    width={"90rem"}
                 />
 
                 <div className="w-full">

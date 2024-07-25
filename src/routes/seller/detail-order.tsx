@@ -1,89 +1,89 @@
-import { createFileRoute, useParams, useSearch } from "@tanstack/react-router";
+import { SideBar } from "@/features/side-bar";
+import { createFileRoute } from "@tanstack/react-router";
+import Axios from "axios";
+import { useEffect, useState } from "react";
 import { DetailOrderPage } from "../../pages/detailOrder/detail-order-page";
 import { ProtectedRoute, ProtectedSellerRoute } from "../__root";
-import { SideBar } from "@/features/side-bar";
-import { useEffect, useState } from "react";
-import Axios from 'axios'
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/seller/detail-order")({
   component: () => (
     <ProtectedRoute>
       <ProtectedSellerRoute>
         <DetailOrder />
-        </ProtectedSellerRoute>
+      </ProtectedSellerRoute>
     </ProtectedRoute>
   ),
 });
 
 type invoiceID = {
-  id : string
-  itemID : string
-}
+  id: string;
+  itemID: string;
+};
 
 type user = {
-  name :string
-}
+  name: string;
+};
 
 type cart = {
-  carts_items : items[]
-}
+  carts_items: items[];
+};
 
 type items = {
-  created_at : Date,
-  id : string,
-  img : string,
-  name : string,
-  price : number,
-  quantity : number
-
-}
+  created_at: Date;
+  id: string;
+  img: string;
+  name: string;
+  price: number;
+  quantity: number;
+};
 
 type courier = {
-  courier_code : string,
-  courier_service_name : string
-  tracking_id : string
-  price : number
-}
+  courier_code: string;
+  courier_service_name: string;
+  tracking_id: string;
+  price: number;
+};
 
 type invoice = {
-  id : string
-  updated_at : Date
-  user: user
-  cart : cart
-  courier : courier
-}
+  id: string;
+  updated_at: Date;
+  user: user;
+  cart: cart;
+  courier: courier;
+};
 
 function DetailOrder() {
-  const params : invoiceID = Route.useSearch()
+  const params: invoiceID = Route.useSearch();
   const [detailData, setDetailData] = useState<invoice>();
   const [itemsData, setItemsData] = useState<items>();
 
   useEffect(() => {
-    async function getInvoices(){
+    async function getInvoices() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/product/invoice/${params.id}`,
+        url: `${api}/product/invoice/${params.id}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setDetailData(response.data)
+      setDetailData(response.data);
     }
-    async function getItem(){
+    async function getItem() {
       const response = await Axios({
         method: "get",
-        url: `http://localhost:3000/product/items/${params.itemID}`,
+        url: `${api}/product/items/${params.itemID}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setItemsData(response.data)
+      setItemsData(response.data);
     }
-    getInvoices()
-    getItem()
-  },[])
+    getInvoices();
+    getItem();
+  }, []);
 
   return (
     <div>
@@ -91,10 +91,10 @@ function DetailOrder() {
         <SideBar />
         <div className="w-full h-screen overflow-y-auto">
           <DetailOrderPage
-          invoice={detailData}
-          user={detailData?.user}
-          item={itemsData}
-          courier={detailData?.courier}
+            invoice={detailData}
+            user={detailData?.user}
+            item={itemsData}
+            courier={detailData?.courier}
           ></DetailOrderPage>
         </div>
       </div>

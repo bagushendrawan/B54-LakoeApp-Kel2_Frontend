@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeEvent, useEffect, useState } from "react";
-import IconInput from "./components/iconInput";
-import ProductItem from "./components/productItem";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { ChangeEvent, useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { LuPackageX } from "react-icons/lu";
-// import BulkDeleteProductDialog from "./components/bulkDeleteProductDialog";
-// import BulkNonactivateProductDialog from "./components/bulkNonactivateProductDialog";
-import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import DropdownSort from "./components/dropDownSort";
 import useStore from "@/z-context";
+import IconInput from "./components/iconInput";
+import ProductItem from "./components/productItem";
 
 const Product = () => {
     const user = useStore((state) => state.user);
@@ -41,13 +38,13 @@ const Product = () => {
     const setProducts = useStore((state) => state.SET_PRODUCTS);
     const products = useStore((state) => state.products);
 
-    // state sort status
-    const [isActive, setIsActive] = useState<number>(1);
+    console.log(products);
 
     // state sort by search, category, action
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState("Semua");
     const [selectedAction, setSelectedAction] = useState("Semua");
+    const [isActive, setIsActive] = useState<number>()
 
     // fetch product
     useEffect(() => {
@@ -93,7 +90,7 @@ const Product = () => {
     }, [categories]);
 
     return (
-        <div className="min-h-screen px-6 py-4 bg-white rounded">
+        <div className="min-h-screen px-6 py-4 bg-white shadow-sm shadow-black rounded">
             {/* header */}
             <div className="flex justify-between items-center mb-4">
                 <p className="text-2xl font-bold">Daftar Produk</p>

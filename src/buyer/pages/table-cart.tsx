@@ -35,7 +35,7 @@ export function TableCart(props: any) {
     mutationFn: async (cart_id) => {
       return await Axios({
         method: "delete",
-        url: `${api}/cart-items/${cart_id}`,
+        url: `${api}/cart-items/delete/${cart_id}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

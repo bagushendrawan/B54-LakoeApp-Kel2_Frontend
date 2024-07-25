@@ -4,6 +4,8 @@ import { GoHome } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineShoppingBag } from "react-icons/md";
 
+import Axios from "axios";
+
 import {
   Accordion,
   AccordionContent,
@@ -20,11 +22,41 @@ import {
 } from "@/components/dialog";
 import useStore from "@/z-context";
 import { BsPerson } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import { useToast } from "@/components/use-toast";
 
 export function SideBar() {
   const user = useStore((state) => state.user);
   console.log("test user =", user);
   const logOutUser = useStore((state) => state.logout);
+  const token = localStorage.getItem("token");
+  const { toast } = useToast();
+  const [storeData, setStoreData] = useState<any>();
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await Axios({
+          method: "get",
+          url: `${api}/users/stores/${user.store_id}`,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("store", response.data);
+        setStoreData(response.data);
+        // console.log(auth.data);
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: `Error!`,
+        });
+      }
+    }
+    getUser();
+  }, []);
 
   return (
     <>
@@ -130,28 +162,28 @@ export function SideBar() {
                     </DialogHeader>
 
                     <div>
-                      <img src={user?.store?.banner_attachment} alt="banner" />
+                      <img src={storeData?.banner_attachment} alt="banner" />
                     </div>
 
                     <div className="flex gap-5">
                       <img
-                        src={user?.store?.logo_attachment}
+                        src={storeData?.logo_attachment}
                         alt="logo"
                         className="w-1/5"
                       />
 
                       <div>
                         <p className="font-bold text-xl mb-1">
-                          {user?.store?.name}
+                          {storeData?.name}
                         </p>
                         <p className="font-light italic mb-1">
-                          {user?.store?.slogan}
+                          {storeData?.slogan}
                         </p>
-                        <p>{user?.store?.location[0]?.address}</p>
+                        <p>{storeData?.location[0]?.address}</p>
                       </div>
                     </div>
 
-                    <p>{user?.store?.description}</p>
+                    <p>{storeData?.description}</p>
 
                     <Link
                       to="/auth/login"

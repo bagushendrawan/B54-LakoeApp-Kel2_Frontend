@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import useStore from "@/z-context";
 import { ChangeEvent, useEffect, useState } from "react";
-import { BsImage, BsPlusCircle, BsTrash } from "react-icons/bs";
+import { BsImage, BsPlusCircle, BsTrash, BsXCircle } from "react-icons/bs";
 import kurir from "../../../assets/kurir/kurir.json";
 
 export const courier = [
@@ -247,6 +247,14 @@ export function DialogKurir(props: any) {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
+        <Button
+          variant="outline"
+          size={"icon"}
+          className="border-none hover:bg-none"
+          onClick={() => props.setOpen(!props.open)}
+        >
+          <BsXCircle className="h-6 w-6 text-gray-700 hover:text-gray-300"></BsXCircle>
+        </Button>
         <form onSubmit={props.form.handleSubmit(props.onSubmit)}>
           <DialogHeader>
             <DialogTitle>Tambah Kurir</DialogTitle>

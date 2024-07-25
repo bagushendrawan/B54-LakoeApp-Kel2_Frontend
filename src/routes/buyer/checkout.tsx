@@ -15,7 +15,7 @@ export const Route = createFileRoute("/buyer/checkout")({
 function Checkout() {
   return (
     <>
-      <div className="bg-slate-800">
+      <div className="bg-slate-800 p-4">
         <CheckoutPage />
       </div>
     </>

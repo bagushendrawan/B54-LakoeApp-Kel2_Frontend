@@ -108,7 +108,7 @@ export function CheckoutPage() {
   }, []);
 
   return (
-    <div className="bg-gray-100 m-4 rounded-lg p-6">
+    <div className="bg-gray-100 rounded-lg p-6">
       <h1 className="text-xl font-bold">CHECKOUT</h1>
 
       <div className="mt-4">

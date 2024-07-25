@@ -161,9 +161,9 @@ export function SideBar() {
                       <DialogTitle>Profile Store</DialogTitle>
                     </DialogHeader>
 
-                    <div>
+                    {/* <div>
                       <img src={storeData?.banner_attachment} alt="banner" />
-                    </div>
+                    </div> */}
 
                     <div className="flex gap-5">
                       <img

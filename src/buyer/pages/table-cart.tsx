@@ -13,7 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import Axios from "axios";
 import { useEffect, useState } from "react";
-import { BsTrash } from "react-icons/bs";
+import { BsTrash, BsXCircle } from "react-icons/bs";
 import { FaShoppingCart } from "react-icons/fa";
 
 interface cart {
@@ -128,37 +128,42 @@ export function TableCart(props: any) {
                     </div>
 
                     <div className="flex gap-2 justify-center">
-                      {data.invoices ? (
-                        <Button className="w-full bg-green-800 text-white">
-                          <Link
-                            to="/buyer/checkout"
-                            search={{ id: data.carts_items[0]?.id }}
+                      {data.invoices.status !== "DIBATALKAN" ? (
+                        <>
+                          <Button className="w-full bg-green-800 text-white">
+                            <Link
+                              to="/buyer/checkout"
+                              search={{ id: data.carts_items[0]?.id }}
+                            >
+                              Bayar
+                            </Link>
+                          </Button>
+
+                          <Button
+                            variant={"outline"}
+                            className="rounded-md self-end bg-red-500 w-full"
+                            onClick={async () => {
+                              await cart.mutateAsync(data.id);
+                              refetchCart();
+                              props.refetch();
+                            }}
                           >
-                            Bayar
-                          </Link>
-                        </Button>
+                            <BsTrash className="text-white w-4 h-4" />
+                          </Button>
+                        </>
                       ) : (
-                        <Button className="w-full bg-slate-800">
-                          <Link
-                            to="/buyer/checkout"
-                            search={{ id: data.carts_items[0]?.id }}
-                          >
-                            Bayar Sekarang
-                          </Link>
+                        <Button
+                          variant={"outline"}
+                          className="rounded-md self-end bg-red-500 w-full"
+                          onClick={async () => {
+                            await cart.mutateAsync(data.id);
+                            refetchCart();
+                            props.refetch();
+                          }}
+                        >
+                          <BsXCircle className="text-white w-4 h-4" /> Batalkan
                         </Button>
                       )}
-
-                      <Button
-                        variant={"outline"}
-                        className="rounded-md self-end bg-red-500 w-full"
-                        onClick={async () => {
-                          await cart.mutateAsync(data.id);
-                          refetchCart();
-                          props.refetch();
-                        }}
-                      >
-                        <BsTrash className="text-white w-4 h-4" />
-                      </Button>
                     </div>
                   </div>
                 </DropdownMenuCheckboxItem>

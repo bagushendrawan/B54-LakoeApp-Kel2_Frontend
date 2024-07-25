@@ -105,12 +105,12 @@ const AddBankAccountDialog: FC<{
     <Dialog>
       <DialogTrigger asChild>
         {banks.length < 3 ? (
-          <Button className="w-full bg-[#22C55E] hover:bg-green-600">
+          <Button className="w-full bg-slate-800 hover:bg-slate-600">
             <BsPlus size={"1.3rem"} />
             Tambah Bank
           </Button>
         ) : (
-          <Button className="w-full bg-[#22C55E] hover:bg-green-600" disabled>
+          <Button className="w-full bg-slate-800 hover:bg-slate-600" disabled>
             <BsPlus size={"1.3rem"} />
             Tambah Bank
           </Button>

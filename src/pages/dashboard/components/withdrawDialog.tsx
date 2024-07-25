@@ -85,13 +85,13 @@ const WithdrawDialog: FC<{ banks: IBankAccount[] }> = ({ banks }) => {
     <Dialog>
       <DialogTrigger asChild>
         {banks.length !== 0 ? (
-          <Button className="w-full gap-1 bg-[#22C55E] hover:bg-green-600">
+          <Button className="w-full gap-1 bg-emerald-500 hover:bg-emerald-400">
             <BiMoneyWithdraw size={"1.3rem"} />
             Tarik Saldo
           </Button>
         ) : (
           <Button
-            className="w-full gap-1 bg-[#22C55E] hover:bg-green-600"
+            className="w-full gap-1 bg-emerald-500 hover:bg-emerald-400"
             disabled
           >
             <BiMoneyWithdraw size={"1.3rem"} />

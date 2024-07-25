@@ -297,7 +297,9 @@ export function BuyerDashboardPage() {
                               ?.filter(
                                 (value: any) =>
                                   value.variant_option[0].variant_option_values
-                                    ?.stock >= data.minimum_order
+                                    ?.stock >= data.minimum_order &&
+                                  value.variant_option[0].variant_option_values
+                                    ?.is_active
                               )
                               .map((value: any) => {
                                 return (

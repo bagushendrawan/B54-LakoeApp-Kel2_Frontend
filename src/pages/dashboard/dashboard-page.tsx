@@ -186,7 +186,7 @@ export function DashboardPage() {
           {/* credit */}
           <div className="w-full bg-white p-4 border rounded shadow-sm">
             <Label>Current Balance</Label>
-            <h2 className="text-green-500 mb-4 font-bold text-2xl">
+            <h2 className="text-orange-500 mb-4 font-bold text-2xl">
               {" "}
               {invoiceData &&
                 formattedNumber(
@@ -207,7 +207,7 @@ export function DashboardPage() {
           {/* bank */}
           <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1 justify-between items-center">
-              <BsCreditCard size={"2rem"} color="#22C55E" />
+              <BsCreditCard size={"2rem"} color="#f97316" />
               <AllBankDialog banks={registedBank} />
             </div>
 
@@ -237,7 +237,7 @@ export function DashboardPage() {
           {/* transaksi */}
           <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1">
-              <GrTransaction size={"2rem"} color="#22C55E" />
+              <GrTransaction size={"2rem"} color="#f97316" />
             </div>
 
             <div className="flex flex-col">
@@ -257,7 +257,7 @@ export function DashboardPage() {
           {/* penghasilan */}
           <div className="w-full flex flex-col bg-white p-4 border rounded shadow-sm">
             <div className="flex flex-1">
-              <BsCash size={"2rem"} color="#22C55E" />
+              <BsCash size={"2rem"} color="#f97316" />
             </div>
 
             <div className="flex flex-col">

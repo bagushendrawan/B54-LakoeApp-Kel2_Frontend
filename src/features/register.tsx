@@ -244,7 +244,7 @@ export function RegisterForm() {
                 )}
 
                 <div className="flex flex-col items-center mt-4">
-                  <div className="flex">
+                  {/* <div className="flex">
                     <h1 className="me-1">Are you a buyer?</h1>
                     <Link
                       to="/buyer/dashboard"
@@ -252,7 +252,7 @@ export function RegisterForm() {
                     >
                       Click Here
                     </Link>
-                  </div>
+                  </div> */}
 
                   <div className="flex">
                     <h1 className="me-1">Do you have an account?</h1>

@@ -16,6 +16,7 @@ import { api } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import { BsImage, BsTrash } from "react-icons/bs";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { LoadingSpinner } from "@/routes/__root";
 
 // const informasiSchema = z.object({
 //   name: z.string({ message: "nama Tidak boleh kosong" }).max(50),
@@ -201,15 +202,29 @@ export const FormInformasiToko: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-end mr-10 border-b pb-5">
-          <Button
-            type="submit"
-            className={buttonVariants({
-              variant: "custom",
-              className: "rounded-xl",
-            })}
-          >
-            Simpan
-          </Button>
+          {formDatas.formState.isSubmitting ? (
+            <Button
+              type="submit"
+              className={buttonVariants({
+                variant: "custom",
+                className: "rounded-xl",
+              })}
+              disabled
+            >
+              Simpan
+              <LoadingSpinner />
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className={buttonVariants({
+                variant: "custom",
+                className: "rounded-xl",
+              })}
+            >
+              Simpan
+            </Button>
+          )}
         </div>
         <HeaderLogoToko />
         <div>

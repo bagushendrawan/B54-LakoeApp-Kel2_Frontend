@@ -123,7 +123,7 @@ export function RequestPassword() {
           </Form>
         </div>
 
-        <div className="flex flex-col w-full bg-red-50 justify-center items-center rounded-e-sm">
+        <div className="flex flex-col w-full bg-orange-100 justify-center items-center rounded-e-sm">
           <img src="/auth/login.png" className="w-2/4 object-cover" />
           <img src="/Lakoe.png" className="w-2/6" />
         </div>

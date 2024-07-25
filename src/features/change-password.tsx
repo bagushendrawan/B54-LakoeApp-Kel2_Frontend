@@ -80,7 +80,7 @@ export function ChangePassword() {
   }
 
   return (
-    <div className="w-8/12 h-10/12 rounded-sm mt-32 m-auto flex">
+    <div className="w-8/12 h-10/12 rounded-sm m-auto flex mt-32">
       <div className="flex bg-white h-full w-1/2 flex-col justify-start items-center pb-16 pt-8 px-4 rounded-s-sm">
         <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">
           Change Your Password
@@ -161,7 +161,7 @@ export function ChangePassword() {
           </form>
         </Form>
       </div>
-      <div className="flex flex-col w-1/2 bg-red-50 justify-center items-center rounded-e-sm">
+      <div className="flex flex-col w-1/2 bg-orange-100 justify-center items-center rounded-e-sm">
         <img src="/auth/login.png" className="w-3/4 object-cover" />
         <img src="/Lakoe.png" className="w-2/6" />
       </div>

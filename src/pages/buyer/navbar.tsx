@@ -11,6 +11,7 @@ import { Link } from "@tanstack/react-router";
 
 export function Navbar(props: any) {
   const logOutUser = useStore((state) => state.logout);
+  const user = useStore((state) => state.user);
   return (
     <div className="fixed right-0 left-0 top-0 z-50 flex justify-between items-center font-bold p-2 px-10 drop-shadow-sm pb-4 shadow-black bg-orange-500 ">
       <Link to="/buyer/dashboard">
@@ -34,7 +35,7 @@ export function Navbar(props: any) {
             </DialogHeader>
 
             <div className="flex gap-5">
-              <p className="font-bold text-xl mb-1">Nama Saya</p>
+              <p className="font-bold text-xl mb-1">{user.name}</p>
             </div>
 
             <Link

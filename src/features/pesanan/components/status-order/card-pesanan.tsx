@@ -134,7 +134,7 @@ export function Semua(props: any) {
         switchColor(invoiceData.status);
       }
     };
-
+    console.log("props ", props?.invoice);
     fetchAndSwitch();
   }, [props.invoice?.id, invoiceFetchData]);
 
@@ -183,7 +183,9 @@ export function Semua(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -240,7 +242,9 @@ export function BelumDibayar(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -296,7 +300,9 @@ export function PesananBaru(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -352,7 +358,9 @@ export function SiapDikirim(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -408,7 +416,9 @@ export function DalamPengiriman(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -464,7 +474,9 @@ export function PesananSelesai(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>
@@ -517,7 +529,9 @@ export function Dibatalkan(props: any) {
             <div className="p-2">
               <p className="font-light">Total Belanja</p>
               <p className="font-bold">
-                {formattedNumber(props.items.quantity * props.items.price)}
+                {formattedNumber(
+                  props.invoice.prices + props.invoice.service_charge
+                )}
               </p>
             </div>
           </div>

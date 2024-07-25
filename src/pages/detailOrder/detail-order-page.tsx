@@ -47,7 +47,11 @@ export function DetailOrderPage(props: any) {
 
           <div className="m-4 bg-white rounded-lg">
             <div className="flex">
-              <DetailPembayaran item={props.item} courier={props.courier} />
+              <DetailPembayaran
+                invoice={props.invoice}
+                item={props.item}
+                courier={props.courier}
+              />
             </div>
           </div>
 

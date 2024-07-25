@@ -207,7 +207,7 @@ export function DaftarPesanan() {
                     placeholder="Cari Pesanan"
                     onChange={(e) => setSearchPesanan(e.target.value)}
                   />
-                  <Select onValueChange={(e) => setKurir(e)}>
+                  {/* <Select onValueChange={(e) => setKurir(e)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Kurir" />
                     </SelectTrigger>
@@ -217,7 +217,7 @@ export function DaftarPesanan() {
                       <SelectItem value="gojek">Gojek</SelectItem>
                       <SelectItem value="jne">JNE</SelectItem>
                     </SelectContent>
-                  </Select>
+                  </Select> */}
                   <Select onValueChange={(e) => setOrder(Number(e))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Urutkan" />

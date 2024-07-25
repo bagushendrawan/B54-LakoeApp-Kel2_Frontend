@@ -2,6 +2,7 @@ import { IoWalletOutline } from "react-icons/io5";
 import { formattedNumber } from "../status-order/card-pesanan";
 
 export function DetailPembayaran(props: any) {
+  console.log("PROPS", props.invoice);
   return (
     <>
       <div className="py-4 px-3 text-2xl">
@@ -14,7 +15,7 @@ export function DetailPembayaran(props: any) {
         <div className="mb-2 pb-2 mr-5 border-b-2">
           <div className="flex justify-between">
             <p>Total Harga ({props.item?.quantity} Barang)</p>
-            <p>{formattedNumber(props.item?.quantity*props.item?.price)}</p>
+            <p>{formattedNumber(props.item?.quantity * props.item?.price)}</p>
           </div>
 
           <div className="flex justify-between">
@@ -24,7 +25,12 @@ export function DetailPembayaran(props: any) {
 
           <div className="flex justify-between">
             <p>Diskon</p>
-            <p>-</p>
+            <p>
+              {formattedNumber(
+                (props.invoice?.discount?.amount / 100) *
+                  (props.item?.quantity * props.item?.price)
+              )}
+            </p>
           </div>
 
           <div className="flex justify-between">
@@ -35,7 +41,11 @@ export function DetailPembayaran(props: any) {
 
         <div className="flex justify-between mb-2 pb-2 mr-5">
           <p className="font-bold">Rincian Pembayaran</p>
-          <p className="font-bold">{formattedNumber((props.item?.quantity*props.item?.price)+props.courier?.price)}</p>
+          <p className="font-bold">
+            {formattedNumber(
+              props.invoice?.prices + props.invoice?.service_charge
+            )}
+          </p>
         </div>
       </div>
     </>

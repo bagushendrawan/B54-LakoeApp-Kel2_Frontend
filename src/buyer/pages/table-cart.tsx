@@ -108,34 +108,34 @@ export function TableCart(props: any) {
             items.map((data: any, index) => {
               return (
                 <DropdownMenuCheckboxItem key={index}>
-                  <div className="w-full my-3 flex justify-between items-center">
-                    <div className="w-full flex items-center gap-2">
-                      <img
-                        src={data?.carts_items[0]?.img}
-                        alt="image"
-                        className="w-3/12 rounded-sm me-2"
-                      />
+                  {!data.invoices ? (
+                    <div className="w-full my-3 flex justify-between items-center">
+                      <div className="w-full flex items-center gap-2">
+                        <img
+                          src={data?.carts_items[0]?.img}
+                          alt="image"
+                          className="w-3/12 rounded-sm me-2"
+                        />
 
-                      <div className="mb-1 w-full">
-                        <p className="text-lg">{data.carts_items[0]?.name}</p>
-                        <p className="text-xs font-semibold">
-                          {data.carts_items[0]?.quantity} item
-                        </p>
-                        <p className="font-bold">
-                          {formattedNumber(data.carts_items[0]?.price)}
-                        </p>
+                        <div className="mb-1 w-full">
+                          <p className="text-lg">{data.carts_items[0]?.name}</p>
+                          <p className="text-xs font-semibold">
+                            {data.carts_items[0]?.quantity} item
+                          </p>
+                          <p className="font-bold">
+                            {formattedNumber(data.carts_items[0]?.price)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex gap-2 justify-center">
-                      {data.invoices.status !== "DIBATALKAN" ? (
+                      <div className="flex gap-2 justify-center">
                         <>
-                          <Button className="w-full bg-green-800 text-white">
+                          <Button className="w-full bg-slate-800 text-white">
                             <Link
                               to="/buyer/checkout"
                               search={{ id: data.carts_items[0]?.id }}
                             >
-                              Bayar
+                              Bayar Sekarang
                             </Link>
                           </Button>
 
@@ -151,21 +151,51 @@ export function TableCart(props: any) {
                             <BsTrash className="text-white w-4 h-4" />
                           </Button>
                         </>
-                      ) : (
-                        <Button
-                          variant={"outline"}
-                          className="rounded-md self-end bg-red-500 w-full"
-                          onClick={async () => {
-                            await cart.mutateAsync(data.id);
-                            refetchCart();
-                            props.refetch();
-                          }}
-                        >
-                          <BsXCircle className="text-white w-4 h-4" /> Batalkan
-                        </Button>
-                      )}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    data.invoices &&
+                    data.invoices.status === "BELUM_DIBAYAR" && (
+                      <div className="w-full my-3 flex justify-between items-center">
+                        <div className="w-full flex items-center gap-2">
+                          <img
+                            src={data?.carts_items[0]?.img}
+                            alt="image"
+                            className="w-3/12 rounded-sm me-2"
+                          />
+
+                          <div className="mb-1 w-full">
+                            <p className="text-lg">
+                              {data.carts_items[0]?.name}
+                            </p>
+                            <p className="text-xs font-semibold">
+                              {data.carts_items[0]?.quantity} item
+                            </p>
+                            <p className="font-bold">
+                              {formattedNumber(data.carts_items[0]?.price)}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 justify-center">
+                          <>
+                            <Button
+                              variant={"outline"}
+                              className="rounded-md self-end bg-red-500 w-full"
+                              onClick={async () => {
+                                await cart.mutateAsync(data.id);
+                                refetchCart();
+                                props.refetch();
+                              }}
+                            >
+                              <BsXCircle className="text-white w-4 h-4" />{" "}
+                              <p className="text-white">Batalkan</p>
+                            </Button>
+                          </>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </DropdownMenuCheckboxItem>
               );
             })}

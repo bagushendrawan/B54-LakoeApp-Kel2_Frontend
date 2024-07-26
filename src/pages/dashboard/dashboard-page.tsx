@@ -142,26 +142,24 @@ export function DashboardPage() {
   };
 
   useEffect(() => {
-    if (invoiceData) {
-      const invoiceTotal = invoiceData.reduce((total: number, inv: any) => {
-        if (inv.status === "PESANAN_SELESAI") {
-          return total + inv.prices;
-        }
+    const invoiceTotal = invoiceData.reduce((total: number, inv: any) => {
+      if (inv.status === "PESANAN_SELESAI") {
+        return total + inv.prices;
+      }
+      return total;
+    }, 0);
+
+    const totalAfterWithdrawals = dataWithdraw.reduce(
+      (total: number, withdraw: any) => {
+        if (withdraw.status === "Selesai") return total - withdraw.nominal;
         return total;
-      }, 0);
+      },
+      invoiceTotal
+    );
 
-      const totalAfterWithdrawals = dataWithdraw.reduce(
-        (total: number, withdraw: any) => {
-          if (withdraw.status === "Selesai") return total - withdraw.nominal;
-          return total;
-        },
-        invoiceTotal
-      );
-
-      console.log(totalAfterWithdrawals);
-      setBalance(totalAfterWithdrawals);
-    }
-  }, [invoiceData]);
+    console.log(totalAfterWithdrawals);
+    setBalance(totalAfterWithdrawals);
+  }, []);
 
   useEffect(() => {
     sortDataWithdraw(dataWithdraw);

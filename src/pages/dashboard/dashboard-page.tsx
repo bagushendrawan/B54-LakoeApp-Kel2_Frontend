@@ -152,8 +152,8 @@ export function DashboardPage() {
 
       const totalAfterWithdrawals = dataWithdraw.reduce(
         (total: number, withdraw: any) => {
-          console.log("jj");
-          return total - withdraw.nominal;
+          if (withdraw.status === "Selesai") return total - withdraw.nominal;
+          return total;
         },
         invoiceTotal
       );

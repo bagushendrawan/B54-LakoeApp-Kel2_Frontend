@@ -19,6 +19,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AllCategoriesDialog from "./allCategoriesDialog";
 import { api } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const addCategoriesSchema = z.object({
   name: z.string().min(1, { message: "Masukan nama kategori" }),
@@ -26,28 +27,65 @@ const addCategoriesSchema = z.object({
 
 const AddCategoriesDialog = () => {
   const user = useStore((state) => state.user);
+  const setCategories = useStore((state) => state.SET_CATEGORIES);
 
   const formAddCategories = useForm<IAddCategories>({
     mode: "onSubmit",
     resolver: zodResolver(addCategoriesSchema),
   });
 
-  const handleAddCategories = async (data: any) => {
+  const fetchCategories = async () => {
     const token = localStorage.getItem("token");
-    const userId = user.id;
+    const res = await Axios({
+      method: "get",
+      url: `${api}/categories`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setCategories(res.data);
+  };
+
+  const { refetch: refetchCategories } = useQuery({
+    queryKey: ["categoriesStatus"],
+    queryFn: fetchCategories,
+  });
+
+  const addCategoriesMutation = useMutation({
+    mutationFn: async (newData: any) => {
+      const token = localStorage.getItem("token");
+      const userId = user.id;
+      return await Axios({
+        method: "post",
+        url: `${api}/categories/${userId}`,
+        data: newData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+  });
+
+  const handleAddCategories = async (data: any) => {
+    // const token = localStorage.getItem("token");
+    // const userId = user.id;
 
     const newData = {
       ...data,
     };
 
-    await Axios({
-      method: "post",
-      url: `${api}/categories/${userId}`,
-      data: newData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    // await Axios({
+    //   method: "post",
+    //   url: `${api}/categories/${userId}`,
+    //   data: newData,
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+
+    await addCategoriesMutation.mutateAsync(newData);
+    await refetchCategories();
 
     formAddCategories.reset();
   };

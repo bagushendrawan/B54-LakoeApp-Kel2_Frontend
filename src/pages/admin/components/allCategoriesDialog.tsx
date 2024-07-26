@@ -13,6 +13,7 @@ import Axios from "axios";
 import { Label } from "@/components/label";
 import { FaTrash } from "react-icons/fa";
 import { api } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 const AllCategoriesDialog = () => {
   const user = useStore((state) => state.user);

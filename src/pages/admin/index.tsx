@@ -181,7 +181,7 @@ const AdminPage = () => {
 
             {/* action sort */}
             <Dropdown
-              options={action}
+              options={action && action}
               selectedOption={selectedAction}
               onSelect={handleSortAction}
             />

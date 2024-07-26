@@ -19,6 +19,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AllVoucherDialog from "./allVoucherDialog";
 import { api } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const addVoucherSchema = z.object({
   nominal: z.preprocess((val) => parseInt(val as string, 10), z.number()),
@@ -28,9 +29,43 @@ const addVoucherSchema = z.object({
 const AddVoucherDialog = () => {
   const user = useStore((state) => state.user);
   const token = localStorage.getItem("token");
+  const setVoucher = useStore((state) => state.SET_VOUCHER);
+
+  const fetchVoucher = async () => {
+    const token = localStorage.getItem("token");
+    const res = await Axios({
+      method: "get",
+      url: `${api}/categories/discount/all`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setVoucher(res.data);
+  };
+
+  const { refetch: refetchVoucher } = useQuery({
+    queryKey: ["voucherStatus"],
+    queryFn: fetchVoucher,
+  });
 
   const formAddVoucher = useForm<IAddVoucher>({
     mode: "onSubmit",
+  });
+
+  const addVoucherMutation = useMutation({
+    mutationFn: async (newData: any) => {
+      const token = localStorage.getItem("token");
+      const userId = user.id;
+      return await Axios({
+        method: "post",
+        url: `${api}/categories/discount/create`,
+        data: newData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
   });
 
   const handleAddVoucher = async (data: any) => {
@@ -40,15 +75,17 @@ const AddVoucherDialog = () => {
       ...data,
     };
 
-    await Axios({
-      method: "post",
-      url: `${api}/categories/discount/create`,
-      data: newData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    // await Axios({
+    //   method: "post",
+    //   url: `${api}/categories/discount/create`,
+    //   data: newData,
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
 
+    await addVoucherMutation.mutateAsync(newData);
+    await refetchVoucher();
     formAddVoucher.reset();
   };
 

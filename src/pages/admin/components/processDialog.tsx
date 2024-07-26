@@ -14,9 +14,11 @@ import { FC } from "react";
 import Axios from "axios";
 import { Label } from "@/components/label";
 import { api } from "@/lib/api";
+import { useMutation } from "@tanstack/react-query";
 
-const ProcessDialog: FC<{ dataWithdraw: IDataWithdraw }> = ({
+const ProcessDialog: FC<{ dataWithdraw: IDataWithdraw; refetch: any }> = ({
   dataWithdraw,
+  refetch,
 }) => {
   const user = useStore((state) => state.user);
 
@@ -34,6 +36,23 @@ const ProcessDialog: FC<{ dataWithdraw: IDataWithdraw }> = ({
       },
     });
   };
+
+  const processMutation = useMutation({
+    mutationFn: async () => {
+      const token = localStorage.getItem("token");
+      const userId = user.id;
+      return await Axios({
+        method: "patch",
+        url: `${api}/withdraw/process/${dataWithdraw.id}`,
+        params: {
+          userId: userId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+  });
 
   return (
     <Dialog>
@@ -71,7 +90,10 @@ const ProcessDialog: FC<{ dataWithdraw: IDataWithdraw }> = ({
 
             <DialogClose asChild>
               <Button
-                onClick={handleProcess}
+                onClick={async () => {
+                  await processMutation.mutateAsync();
+                  refetch();
+                }}
                 className="px-4 py-2 text-white bg-blue-500 rounded-full"
               >
                 Ya, Proses

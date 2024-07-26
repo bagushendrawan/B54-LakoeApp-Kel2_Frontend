@@ -9,6 +9,7 @@ import Navbar from "./components/navbar";
 import useStore from "@/z-context";
 import Axios from "axios";
 import { api } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 const tabs = [
   { name: "Semua", id: "all" },
@@ -32,6 +33,25 @@ const AdminPage = () => {
 
   const setWithdraw = useStore((state) => state.SET_WITHDRAW);
   const dataWithdraw = useStore((state) => state.withdraw);
+
+  const fetchWithdraw = async () => {
+    const token = localStorage.getItem("token");
+    const userId = user.id;
+    const res = await Axios({
+      method: "get",
+      url: `${api}/withdraw/admin/${userId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setWithdraw(res.data);
+  };
+
+  const { refetch: refetchWithdraw } = useQuery({
+    queryKey: ["withdrawStatus"],
+    queryFn: fetchWithdraw,
+  });
 
   // fetch withdraw
   useEffect(() => {
@@ -178,7 +198,11 @@ const AdminPage = () => {
           ) : (
             <div className="h-96 flex flex-col gap-2 overflow-y-auto">
               {sortedAndFilteredData.map((data) => (
-                <CardItem key={data.id} dataWithdraw={data} />
+                <CardItem
+                  key={data.id}
+                  dataWithdraw={data}
+                  refetch={refetchWithdraw}
+                />
               ))}
             </div>
           )}

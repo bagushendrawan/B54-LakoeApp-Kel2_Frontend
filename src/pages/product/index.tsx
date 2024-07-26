@@ -139,11 +139,11 @@ const Product = () => {
         />
 
         {/* category sort */}
-        <DropdownSort
+        {/* <DropdownSort
           options={categories && categories}
           selectedOption={selectedCategory}
           onSelect={(category: string) => setSelectedCategory(category)}
-        />
+        /> */}
 
         {/* action sort */}
         <DropdownSort

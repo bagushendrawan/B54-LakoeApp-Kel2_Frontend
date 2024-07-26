@@ -6,13 +6,15 @@ import { Label } from "@/components/label";
 import { TemplateContextProvider } from "@/context/TemplateContext";
 import { CardLokasi } from "./cardLokasi copy";
 import { CardTemplate } from "./cardTemplatePesan";
+import useStore from "@/z-context";
 
 export function MainSetting() {
+  const user = useStore((state) => state.user);
   return (
     <>
       <div className="m-4 p-10 rounded-sm bg-white h-screen">
         <div className="mb-5">
-          <Label className="font-bold text-2xl">Suka Suka Store</Label>
+          <Label className="font-bold text-2xl">{user.store.name}</Label>
         </div>
         <Tabs defaultValue="informasi">
           <div>

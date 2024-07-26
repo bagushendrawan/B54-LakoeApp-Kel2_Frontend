@@ -110,10 +110,11 @@ const AddVoucherDialog = () => {
                   </Label>
                   <Input
                     id="nominal"
-                    placeholder="Masukan nominal"
+                    placeholder="Masukan nominal %"
                     {...formAddVoucher.register("amount", {
                       valueAsNumber: true,
                     })}
+                    maxLength={3}
                   />
                 </div>
 

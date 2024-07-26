@@ -52,7 +52,7 @@ const AllVoucherDialog = () => {
                   <div className="flex items-center gap-2 text-black">
                     <div className="w-full flex flex-col p-4 border rounded shadow-lg">
                       <Label className="text-xl font-bold">
-                        Rp{item.amount}
+                        %{item.amount}
                       </Label>
                       <Label className="w-full flex justify-end text-xl">
                         {item.code}

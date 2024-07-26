@@ -27,7 +27,7 @@ export function DaftarPesanan() {
   const [invoiceSelesaiData, setInvoiceSelesaiData] = useState<any[]>([]);
   const [invoiceBatalData, setInvoiceBatalData] = useState<any[]>([]);
   const [kurir, setKurir] = useState("");
-  const [searchPesanan, setSearchPesanan] = useState("");
+  const [searchPesanan, setSearchPesanan] = useState(" ");
 
   const user = useStore((state) => state.user);
   //9 == all

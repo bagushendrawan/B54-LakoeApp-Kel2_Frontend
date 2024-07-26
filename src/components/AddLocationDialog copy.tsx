@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "./select";
 import MapComponentAddLocation from "./location/map-componen-add-location";
+import { useMutation } from "@tanstack/react-query";
 
 type locationForm = {
   name: string;
@@ -62,15 +63,9 @@ export function AddLocation() {
 
   formLocation.setValue("store_id", user.store_id);
 
-  async function onSubmitForm(data: any) {
-    try {
-      console.log("hahaha hit");
-
-      const newData = {
-        ...data,
-      };
-
-      const response = await Axios({
+  const addLocation = useMutation({
+    mutationFn: async (newData: any) => {
+      return await Axios({
         method: "post",
         url: `${api}/users/location`,
         data: newData,
@@ -79,8 +74,28 @@ export function AddLocation() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+    },
+  });
 
-      console.log(response.data);
+  async function onSubmitForm(data: any) {
+    try {
+      console.log("hahaha hit");
+
+      const newData = {
+        ...data,
+      };
+
+      // const response = await Axios({
+      //   method: "post",
+      //   url: `${api}/users/location`,
+      //   data: newData,
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //   },
+      // });
+
+      await addLocation.mutateAsync(newData);
     } catch (error) {
       console.log(error);
     }
@@ -146,7 +161,7 @@ export function AddLocation() {
                         <SelectValue placeholder="Select Your Provinci/Kota" />
                       </SelectTrigger>
                       <SelectContent>
-                        {dataDaerah.map((provinsi) => {
+                        {dataDaerah.map((provinsi: any) => {
                           return (
                             <SelectItem key={provinsi.id} value={provinsi.name}>
                               <p className="text-black">{provinsi.name}</p>

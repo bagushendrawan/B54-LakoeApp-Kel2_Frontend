@@ -33,7 +33,7 @@ export function LocationCard() {
   const [location, setLocation] = useState([]);
   const [active, setActive] = useState<boolean>(false);
 
-  const { refetch } = useQuery({
+  const { refetch, data: locationData } = useQuery({
     queryKey: ["addressList"],
     queryFn: fetchDataLocation,
   });
@@ -50,6 +50,10 @@ export function LocationCard() {
     setLocation(response.data);
     console.log("data lokasi", location);
   }
+
+  useEffect(() => {
+    refetch();
+  }, [locationData]);
 
   useEffect(() => {
     async function fetchDataLocation() {

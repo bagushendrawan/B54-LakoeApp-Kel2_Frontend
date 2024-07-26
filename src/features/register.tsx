@@ -101,7 +101,7 @@ export function RegisterForm() {
       <div className="w-full h-full flex rounded-sm bg-white">
         {/* form */}
         <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
-          <h1 className="font-bold text-2xl text-red-600">Register Here</h1>
+          <h1 className="font-bold text-2xl text-orange-600">Register Here</h1>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -114,7 +114,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="font-bold">
                       Username
-                      <Label className="text-red-600">*</Label>
+                      <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -135,7 +135,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="font-bold">
                       Email
-                      <Label className="text-red-600">*</Label>
+                      <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -157,7 +157,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="font-bold">
                       Phone
-                      <Label className="text-red-600">*</Label>
+                      <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -178,7 +178,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold">
-                      Password <Label className="text-red-600">*</Label>
+                      Password <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
@@ -207,7 +207,7 @@ export function RegisterForm() {
 
               <p className="text-sm font-bold">
                 Role
-                <Label className="text-red-600">*</Label>
+                <Label className="text-orange-600">*</Label>
               </p>
               <Select
                 onValueChange={(e) => {
@@ -229,14 +229,14 @@ export function RegisterForm() {
 
               <div className="flex flex-col items-center mt-4 text-sm">
                 {!form.formState.isSubmitting ? (
-                  <Button type="submit" className="px-12 bg-red-600">
+                  <Button type="submit" className="px-12 bg-orange-500">
                     Register
                   </Button>
                 ) : (
                   <Button
                     type="submit"
                     disabled
-                    className="px-12 bg-red-600 gap-2"
+                    className="px-12 bg-orange-500 gap-2"
                   >
                     <LoadingSpinner />
                     Register

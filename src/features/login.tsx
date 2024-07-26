@@ -134,7 +134,7 @@ export function LoginForm() {
       <div className="w-full h-full flex bg-slate-600 rounded-sm">
         {/* form */}
         <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
-          <h1 className="font-bold text-2xl text-red-600 mb-8">
+          <h1 className="font-bold text-2xl text-orange-600 mb-8">
             Welcome Back!
           </h1>
           <Form {...form}>
@@ -148,7 +148,7 @@ export function LoginForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold">
-                      Email <Label className="text-red-600">*</Label>
+                      Email <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -169,7 +169,7 @@ export function LoginForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold">
-                      Password <Label className="text-red-600">*</Label>
+                      Password <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
@@ -208,14 +208,14 @@ export function LoginForm() {
 
               <div className="w-full flex flex-col gap-4 items-center text-sm">
                 {!form.formState.isSubmitting ? (
-                  <Button type="submit" className="px-12 bg-red-600">
+                  <Button type="submit" className="px-12 bg-orange-500">
                     Login
                   </Button>
                 ) : (
                   <Button
                     type="submit"
                     disabled
-                    className="px-12 bg-red-600 gap-2"
+                    className="px-12 bg-orange-500 gap-2"
                   >
                     <LoadingSpinner />
                     Login

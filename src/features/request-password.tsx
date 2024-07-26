@@ -71,7 +71,7 @@ export function RequestPassword() {
     <div className="w-full h-screen p-12">
       <div className="w-full h-full flex bg-slate-600 rounded-sm">
         <div className="w-full flex bg-white flex-col justify-center items-center p-12 rounded-s-sm">
-          <h1 className="font-bold text-2xl text-red-600 mt-2 mb-4">
+          <h1 className="font-bold text-2xl text-orange-600 mt-2 mb-4">
             Change Password
           </h1>
           <Form {...form}>
@@ -85,7 +85,7 @@ export function RequestPassword() {
                 render={({ field }) => (
                   <FormItem className="mt-4">
                     <FormLabel className="font-bold mt-2">
-                      Email <Label className="text-red-600">*</Label>
+                      Email <Label className="text-orange-600">*</Label>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -102,11 +102,15 @@ export function RequestPassword() {
 
               <div className="flex flex-col gap-4 items-center pt-6 text-sm">
                 {!form.formState.isSubmitting ? (
-                  <Button type="submit" className="px-12 bg-red-600">
+                  <Button type="submit" className="px-12 bg-orange-500">
                     Request
                   </Button>
                 ) : (
-                  <Button type="submit" disabled className="px-12 bg-red-600">
+                  <Button
+                    type="submit"
+                    disabled
+                    className="px-12 bg-orange-500"
+                  >
                     Request <LoadingSpinner />
                   </Button>
                 )}

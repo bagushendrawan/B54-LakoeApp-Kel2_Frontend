@@ -52,7 +52,7 @@ export function DashboardPage() {
     }
 
     auth();
-  }, []);
+  }, [user.store_id]);
 
   useEffect(() => {
     async function bulanIni() {
@@ -159,7 +159,7 @@ export function DashboardPage() {
 
     console.log(totalAfterWithdrawals);
     setBalance(totalAfterWithdrawals);
-  }, [invoiceData]);
+  }, []);
 
   useEffect(() => {
     sortDataWithdraw(dataWithdraw);

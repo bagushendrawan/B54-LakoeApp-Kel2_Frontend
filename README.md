@@ -101,6 +101,7 @@ In this E-Commerce app you could do amazing things :
 ![Screenshot 2024-07-27 084722](https://github.com/user-attachments/assets/c1d2ce9c-ea9b-4ea1-ae28-e429740c03d4)
 
 <li>Sell your amazing products</li>
+
 ![image](https://github.com/user-attachments/assets/1c58d544-fb23-449f-9aba-2f283781e731)
 
 <li>Set your store settings and location</li>

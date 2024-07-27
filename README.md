@@ -129,6 +129,7 @@ In this E-Commerce app you could do amazing things :
 * [![Vite][Vite]][Vite-url]
 * [![Typescript][Typescript-bg]][Typescript-url]
 * [![Shadcn][Shadcn-ui]][Shadcn-url]
+* [![Postgres][Postgres-ui]]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -220,6 +221,7 @@ Project Link: [https://github.com/bagushendrawan/B54-LakoeApp-Kel2_Frontend](htt
 [JQuery-url]: https://jquery.com 
 [Express]: https://img.shields.io/badge/Express-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
 [Express-url]: https://expressjs.com/
+[Postgres-ui]: https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white
 [Vite]: https://img.shields.io/badge/Vite-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
 [Vite-url]: https://vitejs.dev/
 [Typescript-bg]: https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF&style=flat-square

@@ -181,7 +181,7 @@ Don't forget to give the project a star! Thanks again!
 
 Bagus Hendrawan - [Linkedin-handle](www.linkedin.com/in/bagus-hendrawan) - bagushendrawan01@gmail.com
 
-Project Link: [https://github.com/bagushendrawan/b54-circleApp](https://github.com/bagushendrawan/b54-circleApp)
+Project Link: [https://github.com/bagushendrawan/B54-LakoeApp-Kel2_Frontend](https://github.com/bagushendrawan/B54-LakoeApp-Kel2_Frontend)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

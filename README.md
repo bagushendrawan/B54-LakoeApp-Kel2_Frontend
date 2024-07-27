@@ -153,10 +153,10 @@ In this E-Commerce app you could do amazing things :
 
 <!-- Our Creators -->
 ## Creators
-<h2>Bagus Hendrawan (Lead)</h2>
-<h2>Agik Gigih Sulistyo</h2>
-<h2>Endang Triyana</h2>
-<h2>Ikhsan Taufik</h2>
+<h4>Bagus Hendrawan (Lead)</h4>
+<h4>Agik Gigih Sulistyo</h4>
+<h4>Endang Triyana</h4>
+<h4>Ikhsan Taufik</h4>
 
 <!-- CONTRIBUTING -->
 ## Contributing

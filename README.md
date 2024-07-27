@@ -26,7 +26,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/bagushendrawan/B54-LakoeApp-Kel2_Frontend">
-    <img src="https://github.com/bagushendrawan/B54-LakoeApp-Kel2_Frontend/blob/main/public/Lakoe.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/bagushendrawan/B54-LakoeApp-Kel2_Frontend/blob/main/public/Lakoe.png" alt="Logo" width="auto" height="120">
   </a>
 
 <h3 align="center">Lakoe App</h3>
